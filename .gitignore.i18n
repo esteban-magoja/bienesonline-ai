@@ -1,0 +1,8 @@
+# Este archivo documenta qué NO ignorar para i18n
+
+# Mantener estos archivos versionados:
+!I18N_IMPLEMENTATION_PLAN.md
+!I18N_DAILY_CHECKLIST.md
+!.i18n-progress
+
+# El plan debe estar en git para continuidad

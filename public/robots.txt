@@ -1,0 +1,29 @@
+# Raxta - Robots.txt
+# https://raxta.com
+
+User-agent: *
+Allow: /
+
+# Disallow private areas
+Disallow: /dashboard/
+Disallow: /settings/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /_debugbar/
+Disallow: /livewire/
+
+# Allow search bots to index public property pages
+Allow: /es/
+Allow: /en/
+Allow: /es/property/
+Allow: /en/property/
+Allow: /es/search-properties
+Allow: /en/search-properties
+Allow: /es/search-requests
+Allow: /en/search-requests
+Allow: /es/pricing
+Allow: /en/pricing
+
+# Sitemap
+Sitemap: https://raxta.com/sitemap.xml
