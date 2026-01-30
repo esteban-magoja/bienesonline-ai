@@ -245,12 +245,12 @@ return [
         // Hero Section
         'hero_title_1' => 'Find your',
         'hero_title_2' => 'Real Estate Match',
-        'hero_subtitle' => 'We connect properties with buyers and agents using AI. At Raxta, only monitored and authentic properties are published.',
+        'hero_subtitle' => 'We connect properties with buyers and agents using AI. At BienesOnLine.ai, only monitored and authentic properties are published.',
         'add_property' => 'Add Property',
         
         // Features Section
-        'features_title' => 'What is Raxta',
-        'features_description' => 'Raxta is not just a portal. It is a private network of verified agents and individuals who collaborate in the sale, purchase or rental of properties through an intelligent match system and shared commissions.',
+        'features_title' => 'What is BienesOnLine.ai',
+        'features_description' => 'BienesOnLine.ai is not just a portal. It is a private network of verified agents and individuals who collaborate in the sale, purchase or rental of properties through an intelligent match system and shared commissions.',
         'feature_1_title' => 'Control and Monitoring',
         'feature_1_desc' => 'Everything published is reviewed to guarantee quality and exclusivity.',
         'feature_2_title' => 'Real Collaboration',
@@ -265,14 +265,14 @@ return [
         'step_1_title' => 'Post or request a property',
         'step_1_desc' => 'The system analyzes automatic matches between your offer and existing demand.',
         'step_2_title' => 'Find your "Real Estate Match"',
-        'step_2_desc' => 'Raxta connects you with agents or buyers looking for exactly what you offer.',
+        'step_2_desc' => 'BienesOnLine.ai connects you with agents or buyers looking for exactly what you offer.',
         'step_3_title' => 'Negotiate and share commission securely',
         'step_3_desc' => 'Everything is documented within the platform, with history and support at every stage.',
         
         // Practical Guides Section
         'guides_title' => 'Practical Guides',
         'buyer_guide_title' => 'Buyer\'s Guide',
-        'buyer_guide_desc' => 'How to leverage Raxta to find exclusive and secure properties.',
+        'buyer_guide_desc' => 'How to leverage BienesOnLine.ai to find exclusive and secure properties.',
         'seller_guide_title' => 'Seller\'s Guide',
         'seller_guide_desc' => 'How to publish effectively and close sales in collaboration with other agents.',
         
@@ -289,12 +289,12 @@ return [
         'tool_4_desc' => 'Never miss an opportunity.',
         
         // Testimonials Section
-        'testimonials_title' => 'Success Stories at Raxta',
+        'testimonials_title' => 'Success Stories at BienesOnLine.ai',
         'testimonials_description' => 'Where collaboration generates <strong><u>real results.</u></strong>',
-        'testimonial_1_quote' => '"Thanks to Raxta, I have doubled my client portfolio in three months. The ability to find precise \'matches\' between my properties and market demand is simply revolutionary."',
+        'testimonial_1_quote' => '"Thanks to BienesOnLine.ai, I have doubled my client portfolio in three months. The ability to find precise \'matches\' between my properties and market demand is simply revolutionary."',
         'testimonial_1_name' => 'Sarah Mitchell',
         'testimonial_1_role' => 'Real Estate Agent',
-        'testimonial_2_quote' => '"I was looking for a house for months without success. With Raxta\'s alerts, I found my dream home in less than a week. The process was incredibly fast and efficient!"',
+        'testimonial_2_quote' => '"I was looking for a house for months without success. With BienesOnLine.ai\'s alerts, I found my dream home in less than a week. The process was incredibly fast and efficient!"',
         'testimonial_2_name' => 'James Anderson',
         'testimonial_2_role' => 'Satisfied Buyer',
         'testimonial_3_quote' => '"The platform allowed me to connect with other agents to sell a complicated property. Collaboration was key and we closed the deal in record time. Totally recommended!"',
@@ -321,9 +321,9 @@ return [
     // Menu Navigation
     'menu' => [
         'our_mission' => 'Our Mission',
-        'our_mission_desc' => 'At Raxta we believe the future of real estate is collaborative, transparent and global.',
+        'our_mission_desc' => 'At BienesOnLine.ai we believe the future of real estate is collaborative, transparent and global.',
         'join_us' => 'Join Our Network',
-        'join_us_desc' => 'Being a Raxta member gives you access to an ecosystem designed to boost your success.',
+        'join_us_desc' => 'Being a BienesOnLine.ai member gives you access to an ecosystem designed to boost your success.',
         'pricing' => 'Pricing',
         'pricing_desc' => 'Join to be part of our select real estate group.',
         'mediation' => 'Mediation Between Participants',
@@ -331,9 +331,9 @@ return [
         'terms' => 'Terms and Conditions of Participation',
         'terms_desc' => 'Terms governing participation in the platform\'s collective real estate sales program.',
         'buyer_guide' => 'Buyer\'s Guide',
-        'buyer_guide_desc' => 'How to find your next property or investment within the Raxta global network.',
+        'buyer_guide_desc' => 'How to find your next property or investment within the BienesOnLine.ai global network.',
         'seller_guide' => 'Seller\'s Guide',
-        'seller_guide_desc' => 'How to become a successful seller within the Raxta global network.',
+        'seller_guide_desc' => 'How to become a successful seller within the BienesOnLine.ai global network.',
     ],
 
     // Footer

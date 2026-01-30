@@ -245,12 +245,12 @@ return [
         // Hero Section
         'hero_title_1' => 'Encuentra tu',
         'hero_title_2' => 'Match Inmobiliario',
-        'hero_subtitle' => 'Conectamos con IA, propiedades con compradores y agentes. En Raxta, solo se publican propiedades monitoreadas y auténticas.',
+        'hero_subtitle' => 'Conectamos con IA, propiedades con compradores y agentes. En BienesOnLine.ai, solo se publican propiedades monitoreadas y auténticas.',
         'add_property' => 'Agregar Inmueble',
         
         // Features Section
-        'features_title' => 'Qué es Raxta',
-        'features_description' => 'Raxta no es solo un portal. Es una red privada de agentes y particulares verificados que colaboran en la venta, compra o alquiler de propiedades mediante un sistema de match inteligente y comisiones compartidas.',
+        'features_title' => 'Qué es BienesOnLine.ai',
+        'features_description' => 'BienesOnLine.ai no es solo un portal. Es una red privada de agentes y particulares verificados que colaboran en la venta, compra o alquiler de propiedades mediante un sistema de match inteligente y comisiones compartidas.',
         'feature_1_title' => 'Control y Monitoreo',
         'feature_1_desc' => 'Todo lo publicado es revisado para garantizar calidad y exclusividad.',
         'feature_2_title' => 'Colaboración Real',
@@ -265,14 +265,14 @@ return [
         'step_1_title' => 'Publicá o solicitá una propiedad',
         'step_1_desc' => 'El sistema analiza coincidencias automáticas entre tu oferta y la demanda existente.',
         'step_2_title' => 'Encontrá tu "Match Inmobiliario"',
-        'step_2_desc' => 'Raxta te conecta con agentes o compradores que buscan exactamente lo que ofrecés.',
+        'step_2_desc' => 'BienesOnLine.ai te conecta con agentes o compradores que buscan exactamente lo que ofrecés.',
         'step_3_title' => 'Negociá y compartí comisión con seguridad',
         'step_3_desc' => 'Todo queda documentado dentro de la plataforma, con historial y soporte en cada etapa.',
         
         // Practical Guides Section
         'guides_title' => 'Guías Prácticas',
         'buyer_guide_title' => 'Guía del Comprador',
-        'buyer_guide_desc' => 'Cómo aprovechar Raxta para encontrar propiedades exclusivas y seguras.',
+        'buyer_guide_desc' => 'Cómo aprovechar BienesOnLine.ai para encontrar propiedades exclusivas y seguras.',
         'seller_guide_title' => 'Guía del Vendedor',
         'seller_guide_desc' => 'Cómo publicar de forma efectiva y cerrar ventas en colaboración con otros agentes.',
         
@@ -289,12 +289,12 @@ return [
         'tool_4_desc' => 'Nunca te pierdas una oportunidad.',
         
         // Testimonials Section
-        'testimonials_title' => 'Historias de Éxito en Raxta',
+        'testimonials_title' => 'Historias de Éxito en BienesOnLine.ai',
         'testimonials_description' => 'Donde la colaboración genera <strong><u>resultados reales.</u></strong>',
-        'testimonial_1_quote' => '"Gracias a Raxta, he duplicado mi cartera de clientes en tres meses. La capacidad de encontrar \'matchs\' precisos entre mis propiedades y la demanda del mercado es simplemente revolucionaria."',
+        'testimonial_1_quote' => '"Gracias a BienesOnLine.ai, he duplicado mi cartera de clientes en tres meses. La capacidad de encontrar \'matchs\' precisos entre mis propiedades y la demanda del mercado es simplemente revolucionaria."',
         'testimonial_1_name' => 'Laura Gómez',
         'testimonial_1_role' => 'Agente Inmobiliario',
-        'testimonial_2_quote' => '"Estuve buscando casa por meses sin éxito. Con las alertas de Raxta, encontré la casa de mis sueños en menos de una semana. ¡El proceso fue increíblemente rápido y eficiente!"',
+        'testimonial_2_quote' => '"Estuve buscando casa por meses sin éxito. Con las alertas de BienesOnLine.ai, encontré la casa de mis sueños en menos de una semana. ¡El proceso fue increíblemente rápido y eficiente!"',
         'testimonial_2_name' => 'Carlos Fernández',
         'testimonial_2_role' => 'Comprador Satisfecho',
         'testimonial_3_quote' => '"La plataforma me permitió conectar con otros agentes para vender una propiedad complicada. La colaboración fue clave y cerramos el trato en tiempo récord. ¡Totalmente recomendado!"',
@@ -321,9 +321,9 @@ return [
     // Menu Navigation
     'menu' => [
         'our_mission' => 'Nuestra Misión',
-        'our_mission_desc' => 'En Raxta creemos que el futuro del mercado inmobiliario es colaborativo, transparente y global.',
+        'our_mission_desc' => 'En BienesOnLine.ai creemos que el futuro del mercado inmobiliario es colaborativo, transparente y global.',
         'join_us' => 'Asóciate a nuestra red',
-        'join_us_desc' => 'Ser miembro de Raxta te permite acceder a un ecosistema diseñado para potenciar tu éxito.',
+        'join_us_desc' => 'Ser miembro de BienesOnLine.ai te permite acceder a un ecosistema diseñado para potenciar tu éxito.',
         'pricing' => 'Precios',
         'pricing_desc' => 'Asóciate para ser parte de nuestro selecto grupo inmobiliario.',
         'mediation' => 'Mediación entre participantes',
@@ -331,9 +331,9 @@ return [
         'terms' => 'Términos y Condiciones de Participación',
         'terms_desc' => 'Términos que rigen la participación en el programa de ventas colectivas inmobiliarias de la plataforma.',
         'buyer_guide' => 'Guía del Comprador',
-        'buyer_guide_desc' => 'Cómo encontrar tu próxima propiedad o inversión dentro de la red global Raxta.',
+        'buyer_guide_desc' => 'Cómo encontrar tu próxima propiedad o inversión dentro de la red global BienesOnLine.ai.',
         'seller_guide' => 'Guía del Vendedor',
-        'seller_guide_desc' => 'Cómo convertirte en un vendedor exitoso dentro de la red global de Raxta.',
+        'seller_guide_desc' => 'Cómo convertirte en un vendedor exitoso dentro de la red global de BienesOnLine.ai.',
     ],
 
     // Footer
