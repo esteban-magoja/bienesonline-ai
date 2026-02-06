@@ -63,8 +63,8 @@
     <section class="py-8 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Breadcrumb -->
-            <nav class="flex mb-6" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <nav class="mb-6" aria-label="Breadcrumb">
+                <ol class="flex flex-wrap items-center gap-1 md:gap-3">
                     {{-- Home --}}
                     <li class="inline-flex items-center">
                         <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
@@ -78,10 +78,10 @@
                     {{-- País --}}
                     <li>
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
-                            <a href="/{{ $locale }}/{{ $countrySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                            <a href="/{{ $locale }}/{{ $countrySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
                                 {{ $property->country }}
                             </a>
                         </div>
@@ -91,10 +91,10 @@
                     @if($transactionSlug)
                         <li>
                             <div class="flex items-center">
-                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
-                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
                                     {{ __('properties.transaction_types.' . $property->transaction_type) }}
                                 </a>
                             </div>
@@ -105,10 +105,10 @@
                     @if($propertySlug)
                         <li>
                             <div class="flex items-center">
-                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
-                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
                                     {{ __('properties.types.' . $property->property_type) }}
                                 </a>
                             </div>
@@ -119,10 +119,10 @@
                     @if($property->state)
                         <li>
                             <div class="flex items-center">
-                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
-                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
                                     {{ $property->state }}
                                 </a>
                             </div>
@@ -133,10 +133,10 @@
                     @if($property->city)
                         <li>
                             <div class="flex items-center">
-                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
-                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}/{{ $citySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}/{{ $citySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
                                     {{ $property->city }}
                                 </a>
                             </div>
@@ -146,10 +146,10 @@
                     {{-- Título de la propiedad (sin link) --}}
                     <li aria-current="page">
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ Str::limit($property->title, 40) }}</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500">{{ Str::limit($property->title, 40) }}</span>
                         </div>
                     </li>
                 </ol>

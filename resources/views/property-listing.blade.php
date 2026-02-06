@@ -21,12 +21,12 @@
     {{-- Breadcrumbs --}}
     <div class="bg-gray-50 border-b">
         <div class="container mx-auto px-4 py-3">
-            <nav class="flex" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <nav aria-label="Breadcrumb">
+                <ol class="flex flex-wrap items-center gap-1 md:gap-3">
                     @foreach($breadcrumbs as $index => $breadcrumb)
                         <li class="inline-flex items-center">
                             @if($index > 0)
-                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
                             @endif
@@ -52,8 +52,36 @@
             
             {{-- Sidebar Filters --}}
             <aside class="lg:w-1/4">
-                <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
-                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                {{-- Botón Toggle para Móviles --}}
+                <button 
+                    type="button"
+                    onclick="toggleFilters()"
+                    id="filter-toggle-btn"
+                    class="lg:hidden w-full mb-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-between transition duration-200"
+                >
+                    <span class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                        </svg>
+                        {{ __('properties.filters') }}
+                    </span>
+                    <svg id="filter-arrow" class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <script>
+                    function toggleFilters() {
+                        const panel = document.getElementById('filters-panel');
+                        const arrow = document.getElementById('filter-arrow');
+                        panel.classList.toggle('hidden');
+                        arrow.classList.toggle('rotate-180');
+                    }
+                </script>
+
+                {{-- Panel de Filtros (Oculto por defecto en móviles) --}}
+                <div id="filters-panel" class="hidden lg:block bg-white rounded-lg shadow-md p-6 lg:sticky lg:top-4">
+                    <h3 class="hidden lg:flex text-lg font-bold mb-4 items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
                         </svg>
