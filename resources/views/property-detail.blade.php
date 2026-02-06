@@ -541,7 +541,7 @@
 
                         <!-- Call Button (solo si tiene móvil) -->
                         @if($property->user->movil)
-                            <div class="mt-6 pt-6 border-t border-gray-200">
+                            <div class="mt-3 pt-2">
                                 <a 
                                     href="tel:{{ $property->user->movil }}" 
                                     class="flex items-center justify-center w-full bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors font-semibold"
