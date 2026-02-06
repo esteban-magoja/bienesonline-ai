@@ -17,6 +17,7 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyRequestController;
 use App\Http\Controllers\PropertyMatchController;
 use App\Http\Controllers\PropertyMessageController;
+use App\Http\Controllers\PropertyListingController;
 use App\Http\Controllers\RequestSearchController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\SitemapController;
@@ -59,14 +60,37 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
     // Property Search (pública)
     Route::get('/search-properties', [PropertySearchController::class, 'index'])->name('property.search');
     
-    // Property Detail (pública) - Con slug opcional para SEO
-    Route::get('/property/{id}/{slug?}', [PropertyController::class, 'show'])->name('property.show');
+    // Property Detail (pública) - URLs SEO con estructura jerárquica
+    // Estructura: /{locale}/{país}/{ciudad}/propiedad/{id}-{slug}
+    // Ejemplo: /es/argentina/villa-carlos-paz/propiedad/38-casa-en-venta
+    Route::get('/{country}/{city}/propiedad/{id}-{slug?}', [PropertyController::class, 'show'])
+        ->where(['country' => '[a-z\-]+', 'city' => '[a-z\-]+', 'id' => '[0-9]+'])
+        ->name('property.show');
     
     // Property Message (requiere auth pero es parte de la vista pública)
-    Route::post('/property/{id}/message', [PropertyController::class, 'sendMessage'])->name('property.message')->middleware('auth');
+    Route::post('/{country}/{city}/propiedad/{id}/message', [PropertyController::class, 'sendMessage'])
+        ->where(['country' => '[a-z\-]+', 'city' => '[a-z\-]+', 'id' => '[0-9]+'])
+        ->name('property.message')
+        ->middleware('auth');
 
     // Request Search (pública)
     Route::get('/search-requests', [RequestSearchController::class, 'index'])->name('requests.search');
+    
+    // ========================================================================
+    // PROPERTY LISTINGS - URLs amigables SEO (DEBE IR AL FINAL del grupo)
+    // ========================================================================
+    // Estructura: /{locale}/{país}/{operación?}/{tipo?}/{estado?}/{ciudad?}
+    // Ejemplos:
+    //   /es/argentina
+    //   /es/argentina/venta
+    //   /es/argentina/venta/casas
+    //   /es/argentina/venta/casas/cordoba
+    //   /es/argentina/venta/casas/cordoba/villa-maria
+    //   /es/argentina/cordoba (salto directo)
+    
+    Route::get('/{country}/{params?}', [PropertyListingController::class, 'index'])
+        ->where(['country' => '[a-z\-]+', 'params' => '.*'])
+        ->name('property.listings');
 });
 
 // ============================================================================

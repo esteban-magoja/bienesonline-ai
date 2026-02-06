@@ -15,7 +15,8 @@ class SeoService
     {
         $locale = $locale ?? app()->getLocale();
         
-        $title = $property->getTranslation('title', $locale);
+        // Usar el título directo de la propiedad
+        $title = $property->title;
         $transactionType = __('properties.transaction_types.' . $property->transaction_type, [], $locale);
         
         return (object) [
@@ -27,7 +28,7 @@ class SeoService
             'image_h' => 630,
             'locale' => $locale,
             'alternate_locales' => $this->getAlternateLocales($locale),
-            'canonical' => route_localized('property.show', ['id' => $property->id, 'slug' => Str::slug($title)], $locale),
+            'canonical' => $this->generatePropertyUrl($property, $locale),
         ];
     }
 
@@ -89,24 +90,18 @@ class SeoService
         $supported = config('locales.supported', ['es', 'en']);
         
         foreach ($supported as $locale) {
-            $title = $property->getTranslation('title', $locale);
-            $slug = Str::slug($title);
-            $url = route_localized('property.show', ['id' => $property->id, 'slug' => $slug], $locale);
-            
             $tags[] = [
                 'rel' => 'alternate',
                 'hreflang' => $locale,
-                'href' => $url,
+                'href' => $this->generatePropertyUrl($property, $locale),
             ];
         }
         
         // Add x-default
-        $defaultTitle = $property->getTranslation('title', config('app.fallback_locale'));
-        $defaultSlug = Str::slug($defaultTitle);
         $tags[] = [
             'rel' => 'alternate',
             'hreflang' => 'x-default',
-            'href' => route_localized('property.show', ['id' => $property->id, 'slug' => $defaultSlug], config('app.fallback_locale')),
+            'href' => $this->generatePropertyUrl($property, config('app.fallback_locale')),
         ];
         
         return $tags;
@@ -117,9 +112,21 @@ class SeoService
      */
     public function generatePropertySlug(PropertyListing $property, ?string $locale = null): string
     {
-        $locale = $locale ?? app()->getLocale();
-        $title = $property->getTranslation('title', $locale);
-        return Str::slug($title);
+        // Usar el título directo de la propiedad
+        return Str::slug($property->title);
+    }
+
+    /**
+     * Generate property URL with SEO structure
+     * Format: /{locale}/{country}/{city}/propiedad/{id}-{slug}
+     */
+    public function generatePropertyUrl(PropertyListing $property, string $locale): string
+    {
+        $countrySlug = Str::slug($property->country);
+        $citySlug = Str::slug($property->city);
+        $titleSlug = Str::slug($property->title);
+        
+        return url("/{$locale}/{$countrySlug}/{$citySlug}/propiedad/{$property->id}-{$titleSlug}");
     }
 
     /**

@@ -1,3 +1,32 @@
+@php
+    $locale = app()->getLocale();
+    $countrySlug = Str::slug($property->country);
+    
+    // Mapeo de transaction_type a slugs
+    $transactionSlugs = [
+        'sale' => ['es' => 'venta', 'en' => 'sale'],
+        'rent' => ['es' => 'alquiler', 'en' => 'rent'],
+        'temporary_rent' => ['es' => 'alquiler-temporal', 'en' => 'temporary-rent'],
+    ];
+    $transactionSlug = $transactionSlugs[$property->transaction_type][$locale] ?? null;
+    
+    // Mapeo de property_type a slugs
+    $propertySlugs = [
+        'house' => ['es' => 'casas', 'en' => 'houses'],
+        'apartment' => ['es' => 'departamentos', 'en' => 'apartments'],
+        'office' => ['es' => 'oficinas', 'en' => 'offices'],
+        'commercial' => ['es' => 'locales', 'en' => 'commercials'],
+        'land' => ['es' => 'terrenos', 'en' => 'lands'],
+        'field' => ['es' => 'campos', 'en' => 'fields'],
+        'farm' => ['es' => 'fincas', 'en' => 'farms'],
+        'warehouse' => ['es' => 'galpones', 'en' => 'warehouses'],
+    ];
+    $propertySlug = $propertySlugs[$property->property_type][$locale] ?? null;
+    
+    $stateSlug = Str::slug($property->state);
+    $citySlug = Str::slug($property->city);
+@endphp
+
 <x-layouts.marketing :seo="$seo">
     
     <!-- Leaflet CSS -->
@@ -36,28 +65,91 @@
             <!-- Breadcrumb -->
             <nav class="flex mb-6" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    {{-- Home --}}
                     <li class="inline-flex items-center">
-                        <a href="/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                        <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                             </svg>
                             {{ __('messages.home') }}
                         </a>
                     </li>
+                    
+                    {{-- País --}}
                     <li>
                         <div class="flex items-center">
                             <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
-                            <a href="{{ route_localized('property.search') }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">{{ __('properties.search') }}</a>
+                            <a href="/{{ $locale }}/{{ $countrySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                {{ $property->country }}
+                            </a>
                         </div>
                     </li>
+                    
+                    {{-- Tipo de Transacción --}}
+                    @if($transactionSlug)
+                        <li>
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                    {{ __('properties.transaction_types.' . $property->transaction_type) }}
+                                </a>
+                            </div>
+                        </li>
+                    @endif
+                    
+                    {{-- Tipo de Propiedad --}}
+                    @if($propertySlug)
+                        <li>
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                    {{ __('properties.types.' . $property->property_type) }}
+                                </a>
+                            </div>
+                        </li>
+                    @endif
+                    
+                    {{-- Estado --}}
+                    @if($property->state)
+                        <li>
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                    {{ $property->state }}
+                                </a>
+                            </div>
+                        </li>
+                    @endif
+                    
+                    {{-- Ciudad --}}
+                    @if($property->city)
+                        <li>
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}/{{ $citySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">
+                                    {{ $property->city }}
+                                </a>
+                            </div>
+                        </li>
+                    @endif
+                    
+                    {{-- Título de la propiedad (sin link) --}}
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ __('properties.property_detail') }}</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ Str::limit($property->title, 40) }}</span>
                         </div>
                     </li>
                 </ol>
@@ -370,10 +462,10 @@
                             </div>
                         @endif
 
-                        <!-- Contact Form -->
-                        @auth
+                        <!-- Contact Form - OCULTO -->
+                        {{-- @auth
                             @if($property->user_id !== auth()->id())
-                                <form action="{{ route_localized('property.message', ['id' => $property->id]) }}" method="POST" class="space-y-4">
+                                <form action="/{{ $locale }}/{{ $countrySlug }}/{{ $citySlug }}/propiedad/{{ $property->id }}/message" method="POST" class="space-y-4">
                                     @csrf
                                     
                                     <div>
@@ -445,7 +537,7 @@
                                     {{ __('messages.login') }}
                                 </a>
                             </div>
-                        @endauth
+                        @endauth --}}
 
                         <!-- Call Button (solo si tiene móvil) -->
                         @if($property->user->movil)
@@ -497,10 +589,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         @foreach($relatedProperties as $related)
                             @php
-                                $seoService = app(\App\Services\SeoService::class);
-                                $relatedSlug = $seoService->generatePropertySlug($related);
+                                $relatedCountrySlug = Str::slug($related->country);
+                                $relatedCitySlug = Str::slug($related->city);
+                                $relatedTitleSlug = Str::slug($related->title);
+                                $relatedUrl = "/{$locale}/{$relatedCountrySlug}/{$relatedCitySlug}/propiedad/{$related->id}-{$relatedTitleSlug}";
                             @endphp
-                            <a href="{{ route_localized('property.show', ['id' => $related->id, 'slug' => $relatedSlug]) }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                            <a href="{{ $relatedUrl }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                                 <!-- Property Image -->
                                 <div class="relative">
                                     @if($related->primaryImage)

@@ -295,11 +295,14 @@
                             
                             <!-- Action Button -->
                             @php
-                                $seoService = app(\App\Services\SeoService::class);
-                                $slug = $seoService->generatePropertySlug($listing);
+                                $locale = app()->getLocale();
+                                $countrySlug = Str::slug($listing->country);
+                                $citySlug = Str::slug($listing->city);
+                                $titleSlug = Str::slug($listing->title);
+                                $propertyUrl = "/{$locale}/{$countrySlug}/{$citySlug}/propiedad/{$listing->id}-{$titleSlug}";
                             @endphp
                             <a 
-                                href="{{ route_localized('property.show', ['id' => $listing->id, 'slug' => $slug]) }}"
+                                href="{{ $propertyUrl }}"
                                 class="block w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium text-center"
                             >
                                 {{ __('properties.view_details') }}

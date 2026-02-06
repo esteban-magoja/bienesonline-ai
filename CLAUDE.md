@@ -391,3 +391,164 @@ php artisan serve
 
 ---
 - Compatible with automated testing environments and CI/CD pipelines
+---
+
+## Sistema de Listados Públicos con URLs SEO (Febrero 2026)
+
+### 📚 Documentación
+- **Completa**: `SISTEMA_LISTADOS_PUBLICOS.md` (11KB) - Todos los detalles
+- **Quick Start**: `LISTADOS_QUICK_START.md` (3.3KB) - Referencia rápida
+- **Resumen Sesión**: `RESUMEN_SESION_05FEB2026.txt` - Resumen ejecutivo
+
+### 🎯 URLs Implementadas
+```
+/{locale}/{país}/{operación?}/{tipo?}/{estado?}/{ciudad?}
+
+Funcionando:
+✓ /es/argentina
+✓ /es/argentina/venta
+✓ /es/argentina/venta/casas
+✓ /en/argentina/sale/houses
+```
+
+### 📁 Archivos del Sistema
+- **Helper**: `app/Helpers/PropertySlugHelper.php` - Validación dinámica con mapeo i18n
+- **Controlador**: `app/Http/Controllers/PropertyListingController.php` - Parseo inteligente
+- **Vista**: `resources/views/property-listing.blade.php` - Grid responsive (NO en themes/)
+- **Ruta**: `routes/web.php` (dentro grupo `{locale}`, AL FINAL)
+
+### ⚠️ Puntos Críticos
+1. **Vista en**: `resources/views/` NO `resources/themes/`
+2. **Columna BD**: `area` NO `covered_area`
+3. **Ruta home**: `route('home')` NO `route('wave.home')`
+4. **Mapeo i18n**: Slugs españoles → valores inglés en BD
+   - `venta` → `sale`
+   - `casas` → `house`
+
+### 🚀 Comandos Esenciales
+```bash
+# Desarrollo
+composer dump-autoload -o
+php artisan optimize:clear
+
+# Deploy
+composer install --no-dev --optimize-autoloader
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+### ✅ Características Implementadas
+- [x] Helper con validación dinámica DISTINCT
+- [x] Mapeo i18n completo (es ↔ en)
+- [x] Filtros: precio, habitaciones, baños, área
+- [x] 7 opciones de ordenamiento
+- [x] Paginación con query string
+- [x] Breadcrumbs dinámicos traducidos
+- [x] SEO completo (canonical, hreflang, OG)
+- [x] Lazy loading de imágenes
+- [x] Vista responsive
+
+---
+
+## URLs SEO-Friendly para Fichas de Anuncios (Febrero 2026)
+
+### Estructura Implementada
+**Nueva estructura jerárquica:**
+```
+/{locale}/{país}/{ciudad}/propiedad/{id}-{slug}
+```
+
+**Ejemplo:**
+```
+/es/argentina/villa-carlos-paz/propiedad/38-casa-en-venta-en-tanti
+```
+
+### Beneficios SEO
+1. **Keywords relevantes**: País + ciudad + título en la URL
+2. **Jerarquía clara**: Consistente con sistema de listados
+3. **Descriptiva**: Google entiende el contexto geográfico
+4. **Canonical correcto**: URLs únicas y consistentes
+5. **Hreflang multilingual**: Alternativas es/en configuradas
+
+### Archivos Modificados
+- `routes/web.php` - Nueva estructura de rutas con parámetros `{country}/{city}/propiedad/{id}-{slug?}`
+- `PropertyController.php` - Métodos `show()` y `sendMessage()` actualizados
+- `SeoService.php` - Nuevo método `generatePropertyUrl()` para URLs consistentes
+- `property-listing.blade.php` - Enlaces a fichas actualizados
+- `property-detail.blade.php` - Enlaces de propiedades relacionadas
+- `property-search.blade.php` - Enlaces del buscador
+
+### Breadcrumbs Optimizados
+**Cambios implementados:**
+- ✅ Eliminado breadcrumb "Propiedades" (innecesario)
+- ✅ URLs con slugs traducidos correctamente (venta/sale, casas/houses)
+- ✅ Breadcrumbs de fichas: Home → País → Operación → Tipo → Estado → Ciudad → Título
+
+**Estructura de breadcrumbs en listados:**
+```
+/es/argentina/venta/casas/cordoba
+├── Inicio → /es
+├── Argentina → /es/argentina
+├── Venta → /es/argentina/venta
+├── Casas → /es/argentina/venta/casas
+└── Córdoba → /es/argentina/venta/casas/cordoba
+```
+
+### PropertySlugHelper Mejorado
+**Normalización correcta de acentos:**
+```php
+// ANTES: Str::slug($text, '-', null) - Mantenía acentos
+// AHORA: Str::slug($text, '-') - Quita acentos correctamente
+```
+
+**Validación en memoria:**
+- `validateCountry()`, `validateState()`, `validateCity()` usan normalización en PHP
+- Soluciona problema con acentos (Córdoba → cordoba)
+- Mapeo dinámico de slugs traducidos en `generateBreadcrumbs()`
+
+---
+
+## Mejores Prácticas de Desarrollo
+
+### ✅ Verificación con curl antes de confirmar cambios
+**Siempre verificar que las páginas carguen sin errores:**
+
+```bash
+# Verificar que no haya errores 404 o 500
+curl -s "http://127.0.0.1:8000/es/argentina" | grep -E "title|404|error" | head -3
+
+# Verificar enlaces generados
+curl -s "http://127.0.0.1:8000/es/argentina" | grep -o 'href="[^"]*propiedad[^"]*"' | head -5
+
+# Verificar SEO tags
+curl -s "http://127.0.0.1:8000/es/property/38" | grep -E "canonical|hreflang|og:title" | head -5
+
+# Verificar breadcrumbs
+curl -s "http://127.0.0.1:8000/es/argentina/venta/casas" | grep -A 50 "Breadcrumb" | grep href
+```
+
+### ✅ Comandos útiles de desarrollo
+
+```bash
+# Limpiar cache después de cambios en vistas
+php artisan view:clear
+php artisan optimize:clear
+
+# Verificar rutas
+php artisan route:list --path=argentina
+
+# Probar en tinker
+php artisan tinker --execute="echo App\Helpers\PropertySlugHelper::normalize('Córdoba');"
+```
+
+### ⚠️ Puntos importantes
+1. **Wave usa `/resources/lang/` NO `/lang/`** para traducciones
+2. **Vista de listados en**: `resources/views/` NO `resources/themes/`
+3. **Columna BD**: `area` NO `covered_area`
+4. **Ruta home**: `route('home')` NO `route('wave.home')`
+5. **Blade components**: Pasar variables con `:variable="$value"`
+6. **Normalización**: `Str::slug()` sin tercer parámetro para quitar acentos
+
+---
+

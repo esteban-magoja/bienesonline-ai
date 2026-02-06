@@ -200,4 +200,72 @@ return [
     'send_inquiry' => 'Enviar Consulta',
     'your_property' => 'Esta es tu propiedad',
     'related_properties' => 'Propiedades Relacionadas',
+    
+    // Listados públicos
+    'properties' => 'Propiedades',
+    'all_properties' => 'Todas las Propiedades',
+    'listings' => 'Listados',
+    'browse_properties' => 'Explorar Propiedades',
+    'filter_results' => 'Filtrar Resultados',
+    'sort_by' => 'Ordenar por',
+    'filters' => 'Filtros',
+    'apply_filters' => 'Aplicar Filtros',
+    'clear_all_filters' => 'Limpiar Todos los Filtros',
+    
+    // Ordenamiento
+    'sort' => [
+        'featured' => 'Destacados',
+        'newest' => 'Más Recientes',
+        'oldest' => 'Más Antiguos',
+        'price_asc' => 'Precio: Menor a Mayor',
+        'price_desc' => 'Precio: Mayor a Menor',
+        'area_asc' => 'Área: Menor a Mayor',
+        'area_desc' => 'Área: Mayor a Menor',
+    ],
+    
+    // Filtros
+    'filters_label' => [
+        'price_range' => 'Rango de Precio',
+        'min_price' => 'Precio Mínimo',
+        'max_price' => 'Precio Máximo',
+        'property_type' => 'Tipo de Propiedad',
+        'transaction_type' => 'Tipo de Operación',
+        'min_bedrooms' => 'Habitaciones Mínimas',
+        'min_bathrooms' => 'Baños Mínimos',
+        'min_area' => 'Área Mínima (m²)',
+        'max_area' => 'Área Máxima (m²)',
+    ],
+    
+    // Mensajes de resultados
+    'results' => [
+        'total' => 'Total de resultados',
+        'showing' => 'Mostrando :from - :to de :total resultados',
+        'no_results_title' => 'No se encontraron propiedades',
+        'no_results_message' => 'No hay propiedades que coincidan con tus criterios de búsqueda.',
+        'try_adjusting' => 'Intenta ajustar los filtros o buscar en otra ubicación.',
+        'found' => ':count propiedad encontrada|:count propiedades encontradas',
+    ],
+    
+    // Tipos de propiedad traducidos (para URLs)
+    'house' => 'casa',
+    'houses' => 'casas',
+    'apartment' => 'departamento',
+    'apartments' => 'departamentos',
+    'office' => 'oficina',
+    'offices' => 'oficinas',
+    'commercial' => 'local',
+    'commercials' => 'locales',
+    'land' => 'terreno',
+    'lands' => 'terrenos',
+    'field' => 'campo',
+    'fields' => 'campos',
+    'farm' => 'finca',
+    'farms' => 'fincas',
+    'warehouse' => 'galpon',
+    'warehouses' => 'galpones',
+    
+    // Tipos de transacción traducidos (para URLs)
+    'sale' => 'venta',
+    'rent' => 'alquiler',
+    'temporary_rent' => 'alquiler-temporal',
 ];

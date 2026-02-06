@@ -200,4 +200,72 @@ return [
     'send_inquiry' => 'Send Inquiry',
     'your_property' => 'This is your property',
     'related_properties' => 'Related Properties',
+    
+    // Public listings
+    'properties' => 'Properties',
+    'all_properties' => 'All Properties',
+    'listings' => 'Listings',
+    'browse_properties' => 'Browse Properties',
+    'filter_results' => 'Filter Results',
+    'sort_by' => 'Sort by',
+    'filters' => 'Filters',
+    'apply_filters' => 'Apply Filters',
+    'clear_all_filters' => 'Clear All Filters',
+    
+    // Sorting
+    'sort' => [
+        'featured' => 'Featured',
+        'newest' => 'Newest',
+        'oldest' => 'Oldest',
+        'price_asc' => 'Price: Low to High',
+        'price_desc' => 'Price: High to Low',
+        'area_asc' => 'Area: Low to High',
+        'area_desc' => 'Area: High to Low',
+    ],
+    
+    // Filters
+    'filters_label' => [
+        'price_range' => 'Price Range',
+        'min_price' => 'Min Price',
+        'max_price' => 'Max Price',
+        'property_type' => 'Property Type',
+        'transaction_type' => 'Transaction Type',
+        'min_bedrooms' => 'Min Bedrooms',
+        'min_bathrooms' => 'Min Bathrooms',
+        'min_area' => 'Min Area (sqm)',
+        'max_area' => 'Max Area (sqm)',
+    ],
+    
+    // Result messages
+    'results' => [
+        'total' => 'Total results',
+        'showing' => 'Showing :from - :to of :total results',
+        'no_results_title' => 'No properties found',
+        'no_results_message' => 'There are no properties matching your search criteria.',
+        'try_adjusting' => 'Try adjusting the filters or searching in another location.',
+        'found' => ':count property found|:count properties found',
+    ],
+    
+    // Property types translated (for URLs)
+    'house' => 'house',
+    'houses' => 'houses',
+    'apartment' => 'apartment',
+    'apartments' => 'apartments',
+    'office' => 'office',
+    'offices' => 'offices',
+    'commercial' => 'commercial',
+    'commercials' => 'commercials',
+    'land' => 'land',
+    'lands' => 'lands',
+    'field' => 'field',
+    'fields' => 'fields',
+    'farm' => 'farm',
+    'farms' => 'farms',
+    'warehouse' => 'warehouse',
+    'warehouses' => 'warehouses',
+    
+    // Transaction types translated (for URLs)
+    'sale' => 'sale',
+    'rent' => 'rent',
+    'temporary_rent' => 'temporary-rent',
 ];
