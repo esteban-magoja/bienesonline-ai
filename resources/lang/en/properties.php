@@ -60,6 +60,7 @@ return [
     // UI labels and texts
     'in' => 'in',
     'for' => 'for',
+    'all' => 'All',
     'search_properties' => 'Search Properties',
     'property_detail' => 'Property Detail',
     'view_details' => 'View Details',
@@ -268,4 +269,26 @@ return [
     'sale' => 'sale',
     'rent' => 'rent',
     'temporary_rent' => 'temporary-rent',
+    
+    // User profile / realtor
+    'user_profile' => [
+        'title' => 'Properties by :name',
+        'description' => ':count properties by :name in :location',
+        'realtors' => 'Realtors',
+        'various_locations' => 'various locations',
+        'contact_info' => 'Contact Information',
+        'agency' => 'Agency',
+        'location' => 'Location',
+        'phone' => 'Phone',
+        'email' => 'Email',
+        'statistics' => 'Statistics',
+        'active_properties' => 'Active Properties',
+        'properties_for_sale' => 'For Sale',
+        'properties_for_rent' => 'For Rent',
+        'view_all_properties' => 'View All Properties',
+        'no_properties' => 'This user has no properties currently listed.',
+        'contact_advertiser' => 'Contact Advertiser',
+        'send_whatsapp' => 'Send WhatsApp',
+        'call_now' => 'Call Now',
+    ],
 ];

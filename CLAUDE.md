@@ -509,6 +509,76 @@ php artisan view:cache
 
 ---
 
+## Sistema de Perfiles de Usuario/Inmobiliaria (Febrero 2026)
+
+### Página de Anuncios por Usuario
+Permite ver todos los anuncios de un usuario específico (inmobiliaria o particular).
+
+### URLs Implementadas
+```
+/es/inmobiliaria/{username}
+/en/realtor/{username}
+```
+
+**Ejemplos:**
+- `/es/inmobiliaria/inmobiliaria-rodriguez`
+- `/en/realtor/john-doe-properties`
+
+### Archivos del Sistema
+- **Controlador**: `app/Http/Controllers/UserProfileController.php`
+- **Vista**: `resources/views/user-profile.blade.php`
+- **Rutas**: `routes/web.php` (líneas 79-87)
+- **Traducciones**: `resources/lang/*/properties.php` (`user_profile.*`)
+
+### Características Implementadas
+- [x] Perfil público del usuario con avatar y datos
+- [x] Información de contacto (email, móvil, ubicación)
+- [x] Botones de contacto (WhatsApp, Llamar)
+- [x] Estadísticas (propiedades activas, en venta, en alquiler)
+- [x] Grid de propiedades con filtros y ordenamiento
+- [x] Paginación con query string
+- [x] Breadcrumbs dinámicos traducidos
+- [x] SEO completo (canonical, hreflang, OG tags)
+- [x] Botón "Ver todas las propiedades" en fichas individuales
+
+### Filtros Disponibles
+- Tipo de operación (venta/alquiler)
+- Tipo de propiedad (casa, departamento, etc.)
+- Ordenamiento (más recientes, precio, área)
+- Rango de precios
+- Habitaciones y baños mínimos
+- Área mínima
+
+### SEO Optimización
+**Title Tag:**
+```
+Propiedades de {nombre/agencia}
+```
+
+**Meta Description:**
+```
+{N} propiedades de {nombre} en {ubicación}
+```
+
+**Open Graph:**
+- Imagen: avatar del usuario o fallback
+- Type: "profile"
+- Canonical URLs con hreflang es/en
+
+### Integración con Otras Páginas
+- Botón en ficha de propiedad: "Ver Todas las Propiedades"
+- Enlaza al perfil del anunciante desde cualquier propiedad
+- Muestra nombre de agencia si está configurado
+
+### Notas Técnicas
+- Usa `username` (único) en URL para SEO-friendly
+- Solo muestra anuncios activos (`is_active = true`)
+- Eager loading de imágenes para performance
+- Responsive design (mobile-first)
+- Soporte completo i18n (español/inglés)
+
+---
+
 ## Mejores Prácticas de Desarrollo
 
 ### ✅ Verificación con curl antes de confirmar cambios

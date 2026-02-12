@@ -60,6 +60,7 @@ return [
     // Labels y textos de UI
     'in' => 'en',
     'for' => 'para',
+    'all' => 'Todos',
     'search_properties' => 'Buscar Propiedades',
     'property_detail' => 'Detalle de Propiedad',
     'view_details' => 'Ver Detalles',
@@ -268,4 +269,26 @@ return [
     'sale' => 'venta',
     'rent' => 'alquiler',
     'temporary_rent' => 'alquiler-temporal',
+    
+    // Perfil de usuario / inmobiliaria
+    'user_profile' => [
+        'title' => 'Propiedades de :name',
+        'description' => ':count propiedades de :name en :location',
+        'realtors' => 'Inmobiliarias',
+        'various_locations' => 'varias ubicaciones',
+        'contact_info' => 'Información de Contacto',
+        'agency' => 'Agencia',
+        'location' => 'Ubicación',
+        'phone' => 'Teléfono',
+        'email' => 'Correo Electrónico',
+        'statistics' => 'Estadísticas',
+        'active_properties' => 'Propiedades Activas',
+        'properties_for_sale' => 'En Venta',
+        'properties_for_rent' => 'En Alquiler',
+        'view_all_properties' => 'Ver Todas las Propiedades',
+        'no_properties' => 'Este usuario no tiene propiedades publicadas actualmente.',
+        'contact_advertiser' => 'Contactar al Anunciante',
+        'send_whatsapp' => 'Enviar WhatsApp',
+        'call_now' => 'Llamar Ahora',
+    ],
 ];

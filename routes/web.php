@@ -76,6 +76,16 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
     // Request Search (pública)
     Route::get('/search-requests', [RequestSearchController::class, 'index'])->name('requests.search');
     
+    // User Profile / Realtor Profile (pública) - DEBE IR ANTES de property listings
+    // Estructura: /{locale}/inmobiliaria/{username} o /{locale}/realtor/{username}
+    Route::get('/inmobiliaria/{username}', [\App\Http\Controllers\UserProfileController::class, 'show'])
+        ->where(['username' => '[a-z0-9\-]+'])
+        ->name('user.profile.es');
+    
+    Route::get('/realtor/{username}', [\App\Http\Controllers\UserProfileController::class, 'show'])
+        ->where(['username' => '[a-z0-9\-]+'])
+        ->name('user.profile.en');
+    
     // ========================================================================
     // PROPERTY LISTINGS - URLs amigables SEO (DEBE IR AL FINAL del grupo)
     // ========================================================================
@@ -89,7 +99,7 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
     //   /es/argentina/cordoba (salto directo)
     
     Route::get('/{country}/{params?}', [PropertyListingController::class, 'index'])
-        ->where(['country' => '[a-z\-]+', 'params' => '.*'])
+        ->where(['country' => '(?!post-request)[a-z\-]+', 'params' => '.*'])
         ->name('property.listings');
 });
 

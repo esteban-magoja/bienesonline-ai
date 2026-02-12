@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\PropertyListingCreated;
 use App\Models\PropertyListing;
 use OpenAI;
 use Pgvector\Laravel\Vector;
@@ -15,6 +16,18 @@ class PropertyListingObserver
     public function creating(PropertyListing $propertyListing): void
     {
         $this->generateEmbedding($propertyListing);
+    }
+
+    /**
+     * Handle the PropertyListing "created" event.
+     * Dispara el evento para buscar matches automáticamente.
+     */
+    public function created(PropertyListing $propertyListing): void
+    {
+        // Solo disparar si el matching automático está habilitado
+        if (config('matching.enabled', true)) {
+            event(new PropertyListingCreated($propertyListing));
+        }
     }
 
     /**

@@ -437,6 +437,21 @@
                                     {{ __('properties.whatsapp_contact') }}
                                 </a>
                             @endif
+
+                            <!-- Ver Todas las Propiedades del Anunciante -->
+                            @php
+                                $routeName = $locale === 'es' ? 'user.profile.es' : 'user.profile.en';
+                                $profileUrl = route($routeName, ['locale' => $locale, 'username' => $property->user->username]);
+                            @endphp
+                            <a 
+                                href="{{ $profileUrl }}" 
+                                class="flex items-center justify-center w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold mt-3"
+                            >
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                                {{ __('properties.user_profile.view_all_properties') }}
+                            </a>
                         </div>
 
                         <!-- Success/Error Messages -->
