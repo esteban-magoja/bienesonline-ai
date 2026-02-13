@@ -28,10 +28,10 @@ new class extends Component {
     public string $description = '';
 
     #[Rule('required|string')]
-    public string $property_type = 'house';
+    public string $property_type = 'casa';
 
     #[Rule('required|string')]
-    public string $transaction_type = 'sale';
+    public string $transaction_type = 'venta';
 
     #[Rule('required|numeric|min:0')]
     public string $price = '';
