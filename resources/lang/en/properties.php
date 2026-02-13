@@ -20,6 +20,15 @@ return [
         'field' => 'Field',
         'farm' => 'Farm',
         'warehouse' => 'Warehouse',
+        // Spanish values (for DB)
+        'casa' => 'House',
+        'departamento' => 'Apartment',
+        'oficina' => 'Office',
+        'local' => 'Commercial Space',
+        'terreno' => 'Land',
+        'campo' => 'Field',
+        'finca' => 'Farm',
+        'galpon' => 'Warehouse',
     ],
 
     // Transaction types
@@ -27,6 +36,10 @@ return [
         'sale' => 'Sale',
         'rent' => 'Rent',
         'temporary_rent' => 'Temporary Rent',
+        // Spanish values (for DB)
+        'venta' => 'Sale',
+        'alquiler' => 'Rent',
+        'alquiler_temporal' => 'Temporary Rent',
     ],
 
     // Property features

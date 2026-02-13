@@ -20,6 +20,15 @@ return [
         'field' => 'Campo',
         'farm' => 'Finca',
         'warehouse' => 'Galpón',
+        // Valores en español (para BD)
+        'casa' => 'Casa',
+        'departamento' => 'Departamento',
+        'oficina' => 'Oficina',
+        'local' => 'Local Comercial',
+        'terreno' => 'Terreno',
+        'campo' => 'Campo',
+        'finca' => 'Finca',
+        'galpon' => 'Galpón',
     ],
 
     // Tipos de transacción
@@ -27,6 +36,10 @@ return [
         'sale' => 'Venta',
         'rent' => 'Alquiler',
         'temporary_rent' => 'Alquiler Temporal',
+        // Valores en español (para BD)
+        'venta' => 'Venta',
+        'alquiler' => 'Alquiler',
+        'alquiler_temporal' => 'Alquiler Temporal',
     ],
 
     // Características de propiedades
