@@ -1,5 +1,39 @@
 # Checklist de Deployment a Producción
 
+## 🔄 Alternativa: Usar Cron (Sin sudo)
+
+Si **NO tienes permisos sudo** para Supervisor:
+
+```bash
+# En producción, editar crontab:
+crontab -e
+
+# Agregar:
+* * * * * cd /var/www/html/bienesonline-ai && php artisan queue:work --stop-when-empty >> /dev/null 2>&1
+```
+
+**⚠️ Limitación:** Jobs se procesan cada minuto, no en tiempo real.
+
+**Verificación:**
+```bash
+# Ver cron configurado
+crontab -l
+
+# Probar manualmente
+cd /var/www/html/bienesonline-ai
+php artisan queue:work --stop-when-empty
+
+# Ver logs
+tail -f storage/logs/laravel.log | grep -i match
+
+# Verificar notificaciones
+php artisan tinker
+\DB::table('notifications')->where('type', 'LIKE', '%PropertyMatch%')->count();
+exit
+```
+
+---
+
 ## 🚀 Preparación Pre-Deployment
 
 ### 1. Variables de Entorno (.env)

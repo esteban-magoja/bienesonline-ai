@@ -541,41 +541,94 @@ Permite ver todos los anuncios de un usuario específico (inmobiliaria o particu
 - [x] SEO completo (canonical, hreflang, OG tags)
 - [x] Botón "Ver todas las propiedades" en fichas individuales
 
-### Filtros Disponibles
-- Tipo de operación (venta/alquiler)
-- Tipo de propiedad (casa, departamento, etc.)
-- Ordenamiento (más recientes, precio, área)
-- Rango de precios
-- Habitaciones y baños mínimos
-- Área mínima
+---
 
-### SEO Optimización
-**Title Tag:**
+## Sistema de Notificaciones Automáticas (Febrero 2026)
+
+### Matching Inteligente con Notificaciones
+Cuando se publica un nuevo anuncio, el sistema automáticamente:
+1. Busca solicitudes (PropertyRequest) compatibles
+2. Calcula score de coincidencia (0-100)
+3. Envía notificación a usuarios con match >= 70%
+4. **[NUEVO]** Muestra página de confirmación al anunciante con matches encontrados
+
+### Flujo de Publicación con Matches
+Al publicar un anuncio, después de guardar las imágenes:
 ```
-Propiedades de {nombre/agencia}
+1. Usuario completa formulario + sube imágenes
+   ↓
+2. Sistema guarda anuncio en BD
+   ↓
+3. [NUEVO] Redirección a /property-listings/matches-found/{id}
+   ↓
+4. Página muestra:
+   - Confirmación de publicación exitosa
+   - Número de solicitudes compatibles (score >= 70%)
+   - Top 3 matches con datos del solicitante
+   - Botones: Ver todos los matches, Ver anuncio público, Dashboard
+   ↓
+5. En paralelo: Sistema envía notificaciones a los solicitantes
 ```
 
-**Meta Description:**
+### Archivos del Sistema
+- `resources/themes/anchor/pages/property-listings/create.blade.php` - Formulario (modificado)
+- `resources/themes/anchor/pages/property-listings/matches-found/[id].blade.php` - **[NUEVO]** Página de confirmación con matches
+- `app/Events/PropertyListingCreated.php` - Evento
+- `app/Listeners/NotifyMatchingRequests.php` - Listener
+- `app/Observers/PropertyListingObserver.php` - Observer
+- `app/Services/PropertyMatchingService.php` - Servicio de matching
+- `config/matching.php` - Configuración
+
+### Arquitectura
+- **Event**: `PropertyListingCreated` - Disparado al crear anuncio
+- **Listener**: `NotifyMatchingRequests` - Procesa matches (async/queued)
+- **Observer**: `PropertyListingObserver` - Dispara evento en `created()`
+- **Config**: `config/matching.php` - Configuración completa
+- **[NUEVO] Vista**: Página de confirmación con matches encontrados
+
+### Queue Workers en Producción
+
+#### Opción A: Supervisor (Recomendado)
+Requiere permisos sudo. Ver `DEPLOYMENT_CHECKLIST.md` para configuración.
+
+#### Opción B: Cron (Sin sudo)
+```bash
+# Editar crontab
+crontab -e
+
+# Agregar línea (ejecuta cada minuto)
+* * * * * cd /ruta/proyecto && php artisan queue:work --stop-when-empty >> /dev/null 2>&1
 ```
-{N} propiedades de {nombre} en {ubicación}
+
+**⚠️ Limitación:** Jobs procesados cada minuto, no en tiempo real.
+
+### Verificación Rápida
+```bash
+# Ver si cron está configurado
+crontab -l
+
+# Probar manualmente
+php artisan queue:work --stop-when-empty
+
+# Ver notificaciones creadas
+php artisan tinker
+\DB::table('notifications')->where('type', 'LIKE', '%PropertyMatch%')->count();
+exit
 ```
 
-**Open Graph:**
-- Imagen: avatar del usuario o fallback
-- Type: "profile"
-- Canonical URLs con hreflang es/en
+### Configuración (.env)
+```bash
+AUTO_MATCHING_ENABLED=true
+MATCHING_MIN_SCORE=70
+MATCHING_MAX_MATCHES=20
+QUEUE_CONNECTION=database
+```
 
-### Integración con Otras Páginas
-- Botón en ficha de propiedad: "Ver Todas las Propiedades"
-- Enlaza al perfil del anunciante desde cualquier propiedad
-- Muestra nombre de agencia si está configurado
-
-### Notas Técnicas
-- Usa `username` (único) en URL para SEO-friendly
-- Solo muestra anuncios activos (`is_active = true`)
-- Eager loading de imágenes para performance
-- Responsive design (mobile-first)
-- Soporte completo i18n (español/inglés)
+### Documentación
+- **`MATCHES_AFTER_PUBLISH.md`** - **[NUEVO]** Sistema de matches al publicar
+- **`NOTIFICACIONES_AUTOMATICAS.md`** - Guía completa de uso
+- **`ANALISIS_SISTEMA_MATCHING.md`** - Análisis técnico del sistema
+- **`DEPLOYMENT_CHECKLIST.md`** - Checklist de producción
 
 ---
 

@@ -218,7 +218,8 @@ new class extends Component {
             ]);
         }
 
-        $this->redirectRoute('property-listings.index');
+        // Redirigir a página de matches encontrados
+        $this->redirect(route('property-listings.matches-found', ['id' => $this->propertyListing->id]));
     }
 
     public function grantPremiumRole(): void
