@@ -3,6 +3,8 @@
 use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 use App\Models\PropertyListing;
+use App\Models\PropertyType;
+use App\Models\TransactionType;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Storage;
@@ -28,10 +30,10 @@ new class extends Component {
     public string $description = '';
 
     #[Rule('required|string')]
-    public string $property_type = 'casa';
+    public string $property_type = '';
 
     #[Rule('required|string')]
-    public string $transaction_type = 'venta';
+    public string $transaction_type = '';
 
     #[Rule('required|numeric|min:0')]
     public string $price = '';
@@ -86,6 +88,10 @@ new class extends Component {
     public $cities = [];
     public $currencies;
     public $availableCurrencies = [];
+    
+    // Tipos dinámicos por país
+    public $propertyTypes = [];
+    public $transactionTypes = [];
 
     #[Computed]
     public function country()
@@ -123,9 +129,21 @@ new class extends Component {
         $this->selectedState = null;
 
         $country = Country::find($countryId);
-        if ($country && isset($country->currency['code'])) {
-            $this->currency = $country->currency['code'];
-            $this->availableCurrencies = array_unique([$country->currency['code'], 'USD']);
+        if ($country) {
+            // Cargar moneda
+            if (isset($country->currency['code'])) {
+                $this->currency = $country->currency['code'];
+                $this->availableCurrencies = array_unique([$country->currency['code'], 'USD']);
+            }
+            
+            // Cargar tipos de propiedad y transacción según país
+            $countryCode = $country->iso2; // Código ISO2: AR, MX, CL, etc.
+            $this->propertyTypes = PropertyType::getByCountry($countryCode);
+            $this->transactionTypes = TransactionType::getByCountry($countryCode);
+            
+            // Resetear valores seleccionados
+            $this->property_type = '';
+            $this->transaction_type = '';
         }
 
         if ($countryId) {
@@ -359,23 +377,30 @@ new class extends Component {
 
                             <div class="sm:col-span-3">
                                 <label for="property_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('listings.form.property_type') }}</label>
-                                <select wire:model="property_type" id="property_type" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                    <option value="casa">{{ __('properties.types.house') }}</option>
-                                    <option value="departamento">{{ __('properties.types.apartment') }}</option>
-                                    <option value="local">{{ __('properties.types.commercial') }}</option>
-                                    <option value="oficina">{{ __('properties.types.office') }}</option>
-                                    <option value="terreno">{{ __('properties.types.land') }}</option>
-                                    <option value="campo">{{ __('properties.types.farm') }}</option>
-                                    <option value="galpon">{{ __('properties.types.warehouse') }}</option>
+                                <select wire:model="property_type" id="property_type" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if(empty($propertyTypes)) disabled @endif>
+                                    <option value="">{{ __('listings.select_property_type') }}</option>
+                                    @foreach($propertyTypes as $type)
+                                        <option value="{{ $type->value }}">{{ $type->label }}</option>
+                                    @endforeach
                                 </select>
+                                @error('property_type') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                                @if(empty($propertyTypes))
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('listings.select_country_first') }}</p>
+                                @endif
                             </div>
 
                             <div class="sm:col-span-3">
                                 <label for="transaction_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('listings.form.transaction_type') }}</label>
-                                <select wire:model="transaction_type" id="transaction_type" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                    <option value="venta">{{ __('properties.transaction_types.sale') }}</option>
-                                    <option value="alquiler">{{ __('properties.transaction_types.rent') }}</option>
+                                <select wire:model="transaction_type" id="transaction_type" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" @if(empty($transactionTypes)) disabled @endif>
+                                    <option value="">{{ __('listings.select_transaction_type') }}</option>
+                                    @foreach($transactionTypes as $type)
+                                        <option value="{{ $type->value }}">{{ $type->label }}</option>
+                                    @endforeach
                                 </select>
+                                @error('transaction_type') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                                @if(empty($transactionTypes))
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('listings.select_country_first') }}</p>
+                                @endif
                             </div>
 
                             <div class="sm:col-span-2">
