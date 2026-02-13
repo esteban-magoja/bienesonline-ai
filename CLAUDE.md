@@ -632,6 +632,152 @@ QUEUE_CONNECTION=database
 
 ---
 
+## Sistema de Tipos Regionales por País (Febrero 2026)
+
+### Objetivo
+Resolver variaciones terminológicas en tipos de inmuebles y operaciones entre países hispanohablantes.
+
+**Ejemplos de variaciones:**
+- **Transacciones**: "Alquiler" (AR) vs "Renta" (MX) vs "Arriendo" (CL)
+- **Tipos**: "Departamento" (AR/MX) vs "Piso" (ES) vs "Apartamento" (CO)
+
+### Arquitectura
+
+#### Tablas en Base de Datos
+- **property_types**: Tipos de inmuebles por país
+- **transaction_types**: Tipos de operación por país
+
+**Estructura:**
+```
+- country_code: ISO2 (AR, MX, CL, ES, CO, INTL)
+- value: Valor en español regional (departamento, piso, apartamento)
+- label: Etiqueta mostrada al usuario (Departamento, Piso, Apartamento)
+- value_en: Valor universal en inglés (apartment) - CLAVE PARA MATCHING
+- order: Orden de presentación
+- is_active: Habilitado/deshabilitado
+```
+
+#### Modelos
+- **PropertyType** (`app/Models/PropertyType.php`)
+- **TransactionType** (`app/Models/TransactionType.php`)
+
+**Métodos clave:**
+- `getByCountry($countryCode)`: Obtiene tipos por país con fallback automático a INTL
+- `getValueEn($value, $countryCode)`: Obtiene valor universal con fallback global
+- `getEquivalentValues($value, $countryCode)`: Retorna todos los valores equivalentes
+- `clearCache()`: Limpia cache (1 hora por país)
+
+### Países Configurados
+- **INTL**: Fallback internacional (7 tipos genéricos)
+- **AR** (Argentina): 9 tipos - Incluye PH, cochera, alquiler
+- **MX** (México): 8 tipos - Usa "renta", incluye bodega, rancho
+- **CL** (Chile): 8 tipos - Usa "arriendo", incluye parcela
+- **ES** (España): 10 tipos - Usa "piso", "chalet", "ático", "garaje"
+- **CO** (Colombia): 7 tipos - Usa "apartamento", incluye parqueadero
+
+### Flujo de Funcionamiento
+
+#### 1. Carga Dinámica en Formulario
+```php
+// Usuario selecciona país → dispara updatedSelectedCountry()
+// Se obtiene ISO2 del país
+$country = Country::find($this->selected_country);
+$countryCode = $country->iso2; // ej: 'AR', 'MX'
+
+// Se cargan tipos para ese país
+$this->propertyTypes = PropertyType::getByCountry($countryCode);
+$this->transactionTypes = TransactionType::getByCountry($countryCode);
+```
+
+#### 2. Fallback Automático a INTL
+Si el país seleccionado no tiene datos (ej: Paraguay, Uruguay):
+```php
+// Busca tipos con country_code = 'PY'
+// No encuentra registros
+// Automáticamente carga country_code = 'INTL'
+// Usuario ve opciones genéricas
+```
+
+#### 3. Matching con Equivalencias
+**Problema**: Anuncio con "departamento" (AR) debe matchear solicitud con "piso" (ES)
+
+**Solución**: value_en como puente universal
+```php
+// Anuncio: property_type = 'departamento' (AR)
+$equivalents = PropertyType::getEquivalentValues('departamento', 'AR');
+// Retorna: ['departamento', 'piso', 'apartamento']
+
+// Todos tienen value_en = 'apartment'
+// Query usa: whereIn('property_type', $equivalents)
+```
+
+#### 4. Fallback Global para Términos de Otros Países
+**Caso edge**: Usuario colombiano publica en Argentina usando "apartamento"
+
+```php
+// getValueEn('apartamento', 'AR')
+// 1. Busca en AR: NO existe
+// 2. Busca globalmente: Encuentra en CO con value_en='apartment'
+// 3. getEquivalentValues retorna: ['departamento', 'piso', 'apartamento']
+// 4. Matching funciona correctamente
+```
+
+### Archivos del Sistema
+
+**Migraciones:**
+- `database/migrations/2026_02_13_192616_create_property_types_table.php`
+- `database/migrations/2026_02_13_192630_create_transaction_types_table.php`
+
+**Seeder:**
+- `database/seeders/RegionalTypesSeeder.php` (50 property_types + 18 transaction_types)
+
+**Modelos:**
+- `app/Models/PropertyType.php`
+- `app/Models/TransactionType.php`
+
+**Formulario:**
+- `resources/themes/anchor/pages/property-listings/create.blade.php`
+  - Imports en líneas 1-13
+  - Arrays $propertyTypes/$transactionTypes (líneas 88-91)
+  - updatedSelectedCountry() método (líneas 124-147)
+  - Selects dinámicos deshabilitados hasta seleccionar país
+
+**Servicio de Matching:**
+- `app/Services/PropertyMatchingService.php`
+  - getExactMatches(): usa whereIn con equivalencias
+  - getExactMatchesForListing(): mismo patrón
+  - getCountryCode(): helper para obtener ISO2
+
+**Traducciones:**
+- `resources/lang/es/listings.php` (líneas 45-47)
+- `resources/lang/en/listings.php` (líneas 45-47)
+  - `select_property_type`
+  - `select_transaction_type`
+  - `select_country_first`
+
+### Cache Strategy
+```php
+// Por país, 1 hora
+Cache::remember("property_types_{$countryCode}", 3600, function() {
+    return PropertyType::where('country_code', $countryCode)->get();
+});
+```
+
+### Testing Realizado
+Ver `TEST_RESULTS.txt` para detalles completos.
+
+**Resultados:**
+- ✅ Carga dinámica por país (AR: 9 tipos, MX: renta)
+- ✅ Fallback INTL para países no configurados
+- ✅ Equivalencias cross-regionales (piso=departamento=apartamento)
+- ✅ Fallback global para términos de otros países
+- ✅ Matching respeta filtro por país
+
+### Documentación Adicional
+- **`SISTEMA_TIPOS_REGIONALES.md`** - Documento de diseño completo
+
+---
+
 ## Mejores Prácticas de Desarrollo
 
 ### ✅ Verificación con curl antes de confirmar cambios

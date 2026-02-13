@@ -1,0 +1,49 @@
+# RESULTADOS DE TESTING - Sistema de Tipos Regionales
+
+Fecha: 13 Febrero 2026
+
+## Tests Realizados
+
+### 1. Carga Dinámica de Tipos por País
+✅ PASSED - Argentina (AR): 9 tipos de propiedad
+✅ PASSED - México (MX): 3 tipos de transacción (incluyendo "renta")
+✅ PASSED - Fallback INTL: 7 tipos para país no configurado (ZZ)
+
+### 2. Equivalencias Básicas
+✅ PASSED - "piso" (ES) equivale a: departamento, piso, apartamento
+✅ PASSED - Todos tienen value_en="apartment"
+
+### 3. Matching Cross-Regional Mismo País
+✅ PASSED - Anuncio con "departamento" (MX) matchea solicitud "departamento" (MX)
+   - Score: 90% (EXACT)
+   - Match ID: Solicitud #7
+
+### 4. Fallback Global para Términos de Otros Países
+✅ PASSED - Anuncio con "apartamento" (término CO) en Argentina
+   - Sistema busca en AR, no encuentra
+   - Busca globalmente en CO, encuentra value_en="apartment"
+   - Matchea con solicitud "departamento" (AR)
+   - Score: 60% (SEMANTIC)
+   - Match ID: Solicitud #8
+
+### 5. Filtrado por País
+✅ PASSED - Anuncio en México NO matchea solicitud en España
+   - Aunque ambos buscan "departamento/piso" (equivalentes)
+   - El sistema correctamente filtra por país
+
+## Datos de Prueba Creados
+
+### Anuncios:
+- ID 40: departamento en Ciudad de México (MX)
+- ID 41: apartamento en Buenos Aires (AR) - usando término CO
+
+### Solicitudes:
+- ID 6: piso en Madrid (ES)
+- ID 7: departamento en Ciudad de México (MX)
+- ID 8: departamento en Buenos Aires (AR)
+
+## Conclusión
+✅ Sistema funcionando correctamente
+✅ Equivalencias cross-regionales operativas
+✅ Fallback global resuelve términos de otros países
+✅ Filtrado por país mantiene coherencia geográfica
