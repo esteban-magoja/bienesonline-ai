@@ -50,12 +50,22 @@ class TransactionType extends Model
 
     /**
      * Obtener el valor en inglés de un tipo de transacción
+     * Con fallback global si no se encuentra en el país especificado
      */
     public static function getValueEn(string $value, string $countryCode): ?string
     {
-        return self::where('country_code', $countryCode)
+        // Buscar primero en el país especificado
+        $valueEn = self::where('country_code', $countryCode)
             ->where('value', $value)
             ->value('value_en');
+        
+        // Si no se encuentra, buscar en cualquier país (fallback global)
+        if (!$valueEn) {
+            $valueEn = self::where('value', $value)
+                ->value('value_en');
+        }
+        
+        return $valueEn;
     }
 
     /**
