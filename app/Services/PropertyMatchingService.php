@@ -4,7 +4,11 @@ namespace App\Services;
 
 use App\Models\PropertyListing;
 use App\Models\PropertyRequest;
+use App\Models\PropertyType;
+use App\Models\TransactionType;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Nnjeim\World\Models\Country;
 use Pgvector\Laravel\Distance;
 
 class PropertyMatchingService
@@ -84,9 +88,14 @@ class PropertyMatchingService
      */
     protected function getExactMatches(PropertyRequest $request): Collection
     {
+        // Obtener valores equivalentes del tipo de propiedad y transacción
+        $countryCode = $this->getCountryCode($request->country);
+        $propertyEquivalents = PropertyType::getEquivalentValues($request->property_type, $countryCode);
+        $transactionEquivalents = TransactionType::getEquivalentValues($request->transaction_type, $countryCode);
+
         $query = PropertyListing::active()
-            ->where('property_type', $request->property_type)
-            ->where('transaction_type', $request->transaction_type)
+            ->whereIn('property_type', $propertyEquivalents)
+            ->whereIn('transaction_type', $transactionEquivalents)
             ->where('country', $request->country);
 
         // Precio dentro del presupuesto
@@ -155,9 +164,14 @@ class PropertyMatchingService
      */
     protected function getExactMatchesForListing(PropertyListing $listing): Collection
     {
+        // Obtener valores equivalentes del tipo de propiedad y transacción
+        $countryCode = $this->getCountryCode($listing->country);
+        $propertyEquivalents = PropertyType::getEquivalentValues($listing->property_type, $countryCode);
+        $transactionEquivalents = TransactionType::getEquivalentValues($listing->transaction_type, $countryCode);
+
         $query = PropertyRequest::active()
-            ->where('property_type', $listing->property_type)
-            ->where('transaction_type', $listing->transaction_type)
+            ->whereIn('property_type', $propertyEquivalents)
+            ->whereIn('transaction_type', $transactionEquivalents)
             ->where('country', $listing->country);
 
         // Precio dentro del presupuesto
@@ -318,5 +332,22 @@ class PropertyMatchingService
     protected function calculateMatchLevelForListing(PropertyRequest $request, PropertyListing $listing): array
     {
         return $this->calculateMatchLevel($listing, $request);
+    }
+
+    /**
+     * Get ISO2 country code from country name.
+     *
+     * @param string $countryName
+     * @return string
+     */
+    protected function getCountryCode(string $countryName): string
+    {
+        try {
+            $country = Country::where('name', $countryName)->first();
+            return $country ? $country->iso2 : 'INTL';
+        } catch (\Exception $e) {
+            Log::warning("Could not find country code for: {$countryName}");
+            return 'INTL';
+        }
     }
 }
