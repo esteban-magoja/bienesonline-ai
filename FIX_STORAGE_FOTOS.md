@@ -171,3 +171,98 @@ php artisan config:clear
 
 Luego probar subiendo una foto desde el dashboard.
 
+
+---
+
+## 🔥 Problema Específico: Directorio en lugar de Enlace Simbólico
+
+### Síntoma
+Al ejecutar `ls -la public/ | grep storage` muestra:
+```
+drwxrwxr-x  ... storage    # ❌ Es un directorio (d al inicio)
+```
+
+Cuando debería ser:
+```
+lrwxrwxrwx  ... storage -> ../storage/app/public    # ✅ Es un enlace (l al inicio)
+```
+
+### Causa
+Alguien creó manualmente el directorio `public/storage` o se copió de otro servidor.
+
+### Solución
+
+#### Paso 1: Eliminar el directorio actual
+```bash
+cd /var/www/html/bienesonline-ai
+
+# Hacer backup por si hay archivos importantes
+mv public/storage public/storage_backup_$(date +%Y%m%d)
+
+# O si estás seguro que está vacío:
+rm -rf public/storage
+```
+
+#### Paso 2: Crear el enlace simbólico correcto
+```bash
+php artisan storage:link
+```
+
+#### Paso 3: Verificar
+```bash
+ls -la public/ | grep storage
+```
+
+**Ahora debería mostrar:**
+```
+lrwxrwxrwx  ... storage -> ../storage/app/public
+```
+
+#### Paso 4: Restaurar archivos si había algo en el backup
+```bash
+# Si había archivos en public/storage_backup_FECHA
+# copiarlos a la ubicación correcta:
+cp -r public/storage_backup_*/property_images/* storage/app/public/property_images/ 2>/dev/null || true
+```
+
+#### Paso 5: Ajustar permisos
+```bash
+chmod -R 775 storage/app/public
+chown -R bienesai:bienesai storage/app/public
+```
+
+---
+
+## ✅ Script Todo-en-Uno (Para tu servidor)
+
+```bash
+cd /var/www/html/bienesonline-ai
+
+# Backup del directorio actual
+mv public/storage public/storage_backup_$(date +%Y%m%d)
+
+# Crear enlace simbólico correcto
+php artisan storage:link
+
+# Crear directorio de imágenes
+mkdir -p storage/app/public/property_images
+
+# Restaurar archivos si había algo
+if [ -d "public/storage_backup_"* ]; then
+    cp -r public/storage_backup_*/property_images/* storage/app/public/property_images/ 2>/dev/null || true
+fi
+
+# Ajustar permisos
+chmod -R 775 storage/app/public
+chown -R bienesai:bienesai storage/app/public
+
+# Verificar
+echo "✅ Verificando enlace simbólico:"
+ls -la public/ | grep storage
+
+# Limpiar config
+php artisan config:clear
+
+echo "✅ Listo! Ahora prueba subir una foto."
+```
+
