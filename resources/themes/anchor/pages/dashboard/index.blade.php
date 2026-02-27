@@ -5,6 +5,7 @@
 	use App\Models\PropertyMessage;
 	use App\Models\ImportJob;
 	use App\Services\PropertyMatchingService;
+	use Illuminate\Support\Facades\Cache;
 	
 	middleware('auth');
     name('dashboard');
@@ -15,13 +16,17 @@
 		$query->where('user_id', auth()->id());
 	})->where('is_read', false)->count();
 	
-	// Obtener algunos matches recientes
-	$matchingService = app(PropertyMatchingService::class);
-	$recentListings = PropertyListing::where('user_id', auth()->id())->active()->take(3)->get();
-	$totalMatches = 0;
-	foreach ($recentListings as $listing) {
-		$totalMatches += $matchingService->findMatchesForListing($listing, 5)->count();
-	}
+	// Obtener algunos matches recientes (cacheado 10 minutos para evitar queries pesadas)
+	$userId = auth()->id();
+	$totalMatches = Cache::remember("dashboard_matches_{$userId}", 600, function() use ($userId) {
+		$matchingService = app(PropertyMatchingService::class);
+		$recentListings = PropertyListing::where('user_id', $userId)->active()->take(3)->get();
+		$count = 0;
+		foreach ($recentListings as $listing) {
+			$count += $matchingService->findMatchesForListing($listing, 5)->count();
+		}
+		return $count;
+	});
 
 	// Último import job del usuario
 	$latestImport = ImportJob::where('user_id', auth()->id())->latest()->first();
