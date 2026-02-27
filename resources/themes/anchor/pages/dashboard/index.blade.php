@@ -4,8 +4,7 @@
 	use App\Models\PropertyRequest;
 	use App\Models\PropertyMessage;
 	use App\Models\ImportJob;
-	use App\Services\PropertyMatchingService;
-	use Illuminate\Support\Facades\Cache;
+	
 	
 	middleware('auth');
     name('dashboard');
@@ -16,18 +15,6 @@
 		$query->where('user_id', auth()->id());
 	})->where('is_read', false)->count();
 	
-	// Obtener algunos matches recientes (cacheado 10 minutos para evitar queries pesadas)
-	$userId = auth()->id();
-	$totalMatches = Cache::remember("dashboard_matches_{$userId}", 600, function() use ($userId) {
-		$matchingService = app(PropertyMatchingService::class);
-		$recentListings = PropertyListing::where('user_id', $userId)->active()->take(3)->get();
-		$count = 0;
-		foreach ($recentListings as $listing) {
-			$count += $matchingService->findMatchesForListing($listing, 5)->count();
-		}
-		return $count;
-	});
-
 	// Último import job del usuario
 	$latestImport = ImportJob::where('user_id', auth()->id())->latest()->first();
 ?>
@@ -192,7 +179,7 @@
 				<div class="flex items-center justify-between">
 					<div>
 						<p class="text-md text-gray-600 mb-3">{{ __('dashboard.home.matches') }}</p>
-						<p class="text-3xl font-bold text-gray-900">{{ $totalMatches }}</p>
+						<p class="text-3xl font-bold text-gray-900">—</p>
 					</div>
 					<svg class="w-12 h-12 text-purple-500 mt-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
