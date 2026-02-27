@@ -3,6 +3,7 @@
 	use App\Models\PropertyListing;
 	use App\Models\PropertyRequest;
 	use App\Models\PropertyMessage;
+	use App\Models\ImportJob;
 	use App\Services\PropertyMatchingService;
 	
 	middleware('auth');
@@ -21,6 +22,9 @@
 	foreach ($recentListings as $listing) {
 		$totalMatches += $matchingService->findMatchesForListing($listing, 5)->count();
 	}
+
+	// Último import job del usuario
+	$latestImport = ImportJob::where('user_id', auth()->id())->latest()->first();
 ?>
 
 <x-layouts.app>
@@ -195,7 +199,170 @@
 			</div>
 		</div>
 
-       
+		{{-- Sección de Importación desde sistema anterior --}}
+		@php $importCountries = array_keys(config('import.legacy_urls', [])); @endphp
+		@if(count($importCountries) > 0)
+		<div class="mt-6"
+			x-data="{
+				country: '',
+				jobId: {{ $latestImport && $latestImport->isRunning() ? $latestImport->id : 'null' }},
+				status: '{{ $latestImport ? $latestImport->status : '' }}',
+				progress: {{ $latestImport ? $latestImport->progressPercent() : 0 }},
+				total: {{ $latestImport ? $latestImport->total_listings : 0 }},
+				imported: {{ $latestImport ? $latestImport->imported_listings : 0 }},
+				skipped: {{ $latestImport ? $latestImport->skipped_listings : 0 }},
+				failed: {{ $latestImport ? $latestImport->failed_listings : 0 }},
+				errorMsg: '',
+				loading: false,
+				pollInterval: null,
+
+				get isRunning() { return this.status === 'pending' || this.status === 'processing'; },
+				get isCompleted() { return this.status === 'completed'; },
+				get isFailed() { return this.status === 'failed'; },
+
+				init() {
+					if (this.isRunning) this.startPolling();
+				},
+
+				async triggerImport() {
+					if (!this.country) return;
+					this.loading = true;
+					this.errorMsg = '';
+					const body = new URLSearchParams({ country: this.country });
+					try {
+						const res = await fetch('{{ route('dashboard.import.trigger') }}', {
+							method: 'POST',
+							headers: {
+								'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+								'Accept': 'application/json',
+								'Content-Type': 'application/x-www-form-urlencoded'
+							},
+							body: body.toString()
+						});
+						const data = await res.json();
+						if (res.status === 200) {
+							this.errorMsg = data.message;
+						} else if (res.ok || res.status === 202) {
+							this.jobId = data.job.id;
+							this.status = data.job.status;
+							this.total = data.job.total_listings;
+							this.imported = 0; this.skipped = 0; this.failed = 0; this.progress = 0;
+							this.startPolling();
+						} else {
+							this.errorMsg = data.message;
+						}
+					} catch(e) {
+						this.errorMsg = '{{ __('import.connection_error') }}';
+					}
+					this.loading = false;
+				},
+
+				startPolling() {
+					this.pollInterval = setInterval(() => this.pollStatus(), 2000);
+				},
+
+				async pollStatus() {
+					if (!this.jobId) return;
+					const res = await fetch('{{ url('dashboard/import/status') }}/' + this.jobId, {
+						headers: { 'Accept': 'application/json' }
+					});
+					const data = await res.json();
+					this.status = data.status;
+					this.progress = data.progress_percent;
+					this.total = data.total_listings;
+					this.imported = data.imported_listings;
+					this.skipped = data.skipped_listings;
+					this.failed = data.failed_listings;
+					if (!this.isRunning) {
+						clearInterval(this.pollInterval);
+						this.errorMsg = data.error_message || '';
+					}
+				}
+			}"
+			x-init="init()">
+
+			<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+				<div class="flex items-start justify-between">
+					<div>
+						<h3 class="text-base font-semibold text-gray-900">{{ __('import.title') }}</h3>
+						<p class="text-sm text-gray-500 mt-1">{{ __('import.subtitle') }}</p>
+					</div>
+					<svg class="w-8 h-8 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+					</svg>
+				</div>
+
+				{{-- Selector de país + Botón principal --}}
+				<div class="mt-4" x-show="!isRunning && !isCompleted && !isFailed">
+					<div class="flex flex-col sm:flex-row gap-3 items-start sm:items-end">
+						<div class="flex-1 max-w-xs">
+							<label class="block text-xs font-medium text-gray-600 mb-1">{{ __('import.select_country') }}</label>
+							<select x-model="country"
+								class="w-full border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500">
+								<option value="">— {{ __('import.choose_country') }} —</option>
+								@foreach($importCountries as $countryName)
+									<option value="{{ $countryName }}">{{ $countryName }}</option>
+								@endforeach
+							</select>
+						</div>
+						<button @click="triggerImport()" :disabled="loading || !country"
+							class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors">
+							<svg x-show="loading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+							</svg>
+							<span x-text="loading ? '{{ __('import.processing') }}' : '{{ __('import.button') }}'"></span>
+						</button>
+					</div>
+				</div>
+
+				{{-- Progreso --}}
+				<div class="mt-4" x-show="isRunning">
+					<div class="flex justify-between text-sm text-gray-600 mb-1">
+						<span>{{ __('import.processing') }}</span>
+						<span x-text="progress + '%'"></span>
+					</div>
+					<div class="w-full bg-gray-200 rounded-full h-2.5">
+						<div class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" :style="'width:' + progress + '%'"></div>
+					</div>
+					<p class="text-xs text-gray-500 mt-2" x-text="imported + ' / ' + total + ' {{ __('dashboard.home.listings') }}'"></p>
+				</div>
+
+				{{-- Resultado: completado --}}
+				<div class="mt-4" x-show="isCompleted">
+					<div class="flex items-center gap-2 text-green-700 font-medium text-sm mb-2">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+						</svg>
+						{{ __('import.completed') }}
+					</div>
+					<div class="flex gap-4 text-sm">
+						<span class="text-green-600" x-text="'✓ ' + imported + ' {{ __('import.results.imported', ['count' => '']) }}'"></span>
+						<span x-show="skipped > 0" class="text-gray-500" x-text="'↩ ' + skipped + ' {{ __('import.results.skipped', ['count' => '']) }}'"></span>
+						<span x-show="failed > 0" class="text-red-500" x-text="'✗ ' + failed + ' {{ __('import.results.failed', ['count' => '']) }}'"></span>
+					</div>
+					<button @click="status = ''; jobId = null"
+						class="mt-3 text-xs text-indigo-600 hover:text-indigo-700 underline">
+						{{ __('import.button') }} {{ __('dashboard.home.again') ?? 'de nuevo' }}
+					</button>
+				</div>
+
+				{{-- Resultado: fallido --}}
+				<div class="mt-4" x-show="isFailed">
+					<p class="text-sm text-red-600 font-medium">{{ __('import.failed') }}</p>
+					<p class="text-xs text-red-500 mt-1" x-text="errorMsg"></p>
+					<button @click="status = ''; jobId = null; errorMsg = ''"
+						class="mt-3 text-xs text-indigo-600 hover:text-indigo-700 underline">
+						{{ __('import.button') }}
+					</button>
+				</div>
+
+				{{-- Error (sin job iniciado) --}}
+				<p x-show="errorMsg && !isRunning && !isCompleted && !isFailed"
+					class="mt-3 text-sm text-amber-600" x-text="errorMsg"></p>
+			</div>
+		</div>
+		@endif
 
 		
 

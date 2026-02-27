@@ -21,6 +21,7 @@ use App\Http\Controllers\PropertyListingController;
 use App\Http\Controllers\RequestSearchController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\ImportController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -175,6 +176,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/{id}/mark-read', [PropertyMessageController::class, 'markAsRead'])->name('mark-read');
         Route::post('/{id}/mark-unread', [PropertyMessageController::class, 'markAsUnread'])->name('mark-unread');
         Route::delete('/{id}', [PropertyMessageController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('dashboard/import')->name('dashboard.import.')->group(function () {
+        Route::post('/', [ImportController::class, 'trigger'])->name('trigger');
+        Route::get('/status/{jobId}', [ImportController::class, 'status'])->name('status');
+        Route::get('/latest', [ImportController::class, 'latest'])->name('latest');
     });
 });
 

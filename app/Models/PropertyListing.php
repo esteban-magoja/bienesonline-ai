@@ -57,7 +57,10 @@ class PropertyListing extends Model
         'title_i18n',
         'description_i18n',
         'features_i18n',
-        'location_details_i18n'
+        'location_details_i18n',
+        // import fields
+        'external_id',
+        'source',
     ];
 
     /**
