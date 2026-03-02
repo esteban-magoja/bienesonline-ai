@@ -3,6 +3,7 @@
 return [
     'title'             => 'Importar anuncios',
     'subtitle'          => 'Importa tus anuncios desde el sistema anterior',
+    'background_notice' => 'El proceso se ejecuta en segundo plano y puede tardar varios minutos.',
     'button'            => 'Importar mis anuncios',
     'select_country'    => 'País de origen',
     'choose_country'    => 'Elegir país',

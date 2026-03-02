@@ -849,9 +849,15 @@ LEGACY_URL_EC=https://www.bienesonline.ec
 
 ### Queue Worker — Producción
 ```bash
-# Debe estar corriendo siempre (usar Supervisor o cron)
-php artisan queue:work --tries=1
+# Cron recomendado (usar ruta completa de php, verificar con `which php`)
+* * * * * cd /home/bienesai/laravel-app && flock -n /tmp/laravel-queue.lock /usr/local/bin/ea-php84 artisan queue:work --stop-when-empty --tries=1 >> /dev/null 2>&1
 ```
+
+⚠️ **Notas importantes de producción**:
+- Usar `flock -n` para evitar workers concurrentes (sin esto, cada minuto lanza un nuevo worker y se acumula carga)
+- Usar la ruta completa de PHP (`which php` para obtenerla, puede ser `/usr/local/bin/ea-php84`)
+- La tabla `failed_jobs` debe existir: `php artisan queue:failed-table && php artisan migrate`
+- Después de deploy siempre ejecutar: `php -d memory_limit=-1 artisan optimize`
 
 ### Archivos del Sistema
 - `config/import.php` — Mapa país→URL con `array_filter` (auto-detecta países configurados)
@@ -872,11 +878,18 @@ Respuesta esperada: `{"listings": [...]}` con campos: `id`, `title`, `descriptio
 - `description` puede contener entidades HTML (`&#128680;` etc.)
 - `property_type` viene en español con mayúscula (`"Casa"`, `"Hacienda"`)
 
-### Deduplicación
-- Campo `external_id` en `property_listings` almacena el ID del anuncio en el proyecto viejo
-- Campo `source` almacena el identificador de la fuente (valor de `IMPORT_SOURCE_NAME`, default `legacy`)
-- Si el usuario importa dos veces, los anuncios ya existentes se saltean automáticamente
-- ⚠️ **`external_id` y `source` deben estar en `$fillable` del modelo `PropertyListing`** (ya corregido)
+### Resetear importación (para re-importar desde cero)
+```bash
+php artisan tinker
+App\Models\PropertyListing::where('source', 'legacy')->delete();
+DB::table('import_jobs')->truncate();
+exit
+```
+
+### Performance — PropertyMatchController
+- `index()` y `show()` están cacheados 15 minutos (`matches_index_{userId}`, `matches_listing_{listingId}`)
+- `index()` limita a 10 anuncios para evitar N búsquedas vectoriales en una sola carga
+- El dashboard **no** calcula matches en tiempo real (se eliminó para evitar carga en cada visita)
 
 ---
 

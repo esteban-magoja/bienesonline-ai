@@ -3,6 +3,7 @@
 return [
     'title'             => 'Import listings',
     'subtitle'          => 'Import your listings from the previous system',
+    'background_notice' => 'The process runs in the background and may take several minutes.',
     'button'            => 'Import my listings',
     'select_country'    => 'Country of origin',
     'choose_country'    => 'Choose country',

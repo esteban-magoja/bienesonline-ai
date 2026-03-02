@@ -54,7 +54,7 @@ class ImportController extends Controller
             return response()->json(['message' => __('import.api_error')], 502);
         }
 
-        $listings = array_slice($response->json('listings', []), 0, 3); // TODO: quitar límite de prueba
+        $listings = $response->json('listings', []);
 
         if (empty($listings)) {
             return response()->json(['message' => __('import.no_listings')], 200);
