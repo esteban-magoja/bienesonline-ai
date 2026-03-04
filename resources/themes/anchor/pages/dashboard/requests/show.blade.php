@@ -228,9 +228,9 @@
                                 <!-- View Button -->
                                 @php
                                     $seoService = app(\App\Services\SeoService::class);
-                                    $listingSlug = $seoService->generatePropertySlug($listing);
+                                    $listingUrl = $seoService->generatePropertyUrl($listing, app()->getLocale());
                                 @endphp
-                                <a href="{{ route_localized('property.show', ['id' => $listing->id, 'slug' => $listingSlug]) }}" 
+                                <a href="{{ $listingUrl }}" 
                                    class="block w-full text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
                                     {{ __('properties.view_details') }}
                                 </a>
@@ -242,4 +242,18 @@
         </div>
 
     </x-app.container>
+    @if(!$matches->isEmpty())
+    <x-slot name="javascript">
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+        <script>
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.5 }
+            });
+            setTimeout(() => confetti({ particleCount: 80, spread: 60, origin: { x: 0.2, y: 0.6 } }), 400);
+            setTimeout(() => confetti({ particleCount: 80, spread: 60, origin: { x: 0.8, y: 0.6 } }), 700);
+        </script>
+    </x-slot>
+    @endif
 </x-layouts.app>

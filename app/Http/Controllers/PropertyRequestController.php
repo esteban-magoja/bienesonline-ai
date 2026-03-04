@@ -8,6 +8,7 @@ use App\Http\Requests\StorePropertyRequestRequest;
 use App\Http\Requests\UpdatePropertyRequestRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class PropertyRequestController extends Controller
 {
@@ -27,7 +28,16 @@ class PropertyRequestController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('theme::pages.dashboard.requests.index', compact('requests'));
+        $matchCounts = [];
+        foreach ($requests as $request) {
+            $matchCounts[$request->id] = Cache::remember(
+                "request_match_count_{$request->id}",
+                900,
+                fn() => $this->matchingService->findMatchesForRequest($request, 50)->count()
+            );
+        }
+
+        return view('theme::pages.dashboard.requests.index', compact('requests', 'matchCounts'));
     }
 
     /**

@@ -229,5 +229,19 @@ new class extends Component {
             </div>
         </div>
     </x-app.container>
+    @if($matchCount > 0)
+    <x-slot name="javascript">
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+        <script>
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.5 }
+            });
+            setTimeout(() => confetti({ particleCount: 80, spread: 60, origin: { x: 0.2, y: 0.6 } }), 400);
+            setTimeout(() => confetti({ particleCount: 80, spread: 60, origin: { x: 0.8, y: 0.6 } }), 700);
+        </script>
+    </x-slot>
+    @endif
     @endvolt
 </x-layouts.app>

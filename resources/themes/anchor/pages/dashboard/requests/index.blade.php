@@ -163,8 +163,16 @@
 
                             <div class="flex gap-2">
                                 <a href="{{ route('dashboard.requests.show', $request) }}" 
-                                   class="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors">
+                                   class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors
+                                       {{ ($matchCounts[$request->id] ?? 0) > 0
+                                           ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
+                                           : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50' }}">
                                     {{ __('dashboard.requests.view_matches') }}
+                                    @if(($matchCounts[$request->id] ?? 0) > 0)
+                                        <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold bg-white text-blue-600 rounded-full">
+                                            {{ $matchCounts[$request->id] }}
+                                        </span>
+                                    @endif
                                 </a>
                                 <a href="{{ route('dashboard.requests.edit', $request) }}" 
                                    class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
