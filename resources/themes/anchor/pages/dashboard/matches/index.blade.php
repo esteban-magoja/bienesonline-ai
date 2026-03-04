@@ -14,7 +14,7 @@
                 </svg>
                 <h3 class="text-lg font-medium text-gray-900 mb-2">{{ __('dashboard.matches_section.no_matches') }}</h3>
                 <p class="text-gray-600 mb-4">{{ __('dashboard.matches_section.no_matches_desc') }}</p>
-                <a href="/dashboard/property-listings" 
+                <a href="{{ route('property-listings.create') }}" 
                    class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
                     {{ __('dashboard.matches_section.publish_listing') }}
                 </a>

@@ -450,11 +450,11 @@ new class extends Component {
                             </div>
 
 
-                            <div class="sm:col-span-6">
+                            {{-- <div class="sm:col-span-6">
                                 <label for="conditions" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('listings.form.conditions') }}</label>
                                 <textarea wire:model="conditions" id="conditions" rows="4" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
                                 @error('conditions') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 

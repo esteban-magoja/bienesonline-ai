@@ -6,12 +6,14 @@ use App\Models\PropertyListing;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use Pgvector\Laravel\Vector;
+use App\Models\PropertyContact;
 
 middleware('auth');
 name('property-listings.index');
 
 new class extends Component {
     public Collection $propertyListings;
+    public array $contactCounts = [];
     public string $searchTerm = '';
     public ?PropertyListing $listingToDelete = null;
 
@@ -100,6 +102,13 @@ new class extends Component {
     private function loadAllListings(): void
     {
         $this->propertyListings = PropertyListing::where('user_id', auth()->id())->with('primaryImage')->latest()->get();
+
+        $ids = $this->propertyListings->pluck('id')->toArray();
+        $this->contactCounts = PropertyContact::whereIn('listing_id', $ids)
+            ->selectRaw('listing_id, count(*) as total')
+            ->groupBy('listing_id')
+            ->pluck('total', 'listing_id')
+            ->toArray();
     }
 };
 ?>
@@ -113,6 +122,12 @@ new class extends Component {
                 {{ __('listings.publish') }}
             </a>
         </div>
+
+        @if(session('success'))
+            <div class="mt-4 px-4 py-3 text-sm text-green-800 bg-green-100 border border-green-200 rounded-lg dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <div class="mt-6">
             <form wire:submit.prevent="search" class="flex items-center space-x-2">
@@ -150,9 +165,15 @@ new class extends Component {
                     <!-- Card Component -->
                     <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                         <!-- Image -->
+                        @php
+                            $seoService = app(\App\Services\SeoService::class);
+                            $listingUrl = $seoService->generatePropertyUrl($listing, app()->getLocale());
+                        @endphp
                         <div class="relative">
                             @if($listing->primaryImage)
-                                <img src="{{ $listing->primaryImage->image_url }}" alt="{{ $listing->title }}" class="object-cover w-full h-48 rounded-t-lg">
+                                <a href="{{ $listingUrl }}" target="_blank">
+                                    <img src="{{ $listing->primaryImage->image_url }}" alt="{{ $listing->title }}" class="object-cover w-full h-48 rounded-t-lg hover:opacity-90 transition-opacity">
+                                </a>
                             @else
                                 <div class="flex items-center justify-center w-full h-48 text-gray-400 bg-gray-100 rounded-t-lg dark:bg-gray-700">
                                     {{ __('listings.no_image') }}
@@ -172,7 +193,7 @@ new class extends Component {
                         <div class="flex flex-col flex-1 p-4">
                             <!-- Title and Location -->
                             <div>
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ $listing->title }}</h3>
+                                <a href="{{ $listingUrl }}" target="_blank" class="text-lg font-bold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{{ $listing->title }}</a>
                                 <p class="text-sm text-gray-500">{{ $listing->city }}, {{ $listing->state }}</p>
                             </div>
                             
@@ -192,9 +213,28 @@ new class extends Component {
 
                         <!-- Card Footer (Actions) -->
                         <div class="p-4 mt-auto bg-gray-50 dark:bg-gray-900/50 rounded-b-lg">
-                            <div class="flex justify-end space-x-2">
-                                <!--<a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">{{ __('listings.edit') }}</a>-->
-                                <button wire:click="confirmDelete({{ $listing->id }})" class="text-sm font-medium text-red-600 hover:text-red-900">{{ __('listings.delete') }}</button>
+                            <div class="flex items-center justify-between">
+                                {{-- Contactos --}}
+                                @php $contactCount = $contactCounts[$listing->id] ?? 0; @endphp
+                                <a href="{{ route('dashboard.contacts.index', ['listing_id' => $listing->id]) }}"
+                                   class="inline-flex items-center gap-1.5 text-sm {{ $contactCount > 0 ? 'text-orange-600 font-semibold' : 'text-gray-400' }} hover:underline">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    {{ $contactCount }} contacto{{ $contactCount !== 1 ? 's' : '' }}
+                                </a>
+
+                                <div class="flex items-center gap-3">
+                                    @php
+                                        $seoService = app(\App\Services\SeoService::class);
+                                        $listingUrl = $seoService->generatePropertyUrl($listing, app()->getLocale());
+                                    @endphp
+                                    <a href="/property-listings/{{ $listing->id }}/edit"
+                                       class="text-sm font-medium text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
+                                        {{ __('listings.edit') }}
+                                    </a>
+                                    <button wire:click="confirmDelete({{ $listing->id }})" class="text-sm font-medium text-red-600 hover:text-red-900">{{ __('listings.delete') }}</button>
+                                </div>
                             </div>
                         </div>
                     </div>

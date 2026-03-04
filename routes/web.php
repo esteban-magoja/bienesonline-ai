@@ -18,6 +18,7 @@ use App\Http\Controllers\PropertyRequestController;
 use App\Http\Controllers\PropertyMatchController;
 use App\Http\Controllers\PropertyMessageController;
 use App\Http\Controllers\PropertyListingController;
+use App\Http\Controllers\PropertyContactController;
 use App\Http\Controllers\RequestSearchController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\SitemapController;
@@ -168,6 +169,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [PropertyMatchController::class, 'index'])->name('index');
         Route::get('/listing/{listing}', [PropertyMatchController::class, 'show'])->name('show');
     });
+
+    // Property Contacts (Dashboard)
+    Route::prefix('dashboard/contacts')->name('dashboard.contacts.')->group(function () {
+        Route::get('/', [PropertyContactController::class, 'index'])->name('index');
+        Route::patch('/{contact}/notes', [PropertyContactController::class, 'updateNotes'])->name('update-notes');
+    });
+    Route::post('/property-contacts', [PropertyContactController::class, 'store'])->name('property.contacts.store');
 
     // Property Messages (Dashboard)
     Route::prefix('dashboard/messages')->name('dashboard.messages.')->group(function () {

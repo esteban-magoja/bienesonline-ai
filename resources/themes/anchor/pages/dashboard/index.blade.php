@@ -2,7 +2,7 @@
     use function Laravel\Folio\{middleware, name};
 	use App\Models\PropertyListing;
 	use App\Models\PropertyRequest;
-	use App\Models\PropertyMessage;
+	use App\Models\PropertyContact;
 	use App\Models\ImportJob;
 	
 	
@@ -11,9 +11,8 @@
 
 	$userListings = PropertyListing::where('user_id', auth()->id())->active()->count();
 	$userRequests = PropertyRequest::where('user_id', auth()->id())->active()->count();
-	$unreadMessages = PropertyMessage::whereHas('propertyListing', function($query) {
-		$query->where('user_id', auth()->id());
-	})->where('is_read', false)->count();
+	$totalContacts = PropertyContact::where('owner_user_id', auth()->id())->count();
+	$unseenContacts = PropertyContact::where('owner_user_id', auth()->id())->whereNull('seen_at')->count();
 	
 	// Último import job del usuario
 	$latestImport = ImportJob::where('user_id', auth()->id())->latest()->first();
@@ -157,22 +156,21 @@
 			<div class="bg-white rounded-lg shadow p-6 border-l-4 border-orange-500">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-md text-gray-600 mb-3">{{ __('dashboard.home.messages') }}</p>
-						<p class="text-3xl font-bold text-gray-900">{{ $unreadMessages }}</p>
+						<p class="text-md text-gray-600 mb-3">Mis Contactos</p>
+						<p class="text-3xl font-bold text-gray-900">{{ $unseenContacts }}</p>
+						<p class="text-xs text-gray-400 mt-1">{{ $totalContacts }} en total</p>
 					</div>
 					<svg class="w-12 h-12 text-orange-500 mt-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
 					</svg>
 				</div>
-				@if($unreadMessages > 0)
-					<div class="mt-3 text-orange-600">
-						<a href="{{ route('dashboard.messages.index') }}" class="mt-4 text-sm text-orange-600 hover:text-orange-700 font-medium">{{ __('dashboard.home.unread_messages', ['count' => $unreadMessages]) }}</a>
-					</div>
-				@else
-					<div class="mt-3 text-orange-600">
-						<a href="{{ route('dashboard.messages.index') }}" class="mt-4 text-sm text-orange-600 hover:text-orange-700 font-medium">{{ __('dashboard.home.view_messages') }}</a>
-					</div>
-				@endif
+				<div class="mt-3 text-orange-600">
+					@if($unseenContacts > 0)
+						<a href="{{ route('dashboard.contacts.index') }}" class="mt-4 text-sm text-orange-600 hover:text-orange-700 font-medium">{{ $unseenContacts }} nuevo{{ $unseenContacts > 1 ? 's' : '' }} sin ver</a>
+					@else
+						<a href="{{ route('dashboard.contacts.index') }}" class="mt-4 text-sm text-orange-600 hover:text-orange-700 font-medium">Ver contactos</a>
+					@endif
+				</div>
 			</div>
 
 			<div class="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500">
