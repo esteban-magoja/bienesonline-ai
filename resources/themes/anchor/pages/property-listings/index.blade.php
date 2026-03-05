@@ -209,13 +209,10 @@ new class extends Component {
                                     <p class="text-sm font-medium text-green-600 dark:text-green-400">{{ __('listings.match') }}: {{ number_format($listing->similarity, 2) }}%</p>
                                 </div>
                             @endif
-                        </div>
 
-                        <!-- Card Footer (Actions) -->
-                        <div class="p-4 mt-auto bg-gray-50 dark:bg-gray-900/50 rounded-b-lg">
-                            <div class="flex items-center justify-between">
-                                {{-- Contactos --}}
-                                @php $contactCount = $contactCounts[$listing->id] ?? 0; @endphp
+                            {{-- Contactos --}}
+                            @php $contactCount = $contactCounts[$listing->id] ?? 0; @endphp
+                            <div class="mt-3">
                                 <a href="{{ route('dashboard.contacts.index', ['listing_id' => $listing->id]) }}"
                                    class="inline-flex items-center gap-1.5 text-sm {{ $contactCount > 0 ? 'text-orange-600 font-semibold' : 'text-gray-400' }} hover:underline">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -223,18 +220,25 @@ new class extends Component {
                                     </svg>
                                     {{ $contactCount }} contacto{{ $contactCount !== 1 ? 's' : '' }}
                                 </a>
+                            </div>
+                        </div>
 
-                                <div class="flex items-center gap-3">
-                                    @php
-                                        $seoService = app(\App\Services\SeoService::class);
-                                        $listingUrl = $seoService->generatePropertyUrl($listing, app()->getLocale());
-                                    @endphp
-                                    <a href="/property-listings/{{ $listing->id }}/edit"
-                                       class="text-sm font-medium text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
-                                        {{ __('listings.edit') }}
-                                    </a>
-                                    <button wire:click="confirmDelete({{ $listing->id }})" class="text-sm font-medium text-red-600 hover:text-red-900">{{ __('listings.delete') }}</button>
-                                </div>
+                        <!-- Card Footer (Actions) -->
+                        <div class="p-4 mt-auto bg-gray-50 dark:bg-gray-900/50 rounded-b-lg">
+                            <div class="flex items-center gap-3">
+                                @php
+                                    $seoService = app(\App\Services\SeoService::class);
+                                    $listingUrl = $seoService->generatePropertyUrl($listing, app()->getLocale());
+                                @endphp
+                                <a href="/property-listings/{{ $listing->id }}/images"
+                                   class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400">
+                                    {{ __('listings.manage_images') }}
+                                </a>
+                                <a href="/property-listings/{{ $listing->id }}/edit"
+                                   class="text-sm font-medium text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
+                                    {{ __('listings.edit') }}
+                                </a>
+                                <button wire:click="confirmDelete({{ $listing->id }})" class="text-sm font-medium text-red-600 hover:text-red-900">{{ __('listings.delete') }}</button>
                             </div>
                         </div>
                     </div>

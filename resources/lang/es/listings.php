@@ -75,6 +75,22 @@ return [
     'add_property_images' => 'Agregar Imágenes de la Propiedad',
     'processing_images' => 'Procesando y subiendo imágenes...',
     'primary_image' => 'Principal',
+    'manage_images' => 'Fotos',
+
+    'images' => [
+        'manage_title'   => 'Gestión de Fotos',
+        'current_images' => 'Fotos actuales',
+        'no_images'      => 'Este anuncio todavía no tiene fotos.',
+        'upload_new'     => 'Agregar nuevas fotos',
+        'save_new'       => 'Guardar fotos',
+        'primary'        => 'Principal',
+        'set_primary'    => 'Marcar como principal',
+        'is_primary'     => 'Es la principal',
+        'primary_set'    => 'Foto principal actualizada.',
+        'deleted'        => 'Foto eliminada.',
+        'uploaded'       => 'Fotos subidas correctamente.',
+        'confirm_delete' => '¿Eliminar esta foto? Esta acción no se puede deshacer.',
+    ],
     
     // Mensajes vacíos
     'no_listings' => 'No tienes anuncios',

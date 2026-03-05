@@ -75,6 +75,22 @@ return [
     'add_property_images' => 'Add Property Images',
     'processing_images' => 'Processing and uploading images...',
     'primary_image' => 'Primary',
+    'manage_images' => 'Photos',
+
+    'images' => [
+        'manage_title'   => 'Photo Management',
+        'current_images' => 'Current photos',
+        'no_images'      => 'This listing has no photos yet.',
+        'upload_new'     => 'Add new photos',
+        'save_new'       => 'Save photos',
+        'primary'        => 'Primary',
+        'set_primary'    => 'Set as primary',
+        'is_primary'     => 'Primary photo',
+        'primary_set'    => 'Primary photo updated.',
+        'deleted'        => 'Photo deleted.',
+        'uploaded'       => 'Photos uploaded successfully.',
+        'confirm_delete' => 'Delete this photo? This action cannot be undone.',
+    ],
     
     // Empty messages
     'no_listings' => 'You have no listings',
