@@ -306,8 +306,8 @@ return [
 
     // Pricing Section
     'pricing' => [
-        'title' => 'Premium Plan',
-        'subtitle' => 'Join the most trusted and professional real estate network.',
+        'title' => 'Subscribe and Publish today',
+        'subtitle' => 'Join the real estate network that is revolutionizing the market.',
         'monthly' => 'Monthly',
         'yearly' => 'Yearly',
         'per_month' => '/month',

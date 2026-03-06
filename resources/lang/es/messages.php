@@ -306,8 +306,8 @@ return [
 
     // Pricing Section
     'pricing' => [
-        'title' => 'Plan Premium',
-        'subtitle' => 'Asóciate a la red inmobiliaria más confiable y profesional.',
+        'title' => 'Suscribete y Publicá hoy',
+        'subtitle' => 'Asóciate a la red inmobiliaria que revoluciona el mercado.',
         'monthly' => 'Mensual',
         'yearly' => 'Anual',
         'per_month' => '/mes',
