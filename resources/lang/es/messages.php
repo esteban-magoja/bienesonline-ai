@@ -245,29 +245,31 @@ return [
         // Hero Section
         'hero_title_1' => 'Encuentra tu',
         'hero_title_2' => 'Match Inmobiliario',
-        'hero_subtitle' => 'Conectamos con IA, propiedades con compradores y agentes. En BienesOnLine.ai, solo se publican propiedades monitoreadas y auténticas.',
+        'hero_subtitle' => 'BienesOnline evoluciona: la misma red que conocés, ahora potenciada con IA para conectar propiedades con agentes y compradores. Donde antes buscabas inmuebles… ahora encontrás matches inteligentes.',
         'add_property' => 'Agregar Inmueble',
         
         // Features Section
         'features_title' => 'Qué es BienesOnLine.ai',
-        'features_description' => 'BienesOnLine.ai no es solo un portal. Es una red privada de agentes y particulares verificados que colaboran en la venta, compra o alquiler de propiedades mediante un sistema de match inteligente y comisiones compartidas.',
+        'features_description' => '20 años ayudando a concretar transacciones inmobiliarias, ahora reinventados. BienesOnline evoluciona para ofrecerte una experiencia superior con tecnología avanzada. Multi país y Multi idioma para mayores oportunidades y mejores resultados.',
         'feature_1_title' => 'Control y Monitoreo',
         'feature_1_desc' => 'Todo lo publicado es revisado para garantizar calidad y exclusividad.',
         'feature_2_title' => 'Colaboración Real',
         'feature_2_desc' => 'Los agentes comparten clientes y oportunidades para cerrar operaciones conjuntas.',
-        'feature_3_title' => 'Transparencia',
-        'feature_3_desc' => 'Cada transacción es trazable y sin conflictos de comisión.',
+        'feature_3_title' => 'Match con AI',
+        'feature_3_desc' => 'Publicar un inmueble no termina allí, es el comienzo de múltiples oportunidades instantáneas.',
         'feature_4_title' => 'Alcance Global',
-        'feature_4_desc' => 'Red de profesionales e inversores en constante expansión.',
+        'feature_4_desc' => 'Red de profesionales e inversores a nivel mundial.',
         
         // How It Works Section
         'how_it_works_title' => 'Cómo Funciona',
-        'step_1_title' => 'Publicá o solicitá una propiedad',
-        'step_1_desc' => 'El sistema analiza coincidencias automáticas entre tu oferta y la demanda existente.',
-        'step_2_title' => 'Encontrá tu "Match Inmobiliario"',
-        'step_2_desc' => 'BienesOnLine.ai te conecta con agentes o compradores que buscan exactamente lo que ofrecés.',
-        'step_3_title' => 'Negociá y compartí comisión con seguridad',
-        'step_3_desc' => 'Todo queda documentado dentro de la plataforma, con historial y soporte en cada etapa.',
+        'step_1_title' => 'Suscripción Mensual o Anual',
+        'step_1_desc' => 'Ilimitados Anuncios y Matches. El precio más bajo del mercado.',
+        'step_2_title' => 'Publicá o solicitá una propiedad',
+        'step_2_desc' => 'El sistema analiza coincidencias automáticas entre tu oferta y la demanda existente.',
+        'step_3_title' => 'Encontrá tu "Match Inmobiliario"',
+        'step_3_desc' => 'BienesOnLine.ai te conecta con agentes o compradores que buscan exactamente lo que ofrecés.',
+        'step_4_title' => 'Alertas en Tiempo Real',
+        'step_4_desc' => 'Nunca te pierdas una oportunidad.',
         
         // Practical Guides Section
         'guides_title' => 'Guías Prácticas',

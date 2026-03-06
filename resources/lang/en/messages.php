@@ -245,29 +245,31 @@ return [
         // Hero Section
         'hero_title_1' => 'Find your',
         'hero_title_2' => 'Real Estate Match',
-        'hero_subtitle' => 'We connect properties with buyers and agents using AI. At BienesOnLine.ai, only monitored and authentic properties are published.',
+        'hero_subtitle' => 'BienesOnline evolves: the same network you know, now powered by AI to connect properties with agents and buyers. Where you once searched for real estate… now you find intelligent matches.',
         'add_property' => 'Add Property',
         
         // Features Section
         'features_title' => 'What is BienesOnLine.ai',
-        'features_description' => 'BienesOnLine.ai is not just a portal. It is a private network of verified agents and individuals who collaborate in the sale, purchase or rental of properties through an intelligent match system and shared commissions.',
+        'features_description' => '20 years helping to close real estate transactions, now reinvented. BienesOnline evolves to offer you a superior experience with advanced technology. Multi-country and multi-language for greater opportunities and better results.',
         'feature_1_title' => 'Control and Monitoring',
         'feature_1_desc' => 'Everything published is reviewed to guarantee quality and exclusivity.',
         'feature_2_title' => 'Real Collaboration',
         'feature_2_desc' => 'Agents share clients and opportunities to close joint operations.',
-        'feature_3_title' => 'Transparency',
-        'feature_3_desc' => 'Every transaction is traceable and without commission conflicts.',
+        'feature_3_title' => 'AI Match',
+        'feature_3_desc' => 'Publishing a property does not end there, it is the beginning of multiple instant opportunities.',
         'feature_4_title' => 'Global Reach',
-        'feature_4_desc' => 'Network of professionals and investors in constant expansion.',
+        'feature_4_desc' => 'Network of professionals and investors worldwide.',
         
         // How It Works Section
         'how_it_works_title' => 'How It Works',
-        'step_1_title' => 'Post or request a property',
-        'step_1_desc' => 'The system analyzes automatic matches between your offer and existing demand.',
-        'step_2_title' => 'Find your "Real Estate Match"',
-        'step_2_desc' => 'BienesOnLine.ai connects you with agents or buyers looking for exactly what you offer.',
-        'step_3_title' => 'Negotiate and share commission securely',
-        'step_3_desc' => 'Everything is documented within the platform, with history and support at every stage.',
+        'step_1_title' => 'Monthly or Annual Subscription',
+        'step_1_desc' => 'Unlimited Listings and Matches. The lowest price in the market.',
+        'step_2_title' => 'Post or request a property',
+        'step_2_desc' => 'The system analyzes automatic matches between your offer and existing demand.',
+        'step_3_title' => 'Find your "Real Estate Match"',
+        'step_3_desc' => 'BienesOnLine.ai connects you with agents or buyers looking for exactly what you offer.',
+        'step_4_title' => 'Real-Time Alerts',
+        'step_4_desc' => 'Never miss an opportunity.',
         
         // Practical Guides Section
         'guides_title' => 'Practical Guides',
