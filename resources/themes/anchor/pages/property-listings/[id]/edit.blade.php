@@ -7,6 +7,7 @@ use Livewire\Attributes\Computed;
 use App\Models\PropertyListing;
 use App\Models\PropertyType;
 use App\Models\TransactionType;
+use App\Models\CountrySetting;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 use Nnjeim\World\Models\City;
@@ -102,7 +103,7 @@ new class extends Component {
         $this->latitude        = $this->listing->latitude;
         $this->longitude       = $this->listing->longitude;
 
-        $this->countries = Country::all();
+        $this->countries = CountrySetting::getEnabledCountries();
 
         // Pre-load country
         $country = Country::where('name', $this->listing->country)->first();
@@ -156,7 +157,7 @@ new class extends Component {
 
     public function with(): array
     {
-        return ['countries' => Country::all()];
+        return ['countries' => CountrySetting::getEnabledCountries()];
     }
 
     public function save(): void

@@ -8,6 +8,7 @@ use App\Models\TransactionType;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Storage;
+use App\Models\CountrySetting;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 use Nnjeim\World\Models\City;
@@ -118,7 +119,7 @@ new class extends Component {
         
         $this->canPublish = $user->hasRole('admin') || $user->hasRole('premium');
         
-        $this->countries = Country::all();
+        $this->countries = CountrySetting::getEnabledCountries();
         $this->currencies = Currency::all();
         $this->availableCurrencies = ['USD'];
     }
@@ -159,7 +160,7 @@ new class extends Component {
     public function with(): array
     {
         return [
-            'countries' => Country::all(),
+            'countries' => CountrySetting::getEnabledCountries(),
         ];
     }
 

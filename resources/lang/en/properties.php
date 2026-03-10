@@ -52,6 +52,7 @@ return [
         'garages' => 'Garages',
         'parking_spaces' => 'Parking Spaces',
         'parking_short' => 'parking',
+        'area' => 'Area (m²)',
         'covered_area' => 'Covered Area',
         'covered_area_short' => 'Area (m²)',
         'land_area' => 'Land Area',

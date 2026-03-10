@@ -5,8 +5,10 @@ use Livewire\Volt\Component;
 use App\Models\PropertyListing;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 use Pgvector\Laravel\Vector;
 use App\Models\PropertyContact;
+use App\Models\PropertyRequest;
 
 middleware('auth');
 name('property-listings.index');
@@ -14,6 +16,7 @@ name('property-listings.index');
 new class extends Component {
     public Collection $propertyListings;
     public array $contactCounts = [];
+    public array $matchCounts = [];
     public string $searchTerm = '';
     public ?PropertyListing $listingToDelete = null;
 
@@ -109,6 +112,26 @@ new class extends Component {
             ->groupBy('listing_id')
             ->pluck('total', 'listing_id')
             ->toArray();
+
+        // Match counts: usa cache si existe, sino conteo SQL simple (sin embeddings)
+        $this->matchCounts = [];
+        foreach ($this->propertyListings as $listing) {
+            $cached = Cache::get("matches_listing_{$listing->id}");
+            if ($cached !== null) {
+                $this->matchCounts[$listing->id] = $cached->count();
+            } else {
+                $this->matchCounts[$listing->id] = PropertyRequest::active()
+                    ->where('country', $listing->country)
+                    ->where('property_type', $listing->property_type)
+                    ->where('transaction_type', $listing->transaction_type)
+                    ->where('max_budget', '>=', $listing->price)
+                    ->where(function($q) use ($listing) {
+                        $q->whereNull('min_budget')
+                          ->orWhere('min_budget', '<=', $listing->price);
+                    })
+                    ->count();
+            }
+        }
     }
 };
 ?>
@@ -219,6 +242,18 @@ new class extends Component {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
                                     {{ $contactCount }} contacto{{ $contactCount !== 1 ? 's' : '' }}
+                                </a>
+                            </div>
+
+                            {{-- Matches --}}
+                            @php $matchCount = $matchCounts[$listing->id] ?? 0; @endphp
+                            <div class="mt-1.5">
+                                <a href="{{ route('dashboard.matches.show', $listing->id) }}"
+                                   class="inline-flex items-center gap-1.5 text-sm {{ $matchCount > 0 ? 'text-indigo-600 font-semibold' : 'text-gray-400' }} hover:underline">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    {{ $matchCount }} match{{ $matchCount !== 1 ? 'es' : '' }}
                                 </a>
                             </div>
                         </div>

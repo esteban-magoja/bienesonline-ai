@@ -778,6 +778,48 @@ Ver `TEST_RESULTS.txt` para detalles completos.
 
 ---
 
+## Sistema de Países Habilitados (Marzo 2026)
+
+### Objetivo
+Mostrar solo países relevantes en los formularios públicos y del dashboard, sin modificar el paquete `nnjeim/world`.
+
+### Tabla y Modelo
+- **Tabla**: `country_settings` — `iso2` (PK), `is_enabled` (bool), `display_order` (smallint)
+- **Modelo**: `app/Models/CountrySetting.php`
+
+**Métodos clave:**
+```php
+CountrySetting::getEnabledCountries()   // → Collection de Country, ordenada por display_order (cache 1h)
+CountrySetting::enable($iso2, $order)   // Habilita un país (crea registro si no existe)
+CountrySetting::disable($iso2)          // Deshabilita (no elimina el registro)
+CountrySetting::clearCache()            // Limpia cache 'enabled_country_iso2_codes'
+```
+
+### Países habilitados por defecto
+AR (1), MX (2), CL (3), ES (4), CO (5) — configurados en la migración inicial vía `tinker`.
+
+### Formularios actualizados
+Todos usan `CountrySetting::getEnabledCountries()` en lugar de `Country::all()`:
+- `resources/themes/anchor/pages/es/post-request.blade.php`
+- `resources/themes/anchor/pages/en/post-request.blade.php`
+- `resources/themes/anchor/pages/dashboard/requests/create.blade.php`
+- `resources/themes/anchor/pages/property-listings/create.blade.php`
+- `resources/themes/anchor/pages/property-listings/[id]/edit.blade.php`
+
+**Nota**: `ImportListingsJob` y `PropertyMatchingService` siguen usando `Country::where('name', ...)` porque trabajan con datos existentes — NO filtrar ahí.
+
+### Gestión en el Panel Admin
+En `/admin/country-types` hay una sección **"Países Habilitados"** al inicio de la página con:
+- Lista ordenada de países activos con botones ↑↓ para reordenar
+- Botón ✕ para deshabilitar con confirmación
+- Botón **"Agregar país"** → abre buscador con los 250 países del mundo, cada uno con botón "Habilitar"
+- Al seleccionar un país en el dropdown de configuración de tipos: aparece botón verde **"Habilitar país"** si no está activo, o badge verde **"País habilitado (#N)"** si ya lo está
+
+### Nota Livewire v3
+En Livewire v3, las propiedades computadas con `getXxxProperty()` NO se acceden como `$this->getXxxProperty` en Blade (eso intenta acceder a una *propiedad* PHP, no llamar al método). Usar `$filteredCountries` (propiedad pública actualizada por `updatedCountrySearch()`) en su lugar.
+
+---
+
 ## Mejores Prácticas de Desarrollo
 
 ### ✅ Verificación con curl antes de confirmar cambios

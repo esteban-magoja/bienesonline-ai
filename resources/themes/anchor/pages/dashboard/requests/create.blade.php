@@ -4,6 +4,7 @@ use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 use App\Models\PropertyRequest;
 use Livewire\Attributes\Rule;
+use App\Models\CountrySetting;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 use Nnjeim\World\Models\City;
@@ -87,7 +88,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->countries = Country::all();
+        $this->countries = CountrySetting::getEnabledCountries();
     }
 
     public function updatedSelectedCountry($countryId)

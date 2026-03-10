@@ -52,6 +52,7 @@ return [
         'garages' => 'Cocheras',
         'parking_spaces' => 'Cocheras',
         'parking_short' => 'cochera',
+        'area' => 'Área (m²)',
         'covered_area' => 'Área Cubierta',
         'covered_area_short' => 'Área (m²)',
         'land_area' => 'Área de Terreno',

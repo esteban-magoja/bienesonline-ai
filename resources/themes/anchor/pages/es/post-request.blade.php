@@ -3,7 +3,10 @@
 use function Laravel\Folio\{name};
 use Livewire\Volt\Component;
 use App\Models\PropertyRequest;
+use App\Models\PropertyType;
+use App\Models\TransactionType;
 use Livewire\Attributes\Rule;
+use App\Models\CountrySetting;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 use Nnjeim\World\Models\City;
@@ -31,10 +34,10 @@ new class extends Component {
     public string $description = '';
 
     #[Rule('required|string')]
-    public string $property_type = 'casa';
+    public string $property_type = '';
 
     #[Rule('required|string')]
-    public string $transaction_type = 'venta';
+    public string $transaction_type = '';
 
     #[Rule('nullable|numeric|min:0')]
     public ?string $min_budget = '';
@@ -73,6 +76,8 @@ new class extends Component {
     public $states = [];
     public $cities = [];
     public $availableCurrencies = ['USD', 'ARS', 'EUR', 'BRL', 'MXN', 'CLP', 'COP'];
+    public $propertyTypes = [];
+    public $transactionTypes = [];
 
     #[Computed]
     public function country()
@@ -89,7 +94,7 @@ new class extends Component {
     public function mount()
     {
         if (auth()->check()) {
-            $this->countries = Country::all();
+            $this->countries = CountrySetting::getEnabledCountries();
             
             // Precargar datos del usuario logueado
             $user = auth()->user();
@@ -106,10 +111,22 @@ new class extends Component {
         $this->cities = [];
         $this->city = '';
 
-        // Actualizar moneda según el país
         $country = Country::find($countryId);
-        if ($country && isset($country->currency['code'])) {
-            $this->currency = $country->currency['code'];
+        if ($country) {
+            // Actualizar moneda según el país
+            if (isset($country->currency['code'])) {
+                $this->currency = $country->currency['code'];
+                $this->availableCurrencies = array_unique([$country->currency['code'], 'USD']);
+            }
+
+            // Cargar tipos de propiedad y transacción según país
+            $countryCode = $country->iso2;
+            $this->propertyTypes = PropertyType::getByCountry($countryCode);
+            $this->transactionTypes = TransactionType::getByCountry($countryCode);
+
+            // Resetear selecciones previas
+            $this->property_type = '';
+            $this->transaction_type = '';
         }
     }
 
@@ -327,74 +344,6 @@ new class extends Component {
                         </div>
                     </div>
 
-                    <!-- Información Básica -->
-                    <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-                        <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            {{ __('dashboard.post_request.section_basic') }}
-                        </h3>
-                        
-                        <div class="space-y-6">
-                            <div>
-                                <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    {{ __('dashboard.request_form.title_label') }} <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" 
-                                       wire:model="title" 
-                                       id="title" 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-                                       placeholder="{{ __('dashboard.request_form.title_placeholder') }}">
-                                @error('title') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                            </div>
-
-                            <div>
-                                <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    {{ __('dashboard.request_form.description_label') }} <span class="text-red-500">*</span>
-                                </label>
-                                <textarea wire:model="description" 
-                                          id="description" 
-                                          rows="5"
-                                          class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-                                          placeholder="{{ __('dashboard.request_form.description_placeholder') }}"></textarea>
-                                <p class="mt-2 text-sm text-gray-500">{{ __('dashboard.request_form.description_hint') }}</p>
-                                @error('description') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="property_type" class="block text-sm font-semibold text-gray-700 mb-2">
-                                        {{ __('dashboard.request_form.property_type') }} <span class="text-red-500">*</span>
-                                    </label>
-                                    <select wire:model="property_type" 
-                                            id="property_type" 
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-                                        <option value="casa">{{ __('properties.types.house') }}</option>
-                                        <option value="departamento">{{ __('properties.types.apartment') }}</option>
-                                        <option value="local">{{ __('properties.types.commercial') }}</option>
-                                        <option value="oficina">{{ __('properties.types.office') }}</option>
-                                        <option value="terreno">{{ __('properties.types.land') }}</option>
-                                        <option value="campo">{{ __('properties.types.field') }}</option>
-                                        <option value="galpon">{{ __('properties.types.warehouse') }}</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label for="transaction_type" class="block text-sm font-semibold text-gray-700 mb-2">
-                                        {{ __('dashboard.request_form.transaction_type') }} <span class="text-red-500">*</span>
-                                    </label>
-                                    <select wire:model="transaction_type" 
-                                            id="transaction_type" 
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-                                        <option value="venta">{{ __('properties.transaction_types.sale') }}</option>
-                                        <option value="alquiler">{{ __('properties.transaction_types.rent') }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Ubicación -->
                     <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
                         <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
@@ -449,6 +398,83 @@ new class extends Component {
                                         <option value="{{ $cityItem->name }}">{{ $cityItem->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información Básica -->
+                    <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                        <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            {{ __('dashboard.post_request.section_basic') }}
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    {{ __('dashboard.request_form.title_label') }} <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" 
+                                       wire:model="title" 
+                                       id="title" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                                       placeholder="{{ __('dashboard.request_form.title_placeholder') }}">
+                                @error('title') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div>
+                                <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    {{ __('dashboard.request_form.description_label') }} <span class="text-red-500">*</span>
+                                </label>
+                                <textarea wire:model="description" 
+                                          id="description" 
+                                          rows="5"
+                                          class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                                          placeholder="{{ __('dashboard.request_form.description_placeholder') }}"></textarea>
+                                <p class="mt-2 text-sm text-gray-500">{{ __('dashboard.request_form.description_hint') }}</p>
+                                @error('description') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="property_type" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        {{ __('dashboard.request_form.property_type') }} <span class="text-red-500">*</span>
+                                    </label>
+                                    <select wire:model="property_type" 
+                                            id="property_type" 
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                                            @if(empty($propertyTypes)) disabled @endif>
+                                        <option value="">{{ __('listings.select_property_type') }}</option>
+                                        @foreach($propertyTypes as $type)
+                                            <option value="{{ $type->value }}">{{ $type->label }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('property_type') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                                    @if(empty($propertyTypes))
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('listings.select_country_first') }}</p>
+                                    @endif
+                                </div>
+
+                                <div>
+                                    <label for="transaction_type" class="block text-sm font-semibold text-gray-700 mb-2">
+                                        {{ __('dashboard.request_form.transaction_type') }} <span class="text-red-500">*</span>
+                                    </label>
+                                    <select wire:model="transaction_type" 
+                                            id="transaction_type" 
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                                            @if(empty($transactionTypes)) disabled @endif>
+                                        <option value="">{{ __('listings.select_transaction_type') }}</option>
+                                        @foreach($transactionTypes as $type)
+                                            <option value="{{ $type->value }}">{{ $type->label }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('transaction_type') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                                    @if(empty($transactionTypes))
+                                        <p class="mt-1 text-sm text-gray-500">{{ __('listings.select_country_first') }}</p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
