@@ -1,1 +1,1 @@
-<img src="https://raxta.com/storage/auth/logo.PNG" alt="Logo" {{ $attributes->merge(['class' => 'h-8']) }}>
+<img src="https://bienesonline.ai/storage/auth/logo.png" alt="BienesOnLine" {{ $attributes->merge(['class' => 'h-8']) }}>
