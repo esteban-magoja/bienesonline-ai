@@ -2,24 +2,19 @@
 
 namespace App\Listeners;
 
+use App\Notifications\WelcomeWhatsAppNotification;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UserRegistered
+class UserRegistered implements ShouldQueue
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(Registered $event): void
     {
-        // $user = $event->user;
-        // Perform any functionality to the user here...
+        $user = $event->user;
+
+        // Enviar bienvenida por WhatsApp si el usuario aceptó y tiene móvil
+        if ($user->whatsapp_opt_in && !empty($user->movil)) {
+            $user->notify(new WelcomeWhatsAppNotification());
+        }
     }
 }

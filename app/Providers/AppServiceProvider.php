@@ -3,13 +3,16 @@
 namespace App\Providers;
 
 use Exception;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use App\Listeners\UserRegistered;
 use App\Models\PropertyListing;
 use App\Observers\PropertyListingObserver;
 
@@ -72,6 +75,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         PropertyListing::observe(PropertyListingObserver::class);
+
+        Event::listen(Registered::class, UserRegistered::class);
 
         $this->bootRoute();
     }

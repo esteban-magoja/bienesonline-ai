@@ -37,6 +37,8 @@ class User extends WaveUser
         'locale',
         'terms_accepted',
         'terms_accepted_at',
+        'whatsapp_opt_in',
+        'whatsapp_opt_in_at',
     ];
 
     /**
@@ -57,6 +59,8 @@ class User extends WaveUser
     protected $casts = [
         'terms_accepted' => 'boolean',
         'terms_accepted_at' => 'datetime',
+        'whatsapp_opt_in' => 'boolean',
+        'whatsapp_opt_in_at' => 'datetime',
     ];
 
     protected static function boot()

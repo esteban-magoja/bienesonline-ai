@@ -31,6 +31,8 @@ return [
         'saved_success' => 'Perfil actualizado exitosamente',
         'language' => 'Idioma preferido',
         'language_description' => 'Selecciona el idioma para emails y notificaciones',
+        'whatsapp_opt_in' => 'Notificaciones por WhatsApp',
+        'whatsapp_opt_in_description' => 'Recibir alertas de matches, nuevas propiedades y novedades por WhatsApp. Podés desactivarlo en cualquier momento.',
     ],
 
     // Security

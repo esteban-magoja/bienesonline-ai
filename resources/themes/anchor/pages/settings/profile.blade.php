@@ -74,6 +74,12 @@
 						])
 						->default(auth()->user()->locale ?? 'es')
 						->required(),
+					\Filament\Forms\Components\Toggle::make('whatsapp_opt_in')
+                        ->label(__('settings.profile.whatsapp_opt_in'))
+                        ->helperText(__('settings.profile.whatsapp_opt_in_description'))
+                        ->default(auth()->user()->whatsapp_opt_in ?? false)
+                        ->onColor('success')
+                        ->offColor('danger'),
 					...($this->dynamicFields( config('profile.fields') ))
                 ])
                 ->statePath('data');
@@ -120,6 +126,12 @@
 			auth()->user()->state = $state['state'] ?? null;
 			auth()->user()->country = $state['country'] ?? null;
 			auth()->user()->locale = $state['locale'] ?? 'es';
+			auth()->user()->whatsapp_opt_in = $state['whatsapp_opt_in'] ?? false;
+			if ($state['whatsapp_opt_in'] && !auth()->user()->whatsapp_opt_in_at) {
+                auth()->user()->whatsapp_opt_in_at = now();
+            } elseif (!$state['whatsapp_opt_in']) {
+                auth()->user()->whatsapp_opt_in_at = null;
+            }
 			auth()->user()->save();
 			$fieldsToSave = config('profile.fields');
 			$this->saveDynamicFields($fieldsToSave);

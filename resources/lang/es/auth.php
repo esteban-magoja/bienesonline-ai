@@ -115,6 +115,8 @@ return [
         'button' => 'Crear Cuenta',
         'have_account' => '¿Ya tienes una cuenta?',
         'login_link' => 'Iniciar Sesión',
+        'whatsapp_opt_in' => 'Acepto recibir notificaciones por WhatsApp sobre nuevas propiedades, matches y alertas del sistema.',
+        'whatsapp_opt_in_required' => 'Debes aceptar recibir notificaciones por WhatsApp para continuar.',
     ],
 
     // Email de verificación

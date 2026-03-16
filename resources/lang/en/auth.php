@@ -115,6 +115,8 @@ return [
         'button' => 'Create Account',
         'have_account' => 'Already have an account?',
         'login_link' => 'Sign In',
+        'whatsapp_opt_in' => 'I agree to receive WhatsApp notifications about new properties, matches, and system alerts.',
+        'whatsapp_opt_in_required' => 'You must agree to receive WhatsApp notifications to continue.',
     ],
 
     // Verify Email Template

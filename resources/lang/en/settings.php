@@ -31,6 +31,8 @@ return [
         'saved_success' => 'Profile updated successfully',
         'language' => 'Preferred Language',
         'language_description' => 'Select your language for emails and notifications',
+        'whatsapp_opt_in' => 'WhatsApp Notifications',
+        'whatsapp_opt_in_description' => 'Receive match alerts, new properties and updates via WhatsApp. You can disable it at any time.',
     ],
 
     // Security
