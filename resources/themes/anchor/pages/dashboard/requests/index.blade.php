@@ -187,6 +187,17 @@
                                         {{ $request->is_active ? __('dashboard.requests.deactivate') : __('dashboard.requests.activate') }}
                                     </button>
                                 </form>
+                                <form action="{{ route('dashboard.requests.destroy', $request) }}" 
+                                      method="POST" 
+                                      class="inline"
+                                      onsubmit="return confirm('{{ __('dashboard.requests.delete_confirm') }}')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="px-3 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors">
+                                        {{ __('dashboard.requests.delete') }}
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
