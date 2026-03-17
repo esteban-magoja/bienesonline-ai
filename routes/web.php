@@ -101,7 +101,7 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
     //   /es/argentina/cordoba (salto directo)
     
     Route::get('/{country}/{params?}', [PropertyListingController::class, 'index'])
-        ->where(['country' => '(?!post-request)[a-z\-]+', 'params' => '.*'])
+        ->where(['country' => '(?!post-request|content)[a-z\-]+', 'params' => '.*'])
         ->name('property.listings');
 });
 
