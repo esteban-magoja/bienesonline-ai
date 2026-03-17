@@ -64,13 +64,19 @@ class WhatsAppService
         ];
 
         if (!empty($bodyParams)) {
+            $parameters = [];
+            foreach ($bodyParams as $key => $value) {
+                $param = ['type' => 'text', 'text' => (string) $value];
+                // Array asociativo → variable nombrada (ej: {{customer_name}})
+                if (is_string($key)) {
+                    $param['parameter_name'] = $key;
+                }
+                $parameters[] = $param;
+            }
             $payload['template']['components'] = [
                 [
                     'type' => 'body',
-                    'parameters' => array_map(fn($param) => [
-                        'type' => 'text',
-                        'text' => $param,
-                    ], $bodyParams),
+                    'parameters' => $parameters,
                 ],
             ];
         }

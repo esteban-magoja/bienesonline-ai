@@ -30,7 +30,7 @@ class WelcomeWhatsAppNotification extends Notification implements ShouldQueue
         return [
             'template' => $templateConfig['name'],
             'language' => $templateConfig['language'],
-            'params'   => [$notifiable->name], // Variable {{1}} del template
+            'params'   => ['customer_name' => $notifiable->name], // Variable {{customer_name}} del template
         ];
     }
 }
