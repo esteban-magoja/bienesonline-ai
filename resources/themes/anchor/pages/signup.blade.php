@@ -90,6 +90,10 @@ new class extends Component
 ?>
 
 <x-auth::layouts.app :title="__('auth.signup.page_title') . ' - ' . config('app.name')">
+    <style>
+        body#auth-body { overflow-y: auto !important; height: auto !important; min-height: 100vh; }
+        #auth-container { height: auto !important; min-height: 100vh; }
+    </style>
     @volt('signup')
     <x-auth::elements.container>
         
