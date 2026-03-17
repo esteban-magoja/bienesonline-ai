@@ -12,9 +12,10 @@
     };
 @endphp
 
+{{-- Fix: allow scrolling when form content exceeds viewport height --}}
 <style>
     body#auth-body { overflow-y: auto !important; height: auto !important; min-height: 100vh; }
-    #auth-container { height: auto !important; min-height: 100vh; }
+    #auth-main-content { height: auto !important; min-height: 100vh; }
 </style>
 
 <div id="auth-container-parent" class="relative w-full sm:max-w-md {{ $containerParentClasses }}">

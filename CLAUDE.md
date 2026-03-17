@@ -935,6 +935,98 @@ exit
 
 ---
 
+## Sistema de WhatsApp con Meta Business Suite (Marzo 2026)
+
+### Objetivo
+Enviar mensajes de WhatsApp a los usuarios usando la Meta Cloud API (WhatsApp Business Platform).
+- Mensaje de bienvenida automático al registrarse
+- Opt-in obligatorio en el formulario de registro
+- Toggle en perfil para activar/desactivar notificaciones
+- Canal de notificaciones Laravel reutilizable para mensajes futuros
+
+### Arquitectura
+```
+Registro → event(Registered) → UserRegistered listener (queued) → WelcomeWhatsAppNotification → WhatsAppChannel → WhatsAppService → Meta Cloud API
+```
+
+### Archivos del Sistema
+- **config/whatsapp.php** — Configuración completa (token, phone_number_id, templates)
+- **app/Services/WhatsAppService.php** — Cliente HTTP para Meta Cloud API v19.0
+  - `sendTemplate()`: Envía un template aprobado con parámetros variables
+  - `sendText()`: Envía texto libre (solo válido dentro de ventana de 24h)
+- **app/Channels/WhatsAppChannel.php** — Canal de notificaciones Laravel
+  - Llama a `toWhatsApp()` en la notificación
+  - Retorna array `['template', 'language', 'params']` o string de texto libre
+- **app/Notifications/WelcomeWhatsAppNotification.php** — Notificación de bienvenida (ShouldQueue)
+- **app/Listeners/UserRegistered.php** — Escucha `Registered`, envía bienvenida si `whatsapp_opt_in && movil`
+- **app/Providers/AppServiceProvider.php** — Registra `Event::listen(Registered::class, UserRegistered::class)`
+
+### Migración
+- **`2026_03_16_194920_add_whatsapp_opt_in_to_users_table.php`**
+- Campos agregados: `whatsapp_opt_in` (boolean, default false), `whatsapp_opt_in_at` (timestamp nullable)
+- Modelo `User`: ambos campos en `$fillable` y `$casts`
+
+### Formularios
+- **signup.blade.php**: Checkbox `whatsapp_opt_in` obligatorio (`accepted` rule). Sin aceptarlo no se puede registrar.
+- **settings/profile.blade.php**: Toggle Filament para activar/desactivar. Guarda `whatsapp_opt_in` y `whatsapp_opt_in_at`.
+
+### Templates en Meta Business Suite
+- Crear en [business.facebook.com](https://business.facebook.com) → WhatsApp Manager → Plantillas de mensajes
+- Tipo: **Predeterminado** (no Flows ni llamadas)
+- Variable en el cuerpo: `{{customer_name}}` (Meta la mapea al primer parámetro del array)
+- Templates configurados:
+  - `bienvenida` (idioma: `es`) — español
+  - `welcome` (idioma: `en`) — inglés
+- Meta puede reclasificar templates de "Utility" a "Marketing" si detecta contenido promocional
+
+### Variables de Entorno (.env)
+```bash
+WHATSAPP_ENABLED=true
+WHATSAPP_ACCESS_TOKEN=          # System User Token (permanente, NO el temporal de 24h)
+WHATSAPP_PHONE_NUMBER_ID=       # ID del número en developers.facebook.com → API Setup
+WHATSAPP_BUSINESS_ACCOUNT_ID=  # ID de la cuenta de negocio
+WHATSAPP_API_VERSION=v19.0
+WHATSAPP_WELCOME_TEMPLATE_ES=bienvenida
+WHATSAPP_WELCOME_TEMPLATE_EN=welcome
+WHATSAPP_WELCOME_LANGUAGE_ES=es   # Debe coincidir exactamente con el idioma elegido en Meta
+WHATSAPP_WELCOME_LANGUAGE_EN=en
+WHATSAPP_LOGGING=true
+```
+
+### ⚠️ Notas Importantes
+- **Token permanente**: Usar System User Token (Business Settings → Usuarios del sistema → Generar token con permiso `whatsapp_business_messaging`). El Temporary Token expira en 24 horas.
+- **Número de teléfono**: La API de Meta requiere el número SIN el `+`. El servicio lo quita automáticamente con `ltrim($to, '+')`.
+- **Los mensajes se envían en background**: Requiere queue worker corriendo (`queue:work` o cron).
+- **Código de idioma**: Debe coincidir exactamente con lo seleccionado al crear el template en Meta (`es`, `en`, `es_AR`, `en_US`, etc.).
+
+### Cómo agregar una nueva notificación WhatsApp
+```php
+class MiNotificacion extends Notification implements ShouldQueue
+{
+    use Queueable;
+
+    public function via($notifiable): array
+    {
+        // Verificar opt-in para mensajes de notificación/marketing
+        if (!$notifiable->whatsapp_opt_in || empty($notifiable->movil)) {
+            return ['mail']; // fallback a email
+        }
+        return [WhatsAppChannel::class];
+    }
+
+    public function toWhatsApp($notifiable): array
+    {
+        return [
+            'template' => 'nombre_template',
+            'language' => $notifiable->locale === 'en' ? 'en' : 'es',
+            'params'   => [$notifiable->name, 'otro parámetro'],
+        ];
+    }
+}
+```
+
+---
+
 ===
 
 <laravel-boost-guidelines>
