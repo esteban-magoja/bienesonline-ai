@@ -392,6 +392,7 @@ return [
         'matches' => 'Matches',
         'search_requests' => 'Search Clients/Requests',
         'messages' => 'Messages',
+        'edit_profile' => 'Edit profile',
     ],
 
     // Terms and Conditions Page

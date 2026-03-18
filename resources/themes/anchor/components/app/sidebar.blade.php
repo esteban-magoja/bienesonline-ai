@@ -34,6 +34,7 @@
                     <x-app.sidebar-link href="{{ route('dashboard.requests.create') }}" icon="phosphor-file-plus" :active="Request::is('dashboard/requests/create')">{{ __('dashboard.menu.publish_request') }}</x-app.sidebar-link>
                     <x-app.sidebar-link href="/dashboard/search-requests" icon="phosphor-magnifying-glass" :active="Request::is('dashboard/search-requests')">{{ __('dashboard.menu.search_requests') }}</x-app.sidebar-link>
                     <x-app.sidebar-link href="/search-property-listings" icon="phosphor-magnifying-glass" :active="Request::is('search-property-listings')">{{ __('properties.search_properties') }}</x-app.sidebar-link>
+                    <x-app.sidebar-link href="/settings/profile" icon="phosphor-user-circle" :active="Request::is('settings/profile')">{{ __('dashboard.menu.edit_profile') }}</x-app.sidebar-link>
                 </div>
             </div>
 
