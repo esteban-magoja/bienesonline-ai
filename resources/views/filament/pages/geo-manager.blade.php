@@ -7,16 +7,50 @@
                 <x-phosphor-globe-duotone class="w-5 h-5 text-primary-500" />
                 <span class="font-semibold text-gray-900 dark:text-white">País</span>
             </div>
-            <div class="flex-1 max-w-sm">
-                <select wire:model.live="selectedCountry"
-                        class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm text-sm focus:ring-primary-500 focus:border-primary-500 py-2 px-3">
-                    <option value="">— Seleccioná un país —</option>
-                    @foreach($countries as $iso2 => $label)
-                        <option value="{{ $iso2 }}">{{ $label }}</option>
-                    @endforeach
-                </select>
-            </div>
-            @if($selectedCountry)
+
+            @if($editingCountry)
+                {{-- Modo edición de nombre de país --}}
+                <div class="flex-1 flex flex-col sm:flex-row gap-2">
+                    <input type="text"
+                           wire:model="editCountryName"
+                           wire:keydown.enter="saveCountry"
+                           wire:keydown.escape="cancelEditCountry"
+                           class="flex-1 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm text-sm py-2 px-3 focus:ring-warning-500 focus:border-warning-500"
+                           autofocus>
+                    @error('editCountryName') <p class="text-xs text-danger-600 mt-0.5">{{ $message }}</p> @enderror
+                    <div class="flex gap-2 shrink-0">
+                        <button wire:click="saveCountry"
+                                class="inline-flex items-center gap-1 px-3 py-2 text-xs font-medium text-white bg-warning-600 hover:bg-warning-700 rounded-lg transition-colors">
+                            <x-phosphor-floppy-disk-bold class="w-3.5 h-3.5" /> Guardar
+                        </button>
+                        <button wire:click="cancelEditCountry"
+                                class="inline-flex items-center gap-1 px-3 py-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            @else
+                <div class="flex items-center gap-2 flex-1">
+                    <div class="flex-1 max-w-sm">
+                        <select wire:model.live="selectedCountry"
+                                class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm text-sm focus:ring-primary-500 focus:border-primary-500 py-2 px-3">
+                            <option value="">— Seleccioná un país —</option>
+                            @foreach($countries as $iso2 => $label)
+                                <option value="{{ $iso2 }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @if($selectedCountry)
+                        <button wire:click="startEditCountry"
+                                title="Editar nombre del país"
+                                class="p-2 text-gray-400 hover:text-warning-600 dark:hover:text-warning-400 rounded-lg transition-colors border border-gray-200 dark:border-gray-700 hover:border-warning-300 dark:hover:border-warning-700">
+                            <x-phosphor-pencil-simple-bold class="w-4 h-4" />
+                        </button>
+                    @endif
+                </div>
+            @endif
+
+            @if($selectedCountry && !$editingCountry)
                 <span class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300 rounded-full">
                     <x-phosphor-map-pin-fill class="w-3 h-3" />
                     {{ count($states) }} estado(s)

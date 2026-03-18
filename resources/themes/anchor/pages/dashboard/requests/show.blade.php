@@ -93,11 +93,11 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 pb-4 border-b border-gray-200">
                 <div>
                     <span class="text-sm text-gray-500">{{ __('dashboard.request_detail.property_type') }}</span>
-                    <p class="font-medium text-gray-900 capitalize">{{ $propertyRequest->property_type }}</p>
+                    <p class="font-medium text-gray-900">{{ \App\Models\PropertyType::getLabel($propertyRequest->property_type) }}</p>
                 </div>
                 <div>
                     <span class="text-sm text-gray-500">{{ __('dashboard.request_detail.operation') }}</span>
-                    <p class="font-medium text-gray-900 capitalize">{{ $propertyRequest->transaction_type }}</p>
+                    <p class="font-medium text-gray-900">{{ \App\Models\TransactionType::getLabel($propertyRequest->transaction_type) }}</p>
                 </div>
                 <div>
                     <span class="text-sm text-gray-500">{{ __('dashboard.request_detail.budget') }}</span>

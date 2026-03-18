@@ -185,8 +185,11 @@
                         </label>
                         <select name="transaction_type" id="transaction_type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             <option value="">{{ __('properties.all') }}</option>
-                            <option value="sale" {{ request('transaction_type') == 'sale' ? 'selected' : '' }}>{{ __('properties.transaction_types.sale') }}</option>
-                            <option value="rent" {{ request('transaction_type') == 'rent' ? 'selected' : '' }}>{{ __('properties.transaction_types.rent') }}</option>
+                            @foreach($userTransactionTypes as $tType)
+                                <option value="{{ $tType }}" {{ request('transaction_type') == $tType ? 'selected' : '' }}>
+                                    {{ \App\Models\TransactionType::getLabel($tType) }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -197,9 +200,9 @@
                         </label>
                         <select name="property_type" id="property_type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             <option value="">{{ __('properties.all') }}</option>
-                            @foreach(['house', 'apartment', 'office', 'commercial', 'land', 'field', 'warehouse'] as $type)
-                                <option value="{{ $type }}" {{ request('property_type') == $type ? 'selected' : '' }}>
-                                    {{ __("properties.types.{$type}") }}
+                            @foreach($userPropertyTypes as $pType)
+                                <option value="{{ $pType }}" {{ request('property_type') == $pType ? 'selected' : '' }}>
+                                    {{ \App\Models\PropertyType::getLabel($pType) }}
                                 </option>
                             @endforeach
                         </select>
@@ -261,7 +264,7 @@
                             
                             {{-- Transaction Type Badge --}}
                             <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                                {{ __("properties.transaction_types.{$property->transaction_type}") }}
+                                {{ \App\Models\TransactionType::getLabel($property->transaction_type) }}
                             </span>
                         </div>
 

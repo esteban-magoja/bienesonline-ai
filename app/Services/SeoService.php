@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\PropertyListing;
 use App\Models\PropertyRequest;
+use App\Models\PropertyType;
+use App\Models\TransactionType;
 use Illuminate\Support\Str;
 
 class SeoService
@@ -17,7 +19,7 @@ class SeoService
         
         // Usar el título directo de la propiedad
         $title = $property->title;
-        $transactionType = __('properties.transaction_types.' . $property->transaction_type, [], $locale);
+        $transactionType = TransactionType::getLabel($property->transaction_type, $locale);
         
         return (object) [
             'title' => $title . ' - ' . $transactionType . ' ' . __('properties.in', [], $locale) . ' ' . $property->city,
@@ -40,8 +42,8 @@ class SeoService
         $parts = [];
         
         // Property type and transaction
-        $propertyType = __('properties.types.' . $property->property_type, [], $locale);
-        $transactionType = __('properties.transaction_types.' . $property->transaction_type, [], $locale);
+        $propertyType    = PropertyType::getLabel($property->property_type, $locale);
+        $transactionType = TransactionType::getLabel($property->transaction_type, $locale);
         $parts[] = ucfirst($propertyType) . ' ' . __('properties.in', [], $locale) . ' ' . $transactionType;
         
         // Location

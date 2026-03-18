@@ -2,29 +2,40 @@
     $locale = app()->getLocale();
     $countrySlug = Str::slug($property->country);
     
+    // Obtener value_en para hacer el lookup en el mapa de slugs
+    $transactionValueEn = \App\Models\TransactionType::getValueEn($property->transaction_type, 'INTL')
+        ?? strtolower($property->transaction_type);
+    $propertyValueEn    = \App\Models\PropertyType::getValueEn($property->property_type, 'INTL')
+        ?? strtolower($property->property_type);
+
     // Mapeo de transaction_type a slugs
     $transactionSlugs = [
-        'sale' => ['es' => 'venta', 'en' => 'sale'],
-        'rent' => ['es' => 'alquiler', 'en' => 'rent'],
+        'sale'           => ['es' => 'venta',             'en' => 'sale'],
+        'rent'           => ['es' => 'alquiler',          'en' => 'rent'],
         'temporary_rent' => ['es' => 'alquiler-temporal', 'en' => 'temporary-rent'],
     ];
-    $transactionSlug = $transactionSlugs[$property->transaction_type][$locale] ?? null;
+    $transactionSlug = $transactionSlugs[$transactionValueEn][$locale] ?? null;
     
     // Mapeo de property_type a slugs
     $propertySlugs = [
-        'house' => ['es' => 'casas', 'en' => 'houses'],
-        'apartment' => ['es' => 'departamentos', 'en' => 'apartments'],
-        'office' => ['es' => 'oficinas', 'en' => 'offices'],
-        'commercial' => ['es' => 'locales', 'en' => 'commercials'],
-        'land' => ['es' => 'terrenos', 'en' => 'lands'],
-        'field' => ['es' => 'campos', 'en' => 'fields'],
-        'farm' => ['es' => 'fincas', 'en' => 'farms'],
-        'warehouse' => ['es' => 'galpones', 'en' => 'warehouses'],
+        'house'      => ['es' => 'casas',        'en' => 'houses'],
+        'apartment'  => ['es' => 'departamentos','en' => 'apartments'],
+        'office'     => ['es' => 'oficinas',     'en' => 'offices'],
+        'commercial' => ['es' => 'locales',      'en' => 'commercials'],
+        'land'       => ['es' => 'terrenos',     'en' => 'lands'],
+        'field'      => ['es' => 'campos',       'en' => 'fields'],
+        'farm'       => ['es' => 'fincas',       'en' => 'farms'],
+        'warehouse'  => ['es' => 'galpones',     'en' => 'warehouses'],
+        'parking'    => ['es' => 'cocheras',     'en' => 'parking'],
+        'townhouse'  => ['es' => 'ph',           'en' => 'townhouses'],
+        'condo'      => ['es' => 'condominios',  'en' => 'condos'],
+        'villa'      => ['es' => 'chalets',      'en' => 'villas'],
+        'penthouse'  => ['es' => 'aticos',       'en' => 'penthouses'],
     ];
-    $propertySlug = $propertySlugs[$property->property_type][$locale] ?? null;
+    $propertySlug = $propertySlugs[$propertyValueEn][$locale] ?? null;
     
     $stateSlug = Str::slug($property->state);
-    $citySlug = Str::slug($property->city);
+    $citySlug  = Str::slug($property->city);
 @endphp
 
 <x-layouts.marketing :seo="$seo">
@@ -95,7 +106,7 @@
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
                                 <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
-                                    {{ __('properties.transaction_types.' . $property->transaction_type) }}
+                                    {{ \App\Models\TransactionType::getLabel($property->transaction_type) }}
                                 </a>
                             </div>
                         </li>
@@ -109,7 +120,7 @@
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
                                 <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
-                                    {{ __('properties.types.' . $property->property_type) }}
+                                    {{ \App\Models\PropertyType::getLabel($property->property_type) }}
                                 </a>
                             </div>
                         </li>
@@ -177,7 +188,7 @@
                                     {{ $property->currency }} {{ number_format($property->price) }}
                                 </div>
                                 <div class="inline-block mt-2 px-3 py-1 text-sm font-semibold text-white bg-blue-600 rounded-full">
-                                    {{ __('properties.transaction_types.' . $property->transaction_type) }}
+                                    {{ \App\Models\TransactionType::getLabel($property->transaction_type) }}
                                 </div>
                             </div>
                         </div>
@@ -328,11 +339,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="flex items-center justify-between py-3 border-b border-gray-200">
                                 <span class="text-gray-600">{{ __('properties.property_type') }}</span>
-                                <span class="font-semibold text-gray-900">{{ __('properties.types.' . $property->property_type) }}</span>
+                                <span class="font-semibold text-gray-900">{{ \App\Models\PropertyType::getLabel($property->property_type) }}</span>
                             </div>
                             <div class="flex items-center justify-between py-3 border-b border-gray-200">
                                 <span class="text-gray-600">{{ __('properties.transaction_type') }}</span>
-                                <span class="font-semibold text-gray-900">{{ __('properties.transaction_types.' . $property->transaction_type) }}</span>
+                                <span class="font-semibold text-gray-900">{{ \App\Models\TransactionType::getLabel($property->transaction_type) }}</span>
                             </div>
                             @if($property->conditions)
                                 <div class="flex items-center justify-between py-3 border-b border-gray-200">
@@ -650,7 +661,7 @@
                                     
                                     <div class="absolute top-3 left-3">
                                         <span class="inline-block px-2 py-1 text-xs font-semibold text-white bg-blue-600 rounded">
-                                            {{ ucfirst($related->transaction_type) }}
+                                            {{ \App\Models\TransactionType::getLabel($related->transaction_type) }}
                                         </span>
                                     </div>
                                 </div>

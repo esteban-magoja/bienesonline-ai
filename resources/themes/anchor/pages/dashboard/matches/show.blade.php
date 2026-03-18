@@ -36,11 +36,11 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
                             {{ __("dashboard.requests.type") }}
-                            <p class="font-medium text-gray-900 capitalize">{{ $listing->property_type }}</p>
+                            <p class="font-medium text-gray-900">{{ \App\Models\PropertyType::getLabel($listing->property_type) }}</p>
                         </div>
                         <div>
                             {{ __("dashboard.requests.operation") }}
-                            <p class="font-medium text-gray-900 capitalize">{{ $listing->transaction_type }}</p>
+                            <p class="font-medium text-gray-900">{{ \App\Models\TransactionType::getLabel($listing->transaction_type) }}</p>
                         </div>
                         <div>
                             {{ __("properties.price") }}

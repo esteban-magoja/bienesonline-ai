@@ -54,14 +54,16 @@ class TransactionType extends Model
      */
     public static function getValueEn(string $value, string $countryCode): ?string
     {
-        // Buscar primero en el país especificado
+        $normalized = strtolower(trim($value));
+
+        // Buscar primero en el país especificado (case-insensitive)
         $valueEn = self::where('country_code', $countryCode)
-            ->where('value', $value)
+            ->whereRaw('LOWER(value) = ?', [$normalized])
             ->value('value_en');
         
         // Si no se encuentra, buscar en cualquier país (fallback global)
         if (!$valueEn) {
-            $valueEn = self::where('value', $value)
+            $valueEn = self::whereRaw('LOWER(value) = ?', [$normalized])
                 ->value('value_en');
         }
         
@@ -84,6 +86,47 @@ class TransactionType extends Model
             ->pluck('value')
             ->unique()
             ->toArray();
+    }
+
+    /** Caché en memoria para evitar N+1 queries al mostrar listas de propiedades */
+    private static ?array $allTypesCache = null;
+
+    private static function getAllTypes(): array
+    {
+        if (self::$allTypesCache === null) {
+            self::$allTypesCache = Cache::remember('transaction_types_all', 3600, function () {
+                return self::where('is_active', true)->get()->toArray();
+            });
+        }
+        return self::$allTypesCache;
+    }
+
+    /**
+     * Obtener la etiqueta de display para un valor dado.
+     * Acepta valores con cualquier capitalización (Venta, venta, sale).
+     * En español retorna el label del DB; en inglés usa value_en como clave de traducción.
+     */
+    public static function getLabel(string $value, ?string $locale = null): string
+    {
+        $locale     = $locale ?? app()->getLocale();
+        $normalized = strtolower(trim($value));
+
+        $type = collect(self::getAllTypes())->first(function ($t) use ($normalized) {
+            return strtolower($t['value']) === $normalized
+                || strtolower($t['value_en']) === $normalized;
+        });
+
+        if (!$type) {
+            return ucfirst(str_replace(['_', '-'], ' ', $value));
+        }
+
+        if ($locale === 'en') {
+            $key        = 'properties.transaction_types.' . $type['value_en'];
+            $translated = __($key, [], 'en');
+            return $translated !== $key ? $translated : $type['label'];
+        }
+
+        return $type['label'];
     }
 
     /**

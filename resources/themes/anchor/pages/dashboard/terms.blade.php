@@ -19,19 +19,17 @@
         </div>
 
         
-        <div class="max-w-4xl mx-auto">
-            <p class="mb-3">{!! __('dashboard.terms.intro') !!}</p>
-            <ul>
-                <li><p class="mb-3"><strong>{{ __('dashboard.terms.membership_title') }}</strong><br>{{ __('dashboard.terms.membership_text') }}</p></li>
-                <li><p class="mb-3"><strong>{{ __('dashboard.terms.listings_title') }}</strong><br>{{ __('dashboard.terms.listings_text') }}</p></li>
-                <li><p class="mb-3"><strong>{{ __('dashboard.terms.commissions_title') }}</strong><br>{{ __('dashboard.terms.commissions_text') }}</p></li>
-                <li><p class="mb-3"><strong>{{ __('dashboard.terms.delegation_title') }}</strong><br>{{ __('dashboard.terms.delegation_text') }}</p></li>
-                <li><p class="mb-3"><strong>{{ __('dashboard.terms.raxta_clients_title') }}</strong><br>{!! __('dashboard.terms.raxta_clients_text') !!}</p></li>
-                <li><p class="mb-3"><strong>{{ __('dashboard.terms.member_operations_title') }}</strong><br>{!! __('dashboard.terms.member_operations_text') !!}</p></li>
-                <li><p class="mb-3"><strong>{{ __('dashboard.terms.compliance_title') }}</strong><br>{!! __('dashboard.terms.compliance_text') !!}</p></li>
-            </ul>
-            
-            <p class="mb-3 mt-3"><strong>{{ __('dashboard.terms.acceptance_text') }}</strong></p>
+        <div class="max-w-4xl mx-auto prose prose-sm max-w-none">
+            <p class="mb-6 text-gray-700">{{ __('dashboard.terms.intro') }}</p>
+
+            @foreach(range(1, 9) as $i)
+            <div class="mb-5">
+                <h2 class="text-base font-semibold text-gray-900 mb-1">{{ __('dashboard.terms.s' . $i . '_title') }}</h2>
+                <p class="text-gray-700">{{ __('dashboard.terms.s' . $i . '_text') }}</p>
+            </div>
+            @endforeach
+
+            <p class="mt-6 text-gray-700 italic">{{ __('dashboard.terms.acceptance_text') }}</p>
         </div>
                 @if(!auth()->user()->hasAcceptedTerms())
                     <div class="mt-8 pt-6 border-t border-gray-200">

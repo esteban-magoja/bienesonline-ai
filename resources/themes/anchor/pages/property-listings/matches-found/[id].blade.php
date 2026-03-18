@@ -97,7 +97,7 @@ new class extends Component {
                                 {{ $listing->currency }} {{ number_format($listing->price, 0, ',', '.') }}
                             </span>
                             <span class="px-3 py-1 text-sm font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-900/20 dark:text-green-400">
-                                {{ __('properties.transaction_types.' . $listing->transaction_type) }}
+                                {{ \App\Models\TransactionType::getLabel($listing->transaction_type) }}
                             </span>
                         </div>
                     </div>

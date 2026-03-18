@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\PropertyListing;
+use App\Models\PropertyType;
+use App\Models\TransactionType;
 use App\Helpers\PropertySlugHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -55,11 +57,39 @@ class PropertyListingController extends Controller
 
         // Aplicar filtros de URL
         if ($filters['transaction_type']) {
-            $query->where('transaction_type', $filters['transaction_type']);
+            // Usar todos los valores regionales equivalentes (venta, arriendo, renta…)
+            $txEquivalents = TransactionType::where('value_en', $filters['transaction_type'])
+                ->where('is_active', true)
+                ->pluck('value')
+                ->map(fn($v) => strtolower($v))
+                ->unique()
+                ->toArray();
+            if (empty($txEquivalents)) {
+                $txEquivalents = [strtolower($filters['transaction_type'])];
+            }
+            $query->where(function ($q) use ($txEquivalents) {
+                foreach ($txEquivalents as $val) {
+                    $q->orWhereRaw('LOWER(transaction_type) = ?', [$val]);
+                }
+            });
         }
 
         if ($filters['property_type']) {
-            $query->where('property_type', $filters['property_type']);
+            // Usar todos los valores regionales equivalentes (casa, departamento, piso…)
+            $ptEquivalents = PropertyType::where('value_en', $filters['property_type'])
+                ->where('is_active', true)
+                ->pluck('value')
+                ->map(fn($v) => strtolower($v))
+                ->unique()
+                ->toArray();
+            if (empty($ptEquivalents)) {
+                $ptEquivalents = [strtolower($filters['property_type'])];
+            }
+            $query->where(function ($q) use ($ptEquivalents) {
+                foreach ($ptEquivalents as $val) {
+                    $q->orWhereRaw('LOWER(property_type) = ?', [$val]);
+                }
+            });
         }
 
         if ($filters['state']) {

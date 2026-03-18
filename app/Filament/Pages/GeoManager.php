@@ -26,6 +26,10 @@ class GeoManager extends Page
     public ?string $selectedCountry = null;
     public array $countries = [];
 
+    // Inline edit country
+    public bool $editingCountry = false;
+    public string $editCountryName = '';
+
     // ── States ────────────────────────────────────────────────────
     public array $states = [];
     public string $stateSearch = '';
@@ -71,6 +75,7 @@ class GeoManager extends Page
         $this->cities = [];
         $this->editingStateId = null;
         $this->editingCityId = null;
+        $this->editingCountry = false;
         $this->loadStates();
     }
 
@@ -93,6 +98,40 @@ class GeoManager extends Page
     public function updatedStateSearch(): void
     {
         $this->loadStates();
+    }
+
+    // ── Edit Country ──────────────────────────────────────────────
+
+    public function startEditCountry(): void
+    {
+        $country = Country::where('iso2', $this->selectedCountry)->firstOrFail();
+        $this->editCountryName = $country->name;
+        $this->editingCountry = true;
+    }
+
+    public function saveCountry(): void
+    {
+        $this->validate([
+            'editCountryName' => 'required|string|max:255',
+        ]);
+
+        $country = Country::where('iso2', $this->selectedCountry)->firstOrFail();
+        $country->update(['name' => $this->editCountryName]);
+
+        // Refresh dropdown
+        $this->countries = Country::orderBy('name')
+            ->get()
+            ->mapWithKeys(fn($c) => [$c->iso2 => $c->iso2 . ' — ' . $c->name])
+            ->toArray();
+
+        $this->editingCountry = false;
+
+        Notification::make()->title('País actualizado correctamente.')->success()->send();
+    }
+
+    public function cancelEditCountry(): void
+    {
+        $this->editingCountry = false;
     }
 
     // ── State selection ───────────────────────────────────────────

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\PropertyListing;
+use App\Models\PropertyType;
+use App\Models\TransactionType;
 use App\Services\SeoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -79,22 +81,35 @@ class UserProfileController extends Controller
         // Generar SEO
         $seo = $this->generateSeo($user, $properties->total(), $locale);
 
-        // Estadísticas del usuario
+        // Estadísticas del usuario: contar usando valores equivalentes (multi-país)
+        $saleValues  = TransactionType::getEquivalentValues('sale', 'INTL');
+        $rentValues  = TransactionType::getEquivalentValues('rent', 'INTL');
+
         $stats = [
             'total_active' => PropertyListing::where('user_id', $user->id)
                 ->where('is_active', true)
                 ->count(),
             'total_sales' => PropertyListing::where('user_id', $user->id)
                 ->where('is_active', true)
-                ->where('transaction_type', 'sale')
+                ->whereIn('transaction_type', $saleValues)
                 ->count(),
             'total_rentals' => PropertyListing::where('user_id', $user->id)
                 ->where('is_active', true)
-                ->where('transaction_type', 'rent')
+                ->whereIn('transaction_type', $rentValues)
                 ->count(),
         ];
 
-        return view('user-profile', compact('user', 'properties', 'breadcrumbs', 'seo', 'stats'));
+        // Tipos disponibles en los anuncios de este usuario (para filtros dinámicos)
+        $userPropertyTypes     = PropertyListing::where('user_id', $user->id)
+            ->where('is_active', true)
+            ->distinct()
+            ->pluck('property_type');
+        $userTransactionTypes  = PropertyListing::where('user_id', $user->id)
+            ->where('is_active', true)
+            ->distinct()
+            ->pluck('transaction_type');
+
+        return view('user-profile', compact('user', 'properties', 'breadcrumbs', 'seo', 'stats', 'userPropertyTypes', 'userTransactionTypes'));
     }
 
     /**

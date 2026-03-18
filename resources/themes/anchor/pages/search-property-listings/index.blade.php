@@ -131,7 +131,7 @@ new class extends Component {
                             <!-- Price and Type -->
                             <div class="mt-2">
                                 <p class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ $listing->currency }} {{ number_format($listing->price) }}</p>
-                                <p class="text-sm text-gray-500">{{ __('properties.types.' . $listing->property_type) }} / {{ __('properties.transaction_types.' . $listing->transaction_type) }}</p>
+                                <p class="text-sm text-gray-500">{{ \App\Models\PropertyType::getLabel($listing->property_type) }} / {{ \App\Models\TransactionType::getLabel($listing->transaction_type) }}</p>
                             </div>
 
                             <!-- Lister Info -->

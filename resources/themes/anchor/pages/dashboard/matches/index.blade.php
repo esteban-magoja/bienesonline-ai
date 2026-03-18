@@ -34,9 +34,9 @@
                                 <div class="flex-1">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ $listing->title }}</h3>
                                     <div class="flex items-center gap-4 text-sm text-gray-600">
-                                        <span class="capitalize">{{ $listing->property_type }}</span>
+                                        <span>{{ \App\Models\PropertyType::getLabel($listing->property_type) }}</span>
                                         <span>•</span>
-                                        <span class="capitalize">{{ $listing->transaction_type }}</span>
+                                        <span>{{ \App\Models\TransactionType::getLabel($listing->transaction_type) }}</span>
                                         <span>•</span>
                                         <span>{{ $listing->city }}, {{ $listing->state }}</span>
                                         <span>•</span>

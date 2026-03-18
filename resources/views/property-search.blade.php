@@ -211,7 +211,7 @@
                             <!-- Property Type Badge -->
                             <div class="absolute top-3 left-3">
                                 <span class="inline-block px-2 py-1 text-xs font-semibold text-white bg-blue-600 rounded">
-                                    {{ __('properties.transaction_types.' . $listing->transaction_type) }}
+                                    {{ \App\Models\TransactionType::getLabel($listing->transaction_type) }}
                                 </span>
                             </div>
                             
@@ -277,7 +277,7 @@
                             
                             <!-- Property Type -->
                             <p class="text-sm text-gray-500 mb-3">
-                                {{ __('properties.types.' . $listing->property_type) }}
+                                {{ \App\Models\PropertyType::getLabel($listing->property_type) }}
                             </p>
                             
                             <!-- Similarity Score (only if search term is used) -->

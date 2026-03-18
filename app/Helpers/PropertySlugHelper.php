@@ -5,6 +5,8 @@ namespace App\Helpers;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\PropertyListing;
+use App\Models\PropertyType;
+use App\Models\TransactionType;
 
 class PropertySlugHelper
 {
@@ -82,89 +84,108 @@ class PropertySlugHelper
 
     /**
      * Valida si un slug existe como tipo de transacción en la BD
-     * Mapea slugs traducidos (venta, alquiler) a valores en BD (sale, rent)
+     * Mapea slugs traducidos (venta, alquiler) a value_en (sale, rent)
+     * Verifica usando todos los valores regionales equivalentes, case-insensitive
      */
     public static function validateTransactionType(string $slug, string $country): ?string
     {
-        // Mapeo de slugs traducidos a valores de BD
         $transactionMap = [
-            'venta' => 'sale',
-            'sale' => 'sale',
-            'alquiler' => 'rent',
-            'rent' => 'rent',
+            'venta'             => 'sale',
+            'sale'              => 'sale',
+            'alquiler'          => 'rent',
+            'rent'              => 'rent',
             'alquiler-temporal' => 'temporary_rent',
-            'temporary-rent' => 'temporary_rent',
+            'temporary-rent'    => 'temporary_rent',
         ];
 
-        // Si el slug está en el mapa, usar el valor correspondiente
-        $dbValue = $transactionMap[$slug] ?? null;
-        
-        if (!$dbValue) {
+        $valueEn = $transactionMap[$slug] ?? null;
+        if (!$valueEn) {
             return null;
         }
 
-        // Verificar que exista en BD
-        return PropertyListing::where('is_active', true)
+        // Obtener todos los valores regionales con ese value_en (venta, arriendo, renta…)
+        $equivalents = TransactionType::where('value_en', $valueEn)
+            ->where('is_active', true)
+            ->pluck('value')
+            ->map(fn($v) => strtolower($v))
+            ->unique()
+            ->toArray();
+
+        if (empty($equivalents)) {
+            $equivalents = [strtolower($valueEn)];
+        }
+
+        $exists = PropertyListing::where('is_active', true)
             ->where('country', $country)
-            ->where('transaction_type', $dbValue)
-            ->distinct()
-            ->value('transaction_type');
+            ->where(function ($q) use ($equivalents) {
+                foreach ($equivalents as $val) {
+                    $q->orWhereRaw('LOWER(transaction_type) = ?', [$val]);
+                }
+            })
+            ->exists();
+
+        return $exists ? $valueEn : null;
     }
 
     /**
      * Valida si un slug existe como tipo de propiedad en la BD
-     * Mapea slugs traducidos (casa, departamento) a valores en BD (house, apartment)
+     * Mapea slugs traducidos (casas, departamentos) a value_en (house, apartment)
+     * Verifica usando todos los valores regionales equivalentes, case-insensitive
      */
     public static function validatePropertyType(string $slug, string $country): ?string
     {
-        // Mapeo de slugs traducidos a valores de BD
         $propertyMap = [
-            'casa' => 'house',
-            'casas' => 'house',
-            'house' => 'house',
-            'houses' => 'house',
-            'departamento' => 'apartment',
-            'departamentos' => 'apartment',
-            'apartment' => 'apartment',
-            'apartments' => 'apartment',
-            'oficina' => 'office',
-            'oficinas' => 'office',
-            'office' => 'office',
-            'offices' => 'office',
-            'local' => 'commercial',
-            'locales' => 'commercial',
-            'commercial' => 'commercial',
-            'terreno' => 'land',
-            'terrenos' => 'land',
-            'land' => 'land',
-            'lands' => 'land',
-            'campo' => 'field',
-            'campos' => 'field',
-            'field' => 'field',
-            'fields' => 'field',
-            'finca' => 'farm',
-            'fincas' => 'farm',
-            'farm' => 'farm',
-            'farms' => 'farm',
-            'galpon' => 'warehouse',
-            'galpones' => 'warehouse',
-            'warehouse' => 'warehouse',
-            'warehouses' => 'warehouse',
+            'casa' => 'house', 'casas' => 'house', 'house' => 'house', 'houses' => 'house',
+            'departamento' => 'apartment', 'departamentos' => 'apartment',
+            'apartment' => 'apartment', 'apartments' => 'apartment',
+            'piso' => 'apartment', 'pisos' => 'apartment',
+            'apartamento' => 'apartment', 'apartamentos' => 'apartment',
+            'oficina' => 'office', 'oficinas' => 'office', 'office' => 'office', 'offices' => 'office',
+            'local' => 'commercial', 'locales' => 'commercial', 'commercial' => 'commercial',
+            'terreno' => 'land', 'terrenos' => 'land', 'land' => 'land', 'lands' => 'land',
+            'lote' => 'land', 'lotes' => 'land',
+            'campo' => 'field', 'campos' => 'field', 'field' => 'field', 'fields' => 'field',
+            'finca' => 'farm', 'fincas' => 'farm', 'farm' => 'farm', 'farms' => 'farm',
+            'rancho' => 'farm', 'parcela' => 'farm',
+            'galpon' => 'warehouse', 'galpones' => 'warehouse',
+            'bodega' => 'warehouse', 'bodegas' => 'warehouse', 'nave' => 'warehouse',
+            'warehouse' => 'warehouse', 'warehouses' => 'warehouse',
+            'cochera' => 'parking', 'cocheras' => 'parking',
+            'garaje' => 'parking', 'garajes' => 'parking',
+            'estacionamiento' => 'parking', 'parqueadero' => 'parking', 'parking' => 'parking',
+            'ph' => 'townhouse', 'townhouse' => 'townhouse', 'townhouses' => 'townhouse',
+            'condominio' => 'condo', 'condominios' => 'condo', 'condo' => 'condo',
+            'chalet' => 'villa', 'chalets' => 'villa', 'villa' => 'villa',
+            'atico' => 'penthouse', 'aticos' => 'penthouse', 'penthouse' => 'penthouse',
         ];
 
-        // Si el slug está en el mapa, usar el valor correspondiente
-        $dbValue = $propertyMap[$slug] ?? null;
-        
-        if (!$dbValue) {
+        $valueEn = $propertyMap[$slug] ?? null;
+        if (!$valueEn) {
             return null;
         }
 
-        // Verificar que exista en BD
-        return PropertyListing::where('is_active', true)
+        // Obtener todos los valores regionales con ese value_en (casa, departamento, piso…)
+        $equivalents = PropertyType::where('value_en', $valueEn)
+            ->where('is_active', true)
+            ->pluck('value')
+            ->map(fn($v) => strtolower($v))
+            ->unique()
+            ->toArray();
+
+        if (empty($equivalents)) {
+            $equivalents = [strtolower($valueEn)];
+        }
+
+        $exists = PropertyListing::where('is_active', true)
             ->where('country', $country)
-            ->where('property_type', $dbValue)
-            ->distinct()
-            ->value('property_type');
+            ->where(function ($q) use ($equivalents) {
+                foreach ($equivalents as $val) {
+                    $q->orWhereRaw('LOWER(property_type) = ?', [$val]);
+                }
+            })
+            ->exists();
+
+        return $exists ? $valueEn : null;
     }
 
     /**

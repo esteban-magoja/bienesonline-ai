@@ -5,6 +5,8 @@ use Livewire\Volt\Component;
 use App\Models\PropertyRequest;
 use Livewire\Attributes\Rule;
 use App\Models\CountrySetting;
+use App\Models\PropertyType;
+use App\Models\TransactionType;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
 use Nnjeim\World\Models\City;
@@ -72,6 +74,8 @@ new class extends Component {
     public $countries;
     public $states = [];
     public $cities = [];
+    public $propertyTypes = [];
+    public $transactionTypes = [];
     public $availableCurrencies = ['USD', 'ARS', 'EUR', 'BRL', 'MXN', 'CLP', 'COP'];
 
     #[Computed]
@@ -89,6 +93,11 @@ new class extends Component {
     public function mount()
     {
         $this->countries = CountrySetting::getEnabledCountries();
+        $this->propertyTypes = PropertyType::getByCountry('INTL');
+        $this->transactionTypes = TransactionType::getByCountry('INTL');
+        // Valores por defecto con los primeros de la lista INTL
+        $this->property_type = $this->propertyTypes->first()?->value ?? 'casa';
+        $this->transaction_type = $this->transactionTypes->first()?->value ?? 'venta';
     }
 
     public function updatedSelectedCountry($countryId)
@@ -102,6 +111,15 @@ new class extends Component {
         $country = Country::find($countryId);
         if ($country && isset($country->currency['code'])) {
             $this->currency = $country->currency['code'];
+        }
+
+        // Cargar tipos de inmueble y operación del país seleccionado
+        $iso2 = $country?->iso2;
+        if ($iso2) {
+            $this->propertyTypes   = PropertyType::getByCountry($iso2);
+            $this->transactionTypes = TransactionType::getByCountry($iso2);
+            $this->property_type   = $this->propertyTypes->first()?->value ?? $this->property_type;
+            $this->transaction_type = $this->transactionTypes->first()?->value ?? $this->transaction_type;
         }
     }
 
@@ -254,13 +272,9 @@ new class extends Component {
                                 <select wire:model="property_type" 
                                         id="property_type" 
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="casa">{{ __('properties.types.house') }}</option>
-                                    <option value="departamento">{{ __('properties.types.apartment') }}</option>
-                                    <option value="local">{{ __('properties.types.commercial') }}</option>
-                                    <option value="oficina">{{ __('properties.types.office') }}</option>
-                                    <option value="terreno">{{ __('properties.types.land') }}</option>
-                                    <option value="campo">{{ __('properties.types.farm') }}</option>
-                                    <option value="galpon">{{ __('properties.types.warehouse') }}</option>
+                                    @foreach($propertyTypes as $type)
+                                        <option value="{{ $type->value }}">{{ $type->label }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -271,8 +285,9 @@ new class extends Component {
                                 <select wire:model="transaction_type" 
                                         id="transaction_type" 
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="venta">{{ __('properties.transaction_types.sale') }}</option>
-                                    <option value="alquiler">{{ __('properties.transaction_types.rent') }}</option>
+                                    @foreach($transactionTypes as $type)
+                                        <option value="{{ $type->value }}">{{ $type->label }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
