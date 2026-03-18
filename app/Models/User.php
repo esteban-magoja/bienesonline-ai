@@ -72,10 +72,11 @@ class User extends WaveUser
             // Check if the username attribute is empty
             if (empty($user->username)) {
                 // Use the name to generate a slugified username
-                $username = Str::slug($user->name, '');
+                $base = !empty($user->agency) ? $user->agency : $user->name;
+                $username = Str::slug($base, '');
                 $i = 1;
                 while (self::where('username', $username)->exists()) {
-                    $username = Str::slug($user->name, '').$i;
+                    $username = Str::slug($base, '').$i;
                     $i++;
                 }
                 $user->username = $username;

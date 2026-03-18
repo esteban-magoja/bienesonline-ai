@@ -13,6 +13,7 @@ name('signup');
 new class extends Component
 {
     public $name = '';
+    public $agency = '';
     public $email = '';
     public $password = '';
     public $password_confirmation = '';
@@ -59,6 +60,7 @@ new class extends Component
 
         $userData = [
             'name' => $this->name,
+            'agency' => $this->agency ?: null,
             'email' => $this->email,
             'password' => Hash::make($this->password),
             'locale' => $locale,
@@ -115,6 +117,20 @@ new class extends Component
                 @error('name') 
                     <span class="text-red-500 text-sm">{{ $message }}</span> 
                 @enderror
+            </div>
+
+            <!-- Inmobiliaria / Empresa (opcional) -->
+            <div>
+                <x-auth::elements.input 
+                    :label="__('auth.signup.agency')" 
+                    type="text" 
+                    wire:model="agency" 
+                    :placeholder="__('auth.signup.agency_placeholder')"
+                />
+                @error('agency') 
+                    <span class="text-red-500 text-sm">{{ $message }}</span> 
+                @enderror
+                <p class="text-sm text-gray-500 mt-1">{{ __('auth.signup.agency_help') }}</p>
             </div>
 
             <!-- Email -->
