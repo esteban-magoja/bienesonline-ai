@@ -29,7 +29,7 @@
                 <button @click="$dispatch('open-sidebar')" class="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-md text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:bg-zinc-700/70 hover:bg-gray-200/70">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
                 </button>
-                <x-logo class="w-auto h-7" />
+                <x-logo-dark class="w-auto h-10" />
                 {{-- Language switcher removed - now in sidebar --}}
                 <x-app.user-menu position="top" />
             </div>

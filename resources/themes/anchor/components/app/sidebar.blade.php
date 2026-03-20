@@ -19,7 +19,7 @@
 
                 <div class="flex items-center px-5 space-x-2 mb-4">
                     <a href="{{ route_localized('home') }}" class="flex justify-center items-center py-4 pl-0.5 space-x-1 font-bold text-zinc-900">
-                        <x-logo class="w-auto h-7" />
+                        <x-logo-dark class="w-auto h-10" />
                     </a>
                 </div>
 

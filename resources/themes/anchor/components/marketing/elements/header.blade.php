@@ -42,7 +42,7 @@
             <div class="z-20 flex items-center justify-between w-full md:w-auto">
                 <div class="relative z-20 inline-flex">
                     <a href="{{ route_localized('home') }}" class="flex items-center justify-center space-x-3 font-bold text-white">
-                    <x-logo class="w-auto h-8 md:h-9"></x-logo>
+                    <x-logo class="w-auto h-12 md:h-14"></x-logo>
                     </a>
                 </div>
                 <div class="flex justify-end flex-grow md:hidden">
