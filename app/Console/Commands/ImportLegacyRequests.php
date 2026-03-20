@@ -94,6 +94,7 @@ class ImportLegacyRequests extends Command
 
         $total   = count($records);
         $created = 0;
+        $skipped = 0;
         $errors  = 0;
 
         $this->info("Fase 1 — Importando {$total} registros" . ($dryRun ? ' (dry-run)' : '') . '...');
@@ -106,6 +107,23 @@ class ImportLegacyRequests extends Command
                 $mapped = $this->mapRecord($row, $userId, $countryName, strtoupper(pathinfo($filePath, PATHINFO_FILENAME)));
 
                 if (!$dryRun) {
+                    // Detectar duplicados por combinación de campos únicos del registro
+                    $exists = DB::table('property_requests')
+                        ->where('client_email',     $mapped['client_email'])
+                        ->where('property_type',    $mapped['property_type'])
+                        ->where('transaction_type', $mapped['transaction_type'])
+                        ->where('city',             $mapped['city'])
+                        ->where('state',            $mapped['state'])
+                        ->where('country',          $mapped['country'])
+                        ->where('created_at',       $mapped['created_at'])
+                        ->exists();
+
+                    if ($exists) {
+                        $skipped++;
+                        $bar->advance();
+                        continue;
+                    }
+
                     DB::table('property_requests')->insert($mapped);
                 }
 
@@ -124,7 +142,7 @@ class ImportLegacyRequests extends Command
         $bar->finish();
         $this->newLine();
 
-        $this->info("   ✅ Importados: {$created}  ❌ Errores: {$errors}");
+        $this->info("   ✅ Importados: {$created}  ⏭️  Saltados (duplicados): {$skipped}  ❌ Errores: {$errors}");
 
         if ($this->unmappedPropertyTypes) {
             $unique = array_unique($this->unmappedPropertyTypes);
