@@ -27,7 +27,7 @@ new class extends Component
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'movil' => 'required|string|max:20',
-            'whatsapp_opt_in' => 'accepted',
+            'whatsapp_opt_in' => 'nullable|boolean',
         ];
     }
 
@@ -43,7 +43,7 @@ new class extends Component
             'password.min' => __('validation.min.string', ['attribute' => __('attributes.password'), 'min' => 8]),
             'password.confirmed' => __('validation.confirmed', ['attribute' => __('attributes.password')]),
             'movil.required' => __('validation.required', ['attribute' => __('attributes.phone')]),
-            'whatsapp_opt_in.accepted' => __('auth.signup.whatsapp_opt_in_required'),
+
         ];
     }
 
@@ -65,8 +65,8 @@ new class extends Component
             'password' => Hash::make($this->password),
             'locale' => $locale,
             'movil' => $this->movil,
-            'whatsapp_opt_in' => true,
-            'whatsapp_opt_in_at' => now(),
+            'whatsapp_opt_in' => (bool) $this->whatsapp_opt_in,
+            'whatsapp_opt_in_at' => $this->whatsapp_opt_in ? now() : null,
         ];
 
         $user = User::create($userData);
@@ -199,7 +199,7 @@ new class extends Component
                 @enderror
             </div>
 
-            <!-- WhatsApp Opt-in (obligatorio) -->
+            <!-- WhatsApp Opt-in (opcional) -->
             <div>
                 <label class="flex items-start gap-3 cursor-pointer">
                     <input
