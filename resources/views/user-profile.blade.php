@@ -13,7 +13,7 @@
                     {{-- Avatar --}}
                     <div class="flex-shrink-0">
                         @if($user->avatar)
-                            <img src="{{ Storage::url($user->avatar) }}" 
+                            <img src="{{ $user->avatar() }}" 
                                  alt="{{ $user->name }}" 
                                  class="w-32 h-32 rounded-full border-4 border-white shadow-xl object-cover">
                         @else

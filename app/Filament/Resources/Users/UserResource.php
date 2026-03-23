@@ -81,7 +81,7 @@ class UserResource extends Resource
                     ->searchable(),
                 ImageColumn::make('avatar')
                     ->circular()
-                    ->defaultImageUrl(url('storage/demo/default.png')),
+                    ->defaultImageUrl(url('storage/demo/default.png?v=2')),
                 TextColumn::make('username')
                     ->searchable(),
             ])

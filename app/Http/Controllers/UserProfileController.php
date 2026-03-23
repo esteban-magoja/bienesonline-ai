@@ -169,7 +169,7 @@ class UserProfileController extends Controller
 
         // Imagen (avatar del usuario o fallback)
         $ogImage = $user->avatar 
-            ? asset('storage/' . $user->avatar) 
+            ? $user->avatar() 
             : asset('images/default-avatar.png');
 
         return [

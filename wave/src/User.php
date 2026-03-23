@@ -279,7 +279,13 @@ class User extends AuthUser implements FilamentUser, HasAvatar, JWTSubject
 
     public function avatar()
     {
-        return Storage::url($this->avatar);
+        $avatarUrl = Storage::url($this->avatar);
+
+        if ($this->avatar === config('voyager.user.default_avatar')) {
+            return $avatarUrl.'?v=2';
+        }
+
+        return $avatarUrl;
     }
 
     /**
