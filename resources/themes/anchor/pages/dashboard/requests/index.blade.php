@@ -153,7 +153,7 @@
                             </div>
                         @endif
 
-                        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                        <div class="flex flex-col gap-3 pt-4 border-t border-gray-200 sm:flex-row sm:items-center sm:justify-between">
                             <div class="text-sm text-gray-500">
                                 {{ __('dashboard.requests.created') }} {{ $request->created_at->diffForHumans() }}
                                 @if($request->expires_at)
@@ -161,12 +161,12 @@
                                 @endif
                             </div>
 
-                            <div class="flex gap-2">
+                            <div class="flex flex-wrap gap-2">
                                 <a href="{{ route('dashboard.requests.show', $request) }}" 
-                                   class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors
-                                       {{ ($matchCounts[$request->id] ?? 0) > 0
-                                           ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
-                                           : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50' }}">
+                                   class="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors
+                                        {{ ($matchCounts[$request->id] ?? 0) > 0
+                                            ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
+                                            : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50' }}">
                                     {{ __('dashboard.requests.view_matches') }}
                                     @if(($matchCounts[$request->id] ?? 0) > 0)
                                         <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold bg-white text-blue-600 rounded-full">
@@ -175,26 +175,26 @@
                                     @endif
                                 </a>
                                 <a href="{{ route('dashboard.requests.edit', $request) }}" 
-                                   class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                                   class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                                     {{ __('dashboard.requests.edit') }}
                                 </a>
                                 <form action="{{ route('dashboard.requests.toggle-active', $request) }}" 
                                       method="POST" 
-                                      class="inline">
+                                      class="inline-flex">
                                     @csrf
                                     <button type="submit" 
-                                            class="px-3 py-2 text-sm font-medium {{ $request->is_active ? 'text-orange-600 hover:bg-orange-50' : 'text-green-600 hover:bg-green-50' }} rounded-lg transition-colors">
+                                            class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium {{ $request->is_active ? 'text-orange-600 hover:bg-orange-50' : 'text-green-600 hover:bg-green-50' }} rounded-lg transition-colors">
                                         {{ $request->is_active ? __('dashboard.requests.deactivate') : __('dashboard.requests.activate') }}
                                     </button>
                                 </form>
                                 <form action="{{ route('dashboard.requests.destroy', $request) }}" 
                                       method="POST" 
-                                      class="inline"
+                                      class="inline-flex"
                                       onsubmit="return confirm('{{ __('dashboard.requests.delete_confirm') }}')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" 
-                                            class="px-3 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors">
+                                            class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors">
                                         {{ __('dashboard.requests.delete') }}
                                     </button>
                                 </form>
