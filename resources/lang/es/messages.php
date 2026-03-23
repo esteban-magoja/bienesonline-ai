@@ -235,7 +235,7 @@ return [
     'publish_request' => 'Publicar Solicitud',
     'notifications' => 'Notificaciones',
     'settings' => 'Configuración',
-    'membership' => 'Membresía',
+    'membership' => 'Suscripción',
     'view_admin' => 'Ver Panel Admin',
     'leave_impersonation' => 'Dejar suplantación',
     'logout' => 'Salir',

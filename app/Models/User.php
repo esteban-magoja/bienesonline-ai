@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Wave\Traits\HasProfileKeyValues;
 use Wave\User as WaveUser;
 
-class User extends WaveUser
+class User extends WaveUser implements HasLocalePreference
 {
     use HasProfileKeyValues, Notifiable;
 
@@ -135,5 +136,10 @@ class User extends WaveUser
     public function sendEmailVerificationNotification()
     {
         $this->notify(new \App\Notifications\VerifyEmail);
+    }
+
+    public function preferredLocale()
+    {
+        return in_array($this->locale, ['es', 'en']) ? $this->locale : config('app.locale', 'es');
     }
 }

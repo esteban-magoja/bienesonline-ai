@@ -55,7 +55,7 @@ return [
     'subscription' => [
         'title' => 'Suscripción',
         'current_plan' => 'Plan Actual',
-        'plan_details' => 'Detalles de tu membresía',
+        'plan_details' => 'Detalles de tu suscripción',
         'change_plan' => 'Cambiar Plan',
         'cancel_subscription' => 'Cancelar Suscripción',
         'renews_on' => 'Se renueva el',

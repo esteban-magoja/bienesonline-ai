@@ -21,14 +21,14 @@ return [
     'step_2_description' => 'Paso 2: Sube imágenes para tu anuncio.',
     
     // Premium
-    'premium_required' => 'Membresía Premium Requerida',
-    'premium_description' => 'Para publicar anuncios de propiedades necesitas una membresía premium. Las membresías te permiten:',
+    'premium_required' => 'Suscripción Premium Requerida',
+    'premium_description' => 'Para publicar anuncios de propiedades necesitas una suscripción premium. Esta suscripción te permite:',
     'premium_benefit_unlimited' => 'Publicar anuncios ilimitados de propiedades',
     'premium_benefit_notifications' => 'Recibir notificaciones de solicitudes compatibles',
     'premium_benefit_stats' => 'Acceso a estadísticas avanzadas',
     'premium_benefit_support' => 'Soporte prioritario',
-    'get_premium' => 'Obtener Membresía Premium',
-    'already_premium' => 'Ya soy socio premium en BienesOnline',
+    'get_premium' => 'Obtener Suscripción Premium',
+    'already_premium' => 'Ya tengo una suscripción premium en BienesOnline',
     
     // Búsqueda
     'search' => 'Buscar',

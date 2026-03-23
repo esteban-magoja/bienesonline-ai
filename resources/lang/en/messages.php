@@ -235,7 +235,7 @@ return [
     'publish_request' => 'Publish Request',
     'notifications' => 'Notifications',
     'settings' => 'Settings',
-    'membership' => 'Membership',
+    'membership' => 'Subscription',
     'view_admin' => 'View Admin',
     'leave_impersonation' => 'Leave impersonation',
     'logout' => 'Logout',

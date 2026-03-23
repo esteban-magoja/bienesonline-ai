@@ -128,5 +128,6 @@ return [
         'greeting' => 'Welcome to the site :name',
         'body' => 'Your registered email is :email. Please click on the link below to verify your email account.',
         'action' => 'Verify Email',
+        'outro' => 'If you did not create an account, no further action is required.',
     ],
 ];

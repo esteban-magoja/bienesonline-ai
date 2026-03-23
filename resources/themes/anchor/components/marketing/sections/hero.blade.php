@@ -56,8 +56,8 @@
 
             <div class="flex flex-col gap-3 justify-center items-center mx-auto mt-6 md:gap-2 md:flex-row">
                 @guest
-                <x-button size="lg" color="secondary" class="w-full md:w-auto" href="/join_us" tag="a">{{ __('messages.home_page.add_property') }}</x-button>
-                <x-button size="lg" color="secondary" class="w-full md:w-auto" href="{{ route_localized('requests.create') }}" tag="a">{{ __('messages.publish_request') }}</x-button>
+                <x-button size="lg" color="secondary" class="w-full md:w-auto" href="/{{ app()->getLocale() }}/content/join_us" tag="a">{{ __('messages.home_page.add_property') }}</x-button>
+                <x-button size="lg" color="secondary" class="w-full md:w-auto" href="/{{ app()->getLocale() }}/post-request" tag="a">{{ __('messages.publish_request') }}</x-button>
                 @else
                 <x-button size="lg" color="secondary" class="w-full md:w-auto" href="/property-listings/create" tag="a">{{ __('messages.home_page.add_property') }}</x-button>
                 <x-button size="lg" color="secondary" class="w-full md:w-auto" href="{{ route_localized('dashboard.requests.create') }}" tag="a">{{ __('messages.publish_request') }}</x-button>

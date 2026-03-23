@@ -128,5 +128,6 @@ return [
         'greeting' => 'Bienvenido al sitio :name',
         'body' => 'Tu correo registrado es :email. Por favor haz clic en el siguiente enlace para verificar tu cuenta.',
         'action' => 'Verificar Email',
+        'outro' => 'Si no creaste una cuenta, no necesitas hacer nada más.',
     ],
 ];

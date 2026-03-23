@@ -25,7 +25,7 @@ new class extends Component {
     {
         $user = auth()->user();
         
-        // Verificar membresía premium
+        // Verificar suscripción premium
         $this->canSearch = $user->hasRole('admin') || $user->hasRole('premium');
         
         // Get unique countries from active property requests

@@ -4,9 +4,9 @@
 # {{ $greeting }}
 @else
 @if ($level === 'error')
-# ¡Ups!
+# {{ __('Whoops!') }}
 @else
-# ¡Hola!
+# {{ __('emails.common.hello') }}!
 @endif
 @endif
 
@@ -43,7 +43,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-Saludos,<br>
+{{ __('emails.common.regards') }},<br>
 {{ config('app.name') }}
 @endif
 
@@ -51,10 +51,9 @@ Saludos,<br>
 @isset($actionText)
 @slot('subcopy')
 {{ __(
-    "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
-    'into your web browser:',
+    'emails.common.trouble_clicking',
     [
-        'actionText' => $actionText,
+        'action' => $actionText,
     ]
 ) }} <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
 @endslot

@@ -13,7 +13,7 @@
                 </p>
                 
                 @if (!$canSearch)
-                    <!-- Mensaje de Membresía Requerida -->
+                    <!-- Mensaje de Suscripción Requerida -->
                     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-8">
                         <div class="flex">
                             <div class="flex-shrink-0">
@@ -23,10 +23,10 @@
                             </div>
                             <div class="ml-4 text-left">
                                 <h3 class="text-xl font-medium text-yellow-800">
-                                    Membresía Premium Requerida
+                                    Suscripción Premium Requerida
                                 </h3>
                                 <div class="mt-3 text-sm text-yellow-700">
-                                    <p class="mb-3">Para buscar solicitudes de clientes necesitas una membresía premium. Las membresías te permiten:</p>
+                                    <p class="mb-3">Para buscar solicitudes de clientes necesitas una suscripción premium. Esta suscripción te permite:</p>
                                     <ul class="list-disc list-inside space-y-2">
                                         <li>Buscar clientes potenciales ilimitados</li>
                                         <li>Contactar directamente a clientes interesados</li>
@@ -41,7 +41,7 @@
                                             <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                             </svg>
-                                            Obtener Membresía Premium
+                                            Obtener Suscripción Premium
                                         </a>
                                     @else
                                         <a href="{{ route('login') }}" class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

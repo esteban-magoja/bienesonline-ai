@@ -55,7 +55,7 @@ return [
     'subscription' => [
         'title' => 'Subscription',
         'current_plan' => 'Current Plan',
-        'plan_details' => 'Your membership details',
+        'plan_details' => 'Your subscription details',
         'change_plan' => 'Change Plan',
         'cancel_subscription' => 'Cancel Subscription',
         'renews_on' => 'Renews on',
