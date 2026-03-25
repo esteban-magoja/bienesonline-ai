@@ -22,7 +22,7 @@ class PhoneVerificationNotification extends Notification implements ShouldQueue
      * Estructura del template en Meta Business Suite:
      *   Body {{1}} → nombre del usuario
      *   Body {{2}} → texto descriptivo (ej: "número de teléfono")
-     *   Botón URL dinámico {{token}} → token de verificación (Meta arma la URL completa)
+     *   Botón URL dinámico {{1}} → URL completa de verificación
      */
     public function toWhatsApp(mixed $notifiable): array
     {
@@ -33,6 +33,8 @@ class PhoneVerificationNotification extends Notification implements ShouldQueue
 
         $phoneLabel = $locale === 'en' ? 'phone number' : 'número de teléfono';
 
+        $verificationUrl = $notifiable->movil_verification_token;
+
         return [
             'template'      => $templateConfig['name'],
             'language'      => $templateConfig['language'],
@@ -41,7 +43,7 @@ class PhoneVerificationNotification extends Notification implements ShouldQueue
                 $phoneLabel,
             ],
             'button_params' => [
-                0 => $notifiable->movil_verification_token,
+                0 => $verificationUrl,
             ],
         ];
     }
