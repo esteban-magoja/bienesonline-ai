@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BienesOnline se renueva — Conocé BienesOnline.ai</title>
+  <meta name="description" content="BienesOnline está migrando a BienesOnline.ai, la nueva plataforma inmobiliaria con inteligencia artificial. Buscador semántico, matching automático y más." />
+
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand:       #1a6fff;
+      --brand-dark:  #0f4fcc;
+      --brand-ai:    #7c3aed;
+      --brand-ai-lt: #ede9fe;
+      --success:     #059669;
+      --warn:        #d97706;
+      --gray-50:     #f9fafb;
+      --gray-100:    #f3f4f6;
+      --gray-200:    #e5e7eb;
+      --gray-500:    #6b7280;
+      --gray-700:    #374151;
+      --gray-900:    #111827;
+      --radius:      12px;
+      --shadow:      0 4px 24px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--gray-900);
+      background: #fff;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Utility ── */
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 14px; border-radius: 999px; font-size: .78rem; font-weight: 600;
+    }
+    .badge-warn  { background: #fef3c7; color: var(--warn); }
+    .badge-ai    { background: var(--brand-ai-lt); color: var(--brand-ai); }
+    .badge-new   { background: #dcfce7; color: var(--success); }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: var(--warn);
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: .875rem;
+      font-weight: 600;
+      letter-spacing: .01em;
+    }
+    .topbar a { text-decoration: underline; color: #fff; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.2rem; font-weight: 800;
+    }
+    .nav-logo span.ai { color: var(--brand-ai); }
+    .nav-logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-ai); margin-left: 2px; animation: pulse 2s infinite; }
+    .nav-cta {
+      background: var(--brand-ai); color: #fff;
+      padding: 9px 22px; border-radius: 8px;
+      font-weight: 600; font-size: .9rem;
+      transition: background .2s;
+    }
+    .nav-cta:hover { background: #6d28d9; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      color: #fff;
+      padding: 80px 0 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(124,58,237,.25) 0%, transparent 65%),
+                  radial-gradient(ellipse at 30% 70%, rgba(26,111,255,.2) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px; padding: 6px 18px;
+      font-size: .82rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+      margin-bottom: 28px; color: #c4b5fd;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900; line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, #818cf8, #c084fc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem; color: #cbd5e1;
+      max-width: 620px; margin: 0 auto 40px;
+    }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--brand-ai); color: #fff;
+      padding: 14px 32px; border-radius: 10px;
+      font-weight: 700; font-size: 1rem;
+      transition: all .2s; box-shadow: 0 0 0 0 rgba(124,58,237,.5);
+    }
+    .btn-primary:hover { background: #6d28d9; box-shadow: 0 0 0 6px rgba(124,58,237,.15); }
+    .btn-secondary {
+      background: rgba(255,255,255,.1); color: #fff;
+      border: 1px solid rgba(255,255,255,.25);
+      padding: 14px 32px; border-radius: 10px;
+      font-weight: 600; font-size: 1rem;
+      transition: background .2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,.18); }
+
+    /* ── Migration alert ── */
+    .migration-alert {
+      background: #fffbeb; border: 1px solid #fde68a;
+      border-radius: var(--radius); padding: 28px 36px;
+      display: flex; gap: 20px; align-items: flex-start;
+      margin: 56px 0;
+      box-shadow: var(--shadow);
+    }
+    .alert-icon { font-size: 2.2rem; flex-shrink: 0; }
+    .migration-alert h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: #92400e; }
+    .migration-alert p  { color: #78350f; font-size: .95rem; line-height: 1.7; }
+    .migration-alert strong { color: #92400e; }
+
+    /* ── Section ── */
+    section { padding: 72px 0; }
+    section.alt { background: var(--gray-50); }
+
+    .section-header { text-align: center; margin-bottom: 56px; }
+    .section-header h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 800; margin: 12px 0 16px;
+    }
+    .section-header p { color: var(--gray-500); max-width: 520px; margin: 0 auto; font-size: 1rem; }
+
+    /* ── Feature grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: var(--radius); padding: 28px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 18px;
+    }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p  { color: var(--gray-500); font-size: .9rem; line-height: 1.65; }
+    .feature-card .badge { margin-top: 14px; }
+
+    /* ── Comparison table ── */
+    .compare-table {
+      width: 100%; border-collapse: collapse;
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .compare-table thead th {
+      padding: 16px 20px; text-align: left;
+      font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    }
+    .compare-table thead th:first-child  { background: var(--gray-100); color: var(--gray-700); }
+    .compare-table thead th:nth-child(2) { background: var(--gray-200); color: var(--gray-700); }
+    .compare-table thead th:nth-child(3) { background: var(--brand-ai); color: #fff; }
+    .compare-table tbody tr { border-bottom: 1px solid var(--gray-200); }
+    .compare-table tbody tr:last-child { border-bottom: none; }
+    .compare-table tbody td { padding: 14px 20px; font-size: .95rem; vertical-align: middle; }
+    .compare-table tbody td:first-child  { font-weight: 600; color: var(--gray-700); background: var(--gray-50); }
+    .compare-table tbody td:nth-child(2) { color: var(--gray-500); }
+    .compare-table tbody td:nth-child(3) { font-weight: 600; color: var(--brand-ai); }
+    .check { color: var(--success); }
+    .cross { color: #ef4444; }
+
+    /* ── Timeline ── */
+    .timeline { max-width: 640px; margin: 0 auto; }
+    .timeline-item {
+      display: flex; gap: 20px;
+      padding-bottom: 36px; position: relative;
+    }
+    .timeline-item:not(:last-child)::after {
+      content: ''; position: absolute;
+      left: 19px; top: 42px; bottom: 0; width: 2px;
+      background: var(--gray-200);
+    }
+    .timeline-dot {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; z-index: 1;
+    }
+    .dot-done    { background: #dcfce7; color: var(--success); border: 2px solid #bbf7d0; }
+    .dot-active  { background: var(--brand-ai-lt); color: var(--brand-ai); border: 2px solid #c4b5fd; animation: pulse 2s infinite; }
+    .dot-pending { background: var(--gray-100); color: var(--gray-500); border: 2px solid var(--gray-200); }
+    .timeline-body h4 { font-weight: 700; font-size: .95rem; margin-bottom: 4px; }
+    .timeline-body p  { color: var(--gray-500); font-size: .88rem; }
+    .timeline-body .badge { margin-top: 6px; }
+
+    /* ── CTA bottom ── */
+    .cta-section {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      color: #fff; text-align: center; padding: 80px 0;
+    }
+    .cta-section h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; margin-bottom: 16px; }
+    .cta-section p  { color: #c4b5fd; font-size: 1rem; margin-bottom: 36px; }
+    .cta-url {
+      display: inline-block; background: rgba(255,255,255,.1);
+      border: 1px dashed rgba(255,255,255,.3);
+      border-radius: 8px; padding: 12px 28px;
+      font-size: 1.3rem; font-weight: 800; letter-spacing: .02em;
+      color: #e0e7ff; margin-bottom: 32px;
+      transition: background .2s; cursor: pointer;
+    }
+    .cta-url:hover { background: rgba(255,255,255,.18); }
+    .copied-msg {
+      display: none; font-size: .85rem; color: #86efac;
+      margin-top: -20px; margin-bottom: 20px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--gray-900); color: var(--gray-500);
+      text-align: center; padding: 32px 24px;
+      font-size: .85rem;
+    }
+    footer strong { color: var(--gray-200); }
+
+    /* ── Animations ── */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .55; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; }
+    .reveal.visible { animation: fadeInUp .6s ease forwards; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .migration-alert { flex-direction: column; padding: 22px; }
+      .nav-cta { display: none; }
+      .nav-inner { display: none; }
+      .compare-table thead th, .compare-table tbody td { padding: 10px 12px; font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    ⚠️ &nbsp;BienesOnline está migrando a su nueva plataforma con IA &nbsp;·&nbsp;
+    <a href="https://bienesonline.ai">Visitá bienesonline.ai</a>
+  </div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container nav-inner">
+      <div class="nav-logo">
+        
+      </div>
+      <a class="nav-cta" href="https://bienesonline.ai">Ir al nuevo sitio →</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">🚀 Migración en curso</div>
+      <h1>
+        BienesOnline evoluciona.<br>
+        Conocé <span class="highlight">BienesOnline.ai</span>
+      </h1>
+      <p>
+        La misma plataforma que ya conocés, potenciada con inteligencia artificial
+        para que encontrés tu próxima propiedad de manera más rápida e inteligente.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="https://bienesonline.ai">Explorar el nuevo sitio</a>
+        <a class="btn-secondary" href="#migracion">¿Qué cambia?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert de migración -->
+  <div class="container" id="migracion">
+    <div class="migration-alert reveal">
+      <div class="alert-icon">🔄</div>
+      <div>
+        <h2>Estamos en proceso de migración</h2>
+        <p>
+          Este sitio seguirá funcionando durante el período de transición.
+          Para migrar tus anuncios al nuevo sistema,
+          <strong><u>registrate en bienesonline.ai usando el mismo correo electrónico</u></strong>
+          con el que estás registrado aquí. Una vez dentro, encontrarás un botón para
+          importar todos tus anuncios automáticamente con un solo click.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Características -->
+  <section class="alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-ai">✨ Nuevas funcionalidades</span>
+        <h2>Todo lo que trae <span style="color:var(--brand-ai)">BienesOnline.ai</span></h2>
+        <p>Herramientas pensadas para compradores, vendedores e inmobiliarias.</p>
+      </div>
+      <div class="features-grid">
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" style="background:#ede9fe">🧠</div>
+          <h3>Búsqueda con Inteligencia Artificial</h3>
+          <p>Escribí en lenguaje natural lo que buscás — "casa con jardín cerca de escuelas en Córdoba" — y el sistema entiende tu intención real.</p>
+          <span class="badge badge-ai">IA Semántica</span>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" style="background:#dcfce7">🎯</div>
+          <h3>Matching automático</h3>
+          <p>Publicá tu búsqueda y recibí notificaciones cuando aparezca una propiedad que coincida con tus criterios. Sin tener que buscar todos los días.</p>
+          <span class="badge badge-new">Notificaciones</span>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" style="background:#fef3c7">🗺️</div>
+          <h3>Mapas interactivos</h3>
+          <p>Visualizá cada propiedad en el mapa con marcadores, radio de área y enlace directo a OpenStreetMap. Sin costo adicional.</p>
+          <span class="badge badge-warn">OpenStreetMap</span>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" style="background:#dbeafe">🌎</div>
+          <h3>Adaptado a cada país</h3>
+          <p>Terminología regional según el país: "alquiler" en Argentina, "renta" en México, "arriendo" en Chile. Las búsquedas cruzadas funcionan igual.</p>
+          <span class="badge badge-ai">Multi-país</span>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" style="background:#fce7f3">📱</div>
+          <h3>Contacto por WhatsApp</h3>
+          <p>Los interesados pueden contactar directamente al anunciante por WhatsApp desde la ficha de la propiedad, con un solo click.</p>
+          <span class="badge badge-new">WhatsApp directo</span>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" style="background:#ede9fe">🔗</div>
+          <h3>URLs SEO-friendly</h3>
+          <p>Cada propiedad tiene una URL descriptiva con país, ciudad y título — ideal para compartir y para posicionarse en Google.</p>
+          <span class="badge badge-ai">SEO optimizado</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparativa -->
+  <section>
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-warn">📊 Comparativa</span>
+        <h2>Antes y después</h2>
+        <p>Lo que cambia al migrar al nuevo sistema.</p>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="compare-table reveal">
+          <thead>
+            <tr>
+              <th>Funcionalidad</th>
+              <th>BienesOnline (actual)</th>
+              <th>BienesOnline.ai (nuevo)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Publicar propiedades</td>
+              <td><span class="check">✓</span> Disponible</td>
+              <td><span class="check">✓</span> Disponible + IA</td>
+            </tr>
+            <tr>
+              <td>Búsqueda</td>
+              <td>Por filtros básicos</td>
+              <td>Semántica con IA 🧠</td>
+            </tr>
+            <tr>
+              <td>Solicitudes de búsqueda</td>
+              <td><span class="cross">✗</span> No disponible</td>
+              <td><span class="check">✓</span> Con matching automático</td>
+            </tr>
+            <tr>
+              <td>Notificaciones de matches</td>
+              <td><span class="cross">✗</span> No disponible</td>
+              <td><span class="check">✓</span> Por email y WhatsApp</td>
+            </tr>
+            <tr>
+              <td>Integración como modelos y agentes de IA</td>
+              <td><span class="cross">✗</span> No disponible</td>
+              <td><span class="check">✓</span> Completa</td>
+            </tr>
+            <tr>
+              <td>Perfil de inmobiliaria</td>
+              <td>Básico</td>
+              <td>Completo con nuevas funciones</td>
+            </tr>
+            <tr>
+              <td>Terminología regional</td>
+              <td><span class="cross">✗</span> Básico</td>
+              <td><span class="check">✓</span> Por país (AR, MX, CL, ES, CO)</td>
+            </tr>
+            <tr>
+              <td>Importación de anuncios</td>
+              <td>—</td>
+              <td><span class="check">✓</span> Migración automática</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-ai">📅 Hoja de ruta</span>
+        <h2>¿Cómo va la migración?</h2>
+        <p>Seguí el estado del proceso paso a paso.</p>
+      </div>
+      <div class="timeline">
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot dot-done">✓</div>
+          <div class="timeline-body">
+            <h4>Nueva plataforma en producción</h4>
+            <p>BienesOnline.ai está activo y recibiendo usuarios. Podés registrarte y publicar desde ya.</p>
+            <span class="badge badge-new">Completado</span>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot dot-done">✓</div>
+          <div class="timeline-body">
+            <h4>Importación de anuncios del sitio actual</h4>
+            <p>Los anuncios del sitio viejo pueden importarse al nuevo con un botón desde el dashboard. <strong>Importante:</strong> registrate con el mismo correo electrónico para que el sistema reconozca tus anuncios.</p>
+            <span class="badge badge-new">Disponible</span>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot dot-active">●</div>
+          <div class="timeline-body">
+            <h4>Período de migración activo</h4>
+            <p>Ambos sitios funcionan en paralelo. Los usuarios están siendo invitados a migrar sus cuentas.</p>
+            <span class="badge badge-ai">En curso</span>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot dot-pending">○</div>
+          <div class="timeline-body">
+            <h4>Cierre del sitio legacy</h4>
+            <p>Una vez completada la migración, este sitio redirigirá automáticamente a bienesonline.ai.</p>
+            <span class="badge" style="background:var(--gray-100);color:var(--gray-500)">Próximamente</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Email callout -->
+  <div class="container" style="padding-bottom: 0">
+    <div class="migration-alert reveal" style="border-color:#c4b5fd; background:#f5f3ff; margin-bottom: 0">
+      <div class="alert-icon">📧</div>
+      <div>
+        <h2 style="color:#5b21b6">Usá el mismo correo electrónico</h2>
+        <p style="color:#4c1d95">
+          Al registrarte en <strong>bienesonline.ai</strong>, ingresá exactamente la misma dirección de email
+          que usás en este sitio. Así el sistema te reconocerá y podrás importar todos
+          tus anuncios con un solo click desde tu dashboard, sin tener que volver a cargar nada.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA bottom -->
+  <div class="cta-section">
+    <div class="container">
+      <h2>Empezá en el nuevo BienesOnline.ai</h2>
+      <p>Registrá tu cuenta gratis y migrá tus anuncios en minutos.</p>
+      <div
+        class="cta-url"
+        id="copyUrl"
+        title="Click para copiar"
+        onclick="copyUrl()"
+      >bienesonline.ai</div>
+      <div class="copied-msg" id="copiedMsg">✓ &nbsp;Copiado al portapapeles</div>
+      <br>
+      <a class="btn-primary" href="https://bienesonline.ai" style="display:inline-block">
+        Ir a BienesOnline.ai →
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© <span id="year"></span> <strong>BienesOnline</strong> · Migrando a <strong>bienesonline.ai</strong></p>
+  </footer>
+
+  <script>
+    // ── Año dinámico ──
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── Copiar URL ──
+    function copyUrl() {
+      navigator.clipboard.writeText('https://bienesonline.ai').then(function () {
+        var msg = document.getElementById('copiedMsg');
+        msg.style.display = 'block';
+        setTimeout(function () { msg.style.display = 'none'; }, 2500);
+      });
+    }
+
+    // ── Scroll reveal ──
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Stagger sibling cards
+          var siblings = entry.target.parentElement.querySelectorAll('.reveal');
+          siblings.forEach(function (el, i) {
+            el.style.animationDelay = (i * 0.08) + 's';
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>

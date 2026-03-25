@@ -38,6 +38,7 @@ class WhatsAppChannel
                 $message['template'],
                 $message['language'],
                 $message['params'] ?? [],
+                $message['button_params'] ?? [],
             );
         } else {
             $this->whatsApp->sendText($phone, $message);

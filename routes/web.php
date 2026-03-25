@@ -36,6 +36,13 @@ Route::get('/sitemap-properties-{locale}.xml', [SitemapController::class, 'prope
     ->name('sitemap.properties');
 
 // ============================================================================
+// PHONE VERIFICATION (Sin prefijo de locale, sin login requerido)
+// ============================================================================
+Route::get('/verify-phone/{token}', [\App\Http\Controllers\PhoneVerificationController::class, 'verify'])
+    ->name('phone.verify');
+
+
+// ============================================================================
 // 1. REDIRECT RAÍZ AL LOCALE POR DEFECTO
 // ============================================================================
 Route::get('/', function () {

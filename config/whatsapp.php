@@ -46,6 +46,16 @@ return [
                 'language' => env('WHATSAPP_WELCOME_LANGUAGE_EN', 'en_US'),
             ],
         ],
+        'verify' => [
+            'es' => [
+                'name' => env('WHATSAPP_VERIFY_TEMPLATE_ES', 'verify_es'),
+                'language' => env('WHATSAPP_VERIFY_LANGUAGE_ES', 'es'),
+            ],
+            'en' => [
+                'name' => env('WHATSAPP_VERIFY_TEMPLATE_EN', 'verify_en'),
+                'language' => env('WHATSAPP_VERIFY_LANGUAGE_EN', 'en'),
+            ],
+        ],
     ],
 
     /*

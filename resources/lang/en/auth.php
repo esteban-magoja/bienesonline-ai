@@ -130,4 +130,17 @@ return [
         'action' => 'Verify Email',
         'outro' => 'If you did not create an account, no further action is required.',
     ],
+
+    // Phone number verification
+    'phone_verification' => [
+        'verified' => 'Your phone number has been verified successfully!',
+        'already_verified' => 'Your phone number was already verified.',
+        'invalid_token' => 'The verification link is invalid or has already been used.',
+        'title_success' => 'Phone verified',
+        'title_error' => 'Invalid link',
+        'subtitle_success' => 'Your WhatsApp number has been confirmed.',
+        'subtitle_error' => 'We could not verify your phone number.',
+        'go_home' => 'Go to home',
+        'go_dashboard' => 'Go to dashboard',
+    ],
 ];

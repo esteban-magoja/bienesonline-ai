@@ -25,13 +25,14 @@ class WhatsAppService
     /**
      * Enviar un mensaje usando un template aprobado en Meta Business Suite.
      *
-     * @param string $to   Número en formato internacional (ej: +5491112345678)
+     * @param string $to            Número en formato internacional (ej: +5491112345678)
      * @param string $templateName  Nombre del template aprobado
-     * @param string $languageCode  Código de idioma (ej: es_AR, en_US)
-     * @param array  $bodyParams    Parámetros del cuerpo del template (texto variable)
+     * @param string $languageCode  Código de idioma (ej: es, en)
+     * @param array  $bodyParams    Parámetros del cuerpo: {{1}}, {{2}}, etc.
+     * @param array  $buttonParams  Parámetros del botón URL dinámico ({{token}} u otros)
      * @return bool
      */
-    public function sendTemplate(string $to, string $templateName, string $languageCode, array $bodyParams = []): bool
+    public function sendTemplate(string $to, string $templateName, string $languageCode, array $bodyParams = [], array $buttonParams = []): bool
     {
         if (!$this->enabled) {
             if (config('whatsapp.logging')) {
@@ -63,6 +64,8 @@ class WhatsAppService
             ],
         ];
 
+        $components = [];
+
         if (!empty($bodyParams)) {
             $parameters = [];
             foreach ($bodyParams as $key => $value) {
@@ -73,12 +76,28 @@ class WhatsAppService
                 }
                 $parameters[] = $param;
             }
-            $payload['template']['components'] = [
-                [
-                    'type' => 'body',
-                    'parameters' => $parameters,
-                ],
+            $components[] = [
+                'type' => 'body',
+                'parameters' => $parameters,
             ];
+        }
+
+        // Botón URL con sufijo dinámico ({{token}} en Meta)
+        if (!empty($buttonParams)) {
+            foreach ($buttonParams as $index => $value) {
+                $components[] = [
+                    'type' => 'button',
+                    'sub_type' => 'url',
+                    'index' => (string) $index,
+                    'parameters' => [
+                        ['type' => 'text', 'text' => (string) $value],
+                    ],
+                ];
+            }
+        }
+
+        if (!empty($components)) {
+            $payload['template']['components'] = $components;
         }
 
         try {

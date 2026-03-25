@@ -40,6 +40,8 @@ class User extends WaveUser implements HasLocalePreference
         'terms_accepted_at',
         'whatsapp_opt_in',
         'whatsapp_opt_in_at',
+        'movil_verified_at',
+        'movil_verification_token',
     ];
 
     /**
@@ -62,6 +64,7 @@ class User extends WaveUser implements HasLocalePreference
         'terms_accepted_at' => 'datetime',
         'whatsapp_opt_in' => 'boolean',
         'whatsapp_opt_in_at' => 'datetime',
+        'movil_verified_at' => 'datetime',
     ];
 
     protected static function boot()

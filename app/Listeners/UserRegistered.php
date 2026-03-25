@@ -2,9 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Notifications\WelcomeWhatsAppNotification;
+use App\Notifications\PhoneVerificationNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Str;
 
 class UserRegistered implements ShouldQueue
 {
@@ -12,9 +13,15 @@ class UserRegistered implements ShouldQueue
     {
         $user = $event->user;
 
-        // Enviar bienvenida por WhatsApp si el usuario aceptó y tiene móvil
+        // Enviar verificación de teléfono por WhatsApp si el usuario aceptó y tiene móvil
         if ($user->whatsapp_opt_in && !empty($user->movil)) {
-            $user->notify(new WelcomeWhatsAppNotification());
+            // Generar token de verificación si no existe
+            if (empty($user->movil_verification_token)) {
+                $user->movil_verification_token = Str::random(64);
+                $user->saveQuietly();
+            }
+
+            $user->notify(new PhoneVerificationNotification());
         }
     }
 }

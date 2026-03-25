@@ -65,6 +65,7 @@ new class extends Component
             'movil' => $this->movil,
             'whatsapp_opt_in' => (bool) $this->whatsapp_opt_in,
             'whatsapp_opt_in_at' => $this->whatsapp_opt_in ? now() : null,
+            'movil_verification_token' => $this->whatsapp_opt_in ? \Illuminate\Support\Str::random(64) : null,
         ];
 
         $user = User::create($userData);
