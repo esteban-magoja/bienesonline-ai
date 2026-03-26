@@ -305,7 +305,7 @@ return [
         'title' => 'Dashboard',
         'description' => 'Manage your properties, requests and leads from here.',
         'my_listings' => 'My Listings',
-        'clients' => 'Clients',
+        'clients' => 'Requests',
         'messages' => 'Messages',
         'matches' => 'Matches',
         'view_listings' => 'View listings',
@@ -315,6 +315,8 @@ return [
         'unread_messages' => ':count unread',
         'view_messages' => 'View messages',
         'view_matches' => 'View matches',
+        'again' => 'again',
+        'listings' => 'listings',
         'role_message' => 'You have the role of',
     ],
     

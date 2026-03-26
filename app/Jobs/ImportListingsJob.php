@@ -79,7 +79,7 @@ class ImportListingsJob implements ShouldQueue
             'property_type'    => $data['property_type'] ?? '',
             'transaction_type' => $data['transaction_type'] ?? '',
             'price'            => $data['price'] ?? 0,
-            'currency'         => $data['currency'] ?? 'USD',
+            'currency'         => $this->normalizeCurrency($data['currency'] ?? '', $data['country'] ?? ''),
             'bedrooms'         => $data['bedrooms'] ?? 0,
             'bathrooms'        => $data['bathrooms'] ?? 0,
             'parking_spaces'   => $data['parking_spaces'] ?? 0,
@@ -168,6 +168,139 @@ class ImportListingsJob implements ShouldQueue
 
         $ext = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
         return in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif']) ? ($ext === 'jpeg' ? 'jpg' : $ext) : 'jpg';
+    }
+
+    /**
+     * Normaliza el valor de moneda del legacy a un código ISO 4217 de 3 caracteres.
+     * Usa el país para resolver ambigüedades (ej: "pesos" en México → MXN, en Argentina → ARS).
+     */
+    private function normalizeCurrency(string $currency, string $country = ''): string
+    {
+        $map = [
+            // Colones costarricenses
+            'colones'      => 'CRC',
+            'colon'        => 'CRC',
+            'colón'        => 'CRC',
+            'crc'          => 'CRC',
+            '₡'            => 'CRC',
+            // Dólares (variantes del legacy)
+            'dolares'      => 'USD',
+            'dólares'      => 'USD',
+            'dolar'        => 'USD',
+            'dólar'        => 'USD',
+            'u$d'          => 'USD',
+            'u$s'          => 'USD',
+            'usd'          => 'USD',
+            '$'            => 'USD',
+            // Euros
+            'euros'        => 'EUR',
+            'euro'         => 'EUR',
+            'eur'          => 'EUR',
+            '€'            => 'EUR',
+            // Quetzales guatemaltecos
+            'quetzales'    => 'GTQ',
+            'quetzal'      => 'GTQ',
+            'gtq'          => 'GTQ',
+            // Soles peruanos
+            'soles'        => 'PEN',
+            'sol'          => 'PEN',
+            'pen'          => 'PEN',
+            // Guaraníes paraguayos
+            'guaranies'    => 'PYG',
+            'guaraníes'    => 'PYG',
+            'guarani'      => 'PYG',
+            'guaraní'      => 'PYG',
+            'pyg'          => 'PYG',
+            // UF chilena (Unidad de Fomento)
+            'uf'           => 'CLF',
+            'ufs'          => 'CLF',
+            'unidad de fomento' => 'CLF',
+            'clf'          => 'CLF',
+            // Bolívares venezolanos
+            'bolivares'    => 'VES',
+            'bolívares'    => 'VES',
+            'bolivar'      => 'VES',
+            'bolívar'      => 'VES',
+            'ves'          => 'VES',
+            // Lempiras hondureñas
+            'lempiras'     => 'HNL',
+            'lempira'      => 'HNL',
+            'hnl'          => 'HNL',
+            // Balboas panameñas
+            'balboas'      => 'PAB',
+            'balboa'       => 'PAB',
+            'pab'          => 'PAB',
+            // Códigos ISO explícitos de pesos
+            'mxn'          => 'MXN',
+            'ars'          => 'ARS',
+            'cop'          => 'COP',
+            'clp'          => 'CLP',
+            'uyu'          => 'UYU',
+            'dop'          => 'DOP',
+        ];
+
+        $normalized = strtolower(trim($currency));
+
+        // Resolver "pesos" / "peso" usando el país de origen
+        if (in_array($normalized, ['pesos', 'peso'])) {
+            return $this->pesosByCountry($country);
+        }
+
+        if (isset($map[$normalized])) {
+            return $map[$normalized];
+        }
+
+        // Si ya es un código ISO de 2-3 letras, devolverlo en mayúsculas
+        if (preg_match('/^[a-zA-Z]{2,3}$/', $currency)) {
+            return strtoupper($currency);
+        }
+
+        // Fallback: USD
+        Log::warning('ImportListingsJob: moneda desconocida, usando USD como fallback', [
+            'currency' => $currency,
+            'country'  => $country,
+        ]);
+        return 'USD';
+    }
+
+    /**
+     * Resuelve el código ISO del peso según el nombre del país.
+     */
+    private function pesosByCountry(string $country): string
+    {
+        $countryMap = [
+            // Argentina
+            'argentina'            => 'ARS',
+            // México
+            'mexico'               => 'MXN',
+            'méxico'               => 'MXN',
+            // Colombia
+            'colombia'             => 'COP',
+            // Chile
+            'chile'                => 'CLP',
+            // Uruguay
+            'uruguay'              => 'UYU',
+            // República Dominicana
+            'republica dominicana' => 'DOP',
+            'república dominicana' => 'DOP',
+            'dominican republic'   => 'DOP',
+            // Cuba
+            'cuba'                 => 'CUP',
+            // Paraguay (usa guaraníes, pero por si acaso)
+            'paraguay'             => 'PYG',
+            // Bolivia (usa bolivianos)
+            'bolivia'              => 'BOB',
+        ];
+
+        $key = strtolower(trim($country));
+        if (isset($countryMap[$key])) {
+            return $countryMap[$key];
+        }
+
+        Log::warning('ImportListingsJob: "pesos" sin país reconocido, usando USD como fallback', [
+            'country' => $country,
+        ]);
+        return 'USD';
     }
 
     private function resolveCountryId(string $countryName): ?int
