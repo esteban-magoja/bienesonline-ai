@@ -54,13 +54,37 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-3 justify-center items-center mx-auto mt-6 md:gap-2 md:flex-row">
+            <div class="flex flex-col gap-4 justify-center items-center mx-auto mt-10 md:flex-row">
                 @guest
-                <x-button size="lg" color="secondary" class="w-full md:w-auto" href="/{{ app()->getLocale() }}/content/join_us" tag="a">{{ __('messages.home_page.add_property') }}</x-button>
-                <x-button size="lg" color="secondary" class="w-full md:w-auto" href="/{{ app()->getLocale() }}/post-request" tag="a">{{ __('messages.publish_request') }}</x-button>
+                <a href="/{{ app()->getLocale() }}/content/join_us"
+                   class="inline-flex items-center gap-2 w-auto justify-center px-7 py-3.5 text-sm font-semibold text-white bg-blue-600 rounded-xl shadow-md hover:bg-blue-700 active:scale-95 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    {{ __('messages.home_page.add_property') }}
+                </a>
+                <a href="/{{ app()->getLocale() }}/post-request"
+                   class="inline-flex items-center gap-2 w-auto justify-center px-7 py-3.5 text-sm font-semibold text-white bg-emerald-600 rounded-xl shadow-md hover:bg-emerald-700 active:scale-95 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+                    </svg>
+                    {{ __('messages.publish_request') }}
+                </a>
                 @else
-                <x-button size="lg" color="secondary" class="w-full md:w-auto" href="/property-listings/create" tag="a">{{ __('messages.home_page.add_property') }}</x-button>
-                <x-button size="lg" color="secondary" class="w-full md:w-auto" href="{{ route_localized('dashboard.requests.create') }}" tag="a">{{ __('messages.publish_request') }}</x-button>
+                <a href="/property-listings/create"
+                   class="inline-flex items-center gap-2 w-auto justify-center px-7 py-3.5 text-sm font-semibold text-white bg-blue-600 rounded-xl shadow-md hover:bg-blue-700 active:scale-95 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    {{ __('messages.home_page.add_property') }}
+                </a>
+                <a href="{{ route_localized('dashboard.requests.create') }}"
+                   class="inline-flex items-center gap-2 w-auto justify-center px-7 py-3.5 text-sm font-semibold text-white bg-emerald-600 rounded-xl shadow-md hover:bg-emerald-700 active:scale-95 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+                    </svg>
+                    {{ __('messages.publish_request') }}
+                </a>
                 @endguest
             </div>
         </div>

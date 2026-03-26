@@ -291,8 +291,14 @@ return [
         'tool_4_desc' => 'Never miss an opportunity.',
         
         // Testimonials Section
-        'testimonials_title' => 'Success Stories at BienesOnLine.ai',
-        'testimonials_description' => 'Where collaboration generates <strong><u>real results.</u></strong>',
+        'testimonials_title' => 'BienesOnline.ai in numbers',
+        'testimonials_description' => 'Where data transforms into <strong><u>real opportunities.</u></strong>',
+        'stats_title' => 'BienesOnline.ai in numbers',
+        'stats_description' => 'Where data transforms into <strong><u>real opportunities.</u></strong>',
+        'stat_1' => 'years connecting the global real estate market',
+        'stat_2' => 'properties published across 12 countries',
+        'stat_3' => 'agents and +165,000 users have already trusted the platform',
+        'stat_4' => 'monthly visits generating real contacts every day',
         'testimonial_1_quote' => '"Thanks to BienesOnLine.ai, I have doubled my client portfolio in three months. The ability to find precise \'matches\' between my properties and market demand is simply revolutionary."',
         'testimonial_1_name' => 'Sarah Mitchell',
         'testimonial_1_role' => 'Real Estate Agent',

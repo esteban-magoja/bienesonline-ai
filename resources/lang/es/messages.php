@@ -291,8 +291,14 @@ return [
         'tool_4_desc' => 'Nunca te pierdas una oportunidad.',
         
         // Testimonials Section
-        'testimonials_title' => 'Historias de Éxito en BienesOnLine.ai',
-        'testimonials_description' => 'Donde la colaboración genera <strong><u>resultados reales.</u></strong>',
+        'testimonials_title' => 'BienesOnline.ai en números',
+        'testimonials_description' => 'Donde los datos se transforman en <strong><u>oportunidades reales.</u></strong>',
+        'stats_title' => 'BienesOnline.ai en números',
+        'stats_description' => 'Donde los datos se transforman en <strong><u>oportunidades reales.</u></strong>',
+        'stat_1' => 'años conectando el mercado inmobiliario global',
+        'stat_2' => 'propiedades publicadas en 12 países',
+        'stat_3' => 'agentes y +165.000 usuarios ya confiaron en la plataforma',
+        'stat_4' => 'visitas mensuales generando contactos reales todos los días',
         'testimonial_1_quote' => '"Gracias a BienesOnLine.ai, he duplicado mi cartera de clientes en tres meses. La capacidad de encontrar \'matchs\' precisos entre mis propiedades y la demanda del mercado es simplemente revolucionaria."',
         'testimonial_1_name' => 'Laura Gómez',
         'testimonial_1_role' => 'Agente Inmobiliario',
