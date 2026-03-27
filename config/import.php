@@ -52,4 +52,11 @@ return [
      * Identificador de la fuente para el campo `source` en property_listings.
      */
     'source_name' => env('IMPORT_SOURCE_NAME', 'legacy'),
+
+    /*
+     * Cantidad de anuncios a procesar por cada job de importación.
+     * Valores más bajos son más seguros (menos memoria, menos riesgo de timeout).
+     * Recomendado: 15-25.
+     */
+    'chunk_size' => env('IMPORT_CHUNK_SIZE', 20),
 ];

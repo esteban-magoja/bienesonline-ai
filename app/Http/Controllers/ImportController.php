@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ImportListingsJob;
+use App\Jobs\ProcessImportChunkJob;
 use App\Models\ImportJob;
+use App\Models\ImportListingItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class ImportController extends Controller
@@ -60,15 +62,30 @@ class ImportController extends Controller
             return response()->json(['message' => __('import.no_listings')], 200);
         }
 
-        // Crear registro de seguimiento
+        // Crear registro de seguimiento e insertar items en la tabla dedicada
         $importJob = ImportJob::create([
             'user_id'        => $user->id,
             'status'         => 'pending',
             'total_listings' => count($listings),
         ]);
 
-        // Despachar job a la cola
-        ImportListingsJob::dispatch($importJob->id, $user->id, $listings);
+        // Insertar cada listing como fila individual (evita payload gigante en la cola)
+        $now   = now();
+        $items = array_map(fn($listing) => [
+            'import_job_id' => $importJob->id,
+            'data'          => json_encode($listing),
+            'status'        => 'pending',
+            'created_at'    => $now,
+            'updated_at'    => $now,
+        ], $listings);
+
+        // Insertar en lotes de 500 para no saturar el buffer de MySQL
+        foreach (array_chunk($items, 500) as $batch) {
+            DB::table('import_listing_items')->insert($batch);
+        }
+
+        // Despachar el primer chunk — cada chunk despacha el siguiente automáticamente
+        ProcessImportChunkJob::dispatch($importJob->id, config('import.chunk_size', 20));
 
         return response()->json([
             'message' => __('import.started'),
