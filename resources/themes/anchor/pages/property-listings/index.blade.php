@@ -14,7 +14,8 @@ middleware('auth');
 name('property-listings.index');
 
 new class extends Component {
-    public Collection $propertyListings;
+    public $propertyListings;
+    public $pagination = [];
     public array $contactCounts = [];
     public array $matchCounts = [];
     public string $searchTerm = '';
@@ -104,9 +105,29 @@ new class extends Component {
 
     private function loadAllListings(): void
     {
-        $this->propertyListings = PropertyListing::where('user_id', auth()->id())->with('primaryImage')->latest()->get();
+        // Usar paginación para evitar OOM en usuarios con muchos listados
+        $perPage = 30;
+        $paginator = PropertyListing::where('user_id', auth()->id())
+            ->with('primaryImage')
+            ->latest()
+            ->paginate($perPage);
 
-        $ids = $this->propertyListings->pluck('id')->toArray();
+        // Guardar solo los items en la propiedad serializable para Livewire
+        $this->propertyListings = collect($paginator->items());
+
+        // Guardar meta de paginación por separado (array simple)
+        $this->pagination = [
+            'current_page' => $paginator->currentPage(),
+            'last_page' => $paginator->lastPage(),
+            'per_page' => $paginator->perPage(),
+            'total' => $paginator->total(),
+            'path' => $paginator->path(),
+            'query' => $paginator->getOptions()['query'] ?? [],
+        ];
+
+        $currentListings = $this->propertyListings; 
+
+        $ids = $currentListings->pluck('id')->toArray();
         $this->contactCounts = PropertyContact::whereIn('listing_id', $ids)
             ->selectRaw('listing_id, count(*) as total')
             ->groupBy('listing_id')
@@ -115,7 +136,7 @@ new class extends Component {
 
         // Match counts: usa cache si existe, sino conteo SQL simple (sin embeddings)
         $this->matchCounts = [];
-        foreach ($this->propertyListings as $listing) {
+        foreach ($currentListings as $listing) {
             $cached = Cache::get("matches_listing_{$listing->id}");
             if ($cached !== null) {
                 $this->matchCounts[$listing->id] = $cached->count();
@@ -183,8 +204,12 @@ new class extends Component {
 
         <div class="mt-6" wire:loading.remove wire:target="search">
             <!-- Responsive Grid -->
+            @php
+                $listings = collect($propertyListings);
+            @endphp
+
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                @forelse($propertyListings as $listing)
+                @forelse($listings as $listing)
                     <!-- Card Component -->
                     <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                         <!-- Image -->
@@ -290,6 +315,22 @@ new class extends Component {
                     </div>
                 @endforelse
             </div>
+
+            {{-- Pagination --}}
+            @if(!empty($pagination) && is_array($pagination) && isset($pagination['total']))
+                @php
+                    $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+                        $propertyListings,
+                        $pagination['total'],
+                        $pagination['per_page'],
+                        $pagination['current_page'],
+                        ['path' => $pagination['path'], 'query' => $pagination['query'] ?? []]
+                    );
+                @endphp
+                <div class="mt-6">
+                    {!! $paginator->links() !!}
+                </div>
+            @endif
         </div>
 
         @if($listingToDelete)
