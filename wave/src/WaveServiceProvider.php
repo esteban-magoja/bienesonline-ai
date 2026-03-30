@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
-use Intervention\Image\ImageManagerStatic;
+
 use Laravel\Folio\Folio;
 use Livewire\Livewire;
 use Wave\Facades\Wave as WaveFacade;
@@ -100,10 +100,8 @@ class WaveServiceProvider extends ServiceProvider
 
         Validator::extend('imageable', function ($attribute, $value, $params, $validator) {
             try {
-                ImageManagerStatic::make($value);
-
-                return true;
-            } catch (Exception $e) {
+                return getimagesize($value->getRealPath()) !== false;
+            } catch (\Exception $e) {
                 return false;
             }
         });
