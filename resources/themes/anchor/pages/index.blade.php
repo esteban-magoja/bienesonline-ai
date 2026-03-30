@@ -12,7 +12,11 @@
     ]"
 >
         
-        <x-marketing.sections.hero />
+        <x-marketing.sections.hero :countries="$availableCountries" />
+        
+        <x-container class="py-6 border-t sm:py-12 border-zinc-200">
+            <x-marketing.sections.countries :countries="$availableCountries" />
+        </x-container>
         
         <x-container class="py-6 border-t sm:py-12 border-zinc-200">
             <x-marketing.sections.features />

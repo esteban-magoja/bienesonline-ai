@@ -247,6 +247,10 @@ return [
         'hero_title_2' => 'Real Estate Match',
         'hero_subtitle' => 'BienesOnline evolves: the same network you know, now powered by AI to connect properties with agents and buyers. Where you once searched for real estate… now you find intelligent matches.',
         'add_property' => 'Add Property',
+
+        // Countries Section
+        'countries_title' => 'Explore properties by country',
+        'countries_description' => 'Go directly to the general listing pages for countries that currently have published properties.',
         
         // Features Section
         'features_title' => 'What is BienesOnLine.ai',

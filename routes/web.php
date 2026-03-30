@@ -63,7 +63,9 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
             'image' => url('/og_image.png'),
             'type' => 'website'
         ];
-        return view('theme::pages.index', compact('seo'));
+        $availableCountries = \App\Helpers\PropertySlugHelper::getAvailableCountries();
+
+        return view('theme::pages.index', compact('seo', 'availableCountries'));
     })->name('home');
 
     // Property Search (pública)

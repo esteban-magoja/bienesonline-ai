@@ -1,12 +1,3 @@
-@php
-    $heroCountries = \App\Models\PropertyListing::distinct('country')
-        ->whereNotNull('country')
-        ->where('country', '!=', '')
-        ->where('is_active', true)
-        ->orderBy('country')
-        ->pluck('country');
-@endphp
-
 <section class="flex relative top-0 flex-col justify-center items-center -mt-24 w-full  bg-white pb-5">
     <div class="flex flex-col flex-1 gap-6 justify-between items-center px-8 pt-32 mx-auto w-full max-w-2xl text-center md:px-12 xl:px-20 lg:pt-32 lg:pb-16 lg:max-w-7xl lg:flex-row">
         <div class="w-full">
@@ -25,7 +16,7 @@
                         <div class="flex-shrink-0 sm:w-44">
                             <select name="country" required class="w-full px-3 py-3 border border-zinc-300 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900 focus:border-zinc-900 transition-colors duration-200 bg-white text-zinc-700">
                                 <option value="">{{ __('properties.search_form.select_country') }}</option>
-                                @foreach($heroCountries as $country)
+                                @foreach($countries as $country)
                                     <option value="{{ $country }}">{{ $country }}</option>
                                 @endforeach
                             </select>

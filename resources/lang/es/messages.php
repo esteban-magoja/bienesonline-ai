@@ -247,6 +247,10 @@ return [
         'hero_title_2' => 'Match Inmobiliario',
         'hero_subtitle' => 'BienesOnline evoluciona: la misma red que conocés, ahora potenciada con IA para conectar propiedades con agentes y compradores. Donde antes buscabas inmuebles… ahora encontrás matches inteligentes.',
         'add_property' => 'Agregar Inmueble',
+
+        // Countries Section
+        'countries_title' => 'Explorá propiedades por país',
+        'countries_description' => 'Accedé directamente a los listados generales de los países que hoy tienen anuncios publicados.',
         
         // Features Section
         'features_title' => 'Qué es BienesOnLine.ai',
