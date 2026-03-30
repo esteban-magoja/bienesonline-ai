@@ -193,8 +193,11 @@ class PropertySlugHelper
      */
     public static function getAvailableCountries(): array
     {
-        return PropertyListing::where('is_active', true)
-            ->distinct()
+        return PropertyListing::query()
+            ->where('is_active', true)
+            ->whereNotNull('country')
+            ->whereRaw("TRIM(country) != ''")
+            ->selectRaw('DISTINCT TRIM(country) as country')
             ->orderBy('country')
             ->pluck('country')
             ->toArray();
