@@ -108,8 +108,24 @@
 
 		private function saveNewUserAvatar(){
 			$path = 'avatars/' . auth()->user()->username . '.png';
-			$image = \Intervention\Image\ImageManagerStatic::make($this->avatar)->resize(800, 800);
-			Storage::disk('public')->put($path, $image->encode());
+			$base64 = preg_replace('/^data:image\/\w+;base64,/', '', $this->avatar);
+			$imageData = base64_decode($base64);
+			$src = imagecreatefromstring($imageData);
+			$origW = imagesx($src);
+			$origH = imagesy($src);
+			$scale = min(800 / $origW, 800 / $origH, 1);
+			$newW = (int)($origW * $scale);
+			$newH = (int)($origH * $scale);
+			$dst = imagecreatetruecolor($newW, $newH);
+			imagealphablending($dst, false);
+			imagesavealpha($dst, true);
+			imagecopyresampled($dst, $src, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
+			ob_start();
+			imagepng($dst);
+			$pngData = ob_get_clean();
+			imagedestroy($src);
+			imagedestroy($dst);
+			Storage::disk('public')->put($path, $pngData);
 			auth()->user()->avatar = $path;
 			auth()->user()->save();
 			// This will update/refresh the avatar in the sidebar

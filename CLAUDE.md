@@ -2,6 +2,19 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ REGLA CRÍTICA: Dependencias Composer
+
+**NUNCA agregar, eliminar ni actualizar paquetes de Composer sin autorización explícita del propietario del proyecto.**
+
+- ❌ No ejecutar `composer require`, `composer remove`, ni `composer update`
+- ❌ No modificar `composer.json` ni `composer.lock`
+- ✅ Si una funcionalidad requiere un paquete nuevo, informar al propietario y esperar su autorización
+- ✅ Resolver problemas usando librerías ya instaladas o funciones nativas de PHP (GD, etc.)
+
+**Motivo**: El servidor de producción tiene restricciones de acceso a Composer. Agregar/quitar paquetes rompe el autoloader del servidor y puede dejar el sitio caído.
+
+---
+
 ## Overview
 
 Wave is a Laravel-based SaaS framework that provides essential features for building subscription-based applications. The application uses a modular architecture with themes, plugins, and a custom admin panel built with Filament.
