@@ -57,9 +57,10 @@
                                         $listingUrl = $contact->listing ? $seoService->generatePropertyUrl($contact->listing, app()->getLocale()) : null;
                                     @endphp
                                     <div class="flex items-center gap-3">
-                                        @if($contact->listing?->primaryImage)
+                                        @php $displayImage = $contact->listing ? ($contact->listing->primaryImage ?? $contact->listing->firstImage) : null; @endphp
+                                        @if($displayImage)
                                             <a href="{{ $listingUrl }}" target="_blank" class="flex-shrink-0">
-                                                <img src="{{ Storage::url($contact->listing->primaryImage->image_path) }}"
+                                                <img src="{{ Storage::url($displayImage->image_path) }}"
                                                      alt="{{ $contact->listing->title }}"
                                                      class="w-12 h-12 rounded-lg object-cover hover:opacity-80 transition-opacity">
                                             </a>

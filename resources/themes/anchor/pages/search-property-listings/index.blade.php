@@ -103,8 +103,9 @@ new class extends Component {
                     <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                         <!-- Image -->
                         <div class="relative">
-                            @if($listing->primaryImage)
-                                <img src="{{ $listing->primaryImage->image_url }}" alt="{{ $listing->title }}" class="object-cover w-full h-48 rounded-t-lg">
+                            @php $displayImage = $listing->primaryImage ?? $listing->firstImage; @endphp
+                            @if($displayImage)
+                                <img src="{{ $displayImage->image_url }}" alt="{{ $listing->title }}" class="object-cover w-full h-48 rounded-t-lg">
                             @else
                                 <div class="flex items-center justify-center w-full h-48 text-gray-400 bg-gray-100 rounded-t-lg dark:bg-gray-700">
                                     {{ __('messages.no_image') }}

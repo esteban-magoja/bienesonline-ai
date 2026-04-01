@@ -107,6 +107,14 @@ class PropertyListing extends Model
     }
 
     /**
+     * Get the first image for the property listing (fallback when no primary is set).
+     */
+    public function firstImage()
+    {
+        return $this->hasOne(PropertyImage::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    /**
      * Get the messages for the property listing.
      */
     public function messages()

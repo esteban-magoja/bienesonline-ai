@@ -30,7 +30,7 @@ class PropertyController extends Controller
             ->findOrFail($id);
 
         // Get related properties (same city or same property type)
-        $relatedProperties = PropertyListing::with(['primaryImage'])
+        $relatedProperties = PropertyListing::with(['primaryImage', 'firstImage'])
             ->where('is_active', true)
             ->where('id', '!=', $property->id)
             ->where(function($query) use ($property) {

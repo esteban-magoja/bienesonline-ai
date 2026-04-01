@@ -3,6 +3,7 @@
 @endphp
 
 <x-layouts.marketing :seo="$seo">
+    @php $locale = $locale ?? app()->getLocale(); @endphp
     
     {{-- Hero Section --}}
     <div class="bg-white border-b py-6">
@@ -45,6 +46,64 @@
             </nav>
         </div>
     </div>
+
+    @if(!empty($countryHubSections))
+        <div class="bg-gradient-to-b from-gray-50 to-white border-b">
+            <div class="container mx-auto px-4 py-10">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-900">
+                            {{ __('properties.country_hub.title', ['country' => $filters['country']]) }}
+                        </h2>
+                        <p class="mt-2 text-gray-500">
+                            {{ __('properties.country_hub.description', ['country' => $filters['country']]) }}
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col gap-6">
+                        @foreach($countryHubSections as $section)
+                            @php $icon = $section['icon'] ?? 'building'; @endphp
+                            <section class="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+                                {{-- Header de la sección --}}
+                                <div class="flex items-center gap-3 px-6 py-4 bg-gray-50 border-b border-gray-100">
+                                    @if($icon === 'building')
+                                        <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100 text-blue-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/>
+                                            </svg>
+                                        </span>
+                                    @else
+                                        <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                                            </svg>
+                                        </span>
+                                    @endif
+                                    <h3 class="text-base font-semibold text-gray-800">{{ $section['title'] }}</h3>
+                                    <span class="ml-auto text-xs text-gray-400">{{ count($section['items']) }} {{ count($section['items']) === 1 ? __('properties.country_hub.result') : __('properties.country_hub.results') }}</span>
+                                </div>
+
+                                {{-- Pills --}}
+                                <div class="p-5 flex flex-wrap gap-2">
+                                    @foreach($section['items'] as $item)
+                                        <a href="{{ $item['url'] }}"
+                                           class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-150
+                                                  hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 hover:shadow-sm">
+                                            <span>{{ $item['label'] }}</span>
+                                            <span class="rounded-full bg-white border border-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-500">
+                                                {{ $item['count'] }}
+                                            </span>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </section>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     {{-- Main Content --}}
     <div class="container mx-auto px-4 py-8">
@@ -202,8 +261,9 @@
                             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                                 {{-- Image --}}
                                 <div class="relative h-48 bg-gray-200">
-                                    @if($property->primaryImage)
-                                        <img src="{{ Storage::url($property->primaryImage->image_path) }}" 
+                                    @php $displayImage = $property->primaryImage ?? $property->firstImage; @endphp
+                                    @if($displayImage)
+                                        <img src="{{ Storage::url($displayImage->image_path) }}" 
                                              alt="{{ $property->title }}" 
                                              loading="lazy"
                                              class="w-full h-full object-cover">

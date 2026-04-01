@@ -80,8 +80,9 @@ new class extends Component {
             {{-- Card del anuncio publicado --}}
             <div class="p-6 mb-8 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                 <div class="flex items-start gap-4">
-                    @if($listing->primaryImage)
-                        <img src="{{ $listing->primaryImage->image_url }}" 
+                    @php $displayImage = $listing->primaryImage ?? $listing->firstImage; @endphp
+                    @if($displayImage)
+                        <img src="{{ $displayImage->image_url }}" 
                              alt="{{ $listing->title }}"
                              class="object-cover w-24 h-24 rounded-lg">
                     @endif

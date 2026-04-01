@@ -40,7 +40,7 @@ class PropertyContactController extends Controller
      */
     public function index(Request $request)
     {
-        $query = PropertyContact::with(['listing.primaryImage', 'visitor'])
+        $query = PropertyContact::with(['listing.primaryImage', 'listing.firstImage', 'visitor'])
             ->where('owner_user_id', auth()->id());
 
         if ($request->filled('listing_id')) {

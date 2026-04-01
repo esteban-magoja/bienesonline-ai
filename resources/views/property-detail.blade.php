@@ -1,41 +1,35 @@
 @php
-    $locale = app()->getLocale();
-    $countrySlug = Str::slug($property->country);
-    
-    // Obtener value_en para hacer el lookup en el mapa de slugs
-    $transactionValueEn = \App\Models\TransactionType::getValueEn($property->transaction_type, 'INTL')
-        ?? strtolower($property->transaction_type);
-    $propertyValueEn    = \App\Models\PropertyType::getValueEn($property->property_type, 'INTL')
-        ?? strtolower($property->property_type);
+    $locale      = app()->getLocale();
+    $countrySlug = \App\Helpers\PropertySlugHelper::normalize($property->country);
+    $countryCode = \App\Helpers\PropertySlugHelper::getCountryCode($property->country);
 
-    // Mapeo de transaction_type a slugs
-    $transactionSlugs = [
-        'sale'           => ['es' => 'venta',             'en' => 'sale'],
-        'rent'           => ['es' => 'alquiler',          'en' => 'rent'],
-        'temporary_rent' => ['es' => 'alquiler-temporal', 'en' => 'temporary-rent'],
-    ];
-    $transactionSlug = $transactionSlugs[$transactionValueEn][$locale] ?? null;
-    
-    // Mapeo de property_type a slugs
-    $propertySlugs = [
-        'house'      => ['es' => 'casas',        'en' => 'houses'],
-        'apartment'  => ['es' => 'departamentos','en' => 'apartments'],
-        'office'     => ['es' => 'oficinas',     'en' => 'offices'],
-        'commercial' => ['es' => 'locales',      'en' => 'commercials'],
-        'land'       => ['es' => 'terrenos',     'en' => 'lands'],
-        'field'      => ['es' => 'campos',       'en' => 'fields'],
-        'farm'       => ['es' => 'fincas',       'en' => 'farms'],
-        'warehouse'  => ['es' => 'galpones',     'en' => 'warehouses'],
-        'parking'    => ['es' => 'cocheras',     'en' => 'parking'],
-        'townhouse'  => ['es' => 'ph',           'en' => 'townhouses'],
-        'condo'      => ['es' => 'condominios',  'en' => 'condos'],
-        'villa'      => ['es' => 'chalets',      'en' => 'villas'],
-        'penthouse'  => ['es' => 'aticos',       'en' => 'penthouses'],
-    ];
-    $propertySlug = $propertySlugs[$propertyValueEn][$locale] ?? null;
-    
-    $stateSlug = Str::slug($property->state);
-    $citySlug  = Str::slug($property->city);
+    // Buscar TransactionType y PropertyType desde sus valores almacenados (case-insensitive)
+    $bcTransaction = $countryCode
+        ? \App\Models\TransactionType::getByCountry($countryCode)
+            ->first(fn($t) => strtolower($t->value) === strtolower($property->transaction_type))
+        : null;
+
+    $bcPropertyType = $countryCode
+        ? \App\Models\PropertyType::getByCountry($countryCode)
+            ->first(fn($t) => strtolower($t->value) === strtolower($property->property_type))
+        : null;
+
+    $transactionSlug = $bcTransaction ? \App\Helpers\PropertySlugHelper::normalize($bcTransaction->value) : null;
+    $propertySlug    = $bcPropertyType ? \App\Helpers\PropertySlugHelper::normalize($bcPropertyType->value) : null;
+
+    // Validar estado y ciudad contra nnjeim/world (sin acentos)
+    $bcState = ($countryCode && $property->state)
+        ? \App\Helpers\PropertySlugHelper::getStateBySlug(
+            \App\Helpers\PropertySlugHelper::normalize($property->state), $countryCode)
+        : null;
+
+    $bcCity = ($bcState && $property->city)
+        ? \App\Helpers\PropertySlugHelper::getCityBySlug(
+            \App\Helpers\PropertySlugHelper::normalize($property->city), $bcState->id)
+        : null;
+
+    $stateSlug = $bcState ? \App\Helpers\PropertySlugHelper::normalize($bcState->name) : null;
+    $citySlug  = $bcCity  ? \App\Helpers\PropertySlugHelper::normalize($bcCity->name)  : null;
 @endphp
 
 <x-layouts.marketing :seo="$seo">
@@ -120,12 +114,12 @@
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
                                 <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
-                                    {{ \App\Models\PropertyType::getLabel($property->property_type) }}
+                                    {{ $bcPropertyType ? $bcPropertyType->label_plural : \App\Models\PropertyType::getLabel($property->property_type) }}
                                 </a>
                             </div>
                         </li>
                     @endif
-                    
+
                     {{-- Estado --}}
                     @if($property->state)
                         <li>
@@ -133,13 +127,17 @@
                                 <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
-                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
-                                    {{ $property->state }}
-                                </a>
+                                @if($bcState && $transactionSlug && $propertySlug)
+                                    <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
+                                        {{ $bcState->name }}
+                                    </a>
+                                @else
+                                    <span class="ml-1 text-sm font-medium text-gray-500">{{ $property->state }}</span>
+                                @endif
                             </div>
                         </li>
                     @endif
-                    
+
                     {{-- Ciudad --}}
                     @if($property->city)
                         <li>
@@ -147,9 +145,13 @@
                                 <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                 </svg>
-                                <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}/{{ $citySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
-                                    {{ $property->city }}
-                                </a>
+                                @if($bcCity && $stateSlug && $transactionSlug && $propertySlug)
+                                    <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $transactionSlug }}/{{ $propertySlug }}/{{ $stateSlug }}/{{ $citySlug }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600">
+                                        {{ $bcCity->name }}
+                                    </a>
+                                @else
+                                    <span class="ml-1 text-sm font-medium text-gray-500">{{ $property->city }}</span>
+                                @endif
                             </div>
                         </li>
                     @endif
@@ -645,9 +647,10 @@
                             <a href="{{ $relatedUrl }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                                 <!-- Property Image -->
                                 <div class="relative">
-                                    @if($related->primaryImage)
+                                    @php $displayImage = $related->primaryImage ?? $related->firstImage; @endphp
+                                    @if($displayImage)
                                         <img 
-                                            src="{{ $related->primaryImage->image_url }}" 
+                                            src="{{ $displayImage->image_url }}" 
                                             alt="{{ $related->title }}" 
                                             class="w-full h-48 object-cover"
                                         >

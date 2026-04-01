@@ -184,9 +184,23 @@
                                         <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform
                                                      {{ $pt['is_active'] ? 'translate-x-4' : 'translate-x-1' }}"></span>
                                     </button>
-                                    <div class="min-w-0">
+                                    <div class="min-w-0 flex-1" x-data="{ editingPlural: false, plural: '{{ addslashes($pt['label_plural'] ?? '') }}' }">
                                         <p class="text-sm font-medium text-gray-900 dark:text-white {{ !$pt['is_active'] ? 'opacity-40 line-through' : '' }}">
                                             {{ $pt['label'] }}
+                                            <span class="text-xs font-normal text-gray-400 ml-1">/ plural:</span>
+                                            <span x-show="!editingPlural" @click="editingPlural = true"
+                                                  class="text-xs text-primary-600 dark:text-primary-400 cursor-pointer hover:underline" title="Clic para editar">
+                                                {{ $pt['label_plural'] ?? '—' }}
+                                            </span>
+                                            <span x-show="editingPlural" class="inline-flex items-center gap-1">
+                                                <input x-model="plural" type="text"
+                                                       @keydown.enter="$wire.updateLabelPlural({{ $pt['id'] }}, plural); editingPlural = false"
+                                                       @keydown.escape="editingPlural = false"
+                                                       class="text-xs border-gray-300 rounded px-1 py-0.5 w-24 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                                <button @click="$wire.updateLabelPlural({{ $pt['id'] }}, plural); editingPlural = false"
+                                                        class="text-green-600 hover:text-green-700 text-xs">✓</button>
+                                                <button @click="editingPlural = false" class="text-gray-400 hover:text-gray-600 text-xs">✗</button>
+                                            </span>
                                         </p>
                                         <p class="text-xs text-gray-400 flex items-center gap-1 flex-wrap">
                                             <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">{{ $pt['value'] }}</code>
@@ -232,7 +246,15 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-3 gap-3">
-                            <div class="col-span-2">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                    Plural <span class="font-normal text-gray-400">(para SEO, ej: Departamentos)</span>
+                                </label>
+                                <input wire:model="newPtLabelPlural" type="text" placeholder="ej: Departamentos"
+                                       class="w-full text-sm border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-primary-500 focus:border-primary-500">
+                                @error('newPtLabelPlural') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
                                 <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                                     Equivalente EN <span class="text-red-500">*</span>
                                     <span class="font-normal text-gray-400">(para matching)</span>

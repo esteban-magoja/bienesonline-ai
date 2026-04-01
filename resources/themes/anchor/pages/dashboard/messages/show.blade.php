@@ -47,8 +47,9 @@
                     <div class="px-6 py-4 bg-blue-50 border-b border-blue-100">
                         <h3 class="text-sm font-semibold text-gray-700 mb-2">{{ __('dashboard.messages_section.property') }}:</h3>
                         <div class="flex items-start gap-4">
-                            @if($message->propertyListing->primaryImage)
-                                <img src="{{ $message->propertyListing->primaryImage->image_url }}" 
+                            @php $displayImage = $message->propertyListing->primaryImage ?? $message->propertyListing->firstImage; @endphp
+                            @if($displayImage)
+                                <img src="{{ $displayImage->image_url }}" 
                                      alt="{{ $message->propertyListing->title }}"
                                      class="w-20 h-20 object-cover rounded-lg">
                             @endif

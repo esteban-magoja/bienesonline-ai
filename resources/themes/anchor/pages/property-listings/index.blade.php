@@ -45,7 +45,7 @@ new class extends Component {
             $embedding = new Vector($response->embeddings[0]->embedding);
 
             $this->propertyListings = PropertyListing::query()
-                ->with('primaryImage')
+                ->with(['primaryImage', 'firstImage'])
                 ->select('*')
                 ->selectRaw('(1 - (embedding <=> ?)) * 50 + 50 as similarity', [$embedding])
                 ->where('user_id', auth()->id())
@@ -108,7 +108,7 @@ new class extends Component {
         // Usar paginación para evitar OOM en usuarios con muchos listados
         $perPage = 30;
         $paginator = PropertyListing::where('user_id', auth()->id())
-            ->with('primaryImage')
+            ->with(['primaryImage', 'firstImage'])
             ->latest()
             ->paginate($perPage);
 
@@ -218,9 +218,10 @@ new class extends Component {
                             $listingUrl = $seoService->generatePropertyUrl($listing, app()->getLocale());
                         @endphp
                         <div class="relative">
-                            @if($listing->primaryImage)
+                            @php $displayImage = $listing->primaryImage ?? $listing->firstImage; @endphp
+                            @if($displayImage)
                                 <a href="{{ $listingUrl }}" target="_blank">
-                                    <img src="{{ $listing->primaryImage->image_url }}" alt="{{ $listing->title }}" class="object-cover w-full h-48 rounded-t-lg hover:opacity-90 transition-opacity">
+                                    <img src="{{ $displayImage->image_url }}" alt="{{ $listing->title }}" class="object-cover w-full h-48 rounded-t-lg hover:opacity-90 transition-opacity">
                                 </a>
                             @else
                                 <div class="flex items-center justify-center w-full h-48 text-gray-400 bg-gray-100 rounded-t-lg dark:bg-gray-700">

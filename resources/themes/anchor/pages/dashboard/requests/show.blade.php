@@ -177,8 +177,9 @@
 
                             <!-- Property Image -->
                             <div class="relative h-48 bg-gray-200">
-                                @if($listing->primaryImage)
-                                    <img src="{{ $listing->primaryImage->image_url }}" 
+                                @php $displayImage = $listing->primaryImage ?? $listing->firstImage; @endphp
+                                @if($displayImage)
+                                    <img src="{{ $displayImage->image_url }}" 
                                          alt="{{ $listing->title }}"
                                          class="w-full h-full object-cover">
                                 @else

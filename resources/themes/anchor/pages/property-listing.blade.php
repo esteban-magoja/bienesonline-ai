@@ -1,4 +1,5 @@
 <x-layouts.marketing :seo="$seo">
+    @php $locale = $locale ?? app()->getLocale(); @endphp
     
     {{-- Hero Section --}}
     <div class="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
@@ -170,8 +171,9 @@
                             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                                 {{-- Image --}}
                                 <div class="relative h-48 bg-gray-200">
-                                    @if($property->primaryImage)
-                                        <img src="{{ Storage::url($property->primaryImage->image_path) }}" 
+                                    @php $displayImage = $property->primaryImage ?? $property->firstImage; @endphp
+                                    @if($displayImage)
+                                        <img src="{{ Storage::url($displayImage->image_path) }}" 
                                              alt="{{ $property->title }}" 
                                              class="w-full h-full object-cover">
                                     @else

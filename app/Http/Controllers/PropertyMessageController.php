@@ -38,7 +38,7 @@ class PropertyMessageController extends Controller
         $message = PropertyMessage::whereHas('propertyListing', function ($query) {
                 $query->where('user_id', Auth::id());
             })
-            ->with(['propertyListing', 'user'])
+            ->with(['propertyListing.primaryImage', 'propertyListing.firstImage', 'user'])
             ->findOrFail($id);
 
         // Mark as read

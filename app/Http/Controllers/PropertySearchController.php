@@ -92,7 +92,7 @@ class PropertySearchController extends Controller
     {
         try {
             $query = PropertyListing::query()
-                ->with(['primaryImage'])
+                ->with(['primaryImage', 'firstImage'])
                 ->where('is_active', true);
 
             // Filter by country if selected
@@ -147,7 +147,7 @@ class PropertySearchController extends Controller
                     ->when(!empty($selectedCountry), function($query) use ($selectedCountry) {
                         return $query->where('country', $selectedCountry);
                     })
-                    ->with(['primaryImage'])
+                    ->with(['primaryImage', 'firstImage'])
                     ->limit(20)
                     ->get();
             }

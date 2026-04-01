@@ -226,6 +226,15 @@ return [
     'filters' => 'Filters',
     'apply_filters' => 'Apply Filters',
     'clear_all_filters' => 'Clear All Filters',
+    'country_hub' => [
+        'title' => 'Explore :country',
+        'description' => 'Use this page as the entry point to the most relevant listing paths in :country.',
+        'transaction_types' => 'By transaction type',
+        'property_types' => 'By property type',
+        'provinces' => 'By location',
+        'result' => 'category',
+        'results' => 'categories',
+    ],
     
     // Sorting
     'sort' => [

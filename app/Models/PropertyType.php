@@ -11,6 +11,7 @@ class PropertyType extends Model
         'country_code',
         'value',
         'label',
+        'label_plural',
         'value_en',
         'order',
         'is_active'

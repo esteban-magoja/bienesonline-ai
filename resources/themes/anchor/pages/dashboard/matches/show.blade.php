@@ -17,8 +17,9 @@
         <!-- Listing Info -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <div class="flex items-start gap-6">
-                @if($listing->primaryImage)
-                    <img src="{{ $listing->primaryImage->image_url }}" 
+                @php $displayImage = $listing->primaryImage ?? $listing->firstImage; @endphp
+                @if($displayImage)
+                    <img src="{{ $displayImage->image_url }}" 
                          alt="{{ $listing->title }}"
                          class="w-32 h-32 object-cover rounded-lg">
                 @else

@@ -33,6 +33,7 @@ class CountryTypes extends Page
     // Form state: new property type
     public string $newPtValue = '';
     public string $newPtLabel = '';
+    public string $newPtLabelPlural = '';
     public string $newPtValueEn = '';
     public int $newPtOrder = 99;
     public bool $showAddPtForm = false;
@@ -131,10 +132,11 @@ class CountryTypes extends Page
     public function addPropertyType(): void
     {
         $this->validate([
-            'newPtValue'   => 'required|string|max:50',
-            'newPtLabel'   => 'required|string|max:100',
-            'newPtValueEn' => 'required|string',
-            'newPtOrder'   => 'required|integer|min:1',
+            'newPtValue'       => 'required|string|max:50',
+            'newPtLabel'       => 'required|string|max:100',
+            'newPtLabelPlural' => 'nullable|string|max:100',
+            'newPtValueEn'     => 'required|string',
+            'newPtOrder'       => 'required|integer|min:1',
         ]);
 
         $exists = PropertyType::where('country_code', $this->selectedCountry)
@@ -153,6 +155,7 @@ class CountryTypes extends Page
             'country_code' => $this->selectedCountry,
             'value'        => $this->newPtValue,
             'label'        => $this->newPtLabel,
+            'label_plural' => $this->newPtLabelPlural ?: ($this->newPtLabel . 's'),
             'value_en'     => $this->newPtValueEn,
             'order'        => $this->newPtOrder,
             'is_active'    => true,
@@ -164,6 +167,17 @@ class CountryTypes extends Page
         $this->loadTypes();
 
         Notification::make()->title('Tipo de inmueble agregado.')->success()->send();
+    }
+
+    public function updateLabelPlural(int $id, string $plural): void
+    {
+        $type = PropertyType::findOrFail($id);
+        $type->label_plural = $plural;
+        $type->save();
+        PropertyType::clearCache($this->selectedCountry);
+        $this->loadTypes();
+
+        Notification::make()->title('Plural actualizado.')->success()->send();
     }
 
     public function togglePropertyType(int $id): void
@@ -348,6 +362,7 @@ class CountryTypes extends Page
     {
         $this->newPtValue = '';
         $this->newPtLabel = '';
+        $this->newPtLabelPlural = '';
         $this->newPtValueEn = '';
         $this->newPtOrder = 99;
         $this->newTtValue = '';

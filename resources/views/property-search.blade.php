@@ -194,9 +194,10 @@
                     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         <!-- Property Image -->
                         <div class="relative">
-                            @if($listing->primaryImage)
+                            @php $displayImage = $listing->primaryImage ?? $listing->firstImage; @endphp
+                            @if($displayImage)
                                 <img 
-                                    src="{{ $listing->primaryImage->image_url }}" 
+                                    src="{{ $displayImage->image_url }}" 
                                     alt="{{ $listing->title }}" 
                                     class="w-full h-48 object-cover"
                                 >

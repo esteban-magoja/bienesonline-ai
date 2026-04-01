@@ -226,6 +226,15 @@ return [
     'filters' => 'Filtros',
     'apply_filters' => 'Aplicar Filtros',
     'clear_all_filters' => 'Limpiar Todos los Filtros',
+    'country_hub' => [
+        'title' => 'Explorar :country',
+        'description' => 'Usá esta página como punto de entrada a los listados más relevantes de :country.',
+        'transaction_types' => 'Por tipo de operación',
+        'property_types' => 'Por tipo de inmueble',
+        'provinces' => 'Por ubicación',
+        'result' => 'categoría',
+        'results' => 'categorías',
+    ],
     
     // Ordenamiento
     'sort' => [

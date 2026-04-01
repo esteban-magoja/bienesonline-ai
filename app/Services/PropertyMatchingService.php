@@ -132,7 +132,7 @@ class PropertyMatchingService
             $query->where('area', '>=', $request->min_area);
         }
 
-        return $query->with(['user', 'primaryImage'])->get();
+        return $query->with(['user', 'primaryImage', 'firstImage'])->get();
     }
 
     /**
@@ -148,7 +148,7 @@ class PropertyMatchingService
             ->where('country', $request->country)
             ->nearestNeighbors('embedding', $request->embedding, Distance::Cosine)
             ->limit($limit * 2)
-            ->with(['user', 'primaryImage'])
+            ->with(['user', 'primaryImage', 'firstImage'])
             ->get()
             ->filter(function($listing) {
                 // Filtrar solo los que tienen un buen score de similitud

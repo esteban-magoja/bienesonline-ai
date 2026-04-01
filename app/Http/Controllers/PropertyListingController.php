@@ -8,96 +8,62 @@ use App\Models\TransactionType;
 use App\Helpers\PropertySlugHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Nnjeim\World\Models\State;
+use Nnjeim\World\Models\City;
 
 class PropertyListingController extends Controller
 {
     /**
      * Muestra listados de propiedades con URLs amigables SEO
-     * 
+     *
      * Estructura de URL:
      * /{locale}/{país}/{operación?}/{tipo?}/{estado?}/{ciudad?}
-     * 
-     * Ejemplos:
-     * /es/argentina
-     * /es/argentina/venta
-     * /es/argentina/venta/casas
-     * /es/argentina/venta/casas/cordoba
-     * /es/argentina/venta/casas/cordoba/villa-maria
+     *
+     * Los slugs de operación y tipo se corresponden directamente con el campo
+     * `value` configurado para el país en las tablas transaction_types / property_types.
+     * Los slugs de estado y ciudad se validan contra nnjeim/world (sin acentos/mayúsculas).
      */
-    public function index(Request $request, string $locale, string $country, string $params = null)
+    public function index(Request $request, string $locale, string $country, ?string $params = null)
     {
-        // Establecer locale
         App::setLocale($locale);
 
-        // Validar que el país exista en la BD
+        // Validar que el país exista en la BD de anuncios
         $countryName = PropertySlugHelper::validateCountry($country);
-        
         if (!$countryName) {
             abort(404, "País no encontrado: {$country}");
         }
 
-        // Variables de contexto
-        $filters = [
-            'country' => $countryName,
-            'transaction_type' => null,
-            'property_type' => null,
-            'state' => null,
-            'city' => null,
-        ];
-
-        // Dividir params en array si existe
-        $paramsArray = $params ? explode('/', trim($params, '/')) : [];
+        // Obtener ISO2 del país para consultar tipos configurados
+        $countryCode = PropertySlugHelper::getCountryCode($countryName) ?? 'INTL';
 
         // Parsear parámetros opcionales en cascada
-        $filters = $this->parseUrlParams($paramsArray, $filters);
+        $paramsArray = $params ? explode('/', trim($params, '/')) : [];
+        [$transactionType, $propertyType, $state, $city] = $this->parseUrlParams(
+            $paramsArray, $countryName, $countryCode
+        );
 
         // Construir query base
         $query = PropertyListing::where('is_active', true)
-            ->where('country', $filters['country']);
+            ->where('country', $countryName);
 
-        // Aplicar filtros de URL
-        if ($filters['transaction_type']) {
-            // Usar todos los valores regionales equivalentes (venta, arriendo, renta…)
-            $txEquivalents = TransactionType::where('value_en', $filters['transaction_type'])
-                ->where('is_active', true)
-                ->pluck('value')
-                ->map(fn($v) => strtolower($v))
-                ->unique()
-                ->toArray();
-            if (empty($txEquivalents)) {
-                $txEquivalents = [strtolower($filters['transaction_type'])];
-            }
-            $query->where(function ($q) use ($txEquivalents) {
-                foreach ($txEquivalents as $val) {
-                    $q->orWhereRaw('LOWER(transaction_type) = ?', [$val]);
-                }
-            });
+        // Filtrar por tipo de operación (match directo sobre el value del país)
+        if ($transactionType) {
+            $query->whereRaw('LOWER(transaction_type) = LOWER(?)', [$transactionType->value]);
         }
 
-        if ($filters['property_type']) {
-            // Usar todos los valores regionales equivalentes (casa, departamento, piso…)
-            $ptEquivalents = PropertyType::where('value_en', $filters['property_type'])
-                ->where('is_active', true)
-                ->pluck('value')
-                ->map(fn($v) => strtolower($v))
-                ->unique()
-                ->toArray();
-            if (empty($ptEquivalents)) {
-                $ptEquivalents = [strtolower($filters['property_type'])];
-            }
-            $query->where(function ($q) use ($ptEquivalents) {
-                foreach ($ptEquivalents as $val) {
-                    $q->orWhereRaw('LOWER(property_type) = ?', [$val]);
-                }
-            });
+        // Filtrar por tipo de propiedad (match directo sobre el value del país)
+        if ($propertyType) {
+            $query->whereRaw('LOWER(property_type) = LOWER(?)', [$propertyType->value]);
         }
 
-        if ($filters['state']) {
-            $query->where('state', $filters['state']);
+        // Filtrar por estado/provincia (acepta diferencias de acentos y mayúsculas)
+        if ($state) {
+            $query->whereRaw('lower(unaccent(state)) = lower(unaccent(?))', [$state->name]);
         }
 
-        if ($filters['city']) {
-            $query->where('city', $filters['city']);
+        // Filtrar por ciudad (acepta diferencias de acentos y mayúsculas)
+        if ($city) {
+            $query->whereRaw('lower(unaccent(city)) = lower(unaccent(?))', [$city->name]);
         }
 
         // Aplicar filtros de sidebar (query params)
@@ -107,23 +73,41 @@ class PropertyListingController extends Controller
         $query = $this->applySorting($query, $request);
 
         // Paginación
-        $properties = $query->with(['user', 'primaryImage'])->paginate(20)->withQueryString();
+        $properties = $query->with(['user', 'primaryImage', 'firstImage'])->paginate(20)->withQueryString();
 
-        // Generar breadcrumbs
+        // Generar breadcrumbs con tipos del país
         $breadcrumbs = PropertySlugHelper::generateBreadcrumbs(
             $locale,
-            $filters['country'],
-            $filters['transaction_type'],
-            $filters['property_type'],
-            $filters['state'],
-            $filters['city']
+            $countryName,
+            $countryCode,
+            $transactionType,
+            $propertyType,
+            $state,
+            $city
         );
 
         // Generar metadata SEO
-        $seo = $this->generateSeoMetadata($filters, $properties->total(), $locale);
+        $seo = $this->generateSeoMetadata(
+            $countryName, $countryCode, $transactionType, $propertyType, $state, $city,
+            $properties->total(), $locale
+        );
 
-        // Obtener opciones de filtros disponibles para el sidebar
-        $filterOptions = $this->getFilterOptions($filters);
+        // Opciones de filtros para el sidebar
+        $filterOptions = $this->getFilterOptions($countryName, $state, $city);
+
+        // Hub de categorías (solo cuando no hay filtros aplicados)
+        $countryHubSections = $this->shouldShowCountryHub($transactionType, $propertyType, $state, $city)
+            ? $this->getCountryHubSections($countryName, $countryCode, $locale)
+            : [];
+
+        // Array de filtros para la vista (compatibilidad)
+        $filters = [
+            'country'          => $countryName,
+            'transaction_type' => $transactionType?->value,
+            'property_type'    => $propertyType?->value,
+            'state'            => $state?->name,
+            'city'             => $city?->name,
+        ];
 
         return view('property-listing', compact(
             'properties',
@@ -131,69 +115,52 @@ class PropertyListingController extends Controller
             'breadcrumbs',
             'seo',
             'filterOptions',
+            'countryHubSections',
             'locale'
         ));
     }
 
     /**
-     * Parsea los parámetros de URL en cascada
-     * Detecta automáticamente si son transaction, property type, state o city
+     * Parsea los parámetros de URL en cascada usando los tipos configurados del país.
+     * Retorna [TransactionType|null, PropertyType|null, State|null, City|null]
      */
-    private function parseUrlParams(array $params, array $filters): array
+    private function parseUrlParams(array $params, string $countryName, string $countryCode): array
     {
-        if (empty($params)) {
-            return $filters;
-        }
+        $transactionType = null;
+        $propertyType    = null;
+        $state           = null;
+        $city            = null;
 
-        $country = $filters['country'];
-        $contextState = null; // Para validación de ciudad
-
-        foreach ($params as $index => $slug) {
-            // Detectar tipo de parámetro
-            $detected = PropertySlugHelper::detectSlugType($slug, $country, $contextState);
-
-            if ($detected['type'] === 'unknown') {
-                abort(404, "Parámetro no válido: {$slug}");
+        foreach ($params as $slug) {
+            // 1. Intentar como tipo de operación
+            if (!$transactionType && $result = PropertySlugHelper::getOperationBySlug($slug, $countryCode)) {
+                $transactionType = $result;
+                continue;
             }
 
-            // Asignar según tipo detectado
-            switch ($detected['type']) {
-                case 'transaction':
-                    if ($filters['transaction_type'] === null) {
-                        $filters['transaction_type'] = $detected['value'];
-                    } else {
-                        abort(404, "Tipo de transacción duplicado");
-                    }
-                    break;
-
-                case 'property':
-                    if ($filters['property_type'] === null) {
-                        $filters['property_type'] = $detected['value'];
-                    } else {
-                        abort(404, "Tipo de propiedad duplicado");
-                    }
-                    break;
-
-                case 'state':
-                    if ($filters['state'] === null) {
-                        $filters['state'] = $detected['value'];
-                        $contextState = $detected['value']; // Guardar para validar ciudades
-                    } else {
-                        abort(404, "Estado duplicado");
-                    }
-                    break;
-
-                case 'city':
-                    if ($filters['city'] === null) {
-                        $filters['city'] = $detected['value'];
-                    } else {
-                        abort(404, "Ciudad duplicada");
-                    }
-                    break;
+            // 2. Intentar como tipo de propiedad
+            if (!$propertyType && $result = PropertySlugHelper::getPropertyTypeBySlug($slug, $countryCode)) {
+                $propertyType = $result;
+                continue;
             }
+
+            // 3. Intentar como estado/provincia (solo si aún no hay estado)
+            if (!$state && $result = PropertySlugHelper::getStateBySlug($slug, $countryCode)) {
+                $state = $result;
+                continue;
+            }
+
+            // 4. Intentar como ciudad (requiere estado previo)
+            if (!$city && $state && $result = PropertySlugHelper::getCityBySlug($slug, $state->id)) {
+                $city = $result;
+                continue;
+            }
+
+            // Slug no reconocido → 404
+            abort(404, "Parámetro no válido en la URL: {$slug}");
         }
 
-        return $filters;
+        return [$transactionType, $propertyType, $state, $city];
     }
 
     /**
@@ -201,35 +168,24 @@ class PropertyListingController extends Controller
      */
     private function applySidebarFilters($query, Request $request)
     {
-        // Filtro de precio
         if ($request->filled('min_price')) {
             $query->where('price', '>=', $request->min_price);
         }
-
         if ($request->filled('max_price')) {
             $query->where('price', '<=', $request->max_price);
         }
-
-        // Filtro de habitaciones
         if ($request->filled('min_bedrooms')) {
             $query->where('bedrooms', '>=', $request->min_bedrooms);
         }
-
-        // Filtro de baños
         if ($request->filled('min_bathrooms')) {
             $query->where('bathrooms', '>=', $request->min_bathrooms);
         }
-
-        // Filtro de área cubierta
         if ($request->filled('min_area')) {
             $query->where('area', '>=', $request->min_area);
         }
-
         if ($request->filled('max_area')) {
             $query->where('area', '<=', $request->max_area);
         }
-
-        // Filtro de cocheras
         if ($request->filled('min_parking')) {
             $query->where('parking_spaces', '>=', $request->min_parking);
         }
@@ -242,199 +198,227 @@ class PropertyListingController extends Controller
      */
     private function applySorting($query, Request $request)
     {
-        $sort = $request->get('sort', 'featured');
-
-        switch ($sort) {
-            case 'featured':
-                $query->orderBy('is_featured', 'desc')
-                      ->orderBy('created_at', 'desc');
-                break;
-
+        switch ($request->get('sort', 'featured')) {
             case 'newest':
-                $query->orderBy('created_at', 'desc');
-                break;
-
+                return $query->orderBy('created_at', 'desc');
             case 'oldest':
-                $query->orderBy('created_at', 'asc');
-                break;
-
+                return $query->orderBy('created_at', 'asc');
             case 'price_asc':
-                $query->orderBy('price', 'asc');
-                break;
-
+                return $query->orderBy('price', 'asc');
             case 'price_desc':
-                $query->orderBy('price', 'desc');
-                break;
-
+                return $query->orderBy('price', 'desc');
             case 'area_asc':
-                $query->orderBy('area', 'asc');
-                break;
-
+                return $query->orderBy('area', 'asc');
             case 'area_desc':
-                $query->orderBy('area', 'desc');
-                break;
-
+                return $query->orderBy('area', 'desc');
             default:
-                $query->orderBy('is_featured', 'desc')
-                      ->orderBy('created_at', 'desc');
+                return $query->orderBy('is_featured', 'desc')->orderBy('created_at', 'desc');
         }
-
-        return $query;
     }
 
     /**
-     * Genera metadata SEO dinámica completa
+     * Genera metadata SEO dinámica usando los labels del país configurado.
      */
-    private function generateSeoMetadata(array $filters, int $total, string $locale): array
-    {
+    private function generateSeoMetadata(
+        string $countryName,
+        string $countryCode,
+        ?TransactionType $transactionType,
+        ?PropertyType $propertyType,
+        ?State $state,
+        ?City $city,
+        int $total,
+        string $locale
+    ): array {
         $parts = [];
 
-        // Construir título dinámico
-        if ($filters['property_type']) {
-            $parts[] = __("properties.types.{$filters['property_type']}", [], $locale);
+        // Tipo de propiedad: usar label_plural si existe
+        if ($propertyType) {
+            $parts[] = $propertyType->label_plural ?: $propertyType->label;
         } else {
             $parts[] = __('properties.properties', [], $locale);
         }
 
-        if ($filters['transaction_type']) {
-            $parts[] = __('properties.for', [], $locale) . ' ' . __("properties.transaction_types.{$filters['transaction_type']}", [], $locale);
+        // Tipo de operación: usar label
+        if ($transactionType) {
+            $parts[] = __('properties.for', [], $locale) . ' ' . strtolower($transactionType->label);
         }
 
-        if ($filters['city']) {
-            $parts[] = __('properties.in', [], $locale) . ' ' . $filters['city'];
-        } elseif ($filters['state']) {
-            $parts[] = __('properties.in', [], $locale) . ' ' . $filters['state'];
+        // Ubicación
+        if ($city) {
+            $parts[] = __('properties.in', [], $locale) . ' ' . $city->name;
+        } elseif ($state) {
+            $parts[] = __('properties.in', [], $locale) . ' ' . $state->name;
         } else {
-            $parts[] = __('properties.in', [], $locale) . ' ' . $filters['country'];
+            $parts[] = __('properties.in', [], $locale) . ' ' . $countryName;
         }
 
         $title = implode(' ', $parts);
-
-        // Construir descripción
         $description = trans_choice('properties.results.found', $total, ['count' => $total], $locale) . ' ' . $title;
-        
-        // URL actual
-        $currentUrl = url()->current();
-        
-        // URL alternativas para hreflang
-        $alternateUrls = $this->generateAlternateUrls($filters, $locale);
-        
-        // Formatear hreflang_tags según lo esperado por el layout
+
+        $alternateUrls = $this->generateAlternateUrls(
+            $countryName, $transactionType, $propertyType, $state, $city
+        );
+
         $hreflangTags = [];
         foreach ($alternateUrls as $lang => $url) {
-            $hreflangTags[] = [
-                'rel' => 'alternate',
-                'hreflang' => $lang,
-                'href' => $url
-            ];
+            $hreflangTags[] = ['rel' => 'alternate', 'hreflang' => $lang, 'href' => $url];
         }
-        // Agregar x-default
-        $hreflangTags[] = [
-            'rel' => 'alternate',
-            'hreflang' => 'x-default',
-            'href' => $alternateUrls['es']
-        ];
+        $hreflangTags[] = ['rel' => 'alternate', 'hreflang' => 'x-default', 'href' => $alternateUrls['es']];
 
-        // Imagen Open Graph (usar primera propiedad si hay resultados)
-        $ogImage = url('/og_image.png'); // Imagen por defecto
-        
         return [
-            'title' => $title,
-            'description' => substr($description, 0, 160),
-            'image' => $ogImage,
-            'type' => 'website',
-            'canonical' => $currentUrl,
+            'title'         => $title,
+            'description'   => substr($description, 0, 160),
+            'image'         => url('/og_image.png'),
+            'type'          => 'website',
+            'canonical'     => url()->current(),
             'hreflang_tags' => $hreflangTags,
         ];
     }
 
     /**
-     * Genera URLs alternativas para hreflang
+     * Genera URLs alternativas para hreflang.
+     * Ambos locales usan los mismos slugs (el `value` del país).
      */
-    private function generateAlternateUrls(array $filters, string $currentLocale): array
-    {
-        $locales = ['es', 'en'];
-        $alternates = [];
-        
-        // Construir path base
-        $path = '/' . PropertySlugHelper::normalize($filters['country']);
-        
-        if ($filters['transaction_type']) {
-            // Mapear al slug correcto según idioma
-            $transactionSlugs = [
-                'sale' => ['es' => 'venta', 'en' => 'sale'],
-                'rent' => ['es' => 'alquiler', 'en' => 'rent'],
-                'temporary_rent' => ['es' => 'alquiler-temporal', 'en' => 'temporary-rent'],
-            ];
-            $transSlug = $transactionSlugs[$filters['transaction_type']] ?? null;
+    private function generateAlternateUrls(
+        string $countryName,
+        ?TransactionType $transactionType,
+        ?PropertyType $propertyType,
+        ?State $state,
+        ?City $city
+    ): array {
+        $path = '/' . PropertySlugHelper::normalize($countryName);
+
+        if ($transactionType) {
+            $path .= '/' . PropertySlugHelper::normalize($transactionType->value);
         }
-        
-        if ($filters['property_type']) {
-            // Mapear al slug correcto según idioma
-            $propertySlugs = [
-                'house' => ['es' => 'casas', 'en' => 'houses'],
-                'apartment' => ['es' => 'departamentos', 'en' => 'apartments'],
-                'office' => ['es' => 'oficinas', 'en' => 'offices'],
-                'commercial' => ['es' => 'locales', 'en' => 'commercials'],
-                'land' => ['es' => 'terrenos', 'en' => 'lands'],
-                'field' => ['es' => 'campos', 'en' => 'fields'],
-                'farm' => ['es' => 'fincas', 'en' => 'farms'],
-                'warehouse' => ['es' => 'galpones', 'en' => 'warehouses'],
-            ];
-            $propSlug = $propertySlugs[$filters['property_type']] ?? null;
+        if ($propertyType) {
+            $path .= '/' . PropertySlugHelper::normalize($propertyType->value);
         }
-        
-        foreach ($locales as $locale) {
-            $urlPath = "/{$locale}{$path}";
-            
-            if (isset($transSlug)) {
-                $urlPath .= '/' . $transSlug[$locale];
-            }
-            
-            if (isset($propSlug)) {
-                $urlPath .= '/' . $propSlug[$locale];
-            }
-            
-            if ($filters['state']) {
-                $urlPath .= '/' . PropertySlugHelper::normalize($filters['state']);
-            }
-            
-            if ($filters['city']) {
-                $urlPath .= '/' . PropertySlugHelper::normalize($filters['city']);
-            }
-            
-            $alternates[$locale] = url($urlPath);
+        if ($state) {
+            $path .= '/' . PropertySlugHelper::normalize($state->name);
         }
-        
-        return $alternates;
+        if ($city) {
+            $path .= '/' . PropertySlugHelper::normalize($city->name);
+        }
+
+        return [
+            'es' => url("/es{$path}"),
+            'en' => url("/en{$path}"),
+        ];
     }
 
     /**
-     * Obtiene opciones disponibles para filtros del sidebar
-     * Basado en el contexto actual (país, estado, etc.)
+     * Obtiene opciones disponibles para filtros del sidebar.
      */
-    private function getFilterOptions(array $filters): array
+    private function getFilterOptions(string $countryName, ?State $state, ?City $city): array
     {
         $query = PropertyListing::where('is_active', true)
-            ->where('country', $filters['country']);
+            ->where('country', $countryName);
 
-        // Si hay filtros de ubicación, aplicarlos
-        if ($filters['state']) {
-            $query->where('state', $filters['state']);
+        if ($state) {
+            $query->whereRaw('lower(unaccent(state)) = lower(unaccent(?))', [$state->name]);
+        }
+        if ($city) {
+            $query->whereRaw('lower(unaccent(city)) = lower(unaccent(?))', [$city->name]);
         }
 
-        if ($filters['city']) {
-            $query->where('city', $filters['city']);
-        }
-
-        // Obtener rangos disponibles
         return [
-            'min_price' => $query->min('price') ?? 0,
-            'max_price' => $query->max('price') ?? 1000000,
+            'min_price'    => $query->min('price') ?? 0,
+            'max_price'    => $query->max('price') ?? 1000000,
             'max_bedrooms' => $query->max('bedrooms') ?? 10,
-            'max_bathrooms' => $query->max('bathrooms') ?? 10,
-            'max_area' => $query->max('area') ?? 1000,
-            'max_parking' => $query->max('parking_spaces') ?? 10,
+            'max_bathrooms'=> $query->max('bathrooms') ?? 10,
+            'max_area'     => $query->max('area') ?? 1000,
+            'max_parking'  => $query->max('parking_spaces') ?? 10,
         ];
+    }
+
+    private function shouldShowCountryHub(
+        ?TransactionType $transactionType,
+        ?PropertyType $propertyType,
+        ?State $state,
+        ?City $city
+    ): bool {
+        return !$transactionType && !$propertyType && !$state && !$city;
+    }
+
+    /**
+     * Genera secciones del hub de categorías para la página de país.
+     * Usa los tipos configurados en DB, sin mapeos ni equivalencias.
+     */
+    private function getCountryHubSections(string $countryName, string $countryCode, string $locale): array
+    {
+        $countrySlug = PropertySlugHelper::normalize($countryName);
+        $baseQuery   = PropertyListing::where('is_active', true)->where('country', $countryName);
+
+        // --- Tipos de operación ---
+        $transactionItems = [];
+        foreach (TransactionType::getByCountry($countryCode) as $type) {
+            $count = (clone $baseQuery)
+                ->whereRaw('LOWER(transaction_type) = LOWER(?)', [$type->value])
+                ->count();
+
+            if ($count > 0) {
+                $transactionItems[] = [
+                    'label' => $type->label,
+                    'count' => $count,
+                    'url'   => url("/{$locale}/{$countrySlug}/" . PropertySlugHelper::normalize($type->value)),
+                ];
+            }
+        }
+
+        // --- Tipos de propiedad ---
+        $propertyItems = [];
+        foreach (PropertyType::getByCountry($countryCode) as $type) {
+            $count = (clone $baseQuery)
+                ->whereRaw('LOWER(property_type) = LOWER(?)', [$type->value])
+                ->count();
+
+            if ($count > 0) {
+                $propertyItems[] = [
+                    'label' => $type->label_plural ?: $type->label,
+                    'count' => $count,
+                    'url'   => url("/{$locale}/{$countrySlug}/" . PropertySlugHelper::normalize($type->value)),
+                ];
+            }
+        }
+
+        // --- Estados/Provincias (solo los que están en nnjeim/world) ---
+        $stateItems = [];
+        $listingStates = (clone $baseQuery)
+            ->whereNotNull('state')
+            ->whereRaw("TRIM(state) != ''")
+            ->selectRaw('TRIM(state) as state_name, COUNT(*) as total')
+            ->groupByRaw('TRIM(state)')
+            ->orderBy('state_name')
+            ->get();
+
+        foreach ($listingStates as $row) {
+            $stateSlug  = PropertySlugHelper::normalize($row->state_name);
+            $worldState = PropertySlugHelper::getStateBySlug($stateSlug, $countryCode);
+
+            // Solo incluir estados validados contra nnjeim/world
+            if ($worldState) {
+                $stateItems[] = [
+                    'label' => $worldState->name,
+                    'count' => (int) $row->total,
+                    'url'   => url("/{$locale}/{$countrySlug}/{$stateSlug}"),
+                ];
+            }
+        }
+
+        return array_values(array_filter([
+            [
+                'title'   => __('properties.country_hub.property_types', [], $locale),
+                'items'   => $propertyItems,
+                'columns' => 3,
+                'icon'    => 'building',
+            ],
+            [
+                'title'   => __('properties.country_hub.provinces', [], $locale),
+                'items'   => $stateItems,
+                'columns' => 3,
+                'icon'    => 'map-pin',
+            ],
+        ], fn(array $s) => !empty($s['items'])));
     }
 }
