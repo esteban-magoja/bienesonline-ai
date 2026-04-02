@@ -34,6 +34,10 @@ Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sit
 Route::get('/sitemap-properties-{locale}.xml', [SitemapController::class, 'properties'])
     ->where('locale', 'es|en')
     ->name('sitemap.properties');
+Route::get('/sitemap-listings-{locale}.xml', [SitemapController::class, 'listings'])
+    ->where('locale', 'es|en')
+    ->name('sitemap.listings');
+Route::get('/sitemap-profiles.xml', [SitemapController::class, 'profiles'])->name('sitemap.profiles');
 
 // ============================================================================
 // PHONE VERIFICATION (Sin prefijo de locale, sin login requerido)
