@@ -1,2 +1,2 @@
-<link rel="icon" href="{{ setting('site.favicon', '/wave/favicon.png') }}" type="image/x-icon">
-<link rel="icon" href="{{ setting('site.favicon_dark', '/wave/favicon-dark.png') }}" type="image/png" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="{{ setting('site.favicon', '/storage/demo/icon-192x192.png') }}" type="image/x-icon">
+<link rel="icon" href="{{ setting('site.favicon_dark', '/storage/demo/icon-192x192.png') }}" type="image/png" media="(prefers-color-scheme: dark)">
