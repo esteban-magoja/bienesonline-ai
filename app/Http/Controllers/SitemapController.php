@@ -9,27 +9,40 @@ use App\Models\TransactionType;
 use App\Services\SeoService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class SitemapController extends Controller
 {
+    /** Maximum URLs per sitemap file (Google limit is 50,000). */
+    private const SITEMAP_PAGE_SIZE = 50000;
+
     /**
-     * Main sitemap index — lists all child sitemaps.
+     * Main sitemap index — dynamically lists all child sitemaps including paginated property ones.
      */
     public function index(): Response
     {
         $lastPropUpdate = PropertyListing::active()->latest('updated_at')->value('updated_at');
         $lastPropMod    = $lastPropUpdate ? $lastPropUpdate->toW3cString() : now()->toW3cString();
+        $totalActive    = PropertyListing::active()->count();
+        $totalPages     = max(1, (int) ceil($totalActive / self::SITEMAP_PAGE_SIZE));
 
         $sitemaps = [
-            ['loc' => url('/sitemap-pages.xml'),          'lastmod' => now()->toW3cString()],
-            ['loc' => url('/sitemap-properties-es.xml'),  'lastmod' => $lastPropMod],
-            ['loc' => url('/sitemap-properties-en.xml'),  'lastmod' => $lastPropMod],
-            ['loc' => url('/sitemap-listings-es.xml'),    'lastmod' => $lastPropMod],
-            ['loc' => url('/sitemap-listings-en.xml'),    'lastmod' => $lastPropMod],
-            ['loc' => url('/sitemap-profiles.xml'),       'lastmod' => $lastPropMod],
+            ['loc' => url('/sitemap-pages.xml'), 'lastmod' => now()->toW3cString()],
         ];
+
+        foreach (['es', 'en'] as $locale) {
+            for ($page = 1; $page <= $totalPages; $page++) {
+                $sitemaps[] = [
+                    'loc'     => url("/sitemap-properties-{$locale}-{$page}.xml"),
+                    'lastmod' => $lastPropMod,
+                ];
+            }
+            $sitemaps[] = ['loc' => url("/sitemap-listings-{$locale}.xml"), 'lastmod' => $lastPropMod];
+        }
+
+        $sitemaps[] = ['loc' => url('/sitemap-profiles.xml'), 'lastmod' => $lastPropMod];
 
         return response()
             ->view('sitemap.index', compact('sitemaps'))
@@ -75,45 +88,78 @@ class SitemapController extends Controller
     }
 
     /**
-     * Individual property pages sitemap, with correct SEO URLs and images.
+     * Individual property pages sitemap — paginated, streamed to avoid memory exhaustion.
+     * Each page contains up to SITEMAP_PAGE_SIZE URLs.
      */
-    public function properties(string $locale): Response
+    public function properties(string $locale, int $page = 1): StreamedResponse
     {
-        if (!in_array($locale, ['es', 'en'])) {
+        if (!in_array($locale, ['es', 'en']) || $page < 1) {
             abort(404);
         }
 
+        $perPage = self::SITEMAP_PAGE_SIZE;
+        $offset  = ($page - 1) * $perPage;
+        $total   = PropertyListing::active()->count();
+
+        if ($total === 0 || ($page > 1 && $offset >= $total)) {
+            abort(404);
+        }
+
+        // Lightweight query: only fetch the IDs for this page window.
+        $ids = PropertyListing::active()
+            ->select('id')
+            ->orderBy('id')
+            ->offset($offset)
+            ->limit($perPage)
+            ->pluck('id')
+            ->toArray();
+
         $seoService = app(SeoService::class);
 
-        $properties = Cache::remember("sitemap_properties_{$locale}", 3600, function () use ($locale, $seoService) {
-            $items = [];
+        return response()->stream(function () use ($locale, $seoService, $ids) {
+            echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+            echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"' . "\n";
+            echo '        xmlns:xhtml="http://www.w3.org/1999/xhtml"' . "\n";
+            echo '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n";
 
-            PropertyListing::active()
-                ->with(['primaryImage', 'images'])
-                ->orderBy('updated_at', 'desc')
-                ->chunk(200, function ($chunk) use ($locale, $seoService, &$items) {
-                    foreach ($chunk as $property) {
-                        $items[] = [
-                            'loc'         => $seoService->generatePropertyUrl($property, $locale),
-                            'lastmod'     => $property->updated_at->toW3cString(),
-                            'changefreq'  => 'weekly',
-                            'priority'    => $property->is_featured ? '0.9' : '0.7',
-                            'image'       => $property->primaryImage?->image_url ?? $property->images->first()?->image_url,
-                            'image_title' => e($property->getTranslation('title', $locale)),
-                            'alternates'  => [
-                                'es' => $seoService->generatePropertyUrl($property, 'es'),
-                                'en' => $seoService->generatePropertyUrl($property, 'en'),
-                            ],
-                        ];
+            // Process 200 at a time — eager-load primaryImage per batch.
+            foreach (array_chunk($ids, 200) as $chunkIds) {
+                $properties = PropertyListing::with(['primaryImage'])
+                    ->select(['id', 'title', 'is_featured', 'updated_at', 'country', 'city'])
+                    ->whereIn('id', $chunkIds)
+                    ->orderBy('id')
+                    ->get();
+
+                foreach ($properties as $property) {
+                    $locEs = $seoService->generatePropertyUrl($property, 'es');
+                    $locEn = $seoService->generatePropertyUrl($property, 'en');
+                    $loc   = $locale === 'es' ? $locEs : $locEn;
+
+                    echo "    <url>\n";
+                    echo '        <loc>' . e($loc) . "</loc>\n";
+                    echo '        <lastmod>' . $property->updated_at->toW3cString() . "</lastmod>\n";
+                    echo "        <changefreq>weekly</changefreq>\n";
+                    echo '        <priority>' . ($property->is_featured ? '0.9' : '0.7') . "</priority>\n";
+                    echo '        <xhtml:link rel="alternate" hreflang="es" href="' . e($locEs) . '" />' . "\n";
+                    echo '        <xhtml:link rel="alternate" hreflang="en" href="' . e($locEn) . '" />' . "\n";
+                    echo '        <xhtml:link rel="alternate" hreflang="x-default" href="' . e($locEs) . '" />' . "\n";
+
+                    $imageUrl = $property->primaryImage?->image_url;
+                    if ($imageUrl) {
+                        echo "        <image:image>\n";
+                        echo '            <image:loc>' . e($imageUrl) . "</image:loc>\n";
+                        echo '            <image:title>' . e($property->title) . "</image:title>\n";
+                        echo "        </image:image>\n";
                     }
-                });
 
-            return $items;
-        });
+                    echo "    </url>\n";
+                }
 
-        return response()
-            ->view('sitemap.properties', compact('properties', 'locale'))
-            ->header('Content-Type', 'application/xml');
+                unset($properties);
+            }
+
+            echo "</urlset>\n";
+        }, 200, ['Content-Type' => 'application/xml']);
     }
 
     /**

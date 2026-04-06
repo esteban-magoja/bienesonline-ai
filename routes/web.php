@@ -31,9 +31,17 @@ use Illuminate\Http\Request;
 // ============================================================================
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
 Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
-Route::get('/sitemap-properties-{locale}.xml', [SitemapController::class, 'properties'])
-    ->where('locale', 'es|en')
+
+// Paginated property sitemaps — /sitemap-properties-es-1.xml, -es-2.xml, etc.
+Route::get('/sitemap-properties-{locale}-{page}.xml', [SitemapController::class, 'properties'])
+    ->where(['locale' => 'es|en', 'page' => '[1-9][0-9]*'])
     ->name('sitemap.properties');
+
+// Backwards-compat: redirect old URL to page 1
+Route::get('/sitemap-properties-{locale}.xml', fn(string $locale) =>
+    redirect("/sitemap-properties-{$locale}-1.xml", 301)
+)->where('locale', 'es|en');
+
 Route::get('/sitemap-listings-{locale}.xml', [SitemapController::class, 'listings'])
     ->where('locale', 'es|en')
     ->name('sitemap.listings');
