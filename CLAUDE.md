@@ -922,6 +922,29 @@ LEGACY_URL_EC=https://www.bienesonline.ec
 - `resources/lang/es/import.php` + `en/import.php` — Traducciones
 - Migraciones: `external_id` + `source` en `property_listings`, tabla `import_jobs`
 
+### Importación de Solicitudes/Requests desde línea de comandos
+Comando para importar solicitudes del proyecto legacy desde un archivo JSON exportado de PHPMyAdmin:
+```bash
+php artisan import:legacy-requests docs/request_legacy/{ISO2}.json
+php artisan import:legacy-requests docs/request_legacy/CL.json --limit=20 --dry-run
+php artisan import:legacy-requests docs/request_legacy/CL.json --skip-embeddings
+php artisan import:legacy-requests docs/request_legacy/CL.json --only-embeddings
+```
+
+**Archivo**: `app/Console/Commands/ImportLegacyRequests.php`
+
+**Opciones**:
+- `--user=1` — ID del usuario al que se asociarán las solicitudes (default: 1)
+- `--limit=N` — Importar solo los primeros N registros (útil para pruebas)
+- `--dry-run` — Simula sin guardar en BD (muestra reporte de mapeos y errores)
+- `--skip-embeddings` — Omite la generación de embeddings (Fase 2)
+- `--only-embeddings` — Solo genera embeddings para registros ya importados sin embedding
+- `--chunk=50` — Registros por lote al generar embeddings
+
+**Conversión provincia → región para Chile**: Al importar solicitudes de Chile (`CL.json`), el campo `provincia_inmueble` se convierte automáticamente a la Región correspondiente antes de guardarse en `state`. El mapa completo está en `chileProvinceToRegion()`. El mismo mapeo existe en `ImportListingsJob` para la importación de anuncios.
+
+**Tipo no reconocido en Chile**: `"Agricola"` no está en los tipos configurados para CL — se aplica fallback al primer tipo disponible (Casa). No es un error bloqueante.
+
 ### Formato del endpoint legacy
 ```
 GET /app/export-listings.php?email={email}
@@ -945,6 +968,35 @@ exit
 - `index()` y `show()` están cacheados 15 minutos (`matches_index_{userId}`, `matches_listing_{listingId}`)
 - `index()` limita a 10 anuncios para evitar N búsquedas vectoriales en una sola carga
 - El dashboard **no** calcula matches en tiempo real (se eliminó para evitar carga en cada visita)
+
+---
+
+## Sistema de Sitemaps (Abril 2026)
+
+### Archivos
+- **Controlador**: `app/Http/Controllers/SitemapController.php`
+- **Vistas**: `resources/views/sitemap/` (index, pages, listings, profiles)
+- **Rutas**: `routes/web.php` (sin prefijo de locale, al inicio del archivo)
+
+### URLs
+```
+/sitemap.xml                          → índice dinámico (lista todos los hijos)
+/sitemap-pages.xml                    → páginas estáticas
+/sitemap-properties-{locale}-{N}.xml  → anuncios paginados (es/en, página 1, 2, ...)
+/sitemap-properties-{locale}.xml      → 301 redirect a página 1 (compatibilidad)
+/sitemap-listings-{locale}.xml        → páginas de listado SEO (país/operación/tipo/ciudad)
+/sitemap-profiles.xml                 → perfiles de usuarios/inmobiliarias
+```
+
+### Paginación (límite Google: 50,000 URLs por archivo)
+- `SITEMAP_PAGE_SIZE = 50000` definido como constante en el controlador
+- `sitemap.xml` calcula dinámicamente cuántas páginas hay con `ceil(total / 50000)`
+- Cada página usa `StreamedResponse` (no acumula en RAM): carga IDs con OFFSET/LIMIT, luego procesa en lotes de 200 con eager loading de `primaryImage`
+
+### ⚠️ Notas importantes
+- **Memory exhaustion**: El sitemap de propiedades usa streaming — nunca cargar todas las propiedades en un array. Si se agrega lógica nueva, mantener el patrón de `response()->stream()`
+- **404 en producción**: Si las rutas de sitemap dan 404 después de deploy, ejecutar `php artisan optimize:clear` (cache de rutas desactualizada)
+- **Imágenes**: Se incluye `<image:image>` solo con `primaryImage` (no todas las imágenes) para mantener el XML liviano
 
 ---
 
