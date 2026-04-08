@@ -1,0 +1,33 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_paraguay"},
+{"type":"table","name":"c","database":"admin_bienes_paraguay","data":
+[
+{"fecha":"2025-10-09 07:27:20","nombre":"Nilsa Yamili","email":"nilsasady.yamilifausto@gamil.com","telefono":"0981148570","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Pinoza"},
+{"fecha":"2025-10-12 17:09:22","nombre":"Claudia","email":"cvalita@gmail.com","telefono":"","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Alto Paraguay","localidad_inmueble":"Puerto Sastre"},
+{"fecha":"2025-11-03 12:28:38","nombre":"MAYRA V?zquez","email":"mayvaz7@gmail.com","telefono":"0981-554345","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Pinoza"},
+{"fecha":"2025-11-08 13:24:23","nombre":"NORMA CEFERINA","email":"normaazar76@gmail.com","telefono":"+54 1127550887","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Itapúa","localidad_inmueble":"Encarnación"},
+{"fecha":"2025-11-14 18:15:05","nombre":"Andrea","email":"yellisanabria@gmail.com","telefono":"+595984179176","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Cordillera","localidad_inmueble":"San Bernardino"},
+{"fecha":"2025-11-20 05:06:35","nombre":"Tomasz Jaworski","email":"tomasz4555555@wp.pl","telefono":"+48 455 401 417","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Central","localidad_inmueble":"Lambaré"},
+{"fecha":"2025-11-20 05:12:53","nombre":"Tomasz Jaworski","email":"tomasz4555555@wp.pl","telefono":"+48 455 401 417","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Central","localidad_inmueble":"Luque"},
+{"fecha":"2025-11-23 07:01:01","nombre":"Julia Acevedo","email":"julyacevedo1988@hotmail.com","telefono":"+41 78 256 18 80","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Itapúa","localidad_inmueble":"Cambyretá"},
+{"fecha":"2025-11-30 09:48:55","nombre":"Jorge Luis Mol","email":"jorgemoles@hotmail.es","telefono":"+5573981120842","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Pinoza"},
+{"fecha":"2025-12-18 07:36:31","nombre":"Jonathan","email":"zakkijonathanhutchinson@gmail.com","telefono":"","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Alto Paraná","localidad_inmueble":"Ciudad del Este"},
+{"fecha":"2026-01-02 21:24:24","nombre":"Recovery Intelligence","email":"tradeprecinct@gmail.com","telefono":"","tipo_inmueble":"Oficina","tipo_operacion":"Venta","provincia_inmueble":"Alto Paraguay","localidad_inmueble":"45-46 Red Lion Street, London WC1R 4PF, UK."},
+{"fecha":"2026-01-06 12:34:09","nombre":"AS SFS","email":"SAFSAFSA@HOTMAIL.COM","telefono":"+5666236","tipo_inmueble":"Salón","tipo_operacion":"Venta","provincia_inmueble":"Asunción","localidad_inmueble":"Pettirossi"},
+{"fecha":"2026-01-12 18:38:43","nombre":"Baudilio Hernandez","email":"baudiliohj2025@hotmail.com","telefono":"83431392","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Terminal"},
+{"fecha":"2026-01-15 17:31:51","nombre":"Nancy Rosalba Martinez Franco","email":"namar_77@hotmail.com","telefono":"0083758642","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Caazapá","localidad_inmueble":"Caazapá Capital"},
+{"fecha":"2026-01-23 08:17:56","nombre":"Romina Gonzalez","email":"romigonzalez112233@gmail.com","telefono":"0992648446","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Central","localidad_inmueble":"Limpio"},
+{"fecha":"2026-01-25 17:14:12","nombre":"OSCAR MOLINA","email":"gazetafuertedelrey@yahoo.es","telefono":"+34658025504","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Itapúa","localidad_inmueble":"Encarnación"},
+{"fecha":"2026-02-03 21:53:10","nombre":"Lara Silvia Montero","email":"montero_lara@email.com","telefono":"6137202000","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Itapúa","localidad_inmueble":"Encarnación"},
+{"fecha":"2026-02-10 08:36:22","nombre":"PEDRO ALEJANDRO","email":"pemendoza99@gmail.com","telefono":"0981450750","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Jara"},
+{"fecha":"2026-02-11 18:33:07","nombre":"Ruth Colm","email":"colmanruth883@gmail.com","telefono":"0971653524","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Central","localidad_inmueble":"San Antonio"},
+{"fecha":"2026-02-17 09:06:39","nombre":"CARMEN","email":"mn_edu@yahoo.com","telefono":"","tipo_inmueble":"Deposito","tipo_operacion":"Venta","provincia_inmueble":"Asunción","localidad_inmueble":"Pettirossi"},
+{"fecha":"2026-03-15 15:37:12","nombre":"Tatiana","email":"tatiana11msn@hotmail.com","telefono":"+31617689132","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Asunción","localidad_inmueble":"Itá Enramada"},
+{"fecha":"2026-03-25 14:42:49","nombre":"Willian Ferrarino","email":"ingwillianferrarino@hotmail.com","telefono":"0984522000","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Alto Paraná","localidad_inmueble":"Hernandaríaz"},
+{"fecha":"2026-04-03 20:23:52","nombre":"MANUEL PALLAR?S","email":"prefarre@hotmail.com","telefono":"+595991504217","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Itapúa","localidad_inmueble":"Encarnación"},
+{"fecha":"2026-04-07 12:56:01","nombre":"Gisela","email":"gjflorentin@gmail.com","telefono":"0971997577","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Asunción","localidad_inmueble":"Obrero"},
+{"fecha":"2026-04-07 23:07:01","nombre":"Gaetano","email":"gaetanoblocksomb@gmail.com","telefono":"973977742","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Guairá","localidad_inmueble":"Independencia"}
+]
+}
+]
