@@ -150,7 +150,7 @@ class SitemapController extends Controller
                     echo '        <xhtml:link rel="alternate" hreflang="en" href="' . e($locEn) . '" />' . "\n";
                     echo '        <xhtml:link rel="alternate" hreflang="x-default" href="' . e($locEs) . '" />' . "\n";
 
-                    $imageUrl = $property->primaryImage?->image_url;
+                    $imageUrl = $this->normalizeSitemapImageUrl($property->primaryImage?->image_url);
                     if ($imageUrl) {
                         echo "        <image:image>\n";
                         echo '            <image:loc>' . e($imageUrl) . "</image:loc>\n";
@@ -422,5 +422,18 @@ class SitemapController extends Controller
         }
 
         return $locale === 'en' ? Str::slug($type->value_en) : Str::slug($type->value);
+    }
+
+    private function normalizeSitemapImageUrl(?string $imageUrl): ?string
+    {
+        if (!$imageUrl) {
+            return null;
+        }
+
+        if (preg_match('/^https?:\/\//i', $imageUrl)) {
+            return $imageUrl;
+        }
+
+        return url('/' . ltrim($imageUrl, '/'));
     }
 }

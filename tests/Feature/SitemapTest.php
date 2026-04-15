@@ -44,21 +44,24 @@ it('returns not found when requesting a property sitemap page beyond the last pa
     $response->assertNotFound();
 });
 
+it('emits absolute image URLs in property sitemaps when stored image URLs are relative', function () {
+    $listingId = createPropertyListingWithImageForSitemapTest('/storage/property_images/test-relative-image.jpg');
+
+    $response = $this->get('/sitemap-properties-es-1.xml');
+
+    $response->assertSuccessful();
+    $response->assertStreamed();
+    expect($response->streamedContent())->toContain(
+        '<image:loc>' . url('/storage/property_images/test-relative-image.jpg') . '</image:loc>'
+    );
+
+    expect($listingId)->toBeInt();
+});
+
 function seedPropertyListingsForSitemapTest(int $count): int
 {
     $timestamp = now();
-    $userId = DB::table('users')->insertGetId([
-        'name' => 'Sitemap Test User',
-        'email' => 'sitemap-test-' . str_replace('.', '', (string) microtime(true)) . '@example.com',
-        'username' => 'sitemaptest' . str_replace('.', '', (string) microtime(true)),
-        'avatar' => 'demo/default.png',
-        'password' => bcrypt('password'),
-        'locale' => 'es',
-        'terms_accepted' => true,
-        'terms_accepted_at' => $timestamp,
-        'created_at' => $timestamp,
-        'updated_at' => $timestamp,
-    ]);
+    $userId = createSitemapTestUser($timestamp);
     $rows = [];
 
     for ($index = 1; $index <= $count; $index++) {
@@ -98,4 +101,66 @@ function seedPropertyListingsForSitemapTest(int $count): int
     }
 
     return $count;
+}
+
+function createPropertyListingWithImageForSitemapTest(string $imageUrl): int
+{
+    $timestamp = now();
+    $userId = createSitemapTestUser($timestamp);
+
+    $listingId = DB::table('property_listings')->insertGetId([
+        'user_id' => $userId,
+        'title' => 'Sitemap image test listing',
+        'description' => 'Listing created to test sitemap image URLs.',
+        'property_type' => 'house',
+        'transaction_type' => 'sale',
+        'price' => 100000,
+        'bedrooms' => 3,
+        'bathrooms' => 2,
+        'parking_spaces' => 1,
+        'area' => 120,
+        'address' => 'Street 1',
+        'city' => 'Cordoba',
+        'state' => 'Cordoba',
+        'country' => 'Argentina',
+        'postal_code' => '5000',
+        'latitude' => null,
+        'longitude' => null,
+        'is_featured' => false,
+        'is_active' => true,
+        'currency' => 'USD',
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ]);
+
+    DB::table('property_images')->insert([
+        'property_listing_id' => $listingId,
+        'image_path' => 'property_images/test-relative-image.jpg',
+        'image_url' => $imageUrl,
+        'alt_text' => 'Sitemap image test listing',
+        'is_primary' => true,
+        'sort_order' => 0,
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ]);
+
+    return $listingId;
+}
+
+function createSitemapTestUser($timestamp): int
+{
+    $uniqueId = str_replace('.', '', uniqid('', true));
+
+    return DB::table('users')->insertGetId([
+        'name' => 'Sitemap Test User',
+        'email' => "sitemap-test-{$uniqueId}@example.com",
+        'username' => "sitemaptest{$uniqueId}",
+        'avatar' => 'demo/default.png',
+        'password' => bcrypt('password'),
+        'locale' => 'es',
+        'terms_accepted' => true,
+        'terms_accepted_at' => $timestamp,
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ]);
 }
