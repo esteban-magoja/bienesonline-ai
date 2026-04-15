@@ -15,8 +15,14 @@ use Illuminate\Support\Str;
 
 class SitemapController extends Controller
 {
-    /** Maximum URLs per sitemap file (Google limit is 50,000). */
-    private const SITEMAP_PAGE_SIZE = 50000;
+    /**
+     * Operational ceiling for property sitemap URLs.
+     *
+     * Google allows up to 50,000 URLs, but these sitemap entries also include
+     * hreflang alternates and image tags, so we keep a much lower cap to stay
+     * comfortably below the XML file size limit in production.
+     */
+    private const PROPERTY_SITEMAP_URL_LIMIT = 5000;
 
     /**
      * Main sitemap index — dynamically lists all child sitemaps including paginated property ones.
@@ -26,7 +32,7 @@ class SitemapController extends Controller
         $lastPropUpdate = PropertyListing::active()->latest('updated_at')->value('updated_at');
         $lastPropMod    = $lastPropUpdate ? $lastPropUpdate->toW3cString() : now()->toW3cString();
         $totalActive    = PropertyListing::active()->count();
-        $totalPages     = max(1, (int) ceil($totalActive / self::SITEMAP_PAGE_SIZE));
+        $totalPages     = max(1, (int) ceil($totalActive / self::PROPERTY_SITEMAP_URL_LIMIT));
 
         $sitemaps = [
             ['loc' => url('/sitemap-pages.xml'), 'lastmod' => now()->toW3cString()],
@@ -89,7 +95,7 @@ class SitemapController extends Controller
 
     /**
      * Individual property pages sitemap — paginated, streamed to avoid memory exhaustion.
-     * Each page contains up to SITEMAP_PAGE_SIZE URLs.
+     * Each page contains up to PROPERTY_SITEMAP_URL_LIMIT URLs.
      */
     public function properties(string $locale, int $page = 1): StreamedResponse
     {
@@ -97,7 +103,7 @@ class SitemapController extends Controller
             abort(404);
         }
 
-        $perPage = self::SITEMAP_PAGE_SIZE;
+        $perPage = self::PROPERTY_SITEMAP_URL_LIMIT;
         $offset  = ($page - 1) * $perPage;
         $total   = PropertyListing::active()->count();
 
