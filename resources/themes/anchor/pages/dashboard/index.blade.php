@@ -16,6 +16,11 @@
 	
 	// Último import job del usuario
 	$latestImport = ImportJob::where('user_id', auth()->id())->latest()->first();
+
+	// Ocultar recuadro de importación si se completó hace más de 2 días
+	$hideImportSection = $latestImport
+		&& $latestImport->status === 'completed'
+		&& $latestImport->updated_at->diffInDays(now()) >= 2;
 ?>
 
 <x-layouts.app>
@@ -191,7 +196,7 @@
 
 		{{-- Sección de Importación desde sistema anterior --}}
 		@php $importCountries = array_keys(config('import.legacy_urls', [])); @endphp
-		@if(count($importCountries) > 0)
+		@if(count($importCountries) > 0 && !$hideImportSection)
 		<div class="mt-6"
 			x-data="{
 				country: '',
@@ -355,14 +360,39 @@
 		</div>
 		@endif
 
-		
+		{{-- Aviso de suscripción obligatoria --}}
+		<div class="mt-6 rounded-xl border-l-4 p-5 shadow-sm
+			{{ auth()->user()->subscriber() ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500' }}">
+			<div class="flex items-start gap-3">
+				@if(auth()->user()->subscriber())
+					<svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+					</svg>
+				@else
+					<svg class="w-6 h-6 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+					</svg>
+				@endif
+				<div>
+					<p class="{{ auth()->user()->subscriber() ? 'text-green-800' : 'text-amber-800' }} text-sm font-medium">
+						Atención: A partir de Agosto 2026 solo quedarán publicados y activos anuncios de usuarios que mantienen una suscripción activa en Bienesonline.
+					</p>
+					<p class="mt-2 text-sm {{ auth()->user()->subscriber() ? 'text-green-700 font-semibold' : 'text-amber-700' }}">
+						@if(auth()->user()->subscriber())
+							🎉 Felicitaciones, usted ya tiene una suscripción activa.
+						@else
+							<a href="/settings/subscription" class="font-semibold underline hover:opacity-80">
+								Activar mi suscripción →
+							</a>
+						@endif
+					</p>
+				</div>
+			</div>
+		</div>
 
 		<div class="mt-5 space-y-5">
 			@subscriber
-				<p>{{ __('dashboard.home.role_message') }} <strong>{{ auth()->user()->roles()->first()->name }}</strong>.</p>
 				<x-app.message-for-subscriber />
-			@else
-				<p>{{ __('dashboard.home.role_message') }} <strong>{{ auth()->user()->roles()->first()->name }}</strong>.</p>
 			@endsubscriber
 			
 			@admin
