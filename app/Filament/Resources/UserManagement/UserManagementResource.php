@@ -447,7 +447,9 @@ class UserManagementResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            RelationManagers\UserNotesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

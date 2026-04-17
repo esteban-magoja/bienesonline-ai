@@ -105,6 +105,14 @@ class User extends WaveUser implements HasLocalePreference
     }
 
     /**
+     * Get the admin notes for the user.
+     */
+    public function userNotes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\UserNote::class)->latest();
+    }
+
+    /**
      * Get the property requests for the user.
      */
     public function propertyRequests()
