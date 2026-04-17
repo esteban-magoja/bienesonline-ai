@@ -2,7 +2,11 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\PropertyListing;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Collection;
+use Wave\Subscription;
+use Wave\User;
 
 class DashboardWidget extends Widget
 {
@@ -16,4 +20,32 @@ class DashboardWidget extends Widget
      * @var view-string
      */
     protected string $view = 'filament.widgets.dashboard-widget';
+
+    /**
+     * @return array{
+     *     totalUsers: int,
+     *     totalSubscribers: int,
+     *     totalListings: int,
+     *     activeListings: int,
+     *     listingsByCountry: Collection,
+     * }
+     */
+    protected function getViewData(): array
+    {
+        $listingsByCountry = PropertyListing::query()
+            ->selectRaw('country, COUNT(*) as total')
+            ->whereNotNull('country')
+            ->where('country', '!=', '')
+            ->groupBy('country')
+            ->orderByDesc('total')
+            ->get();
+
+        return [
+            'totalUsers'       => User::count(),
+            'totalSubscribers' => Subscription::where('status', 'active')->count(),
+            'totalListings'    => PropertyListing::count(),
+            'activeListings'   => PropertyListing::where('is_active', true)->count(),
+            'listingsByCountry' => $listingsByCountry,
+        ];
+    }
 }
