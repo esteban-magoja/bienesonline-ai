@@ -280,6 +280,10 @@ class UserManagementResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
                 ImageColumn::make('avatar')
                     ->label('')
                     ->circular()
