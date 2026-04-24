@@ -30,6 +30,7 @@ class DashboardWidget extends Widget
      *     totalListings: int,
      *     activeListings: int,
      *     listingsByCountry: Collection,
+     *     yesterdayByCountry: array<string, int>,
      * }
      */
     protected function getViewData(): array
@@ -42,18 +43,28 @@ class DashboardWidget extends Widget
             ->orderByDesc('total')
             ->get();
 
+        $yesterdayByCountry = PropertyListing::query()
+            ->selectRaw('country, COUNT(*) as total')
+            ->whereNotNull('country')
+            ->where('country', '!=', '')
+            ->whereDate('created_at', today()->subDay())
+            ->groupBy('country')
+            ->pluck('total', 'country')
+            ->all();
+
         return [
-            'totalUsers'       => User::count(),
-            'totalSubscribers' => Subscription::where('status', 'active')->count(),
-            'premiumUsers'     => DB::table('users')
+            'totalUsers'        => User::count(),
+            'totalSubscribers'  => Subscription::where('status', 'active')->count(),
+            'premiumUsers'      => DB::table('users')
                 ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                 ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
                 ->where('model_has_roles.model_type', 'users')
                 ->where('roles.name', 'premium')
                 ->count(),
-            'totalListings'    => PropertyListing::count(),
-            'activeListings'   => PropertyListing::where('is_active', true)->count(),
+            'totalListings'     => PropertyListing::count(),
+            'activeListings'    => PropertyListing::where('is_active', true)->count(),
             'listingsByCountry' => $listingsByCountry,
+            'yesterdayByCountry' => $yesterdayByCountry,
         ];
     }
 }

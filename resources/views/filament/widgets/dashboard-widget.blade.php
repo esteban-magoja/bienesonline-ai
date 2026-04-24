@@ -93,6 +93,10 @@
                             </div>
                             <span class="mt-1 text-xs text-gray-400">{{ round(($row->total / $totalListings) * 100) }}%</span>
                         @endif
+                        @php $countYesterday = $yesterdayByCountry[$row->country] ?? 0; @endphp
+                        <span class="mt-1 text-xs {{ $countYesterday > 0 ? 'text-emerald-500' : 'text-gray-300 dark:text-gray-600' }}">
+                            Ayer: {{ $countYesterday }}
+                        </span>
                     </div>
                 @endforeach
             </div>
