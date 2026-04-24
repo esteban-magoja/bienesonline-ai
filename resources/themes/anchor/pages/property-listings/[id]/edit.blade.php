@@ -113,7 +113,11 @@ new class extends Component {
             $this->propertyTypes = PropertyType::getByCountry($country->iso2);
             $this->transactionTypes = TransactionType::getByCountry($country->iso2);
             if (isset($country->currency['code'])) {
-                $this->availableCurrencies = array_unique([$country->currency['code'], 'USD']);
+                $currencies = array_unique([$country->currency['code'], 'USD']);
+                if ($country->iso2 === 'CL') {
+                    $currencies[] = 'UF';
+                }
+                $this->availableCurrencies = $currencies;
             }
         }
 
@@ -137,7 +141,11 @@ new class extends Component {
         if ($country) {
             if (isset($country->currency['code'])) {
                 $this->currency = $country->currency['code'];
-                $this->availableCurrencies = array_unique([$country->currency['code'], 'USD']);
+                $currencies = array_unique([$country->currency['code'], 'USD']);
+                if ($country->iso2 === 'CL') {
+                    $currencies[] = 'UF';
+                }
+                $this->availableCurrencies = $currencies;
             }
             $this->propertyTypes = PropertyType::getByCountry($country->iso2);
             $this->transactionTypes = TransactionType::getByCountry($country->iso2);

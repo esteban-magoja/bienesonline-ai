@@ -116,7 +116,11 @@ new class extends Component {
             // Actualizar moneda según el país
             if (isset($country->currency['code'])) {
                 $this->currency = $country->currency['code'];
-                $this->availableCurrencies = array_unique([$country->currency['code'], 'USD']);
+                $currencies = array_unique([$country->currency['code'], 'USD']);
+                if ($country->iso2 === 'CL') {
+                    $currencies[] = 'UF';
+                }
+                $this->availableCurrencies = $currencies;
             }
 
             // Cargar tipos de propiedad y transacción según país

@@ -112,7 +112,19 @@ class PropertyRequestController extends Controller
         }
 
         $countries = \Nnjeim\World\Models\Country::all();
-        $currencies = ['USD', 'ARS', 'EUR', 'BRL', 'MXN', 'CLP'];
+
+        $country = \Nnjeim\World\Models\Country::where('name', $propertyRequest->country)->first();
+        $currencies = ['USD'];
+        if ($country && isset($country->currency['code'])) {
+            $currencies = array_unique([$country->currency['code'], 'USD']);
+            if ($country->iso2 === 'CL') {
+                $currencies[] = 'UF';
+            }
+        }
+        // Asegurar que la moneda guardada siempre esté disponible
+        if ($propertyRequest->currency && !in_array($propertyRequest->currency, $currencies)) {
+            $currencies[] = $propertyRequest->currency;
+        }
 
         return view('theme::pages.dashboard.requests.edit', compact('propertyRequest', 'countries', 'currencies'));
     }

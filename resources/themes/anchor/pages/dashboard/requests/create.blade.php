@@ -111,6 +111,11 @@ new class extends Component {
         $country = Country::find($countryId);
         if ($country && isset($country->currency['code'])) {
             $this->currency = $country->currency['code'];
+            $currencies = array_unique([$country->currency['code'], 'USD']);
+            if ($country->iso2 === 'CL') {
+                $currencies[] = 'UF';
+            }
+            $this->availableCurrencies = $currencies;
         }
 
         // Cargar tipos de inmueble y operación del país seleccionado

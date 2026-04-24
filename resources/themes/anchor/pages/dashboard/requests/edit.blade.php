@@ -144,9 +144,9 @@
                                 id="currency" 
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 required>
-                            <option value="USD" {{ old('currency', $propertyRequest->currency) == 'USD' ? 'selected' : '' }}>USD</option>
-                            <option value="ARS" {{ old('currency', $propertyRequest->currency) == 'ARS' ? 'selected' : '' }}>ARS</option>
-                            <option value="EUR" {{ old('currency', $propertyRequest->currency) == 'EUR' ? 'selected' : '' }}>EUR</option>
+                            @foreach($currencies as $currencyCode)
+                                <option value="{{ $currencyCode }}" {{ old('currency', $propertyRequest->currency) == $currencyCode ? 'selected' : '' }}>{{ $currencyCode }}</option>
+                            @endforeach
                         </select>
                         @error('currency')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
