@@ -1,7 +1,7 @@
 <x-filament-widgets::widget class="gap-5 fi-filament-info-widget">
 
     {{-- Fila 1: Estadísticas principales --}}
-    <section class="grid grid-cols-2 gap-5 mb-5 xl:grid-cols-4">
+    <section class="grid grid-cols-2 gap-5 mb-5 xl:grid-cols-5">
 
         {{-- Usuarios registrados --}}
         <a href="{{ route('filament.admin.resources.user-management.index') }}" class="group">
@@ -15,9 +15,6 @@
                         <div class="mt-1 text-xs font-medium text-gray-500">Usuarios registrados</div>
                     </div>
                 </div>
-                <div class="mt-3 text-xs text-blue-600 dark:text-blue-400 group-hover:underline">
-                    Gestionar usuarios →
-                </div>
             </x-filament::section>
         </a>
 
@@ -30,6 +27,19 @@
                         {{ $totalSubscribers }}
                     </div>
                     <div class="mt-1 text-xs font-medium text-gray-500">Suscriptores activos</div>
+                </div>
+            </div>
+        </x-filament::section>
+
+        {{-- Usuarios premium --}}
+        <x-filament::section class="h-full">
+            <div class="flex gap-x-4 items-center">
+                <x-phosphor-star-duotone class="h-10 text-amber-500 fill-current shrink-0" />
+                <div>
+                    <div class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-200">
+                        {{ $premiumUsers }}
+                    </div>
+                    <div class="mt-1 text-xs font-medium text-gray-500">Usuarios premium</div>
                 </div>
             </div>
         </x-filament::section>
