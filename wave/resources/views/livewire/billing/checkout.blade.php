@@ -32,15 +32,15 @@
                             <div class="p-6 lg:p-8">
                                 <div class="relative text-gray-500 dark:text-neutral-400">
                                     <span lass="text-lg md:text-xl font-semibold rounded-full">
-                                        {{ $plan->name }} Plan
-                                        {{ $billing_cycle_selected }}
+                                        {{ __('billing.subscription') }}
+                                        <span x-text="billing_cycle_selected == 'month' ? '{{ __('billing.monthly') }}' : '{{ __('billing.yearly') }}'"></span>
                                     </span>
                                 </div>
 
                                 <div class="my-3 space-y-2 md:my-5">
                                     <div class="relative">
                                         <span class="text-3xl font-bold lg:text-4xl dark:text-neutral-200">$<span x-text="billing_cycle_selected == 'month' ? '{{ $plan->monthly_price }}' : '{{ $plan->yearly_price }}'"></span></span>
-                                        <span class="inline-block text-xl font-bold text-gray-500 dark:text-neutral-200 -translate-y-0.5 lg:text-2xl"><span x-text="billing_cycle_selected == 'month' ? '/mo' : '/yr'"></span></span>
+                                        <span class="inline-block text-xl font-bold text-gray-500 dark:text-neutral-200 -translate-y-0.5 lg:text-2xl"><span x-text="billing_cycle_selected == 'month' ? '/{{ __('billing.mo') }}' : '/{{ __('billing.yr') }}'"></span></span>
                                     </div>
                                     <p class="text-sm leading-7 text-gray-500 dark:text-neutral-300 lg:text-base">{{ $plan->description }}</p>
                                 </div>
