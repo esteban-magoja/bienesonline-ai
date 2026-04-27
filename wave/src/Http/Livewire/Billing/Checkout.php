@@ -57,6 +57,7 @@ class Checkout extends Component
                 'plan_id' => $plan->id,
                 'billing_cycle' => $this->billing_cycle_selected,
             ],
+            'allow_promotion_codes' => true,
             'mode' => 'subscription',
             'success_url' => url('subscription/welcome'),
             'cancel_url' => url('settings/subscription'),
