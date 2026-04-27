@@ -236,6 +236,7 @@ new class extends Component {
                             </h3>
                             <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-400">
                                 <p>{{ __('listings.premium_description') }}</p>
+                                <p class="mt-1 italic">{{ __('listings.premium_legacy_contact') }}</p>
                             </div>
                         </div>
                     </div>

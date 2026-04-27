@@ -23,6 +23,7 @@ return [
     // Premium
     'premium_required' => 'Subscription Required',
     'premium_description' => 'To publish property listings you need a subscription.',
+    'premium_legacy_contact' => 'If you are already a premium member in the previous system and want to transfer your membership to the new one, contact info@bienesonline.com',
     'premium_benefit_unlimited' => 'Publish unlimited property listings',
     'premium_benefit_notifications' => 'Receive notifications for matching requests',
     'premium_benefit_stats' => 'Access to advanced statistics',

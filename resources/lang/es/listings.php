@@ -23,6 +23,7 @@ return [
     // Premium
     'premium_required' => 'Suscripción Requerida',
     'premium_description' => 'Para publicar anuncios de propiedades necesitas una suscripción.',
+    'premium_legacy_contact' => 'Si ya eres miembro premium en el sistema anterior y quieres pasar tu membresía al nuevo, contactar a info@bienesonline.com',
     'premium_benefit_unlimited' => 'Publicar anuncios ilimitados de propiedades',
     'premium_benefit_notifications' => 'Recibir notificaciones de solicitudes compatibles',
     'premium_benefit_stats' => 'Acceso a estadísticas avanzadas',
