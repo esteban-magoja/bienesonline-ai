@@ -311,42 +311,25 @@ new class extends Component {
         @endif
 
         @if (!$canPublish)
-            <div class="mt-6 p-8 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-lg font-medium text-yellow-800 dark:text-yellow-300">
-                            {{ __('listings.premium_required') }}
-                        </h3>
-                        <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-400">
-                            <p>{{ __('listings.premium_description') }}</p>
-                            <ul class="list-disc list-inside mt-2 space-y-1">
-                                <li>{{ __('listings.premium_benefit_unlimited') }}</li>
-                                <li>{{ __('listings.premium_benefit_notifications') }}</li>
-                                <li>{{ __('listings.premium_benefit_stats') }}</li>
-                                <li>{{ __('listings.premium_benefit_support') }}</li>
-                            </ul>
+            <div class="mt-6">
+                <div class="mb-6 p-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
                         </div>
-                        <div class="mt-4 flex gap-3">
-                            <a href="{{ route('settings.subscription') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                                </svg>
-                                {{ __('listings.get_premium') }}
-                            </a>
-                            <button wire:click="grantPremiumRole" type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                {{ __('listings.already_premium') }}
-                            </button>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-medium text-yellow-800 dark:text-yellow-300">
+                                {{ __('listings.premium_required') }}
+                            </h3>
+                            <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-400">
+                                <p>{{ __('listings.premium_description') }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <livewire:billing.checkout />
             </div>
         @else
             <div class="mt-6">

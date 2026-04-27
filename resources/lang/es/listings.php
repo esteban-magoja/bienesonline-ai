@@ -21,8 +21,8 @@ return [
     'step_2_description' => 'Paso 2: Sube imágenes para tu anuncio.',
     
     // Premium
-    'premium_required' => 'Suscripción Premium Requerida',
-    'premium_description' => 'Para publicar anuncios de propiedades necesitas una suscripción premium. Esta suscripción te permite:',
+    'premium_required' => 'Suscripción Requerida',
+    'premium_description' => 'Para publicar anuncios de propiedades necesitas una suscripción.',
     'premium_benefit_unlimited' => 'Publicar anuncios ilimitados de propiedades',
     'premium_benefit_notifications' => 'Recibir notificaciones de solicitudes compatibles',
     'premium_benefit_stats' => 'Acceso a estadísticas avanzadas',

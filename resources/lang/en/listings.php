@@ -21,8 +21,8 @@ return [
     'step_2_description' => 'Step 2: Upload images for your listing.',
     
     // Premium
-    'premium_required' => 'Premium Subscription Required',
-    'premium_description' => 'To publish property listings you need a premium subscription. This subscription allows you to:',
+    'premium_required' => 'Subscription Required',
+    'premium_description' => 'To publish property listings you need a subscription.',
     'premium_benefit_unlimited' => 'Publish unlimited property listings',
     'premium_benefit_notifications' => 'Receive notifications for matching requests',
     'premium_benefit_stats' => 'Access to advanced statistics',
