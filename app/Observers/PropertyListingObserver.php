@@ -41,6 +41,19 @@ class PropertyListingObserver
     }
 
     /**
+     * Handle the PropertyListing "updated" event.
+     * Dispara el evento cuando un anuncio se reactiva (is_active: false → true).
+     */
+    public function updated(PropertyListing $propertyListing): void
+    {
+        if ($propertyListing->wasChanged('is_active') && $propertyListing->is_active) {
+            if (config('matching.enabled', true)) {
+                event(new PropertyListingCreated($propertyListing));
+            }
+        }
+    }
+
+    /**
      * Generate embedding for the property listing.
      */
     private function generateEmbedding(PropertyListing $propertyListing): void

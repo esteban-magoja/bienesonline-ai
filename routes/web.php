@@ -27,8 +27,23 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 // ============================================================================
-// 0. SITEMAP ROUTES (SEO - Sin prefijo de locale)
+// 0. SEO ROUTES (Sin prefijo de locale)
 // ============================================================================
+
+// IndexNow key verification file: /{api_key}.txt
+Route::get('/{key}.txt', function (string $key) {
+    $configuredKey = config('indexnow.api_key');
+
+    if (empty($configuredKey) || $key !== $configuredKey) {
+        abort(404);
+    }
+
+    return response($configuredKey, 200)
+        ->header('Content-Type', 'text/plain');
+})->where('key', '[a-f0-9]{32,128}')->name('indexnow.key');
+
+// ============================================================================
+// SITEMAP ROUTES
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
 Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
 
