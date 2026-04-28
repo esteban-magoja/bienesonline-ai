@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
-use App\Events\PropertyListingCreated;
-use App\Listeners\SubmitToIndexNow;
 use App\Listeners\UserRegistered;
 use App\Models\PropertyListing;
 use App\Observers\PropertyListingObserver;
@@ -79,7 +77,6 @@ class AppServiceProvider extends ServiceProvider
         PropertyListing::observe(PropertyListingObserver::class);
 
         Event::listen(Registered::class, UserRegistered::class);
-        Event::listen(PropertyListingCreated::class, SubmitToIndexNow::class);
 
         $this->bootRoute();
     }
