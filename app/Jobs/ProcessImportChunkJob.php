@@ -83,8 +83,8 @@ class ProcessImportChunkJob implements ShouldQueue
         $data = $item->data;
         $externalId = (string) ($data['id'] ?? '');
 
-        // Saltar si ya fue importado
-        if ($externalId && PropertyListing::where('external_id', $externalId)->where('source', $source)->exists()) {
+        // Saltar si ya fue importado por este mismo usuario
+        if ($externalId && PropertyListing::where('external_id', $externalId)->where('source', $source)->where('user_id', $importJob->user_id)->exists()) {
             $item->update(['status' => 'done']);
             $importJob->increment('skipped_listings');
             return;
@@ -117,12 +117,15 @@ class ProcessImportChunkJob implements ShouldQueue
             'is_featured'      => false,
         ]);
 
+        // Marcar como done antes de descargar imágenes: si el job se interrumpe
+        // durante la descarga, en el reintento el external_id ya existe y se salta
+        // correctamente en lugar de intentar crear un listing duplicado.
+        $item->update(['status' => 'done']);
+        $importJob->increment('imported_listings');
+
         foreach ($data['images'] ?? [] as $imageData) {
             $this->importImage($listing, $imageData);
         }
-
-        $item->update(['status' => 'done']);
-        $importJob->increment('imported_listings');
     }
 
     /**
