@@ -297,6 +297,16 @@ class UserManagementResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->copyable(),
+                TextColumn::make('movil')
+                    ->label('WhatsApp')
+                    ->searchable()
+                    ->url(fn (User $record): ?string => $record->movil
+                        ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $record->movil)
+                        : null)
+                    ->openUrlInNewTab()
+                    ->color('success')
+                    ->placeholder('—')
+                    ->toggleable(),
                 TextColumn::make('roles.name')
                     ->label('Rol')
                     ->badge()

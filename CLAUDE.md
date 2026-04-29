@@ -1092,6 +1092,58 @@ class MiNotificacion extends Notification implements ShouldQueue
 
 ---
 
+## IndexNow para Bing Webmaster Tools (Abril 2026)
+
+### Objetivo
+Notificar automáticamente a Bing cada vez que se publica o reactiva un anuncio, para acelerar su indexación en el buscador.
+
+### Arquitectura
+```
+Publicar anuncio → PropertyListingObserver::created() → PropertyListingCreated event
+                → SubmitToIndexNow listener (queued) → IndexNowService → POST api.indexnow.org
+```
+
+### Archivos del Sistema
+- **config/indexnow.php** — Configuración: enabled, api_key, host, endpoint, logging
+- **app/Services/IndexNowService.php** — Cliente HTTP para la API de IndexNow
+  - `submitUrls(array $urls): bool` — POST a `api.indexnow.org/indexnow`
+  - Nunca lanza excepciones (errores → `Log::warning`)
+- **app/Listeners/SubmitToIndexNow.php** — Listener en cola para `PropertyListingCreated`
+  - Genera URLs para todos los locales (`es` y `en`) usando `SeoService::generatePropertyUrl()`
+  - Envía ambas URLs en un solo POST
+- **app/Observers/PropertyListingObserver.php** — Método `updated()` añadido:
+  - Dispara el evento cuando `is_active` cambia de `false` a `true` (reactivación)
+- **public/c3c2f7f6f33349cba5f743647871eb23.txt** — Archivo de verificación de Bing (clave como contenido)
+- **tests/Feature/IndexNow/SubmitToIndexNowTest.php** — 12 tests cubriendo el servicio, listener y ruta
+
+### Variables de Entorno (.env)
+```bash
+INDEXNOW_ENABLED=true
+INDEXNOW_API_KEY=c3c2f7f6f33349cba5f743647871eb23   # hex 32-128 chars
+INDEXNOW_HOST=bienesonline.ai
+INDEXNOW_LOGGING=true
+```
+
+### Archivo de verificación
+Bing verifica la propiedad accediendo a `https://{host}/{api_key}.txt`. El archivo estático en `public/` sirve directamente (el servidor web lo sirve antes que Laravel).
+
+También existe una ruta dinámica en `routes/web.php` como fallback (`/{key}.txt`).
+
+### Comportamiento esperado en Bing Webmaster Tools
+Cada anuncio genera **dos URLs** (una por locale) que Bing registra por separado:
+```
+/es/{país}/{ciudad}/propiedad/{id}-{slug}
+/en/{país}/{ciudad}/propiedad/{id}-{slug}
+```
+Esto **no es una duplicación** — son dos páginas reales con contenido en distintos idiomas.
+
+### ⚠️ Notas importantes
+- **Auto-discovery de eventos**: Laravel descubre automáticamente los listeners en `app/Listeners/` por el type-hint de `handle()`. **No** registrar el mismo listener también en `AppServiceProvider` con `Event::listen()` — causaría ejecución doble. Ver `php artisan event:list` para verificar.
+- **Archivo de verificación**: El archivo `.txt` en `public/` debe tener como contenido exactamente la clave (sin salto de línea al final). Generarlo con: `php -r "echo bin2hex(random_bytes(16));"`
+- **Respuestas 200 y 202** son ambas consideradas éxito por IndexNow
+
+---
+
 ===
 
 <laravel-boost-guidelines>
