@@ -20,7 +20,7 @@
 	// Ocultar recuadro de importación si se completó hace más de 2 días
 	$hideImportSection = $latestImport
 		&& $latestImport->status === 'completed'
-		&& $latestImport->updated_at->diffInDays(now()) >= 2;
+		&& $latestImport->updated_at->diffInDays(now()) >= 30;
 ?>
 
 <x-layouts.app>
