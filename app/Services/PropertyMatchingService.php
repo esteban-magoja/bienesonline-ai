@@ -224,9 +224,10 @@ class PropertyMatchingService
             ->whereRaw("LOWER(transaction_type) IN ({$tranPlaceholders})", $transactionEquivalents)
             ->where('country', $listing->country);
 
-        // Precio dentro del presupuesto — max_budget NULL significa sin límite superior
+        // Precio dentro del presupuesto — max_budget NULL o 0 significa sin límite superior (registros legacy)
         $query->where(function ($q) use ($listing) {
             $q->whereNull('max_budget')
+              ->orWhere('max_budget', '=', 0)
               ->orWhere('max_budget', '>=', $listing->price);
         });
         $query->where(function ($q) use ($listing) {
@@ -356,7 +357,7 @@ class PropertyMatchingService
         // Solo comparar si las monedas coinciden para evitar falsos positivos
         if ($listing->currency === $request->currency) {
             $aboveMin = $listing->price >= ($request->min_budget ?? 0);
-            $belowMax = $request->max_budget === null || $listing->price <= $request->max_budget;
+            $belowMax = $request->max_budget === null || $request->max_budget == 0 || $listing->price <= $request->max_budget;
             if ($aboveMin && $belowMax) {
                 $score += 20;
                 $details[] = 'Precio dentro del presupuesto';

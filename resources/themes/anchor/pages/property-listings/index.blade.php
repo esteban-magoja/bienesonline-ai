@@ -160,6 +160,7 @@ new class extends Component {
                         ->whereRaw('LOWER(transaction_type) = LOWER(?)', [$listing->transaction_type])
                         ->where(function ($q) use ($listing) {
                             $q->whereNull('max_budget')
+                              ->orWhere('max_budget', '=', 0)
                               ->orWhere('max_budget', '>=', $listing->price);
                         })
                         ->where(function ($q) use ($listing) {
