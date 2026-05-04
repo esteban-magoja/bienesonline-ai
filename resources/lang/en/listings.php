@@ -38,6 +38,19 @@ return [
     'clear' => 'Clear',
     'no_results' => 'No results found',
     'match' => 'Match',
+
+    // Filters
+    'filters' => 'Filters',
+    'filter_property_type' => 'Property type',
+    'filter_transaction_type' => 'Operation',
+    'filter_state' => 'State/Province',
+    'filter_city' => 'City',
+    'all_types' => 'All types',
+    'all_operations' => 'All operations',
+    'all_states' => 'All states',
+    'all_cities' => 'All cities',
+    'clear_filters' => 'Clear filters',
+    'active_filters' => ':count active filter|:count active filters',
     
     // Selectors
     'select_country' => 'Select a country',
