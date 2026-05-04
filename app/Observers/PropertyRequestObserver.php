@@ -13,6 +13,7 @@ class PropertyRequestObserver
      */
     public function created(PropertyRequest $propertyRequest): void
     {
+        Cache::forget("dashboard_requests_{$propertyRequest->user_id}");
         $this->clearAffectedListingCaches($propertyRequest);
     }
 
@@ -21,6 +22,7 @@ class PropertyRequestObserver
      */
     public function updated(PropertyRequest $propertyRequest): void
     {
+        Cache::forget("dashboard_requests_{$propertyRequest->user_id}");
         $this->clearAffectedListingCaches($propertyRequest);
     }
 
@@ -29,6 +31,7 @@ class PropertyRequestObserver
      */
     public function deleted(PropertyRequest $propertyRequest): void
     {
+        Cache::forget("dashboard_requests_{$propertyRequest->user_id}");
         $this->clearAffectedListingCaches($propertyRequest);
     }
 

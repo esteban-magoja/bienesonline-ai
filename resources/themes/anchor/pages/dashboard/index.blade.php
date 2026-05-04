@@ -4,23 +4,35 @@
 	use App\Models\PropertyRequest;
 	use App\Models\PropertyContact;
 	use App\Models\ImportJob;
-	
-	
+	use Illuminate\Support\Facades\Cache;
+
 	middleware('auth');
     name('dashboard');
 
-	$userListings = PropertyListing::where('user_id', auth()->id())->active()->count();
-	$userRequests = PropertyRequest::where('user_id', auth()->id())->active()->count();
-	$totalContacts = PropertyContact::where('owner_user_id', auth()->id())->count();
-	$unseenContacts = PropertyContact::where('owner_user_id', auth()->id())->whereNull('seen_at')->count();
-	
-	// Último import job del usuario
-	$latestImport = ImportJob::where('user_id', auth()->id())->latest()->first();
+	$userId = auth()->id();
+
+	$userListings = Cache::remember("dashboard_listings_{$userId}", 300, fn () =>
+		PropertyListing::where('user_id', $userId)->active()->count()
+	);
+	$userRequests = Cache::remember("dashboard_requests_{$userId}", 300, fn () =>
+		PropertyRequest::where('user_id', $userId)->active()->count()
+	);
+	$totalContacts = Cache::remember("dashboard_contacts_total_{$userId}", 300, fn () =>
+		PropertyContact::where('owner_user_id', $userId)->count()
+	);
+	$unseenContacts = Cache::remember("dashboard_contacts_unseen_{$userId}", 300, fn () =>
+		PropertyContact::where('owner_user_id', $userId)->whereNull('seen_at')->count()
+	);
+
+	// Último import job: caché corto (60s) porque el progreso se actualiza vía AJAX
+	$latestImport = Cache::remember("dashboard_import_{$userId}", 60, fn () =>
+		ImportJob::where('user_id', $userId)->latest()->first()
+	);
 
 	// Ocultar recuadro de importación si se completó hace más de 2 días
 	$hideImportSection = $latestImport
 		&& $latestImport->status === 'completed'
-		&& $latestImport->updated_at->diffInDays(now()) >= 30;
+		&& $latestImport->updated_at->diffInDays(now()) >= 7;
 ?>
 
 <x-layouts.app>

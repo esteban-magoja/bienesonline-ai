@@ -25,7 +25,8 @@ class PropertyListingObserver
      */
     public function created(PropertyListing $propertyListing): void
     {
-        // Solo disparar si el matching automático está habilitado
+        Cache::forget("dashboard_listings_{$propertyListing->user_id}");
+
         if (config('matching.enabled', true)) {
             event(new PropertyListingCreated($propertyListing));
         }
@@ -47,12 +48,13 @@ class PropertyListingObserver
      */
     public function updated(PropertyListing $propertyListing): void
     {
-        // Clear match count cache so the index recalculates on next visit
         Cache::forget("matches_listing_count_{$propertyListing->id}");
         Cache::forget("matches_listing_{$propertyListing->id}");
 
-        if ($propertyListing->wasChanged('is_active') && $propertyListing->is_active) {
-            if (config('matching.enabled', true)) {
+        if ($propertyListing->wasChanged('is_active')) {
+            Cache::forget("dashboard_listings_{$propertyListing->user_id}");
+
+            if ($propertyListing->is_active && config('matching.enabled', true)) {
                 event(new PropertyListingCreated($propertyListing));
             }
         }
@@ -93,6 +95,7 @@ class PropertyListingObserver
     {
         Cache::forget("matches_listing_count_{$propertyListing->id}");
         Cache::forget("matches_listing_{$propertyListing->id}");
+        Cache::forget("dashboard_listings_{$propertyListing->user_id}");
     }
 
     /**
