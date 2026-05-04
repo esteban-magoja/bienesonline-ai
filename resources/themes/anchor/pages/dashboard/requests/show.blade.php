@@ -142,7 +142,12 @@
         <!-- Matches Section -->
         <div>
             <h3 class="text-xl font-bold text-gray-900 mb-4">
-                {{ __('dashboard.request_detail.matching_properties') }} ({{ $matches->count() }})
+                {{ __('dashboard.request_detail.matching_properties') }}
+                @if(($totalMatches ?? $matches->count()) > $matches->count())
+                    ({{ __('dashboard.request_detail.top_of_total', ['top' => $matches->count(), 'total' => $totalMatches]) }})
+                @else
+                    ({{ $matches->count() }})
+                @endif
             </h3>
 
             @if($matches->isEmpty())

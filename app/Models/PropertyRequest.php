@@ -119,14 +119,20 @@ class PropertyRequest extends Model
 
     /**
      * Get formatted budget range.
-     *
-     * @return string
      */
-    public function getBudgetRangeAttribute()
+    public function getBudgetRangeAttribute(): string
     {
-        $min = $this->min_budget ? number_format($this->min_budget, 0) : '0';
-        $max = number_format($this->max_budget, 0);
-        
-        return "{$this->currency} {$min} - {$max}";
+        $min = $this->min_budget ? number_format((float) $this->min_budget, 0) : null;
+        $max = $this->max_budget ? number_format((float) $this->max_budget, 0) : null;
+
+        if ($min && $max) {
+            return "{$this->currency} {$min} - {$max}";
+        } elseif ($min) {
+            return "{$this->currency} {$min}+";
+        } elseif ($max) {
+            return "{$this->currency} hasta {$max}";
+        }
+
+        return $this->currency ?? '';
     }
 }

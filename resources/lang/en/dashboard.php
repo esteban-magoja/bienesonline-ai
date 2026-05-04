@@ -339,6 +339,7 @@ return [
         'matching_properties' => 'Matching Properties',
         'no_matches' => 'No matches found',
         'no_matches_desc' => 'There are no properties that match this request yet.',
+        'top_of_total' => 'Top :top of :total matches',
         'match_score' => ':score% match',
         'contact_owner' => 'Contact Owner',
     ],

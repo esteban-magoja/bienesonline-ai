@@ -91,7 +91,12 @@ new class extends Component {
         }
 
         // Delete the listing from the database (cascades to images table)
+        $listingId = $this->listingToDelete->id;
         $this->listingToDelete->delete();
+
+        // Clear match count cache for this listing
+        Cache::forget("matches_listing_count_{$listingId}");
+        Cache::forget("matches_listing_{$listingId}");
 
         // Refresh the list and close the modal
         $this->loadAllListings();
@@ -134,24 +139,36 @@ new class extends Component {
             ->pluck('total', 'listing_id')
             ->toArray();
 
-        // Match counts: usa cache si existe, sino conteo SQL simple (sin embeddings)
+        // Match counts: prioriza la cache completa del service (matches_listing_{id}) si existe,
+        // luego intenta matches_listing_count_{id}, y en último caso calcula con SQL corregido.
+        // TTL: 4 horas para el count simplificado.
         $this->matchCounts = [];
         foreach ($currentListings as $listing) {
-            $cached = Cache::get("matches_listing_{$listing->id}");
-            if ($cached !== null) {
-                $this->matchCounts[$listing->id] = $cached->count();
-            } else {
-                $this->matchCounts[$listing->id] = PropertyRequest::active()
-                    ->where('country', $listing->country)
-                    ->where('property_type', $listing->property_type)
-                    ->where('transaction_type', $listing->transaction_type)
-                    ->where('max_budget', '>=', $listing->price)
-                    ->where(function($q) use ($listing) {
-                        $q->whereNull('min_budget')
-                          ->orWhere('min_budget', '<=', $listing->price);
-                    })
-                    ->count();
+            $fullCache = Cache::get("matches_listing_{$listing->id}");
+            if ($fullCache !== null) {
+                $this->matchCounts[$listing->id] = $fullCache->count();
+                continue;
             }
+
+            $this->matchCounts[$listing->id] = Cache::remember(
+                "matches_listing_count_{$listing->id}",
+                14400,
+                function () use ($listing) {
+                    return PropertyRequest::active()
+                        ->whereRaw('LOWER(country) = LOWER(?)', [$listing->country])
+                        ->whereRaw('LOWER(property_type) = LOWER(?)', [$listing->property_type])
+                        ->whereRaw('LOWER(transaction_type) = LOWER(?)', [$listing->transaction_type])
+                        ->where(function ($q) use ($listing) {
+                            $q->whereNull('max_budget')
+                              ->orWhere('max_budget', '>=', $listing->price);
+                        })
+                        ->where(function ($q) use ($listing) {
+                            $q->whereNull('min_budget')
+                              ->orWhere('min_budget', '<=', $listing->price);
+                        })
+                        ->count();
+                }
+            );
         }
     }
 };

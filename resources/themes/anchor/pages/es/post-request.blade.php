@@ -42,8 +42,8 @@ new class extends Component {
     #[Rule('nullable|numeric|min:0')]
     public ?string $min_budget = '';
 
-    #[Rule('required|numeric|min:0')]
-    public string $max_budget = '';
+    #[Rule('nullable|numeric|min:0')]
+    public ?string $max_budget = '';
 
     #[Rule('required|string|max:3')]
     public string $currency = 'USD';
@@ -151,6 +151,12 @@ new class extends Component {
         $validated['user_id'] = auth()->id();
         $validated['country'] = $this->country;
         $validated['state'] = $this->state;
+
+        foreach (['min_budget', 'max_budget', 'min_bedrooms', 'min_bathrooms', 'min_parking_spaces', 'min_area'] as $field) {
+            if (isset($validated[$field]) && $validated[$field] === '') {
+                $validated[$field] = null;
+            }
+        }
 
         // Generar embedding
         $embedding = $this->generateEmbedding($validated['title'], $validated['description']);
@@ -521,7 +527,7 @@ new class extends Component {
 
                             <div>
                                 <label for="max_budget" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    {{ __('dashboard.request_form.max_budget') }} <span class="text-red-500">*</span>
+                                    {{ __('dashboard.request_form.max_budget') }}
                                 </label>
                                 <input type="number" 
                                        wire:model="max_budget" 

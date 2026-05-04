@@ -33,7 +33,7 @@ class PropertyRequestController extends Controller
             $matchCounts[$request->id] = Cache::remember(
                 "request_match_count_{$request->id}",
                 900,
-                fn() => $this->matchingService->findMatchesForRequest($request, 50)->count()
+                fn() => $this->matchingService->countMatchesForRequest($request)
             );
         }
 
@@ -95,10 +95,15 @@ class PropertyRequestController extends Controller
             abort(403);
         }
 
-        // Obtener matches
+        // Obtener matches (top 20) y total real
         $matches = $this->matchingService->findMatchesForRequest($propertyRequest, 20);
+        $totalMatches = Cache::remember(
+            "request_match_count_{$propertyRequest->id}",
+            900,
+            fn() => $this->matchingService->countMatchesForRequest($propertyRequest)
+        );
 
-        return view('theme::pages.dashboard.requests.show', compact('propertyRequest', 'matches'));
+        return view('theme::pages.dashboard.requests.show', compact('propertyRequest', 'matches', 'totalMatches'));
     }
 
     /**
@@ -136,29 +141,16 @@ class PropertyRequestController extends Controller
     {
         $validated = $request->validated();
 
-        // Obtener idioma del usuario
-        $userLocale = session('locale', 'es');
-        $title = $validated['title'][$userLocale];
-        $description = $validated['description'][$userLocale];
+        $title = $validated['title'];
+        $description = $validated['description'];
 
         // Regenerar embedding si cambió el contenido
-        $oldTitle = $propertyRequest->getTranslation('title', $userLocale);
-        $oldDescription = $propertyRequest->getTranslation('description', $userLocale);
-        
-        if ($oldTitle !== $title || $oldDescription !== $description) {
+        if ($propertyRequest->title !== $title || $propertyRequest->description !== $description) {
             $embedding = $this->generateEmbedding($title, $description);
             if ($embedding) {
                 $validated['embedding'] = $embedding;
             }
         }
-
-        // Convertir arrays a JSON
-        $validated['title_i18n'] = json_encode($validated['title']);
-        $validated['description_i18n'] = json_encode($validated['description']);
-        
-        // Mantener campos legacy
-        $validated['title'] = $title;
-        $validated['description'] = $description;
 
         $propertyRequest->update($validated);
 

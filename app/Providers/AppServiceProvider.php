@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use App\Listeners\UserRegistered;
 use App\Models\PropertyListing;
+use App\Models\PropertyRequest;
 use App\Observers\PropertyListingObserver;
+use App\Observers\PropertyRequestObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -75,6 +77,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         PropertyListing::observe(PropertyListingObserver::class);
+        PropertyRequest::observe(PropertyRequestObserver::class);
 
         Event::listen(Registered::class, UserRegistered::class);
 

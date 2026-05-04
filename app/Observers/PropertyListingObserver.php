@@ -6,6 +6,7 @@ use App\Events\PropertyListingCreated;
 use App\Models\PropertyListing;
 use OpenAI;
 use Pgvector\Laravel\Vector;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class PropertyListingObserver
@@ -46,6 +47,10 @@ class PropertyListingObserver
      */
     public function updated(PropertyListing $propertyListing): void
     {
+        // Clear match count cache so the index recalculates on next visit
+        Cache::forget("matches_listing_count_{$propertyListing->id}");
+        Cache::forget("matches_listing_{$propertyListing->id}");
+
         if ($propertyListing->wasChanged('is_active') && $propertyListing->is_active) {
             if (config('matching.enabled', true)) {
                 event(new PropertyListingCreated($propertyListing));
@@ -86,7 +91,8 @@ class PropertyListingObserver
      */
     public function deleted(PropertyListing $propertyListing): void
     {
-        //
+        Cache::forget("matches_listing_count_{$propertyListing->id}");
+        Cache::forget("matches_listing_{$propertyListing->id}");
     }
 
     /**

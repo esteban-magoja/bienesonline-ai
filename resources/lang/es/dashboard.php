@@ -339,6 +339,7 @@ return [
         'matching_properties' => 'Propiedades Coincidentes',
         'no_matches' => 'No se encontraron coincidencias',
         'no_matches_desc' => 'Aún no hay propiedades que coincidan con esta solicitud.',
+        'top_of_total' => 'Top :top de :total coincidencias',
         'match_score' => ':score% de coincidencia',
         'contact_owner' => 'Contactar Propietario',
     ],

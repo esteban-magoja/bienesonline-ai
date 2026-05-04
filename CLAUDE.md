@@ -62,9 +62,13 @@ Wave is a Laravel-based SaaS framework that provides essential features for buil
 
 #### Servicios
 - **PropertyMatchingService**: Sistema de matching entre solicitudes y anuncios
-  - 3 niveles: Exacto (85%+), Inteligente/Semántico (60-84%), Flexible (<60%)
+  - 3 niveles: Exacto (≥85%), Inteligente/Semántico (≥70%), Flexible (50-69%)
+  - Matches con score < 50% se filtran completamente
   - Usa embeddings de OpenAI para similitud semántica
-  - Scoring: tipo propiedad (25pts), transacción (25pts), precio (20pts), ubicación (15pts), características (5pts c/u)
+  - Scoring: tipo propiedad (25pts), transacción (25pts), precio (20pts), ciudad (15pts), provincia (10pts), características (5pts c/u), similitud semántica (hasta 15pts bonus)
+  - Ubicación es **acumulativa**: ciudad Y provincia suman independientemente
+  - **⚠️ Invariante crítica**: las búsquedas semánticas (`getSemanticMatches`, `getSemanticMatchesForListing`) DEBEN filtrar por `property_type` y `transaction_type` igual que el exact search. Sin este filtro, embeddings similares entre una "casa" y un "departamento" pueden producir falsos positivos.
+  - Comparaciones de strings con `LOWER()` por case-sensitivity de PostgreSQL (imports legacy tienen 'Casa', usuarios crean 'casa')
   - Métodos: `findMatchesForRequest()`, `findMatchesForListing()`
 
 #### Controladores
@@ -968,6 +972,8 @@ exit
 - `index()` y `show()` están cacheados 15 minutos (`matches_index_{userId}`, `matches_listing_{listingId}`)
 - `index()` limita a 10 anuncios para evitar N búsquedas vectoriales en una sola carga
 - El dashboard **no** calcula matches en tiempo real (se eliminó para evitar carga en cada visita)
+- **Cache de conteos en `/property-listings`**: primer check `matches_listing_{id}` (15min), luego `matches_listing_count_{id}` (4h), luego SQL fallback. El SQL usa `LOWER()` para case-insensitivity y maneja `max_budget IS NULL`.
+- **Invalidación de cache**: `PropertyListingObserver` limpia caches al actualizar/eliminar un anuncio. `PropertyRequestObserver` limpia `matches_listing_count_{id}`, `matches_listing_{id}` y `matches_index_{userId}` para todos los anuncios afectados cuando cambia una solicitud.
 
 ---
 

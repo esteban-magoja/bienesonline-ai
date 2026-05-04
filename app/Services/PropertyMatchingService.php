@@ -22,29 +22,46 @@ class PropertyMatchingService
      */
     public function findMatchesForRequest(PropertyRequest $request, int $limit = 20): Collection
     {
-        $matches = collect();
+        return $this->getAllScoredMatchesForRequest($request)
+            ->take($limit);
+    }
 
+    /**
+     * Count all matches for a request without applying a display limit.
+     */
+    public function countMatchesForRequest(PropertyRequest $request): int
+    {
+        return $this->getAllScoredMatchesForRequest($request)->count();
+    }
+
+    /**
+     * Get all scored and sorted matches for a request (no limit applied).
+     */
+    protected function getAllScoredMatchesForRequest(PropertyRequest $request): Collection
+    {
         // 1. Exact matches (filtros tradicionales)
         $exactMatches = $this->getExactMatches($request);
-        
+
         // 2. Semantic matches (embeddings) si tiene embedding
         if ($request->embedding) {
-            $semanticMatches = $this->getSemanticMatches($request, $limit);
-            
-            // Combinar y rankear
+            $semanticMatches = $this->getSemanticMatches($request, 100);
             $matches = $this->mergeAndRank($exactMatches, $semanticMatches);
         } else {
             $matches = $exactMatches;
         }
 
-        // 3. Agregar nivel de match y score
-        return $matches->take($limit)->map(function ($listing, $index) use ($request) {
-            $matchData = $this->calculateMatchLevel($listing, $request);
-            $listing->match_level = $matchData['level'];
-            $listing->match_score = $matchData['score'];
-            $listing->match_details = $matchData['details'];
-            return $listing;
-        });
+        // 3. Calcular score para todos, filtrar < 50% y ordenar
+        return $matches
+            ->map(function ($listing) use ($request) {
+                $matchData = $this->calculateMatchLevel($listing, $request);
+                $listing->match_level = $matchData['level'];
+                $listing->match_score = $matchData['score'];
+                $listing->match_details = $matchData['details'];
+                return $listing;
+            })
+            ->filter(fn ($listing) => $listing->match_score >= 50)
+            ->sortByDesc('match_score')
+            ->values();
     }
 
     /**
@@ -56,28 +73,45 @@ class PropertyMatchingService
      */
     public function findMatchesForListing(PropertyListing $listing, int $limit = 20): Collection
     {
-        $matches = collect();
+        return $this->getAllScoredMatchesForListing($listing)->take($limit);
+    }
 
+    /**
+     * Count all matches for a listing without applying a display limit.
+     */
+    public function countMatchesForListing(PropertyListing $listing): int
+    {
+        return $this->getAllScoredMatchesForListing($listing)->count();
+    }
+
+    /**
+     * Get all scored and sorted matches for a listing (no limit applied).
+     */
+    protected function getAllScoredMatchesForListing(PropertyListing $listing): Collection
+    {
         // 1. Exact matches
         $exactMatches = $this->getExactMatchesForListing($listing);
-        
+
         // 2. Semantic matches si tiene embedding
         if ($listing->embedding) {
-            $semanticMatches = $this->getSemanticMatchesForListing($listing, $limit);
-            
-            // Combinar y rankear
+            $semanticMatches = $this->getSemanticMatchesForListing($listing, 100);
             $matches = $this->mergeAndRankRequests($exactMatches, $semanticMatches);
         } else {
             $matches = $exactMatches;
         }
 
-        return $matches->take($limit)->map(function ($requestItem, $index) use ($listing) {
-            $matchData = $this->calculateMatchLevelForListing($requestItem, $listing);
-            $requestItem->match_level = $matchData['level'];
-            $requestItem->match_score = $matchData['score'];
-            $requestItem->match_details = $matchData['details'];
-            return $requestItem;
-        });
+        // 3. Calcular score para todos, filtrar < 50% y ordenar
+        return $matches
+            ->map(function ($requestItem) use ($listing) {
+                $matchData = $this->calculateMatchLevelForListing($requestItem, $listing);
+                $requestItem->match_level = $matchData['level'];
+                $requestItem->match_score = $matchData['score'];
+                $requestItem->match_details = $matchData['details'];
+                return $requestItem;
+            })
+            ->filter(fn ($requestItem) => $requestItem->match_score >= 50)
+            ->sortByDesc('match_score')
+            ->values();
     }
 
     /**
@@ -93,16 +127,21 @@ class PropertyMatchingService
         $propertyEquivalents = PropertyType::getEquivalentValues($request->property_type, $countryCode);
         $transactionEquivalents = TransactionType::getEquivalentValues($request->transaction_type, $countryCode);
 
+        $propPlaceholders = implode(',', array_fill(0, count($propertyEquivalents), '?'));
+        $tranPlaceholders = implode(',', array_fill(0, count($transactionEquivalents), '?'));
+
         $query = PropertyListing::active()
-            ->whereIn('property_type', $propertyEquivalents)
-            ->whereIn('transaction_type', $transactionEquivalents)
+            ->whereRaw("LOWER(property_type) IN ({$propPlaceholders})", $propertyEquivalents)
+            ->whereRaw("LOWER(transaction_type) IN ({$tranPlaceholders})", $transactionEquivalents)
             ->where('country', $request->country);
 
         // Precio dentro del presupuesto
         if ($request->min_budget) {
             $query->where('price', '>=', $request->min_budget);
         }
-        $query->where('price', '<=', $request->max_budget);
+        if ($request->max_budget) {
+            $query->where('price', '<=', $request->max_budget);
+        }
 
         // Ciudad si está especificada
         if ($request->city) {
@@ -144,14 +183,22 @@ class PropertyMatchingService
      */
     protected function getSemanticMatches(PropertyRequest $request, int $limit): Collection
     {
+        $countryCode          = $this->getCountryCode($request->country);
+        $propertyEquivalents  = PropertyType::getEquivalentValues($request->property_type, $countryCode);
+        $transactionEquivalents = TransactionType::getEquivalentValues($request->transaction_type, $countryCode);
+
+        $propPlaceholders  = implode(',', array_fill(0, count($propertyEquivalents), '?'));
+        $tranPlaceholders  = implode(',', array_fill(0, count($transactionEquivalents), '?'));
+
         return PropertyListing::active()
             ->where('country', $request->country)
+            ->whereRaw("LOWER(property_type) IN ({$propPlaceholders})", $propertyEquivalents)
+            ->whereRaw("LOWER(transaction_type) IN ({$tranPlaceholders})", $transactionEquivalents)
             ->nearestNeighbors('embedding', $request->embedding, Distance::Cosine)
             ->limit($limit * 2)
             ->with(['user', 'primaryImage', 'firstImage'])
             ->get()
             ->filter(function($listing) {
-                // Filtrar solo los que tienen un buen score de similitud
                 return $listing->neighbor_distance !== null;
             });
     }
@@ -169,14 +216,20 @@ class PropertyMatchingService
         $propertyEquivalents = PropertyType::getEquivalentValues($listing->property_type, $countryCode);
         $transactionEquivalents = TransactionType::getEquivalentValues($listing->transaction_type, $countryCode);
 
+        $propPlaceholders = implode(',', array_fill(0, count($propertyEquivalents), '?'));
+        $tranPlaceholders = implode(',', array_fill(0, count($transactionEquivalents), '?'));
+
         $query = PropertyRequest::active()
-            ->whereIn('property_type', $propertyEquivalents)
-            ->whereIn('transaction_type', $transactionEquivalents)
+            ->whereRaw("LOWER(property_type) IN ({$propPlaceholders})", $propertyEquivalents)
+            ->whereRaw("LOWER(transaction_type) IN ({$tranPlaceholders})", $transactionEquivalents)
             ->where('country', $listing->country);
 
-        // Precio dentro del presupuesto
-        $query->where('max_budget', '>=', $listing->price);
-        $query->where(function($q) use ($listing) {
+        // Precio dentro del presupuesto — max_budget NULL significa sin límite superior
+        $query->where(function ($q) use ($listing) {
+            $q->whereNull('max_budget')
+              ->orWhere('max_budget', '>=', $listing->price);
+        });
+        $query->where(function ($q) use ($listing) {
             $q->whereNull('min_budget')
               ->orWhere('min_budget', '<=', $listing->price);
         });
@@ -200,8 +253,17 @@ class PropertyMatchingService
      */
     protected function getSemanticMatchesForListing(PropertyListing $listing, int $limit): Collection
     {
+        $countryCode          = $this->getCountryCode($listing->country);
+        $propertyEquivalents  = PropertyType::getEquivalentValues($listing->property_type, $countryCode);
+        $transactionEquivalents = TransactionType::getEquivalentValues($listing->transaction_type, $countryCode);
+
+        $propPlaceholders  = implode(',', array_fill(0, count($propertyEquivalents), '?'));
+        $tranPlaceholders  = implode(',', array_fill(0, count($transactionEquivalents), '?'));
+
         return PropertyRequest::active()
             ->where('country', $listing->country)
+            ->whereRaw("LOWER(property_type) IN ({$propPlaceholders})", $propertyEquivalents)
+            ->whereRaw("LOWER(transaction_type) IN ({$tranPlaceholders})", $transactionEquivalents)
             ->nearestNeighbors('embedding', $listing->embedding, Distance::Cosine)
             ->limit($limit * 2)
             ->with('user')
@@ -252,6 +314,16 @@ class PropertyMatchingService
     /**
      * Calculate match level and score.
      *
+     * Scoring breakdown (max 100 pts):
+     *   25 — tipo de propiedad
+     *   25 — tipo de transacción
+     *   20 — precio dentro del presupuesto
+     *   15 — ubicación (ciudad=15, provincia=10, país=5)
+     *    5 — habitaciones mínimas
+     *    5 — baños mínimos
+     *    5 — área mínima
+     *   15 — similitud semántica (cosine similarity, bonus)
+     *
      * @param PropertyListing $listing
      * @param PropertyRequest $request
      * @return array
@@ -262,34 +334,43 @@ class PropertyMatchingService
         $details = [];
         $level = 'flexible';
 
-        // Tipo de propiedad (25 puntos)
-        if ($listing->property_type === $request->property_type) {
+        $countryCode = $this->getCountryCode($listing->country);
+
+        // Tipo de propiedad (25 puntos) — normalizado vía value_en para soportar variaciones regionales
+        $listingPropertyEn = PropertyType::getValueEn($listing->property_type, $countryCode) ?? strtolower($listing->property_type);
+        $requestPropertyEn = PropertyType::getValueEn($request->property_type, $countryCode) ?? strtolower($request->property_type);
+        if ($listingPropertyEn === $requestPropertyEn) {
             $score += 25;
             $details[] = 'Tipo de propiedad coincide';
         }
 
-        // Tipo de transacción (25 puntos)
-        if ($listing->transaction_type === $request->transaction_type) {
+        // Tipo de transacción (25 puntos) — normalizado vía value_en
+        $listingTransactionEn = TransactionType::getValueEn($listing->transaction_type, $countryCode) ?? strtolower($listing->transaction_type);
+        $requestTransactionEn = TransactionType::getValueEn($request->transaction_type, $countryCode) ?? strtolower($request->transaction_type);
+        if ($listingTransactionEn === $requestTransactionEn) {
             $score += 25;
             $details[] = 'Tipo de operación coincide';
         }
 
         // Precio dentro del presupuesto (20 puntos)
-        if ($listing->price >= ($request->min_budget ?? 0) && $listing->price <= $request->max_budget) {
-            $score += 20;
-            $details[] = 'Precio dentro del presupuesto';
+        // Solo comparar si las monedas coinciden para evitar falsos positivos
+        if ($listing->currency === $request->currency) {
+            $aboveMin = $listing->price >= ($request->min_budget ?? 0);
+            $belowMax = $request->max_budget === null || $listing->price <= $request->max_budget;
+            if ($aboveMin && $belowMax) {
+                $score += 20;
+                $details[] = 'Precio dentro del presupuesto';
+            }
         }
 
-        // Ubicación (15 puntos)
-        if ($listing->city === $request->city) {
+        // Ubicación (25 puntos máx — acumulativos, no excluyentes)
+        if ($listing->city && $request->city && strcasecmp((string) $listing->city, (string) $request->city) === 0) {
             $score += 15;
             $details[] = 'Ciudad coincide';
-        } elseif ($listing->state === $request->state) {
+        }
+        if ($listing->state && $request->state && strcasecmp((string) $listing->state, (string) $request->state) === 0) {
             $score += 10;
             $details[] = 'Provincia coincide';
-        } elseif ($listing->country === $request->country) {
-            $score += 5;
-            $details[] = 'País coincide';
         }
 
         // Características (5 puntos cada una)
@@ -308,10 +389,26 @@ class PropertyMatchingService
             $details[] = 'Área suficiente';
         }
 
+        // Similitud semántica (hasta 15 puntos bonus)
+        if ($listing->embedding && $request->embedding) {
+            $similarity = $this->cosineSimilarity(
+                $listing->embedding->toArray(),
+                $request->embedding->toArray()
+            );
+            $semanticBonus = (int) round($similarity * 15);
+            if ($semanticBonus > 0) {
+                $score += $semanticBonus;
+                $details[] = sprintf('Similitud semántica: %.0f%%', $similarity * 100);
+            }
+        }
+
+        // Capear a 100 (el bonus semántico puede elevar por encima)
+        $score = min(100, $score);
+
         // Determinar nivel de match
         if ($score >= 85) {
             $level = 'exact';
-        } elseif ($score >= 60) {
+        } elseif ($score >= 70) {
             $level = 'semantic';
         }
 
@@ -320,6 +417,34 @@ class PropertyMatchingService
             'score' => $score,
             'details' => $details
         ];
+    }
+
+    /**
+     * Calculate cosine similarity between two vectors.
+     * OpenAI embeddings are unit-normalized, so this equals the dot product.
+     *
+     * @param array<int, float> $a
+     * @param array<int, float> $b
+     * @return float Similarity between 0.0 and 1.0
+     */
+    protected function cosineSimilarity(array $a, array $b): float
+    {
+        $dot   = 0.0;
+        $normA = 0.0;
+        $normB = 0.0;
+
+        $count = min(count($a), count($b));
+        for ($i = 0; $i < $count; $i++) {
+            $dot   += $a[$i] * $b[$i];
+            $normA += $a[$i] * $a[$i];
+            $normB += $b[$i] * $b[$i];
+        }
+
+        if ($normA == 0.0 || $normB == 0.0) {
+            return 0.0;
+        }
+
+        return (float) ($dot / (sqrt($normA) * sqrt($normB)));
     }
 
     /**

@@ -170,15 +170,14 @@
 
                     <div>
                         <label for="max_budget" class="block text-sm font-medium text-gray-700 mb-2">
-                            {{ __('dashboard.request_form.max_budget') }} *
+                            {{ __('dashboard.request_form.max_budget') }}
                         </label>
                         <input type="number" 
                                name="max_budget" 
                                id="max_budget" 
                                value="{{ old('max_budget', $propertyRequest->max_budget) }}"
                                step="0.01"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                               required>
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         @error('max_budget')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror

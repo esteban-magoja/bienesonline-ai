@@ -18,17 +18,12 @@ class UpdatePropertyRequestRequest extends FormRequest
             'client_name' => 'required|string|max:255',
             'client_email' => 'required|email|max:255',
             'client_phone' => 'required|string|max:20',
-            
-            // Campos bilingües
-            'title.es' => 'required|string|max:255',
-            'title.en' => 'required|string|max:255',
-            'description.es' => 'required|string|min:20',
-            'description.en' => 'required|string|min:20',
-            
-            'property_type' => 'required|string|in:house,apartment,commercial,office,land,farm,warehouse',
-            'transaction_type' => 'required|string|in:sale,rent',
-            'max_budget' => 'required|numeric|min:0',
-            'min_budget' => 'nullable|numeric|min:0|lt:max_budget',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|min:20',
+            'property_type' => 'required|string|in:house,apartment,commercial,office,land,farm,warehouse,casa,departamento,local,oficina,terreno,campo,galpon,Casa,Departamento,Local,Oficina,Terreno,Campo,Galpon',
+            'transaction_type' => 'required|string|in:sale,rent,venta,alquiler,renta,arriendo,Venta,Alquiler,Renta,Arriendo',
+            'max_budget' => 'nullable|numeric|min:0',
+            'min_budget' => 'nullable|numeric|min:0',
             'currency' => 'required|string|in:USD,ARS,EUR,BRL,MXN,CLP',
             'min_bedrooms' => 'nullable|integer|min:0',
             'min_bathrooms' => 'nullable|integer|min:0',
@@ -45,12 +40,9 @@ class UpdatePropertyRequestRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.es.required' => __('validation.required', ['attribute' => __('attributes.title') . ' (ES)']),
-            'title.en.required' => __('validation.required', ['attribute' => __('attributes.title') . ' (EN)']),
-            'description.es.required' => __('validation.required', ['attribute' => __('attributes.description') . ' (ES)']),
-            'description.en.required' => __('validation.required', ['attribute' => __('attributes.description') . ' (EN)']),
-            'description.es.min' => __('validation.min.string', ['attribute' => __('attributes.description') . ' (ES)', 'min' => 20]),
-            'description.en.min' => __('validation.min.string', ['attribute' => __('attributes.description') . ' (EN)', 'min' => 20]),
+            'title.required' => __('validation.required', ['attribute' => __('attributes.title')]),
+            'description.required' => __('validation.required', ['attribute' => __('attributes.description')]),
+            'description.min' => __('validation.min.string', ['attribute' => __('attributes.description'), 'min' => 20]),
         ];
     }
 
@@ -60,10 +52,8 @@ class UpdatePropertyRequestRequest extends FormRequest
             'client_name' => __('attributes.client_name'),
             'client_email' => __('attributes.client_email'),
             'client_phone' => __('attributes.client_phone'),
-            'title.es' => __('attributes.title') . ' (ES)',
-            'title.en' => __('attributes.title') . ' (EN)',
-            'description.es' => __('attributes.description') . ' (ES)',
-            'description.en' => __('attributes.description') . ' (EN)',
+            'title' => __('attributes.title'),
+            'description' => __('attributes.description'),
             'property_type' => __('attributes.property_type'),
             'transaction_type' => __('attributes.transaction_type'),
             'max_budget' => __('attributes.max_budget'),

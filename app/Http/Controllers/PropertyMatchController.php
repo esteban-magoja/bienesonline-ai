@@ -22,7 +22,17 @@ class PropertyMatchController extends Controller
      */
     public function index()
     {
-        $userId = auth()->id();
+        $user = auth()->user();
+        $canView = $user->hasRole('admin') || $user->hasRole('premium');
+
+        if (!$canView) {
+            return view('theme::pages.dashboard.matches.index', [
+                'canView' => false,
+                'allMatches' => collect(),
+            ]);
+        }
+
+        $userId = $user->id;
 
         $allMatches = Cache::remember("matches_index_{$userId}", 900, function () use ($userId) {
             $listings = PropertyListing::where('user_id', $userId)
@@ -47,7 +57,7 @@ class PropertyMatchController extends Controller
             return $result;
         });
 
-        return view('theme::pages.dashboard.matches.index', compact('allMatches'));
+        return view('theme::pages.dashboard.matches.index', compact('allMatches') + ['canView' => true]);
     }
 
     /**
@@ -55,7 +65,18 @@ class PropertyMatchController extends Controller
      */
     public function show(PropertyListing $listing)
     {
-        if ($listing->user_id !== auth()->id()) {
+        $user = auth()->user();
+        $canView = $user->hasRole('admin') || $user->hasRole('premium');
+
+        if (!$canView) {
+            return view('theme::pages.dashboard.matches.show', [
+                'canView' => false,
+                'listing' => $listing,
+                'matches' => collect(),
+            ]);
+        }
+
+        if ($listing->user_id !== $user->id) {
             abort(403);
         }
 
@@ -63,6 +84,10 @@ class PropertyMatchController extends Controller
             return $this->matchingService->findMatchesForListing($listing, 20);
         });
 
-        return view('theme::pages.dashboard.matches.show', compact('listing', 'matches'));
+        $totalMatches = Cache::remember("matches_listing_count_{$listing->id}", 900, function () use ($listing) {
+            return $this->matchingService->countMatchesForListing($listing);
+        });
+
+        return view('theme::pages.dashboard.matches.show', compact('listing', 'matches', 'totalMatches') + ['canView' => true]);
     }
 }
