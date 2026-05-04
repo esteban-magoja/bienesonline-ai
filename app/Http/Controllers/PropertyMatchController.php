@@ -23,15 +23,6 @@ class PropertyMatchController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $canView = $user->hasRole('admin') || $user->hasRole('premium');
-
-        if (!$canView) {
-            return view('theme::pages.dashboard.matches.index', [
-                'canView' => false,
-                'allMatches' => collect(),
-            ]);
-        }
-
         $userId = $user->id;
 
         $allMatches = Cache::remember("matches_index_{$userId}", 900, function () use ($userId) {
@@ -57,7 +48,7 @@ class PropertyMatchController extends Controller
             return $result;
         });
 
-        return view('theme::pages.dashboard.matches.index', compact('allMatches') + ['canView' => true]);
+        return view('theme::pages.dashboard.matches.index', compact('allMatches'));
     }
 
     /**
@@ -66,15 +57,6 @@ class PropertyMatchController extends Controller
     public function show(PropertyListing $listing)
     {
         $user = auth()->user();
-        $canView = $user->hasRole('admin') || $user->hasRole('premium');
-
-        if (!$canView) {
-            return view('theme::pages.dashboard.matches.show', [
-                'canView' => false,
-                'listing' => $listing,
-                'matches' => collect(),
-            ]);
-        }
 
         if ($listing->user_id !== $user->id) {
             abort(403);
@@ -88,6 +70,6 @@ class PropertyMatchController extends Controller
             return $this->matchingService->countMatchesForListing($listing);
         });
 
-        return view('theme::pages.dashboard.matches.show', compact('listing', 'matches', 'totalMatches') + ['canView' => true]);
+        return view('theme::pages.dashboard.matches.show', compact('listing', 'matches', 'totalMatches'));
     }
 }

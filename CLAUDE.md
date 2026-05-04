@@ -975,6 +975,29 @@ exit
 - **Cache de conteos en `/property-listings`**: primer check `matches_listing_{id}` (15min), luego `matches_listing_count_{id}` (4h), luego SQL fallback. El SQL usa `LOWER()` para case-insensitivity y maneja `max_budget IS NULL`.
 - **Invalidación de cache**: `PropertyListingObserver` limpia caches al actualizar/eliminar un anuncio. `PropertyRequestObserver` limpia `matches_listing_count_{id}`, `matches_listing_{id}` y `matches_index_{userId}` para todos los anuncios afectados cuando cambia una solicitud.
 
+### Performance — Dashboard (/dashboard)
+
+**Problema resuelto (Mayo 2026)**: El dashboard tardaba varios segundos en producción, especialmente al usar "Impersonate" en un usuario con muchos anuncios.
+
+**Causa raíz**: Las tablas `property_listings`, `property_requests` e `import_jobs` no tenían índice en `user_id`, causando full table scans en producción con miles de registros importados.
+
+**Solución implementada**:
+
+1. **Cache de stats del dashboard** (`resources/themes/anchor/pages/dashboard/index.blade.php`):
+   - 5 queries cacheadas con `Cache::remember` (TTL 300s para stats, 60s para ImportJob)
+   - Cache keys: `dashboard_listings_{userId}`, `dashboard_requests_{userId}`, `dashboard_contacts_total_{userId}`, `dashboard_contacts_unseen_{userId}`, `dashboard_import_{userId}`
+
+2. **Invalidación de cache en Observers**:
+   - `PropertyListingObserver`: limpia `dashboard_listings_{userId}` en created/updated/deleted
+   - `PropertyRequestObserver`: limpia `dashboard_requests_{userId}` en created/updated/deleted
+
+3. **Índices de base de datos** (migración `2026_05_04_181549_add_user_id_indexes_to_dashboard_tables`):
+   - `property_listings(user_id, is_active)` — composite para `WHERE user_id=X AND is_active=true`
+   - `property_requests(user_id, is_active)` — ídem
+   - `import_jobs(user_id, created_at)` — para `latest()->first()` por usuario
+
+**Nota**: La lentitud con Impersonate era el mismo problema — al acceder al dashboard de un usuario diferente, todas sus cache keys están frías. Los índices resuelven la primera carga en frío.
+
 ---
 
 ## Sistema de Sitemaps (Abril 2026)

@@ -7,27 +7,7 @@
             :border="false"
         />
 
-        @if(!($canView ?? true))
-            <div class="mb-6 p-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-lg font-medium text-yellow-800 dark:text-yellow-300">
-                            {{ __('listings.premium_required') }}
-                        </h3>
-                        <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-400">
-                            <p>{{ __('listings.premium_description') }}</p>
-                            <p class="mt-1 italic">{{ __('listings.premium_legacy_contact') }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <livewire:billing.checkout />
-        @elseif($allMatches->isEmpty())
+        @if($allMatches->isEmpty())
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
                 <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
