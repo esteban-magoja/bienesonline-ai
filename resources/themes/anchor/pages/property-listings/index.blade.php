@@ -24,6 +24,7 @@ new class extends Component {
     public ?PropertyListing $listingToDelete = null;
 
     // Filtros
+    public string $filterCountry = '';
     public string $filterPropertyType = '';
     public string $filterTransactionType = '';
     public string $filterState = '';
@@ -31,6 +32,8 @@ new class extends Component {
     public int $page = 1;
 
     // Opciones de filtros
+    public array $countryOptions = [];
+    public bool $hasMultipleCountries = false;
     public array $propertyTypeOptions = [];
     public array $transactionTypeOptions = [];
     public array $stateOptions = [];
@@ -87,6 +90,16 @@ new class extends Component {
         $this->loadAllListings();
     }
 
+    public function updatedFilterCountry(): void
+    {
+        $this->page = 1;
+        $this->filterState = '';
+        $this->filterCity = '';
+        $this->loadStateOptions();
+        $this->loadCityOptions();
+        $this->loadAllListings();
+    }
+
     public function updatedFilterPropertyType(): void
     {
         $this->page = 1;
@@ -115,11 +128,13 @@ new class extends Component {
 
     public function clearFilters(): void
     {
+        $this->filterCountry = '';
         $this->filterPropertyType = '';
         $this->filterTransactionType = '';
         $this->filterState = '';
         $this->filterCity = '';
         $this->page = 1;
+        $this->loadStateOptions();
         $this->loadCityOptions();
         $this->loadAllListings();
     }
@@ -170,7 +185,8 @@ new class extends Component {
 
     public function getActiveFilterCount(): int
     {
-        return (int) !empty($this->filterPropertyType)
+        return (int) !empty($this->filterCountry)
+            + (int) !empty($this->filterPropertyType)
             + (int) !empty($this->filterTransactionType)
             + (int) !empty($this->filterState)
             + (int) !empty($this->filterCity);
@@ -179,6 +195,18 @@ new class extends Component {
     private function loadFilterOptions(): void
     {
         $userId = auth()->id();
+
+        // Países con anuncios del usuario (solo mostrar filtro si hay más de uno)
+        $countries = PropertyListing::where('user_id', $userId)
+            ->whereNotNull('country')
+            ->where('country', '!=', '')
+            ->distinct()
+            ->orderBy('country')
+            ->pluck('country')
+            ->toArray();
+
+        $this->hasMultipleCountries = count($countries) > 1;
+        $this->countryOptions = $countries;
 
         // Tipos de inmueble usados por este usuario
         $this->propertyTypeOptions = PropertyListing::where('user_id', $userId)
@@ -198,16 +226,21 @@ new class extends Component {
             ->pluck('transaction_type')
             ->toArray();
 
-        // Provincias/estados
-        $this->stateOptions = PropertyListing::where('user_id', $userId)
-            ->whereNotNull('state')
-            ->where('state', '!=', '')
-            ->distinct()
-            ->orderBy('state')
-            ->pluck('state')
-            ->toArray();
-
+        $this->loadStateOptions();
         $this->loadCityOptions();
+    }
+
+    private function loadStateOptions(): void
+    {
+        $query = PropertyListing::where('user_id', auth()->id())
+            ->whereNotNull('state')
+            ->where('state', '!=', '');
+
+        if (!empty($this->filterCountry)) {
+            $query->where('country', $this->filterCountry);
+        }
+
+        $this->stateOptions = $query->distinct()->orderBy('state')->pluck('state')->toArray();
     }
 
     private function loadCityOptions(): void
@@ -215,6 +248,10 @@ new class extends Component {
         $query = PropertyListing::where('user_id', auth()->id())
             ->whereNotNull('city')
             ->where('city', '!=', '');
+
+        if (!empty($this->filterCountry)) {
+            $query->where('country', $this->filterCountry);
+        }
 
         if (!empty($this->filterState)) {
             $query->where('state', $this->filterState);
@@ -225,6 +262,9 @@ new class extends Component {
 
     private function applyFilters(\Illuminate\Database\Eloquent\Builder $query): void
     {
+        if (!empty($this->filterCountry)) {
+            $query->where('country', $this->filterCountry);
+        }
         if (!empty($this->filterPropertyType)) {
             $query->where('property_type', $this->filterPropertyType);
         }
@@ -345,7 +385,20 @@ new class extends Component {
 
         {{-- Filtros --}}
         <div class="mt-3">
-            <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div class="grid grid-cols-2 gap-2 {{ $hasMultipleCountries ? 'sm:grid-cols-3 lg:grid-cols-5' : 'sm:grid-cols-4' }}">
+                {{-- País (solo visible si hay anuncios en más de un país) --}}
+                @if($hasMultipleCountries)
+                <div>
+                    <select wire:model.live="filterCountry"
+                        class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm bg-white focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200
+                            {{ $filterCountry ? 'border-indigo-400 dark:border-indigo-500 ring-1 ring-indigo-300' : '' }}">
+                        <option value="">{{ __('listings.all_countries') }}</option>
+                        @foreach($countryOptions as $country)
+                            <option value="{{ $country }}">{{ $country }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
                 {{-- Tipo de inmueble --}}
                 <div>
                     <select wire:model.live="filterPropertyType"

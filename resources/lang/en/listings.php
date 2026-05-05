@@ -47,6 +47,7 @@ return [
     'filter_city' => 'City',
     'all_types' => 'All types',
     'all_operations' => 'All operations',
+    'all_countries' => 'All countries',
     'all_states' => 'All states',
     'all_cities' => 'All cities',
     'clear_filters' => 'Clear filters',

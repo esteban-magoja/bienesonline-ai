@@ -47,6 +47,7 @@ return [
     'filter_city' => 'Localidad',
     'all_types' => 'Todos los tipos',
     'all_operations' => 'Todas las operaciones',
+    'all_countries' => 'Todos los países',
     'all_states' => 'Todas las provincias',
     'all_cities' => 'Todas las localidades',
     'clear_filters' => 'Quitar filtros',
