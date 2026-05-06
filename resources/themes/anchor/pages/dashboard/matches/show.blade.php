@@ -60,10 +60,12 @@
         <div>
             <h3 class="text-xl font-bold text-gray-900 mb-4">
                 {{ __('dashboard.matches_section.matching_requests') }}
-                @if(($totalMatches ?? 0) > $matches->count())
-                    ({{ __('dashboard.matches_section.top_of_total', ['top' => $matches->count(), 'total' => $totalMatches]) }})
-                @else
-                    ({{ $matches->count() }})
+                @if($matches->isNotEmpty())
+                    @if(($totalMatches ?? 0) > $matches->count())
+                        ({{ __('dashboard.matches_section.top_of_total', ['top' => $matches->count(), 'total' => $totalMatches]) }})
+                    @else
+                        ({{ $matches->count() }})
+                    @endif
                 @endif
             </h3>
 

@@ -215,6 +215,7 @@ return [
         'looking_for' => 'Buscando',
         'send_email' => 'Enviar email',
         'request_created' => 'Solicitud creada',
+        'top_of_total' => 'Top :top de :total coincidencias',
     ],
     
     // Mensajes

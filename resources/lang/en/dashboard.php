@@ -215,6 +215,7 @@ return [
         'looking_for' => 'Looking for',
         'send_email' => 'Send email',
         'request_created' => 'Request created',
+        'top_of_total' => 'Top :top of :total matches',
     ],
     
     // Messages

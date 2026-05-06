@@ -210,6 +210,8 @@ return [
     'land_area_sqm' => 'Land Area (sqm)',
     'contact_advertiser' => 'Contact Advertiser',
     'whatsapp_message' => 'Hello, I\'m interested in the property: :property',
+    'auto_request_title' => 'Interested in: :title',
+    'auto_request_description' => 'I contacted the advertiser via WhatsApp about the property ":title" in :city.',
     'message_placeholder' => 'I am interested in this property...',
     'default_message' => 'Hello, I am interested in the property ":property". I would like to receive more information.',
     'send_inquiry' => 'Send Inquiry',

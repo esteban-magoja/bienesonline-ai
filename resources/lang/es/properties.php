@@ -210,6 +210,8 @@ return [
     'land_area_sqm' => 'm² Terreno',
     'contact_advertiser' => 'Contactar al Anunciante',
     'whatsapp_message' => 'Hola, estoy interesado en la propiedad: :property',
+    'auto_request_title' => 'Interesado en: :title',
+    'auto_request_description' => 'Contacté al anunciante vía WhatsApp sobre la propiedad ":title" en :city.',
     'message_placeholder' => 'Estoy interesado en esta propiedad...',
     'default_message' => 'Hola, estoy interesado en la propiedad ":property". Me gustaría recibir más información.',
     'send_inquiry' => 'Enviar Consulta',

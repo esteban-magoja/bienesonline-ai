@@ -48,6 +48,8 @@ class PropertyRequest extends Model
         'country',
         'is_active',
         'expires_at',
+        'source',
+        'source_listing_id',
         'embedding',
         // i18n fields
         'title_i18n',
