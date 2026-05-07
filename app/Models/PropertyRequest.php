@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Traits\Translatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Pgvector\Laravel\HasNeighbors;
 use Pgvector\Laravel\Vector;
 
 class PropertyRequest extends Model
 {
-    use HasNeighbors, Translatable;
+    use HasFactory, HasNeighbors, Translatable;
 
     /**
      * The attributes that are translatable.

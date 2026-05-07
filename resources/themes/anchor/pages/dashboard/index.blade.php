@@ -4,6 +4,7 @@
 	use App\Models\PropertyRequest;
 	use App\Models\PropertyContact;
 	use App\Models\ImportJob;
+	use App\Services\PropertyMatchingService;
 	use Illuminate\Support\Facades\Cache;
 
 	middleware('auth');
@@ -23,6 +24,22 @@
 	$unseenContacts = Cache::remember("dashboard_contacts_unseen_{$userId}", 300, fn () =>
 		PropertyContact::where('owner_user_id', $userId)->whereNull('seen_at')->count()
 	);
+
+	// Matches inbound: solicitudes de otros que coinciden con mis anuncios (caché 6h)
+	$matchesInbound = Cache::remember("dashboard_matches_inbound_{$userId}", 21600, function () use ($userId) {
+		$service = app(PropertyMatchingService::class);
+		return PropertyListing::where('user_id', $userId)->active()
+			->get()
+			->sum(fn ($listing) => $service->countMatchesForListing($listing));
+	});
+
+	// Matches outbound: anuncios de otros que coinciden con mis solicitudes (caché 6h)
+	$matchesOutbound = Cache::remember("dashboard_matches_outbound_{$userId}", 21600, function () use ($userId) {
+		$service = app(PropertyMatchingService::class);
+		return PropertyRequest::where('user_id', $userId)->active()
+			->get()
+			->sum(fn ($request) => $service->countMatchesForRequest($request));
+	});
 
 	// Último import job: caché corto (60s) porque el progreso se actualiza vía AJAX
 	$latestImport = Cache::remember("dashboard_import_{$userId}", 60, fn () =>
@@ -194,15 +211,28 @@
 				<div class="flex items-center justify-between">
 					<div>
 						<p class="text-md text-gray-600 mb-3">{{ __('dashboard.home.matches') }}</p>
-						<p class="text-3xl font-bold text-gray-900">—</p>
+						<p class="text-3xl font-bold text-gray-900">{{ $matchesInbound + $matchesOutbound }}</p>
 					</div>
 					<svg class="w-12 h-12 text-purple-500 mt-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
 					</svg>
 				</div>
-				<div class="mt-3 text-purple-600">
-					<a href="{{ route('dashboard.matches.index') }}" class="mt-4 text-sm text-purple-600 hover:text-purple-700 font-medium">{{ __('dashboard.home.view_matches') }}</a>
-				</div>	
+				@if($matchesInbound > 0 || $matchesOutbound > 0)
+				<div class="mt-3 space-y-1">
+					@if($matchesInbound > 0)
+					<a href="{{ route('dashboard.matches.index') }}" class="flex items-center gap-1 text-sm text-purple-600 hover:text-purple-700 font-medium">
+						<span class="font-bold">{{ $matchesInbound }}</span>
+						<span>{{ __('dashboard.home.matches_inbound') }}</span>
+					</a>
+					@endif
+					@if($matchesOutbound > 0)
+					<a href="{{ route('dashboard.requests.index') }}" class="flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+						<span class="font-bold">{{ $matchesOutbound }}</span>
+						<span>{{ __('dashboard.home.matches_outbound') }}</span>
+					</a>
+					@endif
+				</div>
+				@endif
 			</div>
 		</div>
 

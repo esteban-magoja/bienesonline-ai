@@ -316,6 +316,8 @@ return [
         'unread_messages' => ':count unread',
         'view_messages' => 'View messages',
         'view_matches' => 'View matches',
+        'matches_inbound' => 'for my listings',
+        'matches_outbound' => 'for my requests',
         'again' => 'again',
         'listings' => 'listings',
         'role_message' => 'You have the role of',

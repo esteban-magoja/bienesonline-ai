@@ -26,6 +26,7 @@ class PropertyListingObserver
     public function created(PropertyListing $propertyListing): void
     {
         Cache::forget("dashboard_listings_{$propertyListing->user_id}");
+        Cache::forget("dashboard_matches_inbound_{$propertyListing->user_id}");
 
         if (config('matching.enabled', true)) {
             event(new PropertyListingCreated($propertyListing));
@@ -53,6 +54,7 @@ class PropertyListingObserver
 
         if ($propertyListing->wasChanged('is_active')) {
             Cache::forget("dashboard_listings_{$propertyListing->user_id}");
+            Cache::forget("dashboard_matches_inbound_{$propertyListing->user_id}");
 
             if ($propertyListing->is_active && config('matching.enabled', true)) {
                 event(new PropertyListingCreated($propertyListing));
@@ -96,6 +98,7 @@ class PropertyListingObserver
         Cache::forget("matches_listing_count_{$propertyListing->id}");
         Cache::forget("matches_listing_{$propertyListing->id}");
         Cache::forget("dashboard_listings_{$propertyListing->user_id}");
+        Cache::forget("dashboard_matches_inbound_{$propertyListing->user_id}");
     }
 
     /**

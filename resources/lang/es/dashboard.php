@@ -316,6 +316,8 @@ return [
         'unread_messages' => ':count sin leer',
         'view_messages' => 'Ver mensajes',
         'view_matches' => 'Ver matches',
+        'matches_inbound' => 'para mis anuncios',
+        'matches_outbound' => 'para mis solicitudes',
         'again' => 'de nuevo',
         'listings' => 'anuncios',
         'role_message' => 'Usted tiene el rol de',
