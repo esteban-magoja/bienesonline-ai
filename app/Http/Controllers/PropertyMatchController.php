@@ -43,6 +43,11 @@ class PropertyMatchController extends Controller
                          ->where(function ($q) {
                              $q->whereNull('property_requests.min_budget')
                                ->orWhereColumn('property_requests.min_budget', '<=', 'property_listings.price');
+                         })
+                         ->where(function ($q) {
+                             $q->whereNull('property_requests.city')
+                               ->orWhereColumn('property_requests.city', 'property_listings.city')
+                               ->orWhereColumn('property_requests.state', 'property_listings.state');
                          });
                 })
                 ->where('property_listings.user_id', $userId)
