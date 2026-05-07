@@ -4,8 +4,8 @@
 	use App\Models\PropertyRequest;
 	use App\Models\PropertyContact;
 	use App\Models\ImportJob;
-	use App\Services\PropertyMatchingService;
 	use Illuminate\Support\Facades\Cache;
+	use Illuminate\Support\Facades\DB;
 
 	middleware('auth');
     name('dashboard');
@@ -28,20 +28,58 @@
 	// No calcular matches en el dashboard (operación costosa con pgvector).
 	// Los conteos reales están disponibles en /dashboard/matches y /dashboard/requests.
 
-	// Matches inbound: solicitudes de otros que coinciden con mis anuncios (solo filtros SQL, sin vectores)
+	// Matches inbound: solicitudes de otros que coinciden con mis anuncios (1 query agregada, sin vectores)
 	$matchesInbound = Cache::remember("dashboard_matches_inbound_{$userId}", 21600, function () use ($userId) {
-		$service = app(PropertyMatchingService::class);
-		return PropertyListing::where('user_id', $userId)->active()
-			->get()
-			->sum(fn ($listing) => $service->countExactMatchesForListing($listing));
+		return (int) DB::table('property_requests')
+			->join('property_listings', function ($join) {
+				$join->whereRaw('LOWER(property_requests.property_type) = LOWER(property_listings.property_type)')
+					 ->whereRaw('LOWER(property_requests.transaction_type) = LOWER(property_listings.transaction_type)')
+					 ->whereColumn('property_requests.country', 'property_listings.country')
+					 ->where(function ($q) {
+						 $q->whereNull('property_requests.max_budget')
+						   ->orWhere('property_requests.max_budget', 0)
+						   ->orWhereColumn('property_requests.max_budget', '>=', 'property_listings.price');
+					 })
+					 ->where(function ($q) {
+						 $q->whereNull('property_requests.min_budget')
+						   ->orWhereColumn('property_requests.min_budget', '<=', 'property_listings.price');
+					 });
+			})
+			->where('property_listings.user_id', $userId)
+			->where('property_listings.is_active', true)
+			->where('property_requests.is_active', true)
+			->where(function ($q) {
+				$q->whereNull('property_requests.expires_at')
+				  ->orWhere('property_requests.expires_at', '>', now());
+			})
+			->count(DB::raw('DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)'));
 	});
 
-	// Matches outbound: anuncios de otros que coinciden con mis solicitudes (solo filtros SQL, sin vectores)
+	// Matches outbound: anuncios de otros que coinciden con mis solicitudes (1 query agregada, sin vectores)
 	$matchesOutbound = Cache::remember("dashboard_matches_outbound_{$userId}", 21600, function () use ($userId) {
-		$service = app(PropertyMatchingService::class);
-		return PropertyRequest::where('user_id', $userId)->active()
-			->get()
-			->sum(fn ($request) => $service->countExactMatchesForRequest($request));
+		return (int) DB::table('property_listings')
+			->join('property_requests', function ($join) {
+				$join->whereRaw('LOWER(property_listings.property_type) = LOWER(property_requests.property_type)')
+					 ->whereRaw('LOWER(property_listings.transaction_type) = LOWER(property_requests.transaction_type)')
+					 ->whereColumn('property_listings.country', 'property_requests.country')
+					 ->where(function ($q) {
+						 $q->whereNull('property_requests.max_budget')
+						   ->orWhere('property_requests.max_budget', 0)
+						   ->orWhereColumn('property_requests.max_budget', '>=', 'property_listings.price');
+					 })
+					 ->where(function ($q) {
+						 $q->whereNull('property_requests.min_budget')
+						   ->orWhereColumn('property_requests.min_budget', '<=', 'property_listings.price');
+					 });
+			})
+			->where('property_requests.user_id', $userId)
+			->where('property_requests.is_active', true)
+			->where(function ($q) {
+				$q->whereNull('property_requests.expires_at')
+				  ->orWhere('property_requests.expires_at', '>', now());
+			})
+			->where('property_listings.is_active', true)
+			->count(DB::raw('DISTINCT property_listings.id'));
 	});
 
 	// Último import job: caché corto (60s) porque el progreso se actualiza vía AJAX
