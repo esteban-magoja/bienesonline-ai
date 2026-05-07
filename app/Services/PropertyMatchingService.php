@@ -76,7 +76,7 @@ class PropertyMatchingService
             $query->where('area', '>=', $request->min_area);
         }
 
-        return $query->count();
+        return $query->count(\Illuminate\Support\Facades\DB::raw('DISTINCT COALESCE(client_email, id::text)'));
     }
 
     /**
@@ -190,6 +190,7 @@ class PropertyMatchingService
             })
             ->filter(fn ($requestItem) => $requestItem->match_score >= 50)
             ->sortByDesc('match_score')
+            ->unique(fn ($r) => $r->client_email ?? $r->id)
             ->values();
     }
 
@@ -321,7 +322,9 @@ class PropertyMatchingService
               ->orWhere('state', $listing->state);
         });
 
-        return $query->with('user')->get();
+        return $query->with('user')->orderByDesc('id')->get()
+            ->unique(fn ($r) => $r->client_email ?? $r->id)
+            ->values();
     }
 
     /**
@@ -350,7 +353,9 @@ class PropertyMatchingService
             ->get()
             ->filter(function($request) {
                 return $request->neighbor_distance !== null;
-            });
+            })
+            ->unique(fn ($r) => $r->client_email ?? $r->id)
+            ->values();
     }
 
     /**

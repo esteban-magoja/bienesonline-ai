@@ -25,7 +25,7 @@ class PropertyMatchController extends Controller
 
         $listings = Cache::remember("matches_index_{$userId}", 3600, function () use ($userId) {
             return PropertyListing::select('property_listings.*')
-                ->selectRaw('COUNT(property_requests.id) AS match_count')
+                ->selectRaw('COUNT(DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)) AS match_count')
                 ->join('property_requests', function ($join) {
                     $join->whereRaw('LOWER(property_requests.property_type) = LOWER(property_listings.property_type)')
                          ->whereRaw('LOWER(property_requests.transaction_type) = LOWER(property_listings.transaction_type)')
@@ -48,7 +48,7 @@ class PropertyMatchController extends Controller
                 ->where('property_listings.user_id', $userId)
                 ->where('property_listings.is_active', true)
                 ->groupBy('property_listings.id')
-                ->havingRaw('COUNT(property_requests.id) > 0')
+                ->havingRaw('COUNT(DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)) > 0')
                 ->orderByDesc('match_count')
                 ->get();
         });
