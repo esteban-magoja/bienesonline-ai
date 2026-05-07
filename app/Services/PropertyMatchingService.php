@@ -35,6 +35,51 @@ class PropertyMatchingService
     }
 
     /**
+     * Fast SQL-only count of matching listings for a request (no vector search, no score calculation).
+     * Suitable for dashboard indicators where approximate counts are acceptable.
+     */
+    public function countExactMatchesForRequest(PropertyRequest $request): int
+    {
+        $countryCode            = $this->getCountryCode($request->country);
+        $propertyEquivalents    = PropertyType::getEquivalentValues($request->property_type, $countryCode);
+        $transactionEquivalents = TransactionType::getEquivalentValues($request->transaction_type, $countryCode);
+
+        $propPlaceholders = implode(',', array_fill(0, count($propertyEquivalents), '?'));
+        $tranPlaceholders = implode(',', array_fill(0, count($transactionEquivalents), '?'));
+
+        $query = PropertyListing::active()
+            ->whereRaw("LOWER(property_type) IN ({$propPlaceholders})", $propertyEquivalents)
+            ->whereRaw("LOWER(transaction_type) IN ({$tranPlaceholders})", $transactionEquivalents)
+            ->where('country', $request->country);
+
+        if ($request->min_budget) {
+            $query->where('price', '>=', $request->min_budget);
+        }
+        if ($request->max_budget) {
+            $query->where('price', '<=', $request->max_budget);
+        }
+        if ($request->city) {
+            $query->where(function ($q) use ($request) {
+                $q->where('city', $request->city)->orWhere('state', $request->state);
+            });
+        }
+        if ($request->min_bedrooms) {
+            $query->where('bedrooms', '>=', $request->min_bedrooms);
+        }
+        if ($request->min_bathrooms) {
+            $query->where('bathrooms', '>=', $request->min_bathrooms);
+        }
+        if ($request->min_parking_spaces) {
+            $query->where('parking_spaces', '>=', $request->min_parking_spaces);
+        }
+        if ($request->min_area) {
+            $query->where('area', '>=', $request->min_area);
+        }
+
+        return $query->count();
+    }
+
+    /**
      * Get all scored and sorted matches for a request (no limit applied).
      */
     protected function getAllScoredMatchesForRequest(PropertyRequest $request): Collection
@@ -82,6 +127,40 @@ class PropertyMatchingService
     public function countMatchesForListing(PropertyListing $listing): int
     {
         return $this->getAllScoredMatchesForListing($listing)->count();
+    }
+
+    /**
+     * Fast SQL-only count of matching requests for a listing (no vector search, no score calculation).
+     * Suitable for dashboard indicators where approximate counts are acceptable.
+     */
+    public function countExactMatchesForListing(PropertyListing $listing): int
+    {
+        $countryCode            = $this->getCountryCode($listing->country);
+        $propertyEquivalents    = PropertyType::getEquivalentValues($listing->property_type, $countryCode);
+        $transactionEquivalents = TransactionType::getEquivalentValues($listing->transaction_type, $countryCode);
+
+        $propPlaceholders = implode(',', array_fill(0, count($propertyEquivalents), '?'));
+        $tranPlaceholders = implode(',', array_fill(0, count($transactionEquivalents), '?'));
+
+        return PropertyRequest::active()
+            ->whereRaw("LOWER(property_type) IN ({$propPlaceholders})", $propertyEquivalents)
+            ->whereRaw("LOWER(transaction_type) IN ({$tranPlaceholders})", $transactionEquivalents)
+            ->where('country', $listing->country)
+            ->where(function ($q) use ($listing) {
+                $q->whereNull('max_budget')
+                  ->orWhere('max_budget', '=', 0)
+                  ->orWhere('max_budget', '>=', $listing->price);
+            })
+            ->where(function ($q) use ($listing) {
+                $q->whereNull('min_budget')
+                  ->orWhere('min_budget', '<=', $listing->price);
+            })
+            ->where(function ($q) use ($listing) {
+                $q->whereNull('city')
+                  ->orWhere('city', $listing->city)
+                  ->orWhere('state', $listing->state);
+            })
+            ->count();
     }
 
     /**
