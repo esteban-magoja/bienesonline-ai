@@ -17,7 +17,11 @@
         <!-- Listing Info -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <div class="flex items-start gap-6">
-                @php $displayImage = $listing->primaryImage ?? $listing->firstImage; @endphp
+                @php
+                    $displayImage  = $listing->primaryImage ?? $listing->firstImage;
+                    $locale        = app()->getLocale();
+                    $listingUrl    = url("/{$locale}/" . \Illuminate\Support\Str::slug($listing->country) . "/" . \Illuminate\Support\Str::slug($listing->city) . "/propiedad/{$listing->id}-" . \Illuminate\Support\Str::slug($listing->title));
+                @endphp
                 @if($displayImage)
                     <img src="{{ $displayImage->image_url }}" 
                          alt="{{ $listing->title }}"
@@ -31,8 +35,15 @@
                 @endif
 
                 <div class="flex-1">
-                    <h2 class="text-xl font-bold text-gray-900 mb-2">{{ $listing->title }}</h2>
-                    <p class="text-gray-600 mb-3">{{ $listing->description }}</p>
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">
+                        <a href="{{ $listingUrl }}" target="_blank" rel="noopener"
+                           class="hover:text-blue-600 hover:underline transition-colors inline-flex items-center gap-1.5">
+                            {{ $listing->title }}
+                            <svg class="w-4 h-4 shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                    </h2>
                     
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
@@ -143,8 +154,6 @@
 
                             <!-- Contact Info del solicitante -->
                             @php
-                                $locale = app()->getLocale();
-                                $listingUrl = url("/{$locale}/" . \Illuminate\Support\Str::slug($listing->country) . "/" . \Illuminate\Support\Str::slug($listing->city) . "/propiedad/{$listing->id}-" . \Illuminate\Support\Str::slug($listing->title));
                                 $clientName  = $request->client_name  ?? $request->user->name;
                                 $clientEmail = $request->client_email ?? $request->user->email;
                                 $clientPhone = $request->client_phone ?? $request->user->movil ?? null;
