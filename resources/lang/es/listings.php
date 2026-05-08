@@ -74,6 +74,9 @@ return [
     // Acciones
     'edit' => 'Editar',
     'delete' => 'Eliminar',
+    'renew' => 'Renovar',
+    'renewed_success' => 'Anuncio renovado exitosamente. Ahora aparece como reciente.',
+    'confirm_renew' => '¿Renovar este anuncio? Se actualizará la fecha de publicación al día de hoy.',
     'view' => 'Ver',
     'publish' => 'Publicar',
     'publish_listing' => 'Publicar Anuncio',

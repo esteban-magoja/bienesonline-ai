@@ -183,6 +183,31 @@ new class extends Component {
         $this->listingToDelete = null;
     }
 
+    public function renewListing(int $listingId): void
+    {
+        $listing = PropertyListing::where('user_id', auth()->id())->findOrFail($listingId);
+
+        if (!auth()->user()->hasRole('premium')) {
+            return;
+        }
+
+        if ($listing->created_at->gt(now()->subDays(30))) {
+            return;
+        }
+
+        $listing->timestamps = false;
+        $listing->created_at = now();
+        $listing->save();
+        $listing->timestamps = true;
+
+        Cache::forget("matches_listing_count_{$listingId}");
+        Cache::forget("matches_listing_{$listingId}");
+
+        $this->loadAllListings();
+
+        session()->flash('success', __('listings.renewed_success'));
+    }
+
     public function getActiveFilterCount(): int
     {
         return (int) !empty($this->filterCountry)
@@ -334,7 +359,12 @@ new class extends Component {
                             $q->whereNull('min_budget')
                               ->orWhere('min_budget', '<=', $listing->price);
                         })
-                        ->count();
+                        ->where(function ($q) use ($listing) {
+                            $q->whereNull('city')
+                              ->orWhere('city', $listing->city)
+                              ->orWhere('state', $listing->state);
+                        })
+                        ->count(\Illuminate\Support\Facades\DB::raw('DISTINCT COALESCE(client_email, id::text)'));
                 }
             );
         }
@@ -555,6 +585,13 @@ new class extends Component {
                                    class="text-sm font-medium text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
                                     {{ __('listings.edit') }}
                                 </a>
+                                @if(auth()->user()->hasRole('premium') && $listing->created_at->lt(now()->subDays(30)))
+                                    <button wire:click="renewListing({{ $listing->id }})"
+                                            wire:confirm="{{ __('listings.confirm_renew') }}"
+                                            class="text-sm font-medium text-green-600 hover:text-green-800 dark:text-green-400">
+                                        {{ __('listings.renew') }}
+                                    </button>
+                                @endif
                                 <button wire:click="confirmDelete({{ $listing->id }})" class="text-sm font-medium text-red-600 hover:text-red-900">{{ __('listings.delete') }}</button>
                             </div>
                         </div>

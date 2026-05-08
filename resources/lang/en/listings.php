@@ -74,6 +74,9 @@ return [
     // Actions
     'edit' => 'Edit',
     'delete' => 'Delete',
+    'renew' => 'Renew',
+    'renewed_success' => 'Listing renewed successfully. It now appears as recent.',
+    'confirm_renew' => 'Renew this listing? The publication date will be updated to today.',
     'view' => 'View',
     'publish' => 'Publish',
     'publish_listing' => 'Publish Listing',
