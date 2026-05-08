@@ -969,34 +969,80 @@ exit
 ```
 
 ### Performance — PropertyMatchController
-- `index()` y `show()` están cacheados 15 minutos (`matches_index_{userId}`, `matches_listing_{listingId}`)
-- `index()` limita a 10 anuncios para evitar N búsquedas vectoriales en una sola carga
+- `index()` usa una query JOIN SQL (sin pgvector), cacheada **1 hora** (`matches_index_{userId}`), con paginación en memoria (10/página via `LengthAwarePaginator`)
+- `show()` usa pgvector completo, cacheado **1 hora** (`matches_listing_{listingId}`, `matches_listing_count_{listingId}`)
 - El dashboard **no** calcula matches en tiempo real (se eliminó para evitar carga en cada visita)
-- **Cache de conteos en `/property-listings`**: primer check `matches_listing_{id}` (15min), luego `matches_listing_count_{id}` (4h), luego SQL fallback. El SQL usa `LOWER()` para case-insensitivity y maneja `max_budget IS NULL`.
+- **Cache de conteos en `/property-listings`**: primer check `matches_listing_{id}` (1h), luego `matches_listing_count_{id}` (1h), luego SQL fallback. El SQL usa `LOWER()` para case-insensitivity y maneja `max_budget IS NULL`.
 - **Invalidación de cache**: `PropertyListingObserver` limpia caches al actualizar/eliminar un anuncio. `PropertyRequestObserver` limpia `matches_listing_count_{id}`, `matches_listing_{id}` y `matches_index_{userId}` para todos los anuncios afectados cuando cambia una solicitud.
 
 ### Performance — Dashboard (/dashboard)
 
 **Problema resuelto (Mayo 2026)**: El dashboard tardaba varios segundos en producción, especialmente al usar "Impersonate" en un usuario con muchos anuncios.
 
-**Causa raíz**: Las tablas `property_listings`, `property_requests` e `import_jobs` no tenían índice en `user_id`, causando full table scans en producción con miles de registros importados.
+**Causa raíz original**: Las tablas `property_listings`, `property_requests` e `import_jobs` no tenían índice en `user_id`, causando full table scans en producción con miles de registros importados.
+
+**Causa raíz adicional (Mayo 2026)**: Los conteos de matches en el dashboard iteraban en PHP (`->sum(fn($listing) => $service->countExact...($listing))`) ejecutando 1 query por anuncio/solicitud del usuario. Un usuario admin con cientos de requests del legacy causaba timeout de 30s.
 
 **Solución implementada**:
 
 1. **Cache de stats del dashboard** (`resources/themes/anchor/pages/dashboard/index.blade.php`):
-   - 5 queries cacheadas con `Cache::remember` (TTL 300s para stats, 60s para ImportJob)
-   - Cache keys: `dashboard_listings_{userId}`, `dashboard_requests_{userId}`, `dashboard_contacts_total_{userId}`, `dashboard_contacts_unseen_{userId}`, `dashboard_import_{userId}`
+   - Stats de conteo: TTL 300s — `dashboard_listings_{userId}`, `dashboard_requests_{userId}`, `dashboard_contacts_total_{userId}`, `dashboard_contacts_unseen_{userId}`
+   - Import job: TTL 60s — `dashboard_import_{userId}`
+   - Match counts: TTL 21600s (6h) — `dashboard_matches_inbound_{userId}`, `dashboard_matches_outbound_{userId}`
 
-2. **Invalidación de cache en Observers**:
+2. **Match counts con queries agregadas únicas** (no loop):
+   - `$matchesInbound`: 1 `DB::table()->join()->count(DISTINCT ...)` — sin importar cuántos anuncios tenga el usuario
+   - `$matchesOutbound`: 1 `DB::table()->join()->count(DISTINCT ...)` — sin importar cuántas solicitudes tenga
+   - **No usa `PropertyMatchingService`** — queries directas con `DB::table()`
+
+3. **Invalidación de cache en Observers**:
    - `PropertyListingObserver`: limpia `dashboard_listings_{userId}` en created/updated/deleted
    - `PropertyRequestObserver`: limpia `dashboard_requests_{userId}` en created/updated/deleted
 
-3. **Índices de base de datos** (migración `2026_05_04_181549_add_user_id_indexes_to_dashboard_tables`):
+4. **Índices de base de datos** (migración `2026_05_04_181549_add_user_id_indexes_to_dashboard_tables`):
    - `property_listings(user_id, is_active)` — composite para `WHERE user_id=X AND is_active=true`
    - `property_requests(user_id, is_active)` — ídem
    - `import_jobs(user_id, created_at)` — para `latest()->first()` por usuario
 
 **Nota**: La lentitud con Impersonate era el mismo problema — al acceder al dashboard de un usuario diferente, todas sus cache keys están frías. Los índices resuelven la primera carga en frío.
+
+### Deduplicación de Solicitudes Legacy (Mayo 2026)
+
+Las solicitudes importadas del sitio legacy generan duplicados (misma persona, misma solicitud). Se identifican por `client_email`.
+
+**Criterio de deduplicación**: `COALESCE(client_email, id::text)` — si la solicitud tiene email, se usa como clave; si no (solicitud creada por usuario real), el `id` garantiza unicidad.
+
+**Implementado en**:
+- `PropertyMatchController::index()` JOIN: `COUNT(DISTINCT COALESCE(client_email, id::text))`
+- `PropertyMatchingService::countExactMatchesForListing()`: `->count(DB::raw('DISTINCT COALESCE(client_email, id::text)'))`
+- `PropertyMatchingService::getExactMatchesForListing()`: `->orderByDesc('id')->get()->unique(fn($r) => $r->client_email ?? $r->id)`
+- `PropertyMatchingService::getSemanticMatchesForListing()`: `->unique(fn($r) => $r->client_email ?? $r->id)` tras filtro
+- `PropertyMatchingService::getAllScoredMatchesForListing()`: `->unique(fn($r) => $r->client_email ?? $r->id)` tras scoring (mantiene el de mayor score por email)
+- Dashboard (`dashboard/index.blade.php`): `COUNT(DISTINCT COALESCE(client_email, id::text))` en queries agregadas
+
+### ⚠️ Filtro Ciudad/Estado Obligatorio en Queries de Matching
+
+**Invariante crítica**: toda query que cuente o busque solicitudes compatibles con un anuncio DEBE incluir el filtro de ciudad/estado, igual que `getExactMatchesForListing()`:
+
+```sql
+AND (property_requests.city IS NULL
+     OR property_requests.city = property_listings.city
+     OR property_requests.state = property_listings.state)
+```
+
+Sin este filtro, se cuentan solicitudes de otras ciudades que luego el score descarta, generando una diferencia importante entre el conteo del índice y el del detalle.
+
+**Se aplica en**: dashboard inbound, dashboard outbound, `PropertyMatchController::index()`, `PropertyMatchingService::getExactMatchesForListing()`, `PropertyMatchingService::countExactMatchesForListing()`.
+
+### Arquitectura de Matches por Nivel de Precisión
+
+| Vista | Tecnología | Cache | Propósito |
+|---|---|---|---|
+| `/dashboard` cards | SQL JOIN agregado | 6h | Indicador rápido (sin timeout) |
+| `/dashboard/matches` index | SQL JOIN paginado | 1h | Lista de anuncios con candidatos |
+| `/dashboard/matches/{id}` show | pgvector completo + score | 1h | Matches reales con ranking |
+
+**Diferencia aceptable**: el índice y dashboard muestran conteos SQL (sin filtro score>=50%), el detalle muestra el conteo real con pgvector. El índice siempre puede mostrar un número ligeramente mayor que el detalle.
 
 ---
 
