@@ -6,6 +6,7 @@
 	use App\Models\ImportJob;
 	use Illuminate\Support\Facades\Cache;
 	use Illuminate\Support\Facades\DB;
+	use Wave\Changelog;
 
 	middleware('auth');
     name('dashboard');
@@ -101,6 +102,8 @@
 	$hideImportSection = $latestImport
 		&& $latestImport->status === 'completed'
 		&& $latestImport->updated_at->diffInDays(now()) >= 7;
+
+	$latestChangelog = Changelog::latest()->first();
 ?>
 
 <x-layouts.app>
@@ -483,6 +486,25 @@
 				</div>
 			</div>
 		</div>
+
+		@if($latestChangelog)
+			<div class="mt-6 max-w-3xl mx-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-5">
+				<div class="flex items-center gap-2 mb-3">
+					<svg class="w-5 h-5 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+					</svg>
+					<h3 class="text-sm font-semibold text-indigo-700 dark:text-indigo-400 uppercase tracking-wide">Novedades</h3>
+					<span class="text-xs text-gray-400 dark:text-gray-500 ml-auto">{{ $latestChangelog->created_at->format('d/m/Y') }}</span>
+				</div>
+				<h4 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-2">{{ $latestChangelog->title }}</h4>
+				@if($latestChangelog->description)
+					<p class="text-sm text-gray-500 dark:text-gray-400 mb-3 italic">{{ $latestChangelog->description }}</p>
+				@endif
+				<div class="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+					{!! $latestChangelog->body !!}
+				</div>
+			</div>
+		@endif
 
 		<div class="mt-5 space-y-5">
 			@subscriber
