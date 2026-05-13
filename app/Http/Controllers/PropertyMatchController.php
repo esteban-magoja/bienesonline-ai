@@ -99,9 +99,11 @@ class PropertyMatchController extends Controller
 
         $recentThreshold = now()->subDays(7);
 
-        // Recent matches (last 7 days) first sorted by score, then older ones sorted by score
+        // Sort: intelligent matches (exact/semantic) first, then flexible.
+        // Within each group: recent matches (last 7 days) before older ones, then by score.
         $sortedMatches = $matches
             ->sortByDesc(fn ($r) => [
+                in_array($r->match_level, ['exact', 'semantic']) ? 1 : 0,
                 $r->created_at >= $recentThreshold ? 1 : 0,
                 $r->match_score,
             ])
