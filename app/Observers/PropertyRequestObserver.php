@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\PropertyRequestCreated;
 use App\Models\PropertyListing;
 use App\Models\PropertyRequest;
 use Illuminate\Support\Facades\Cache;
@@ -16,6 +17,8 @@ class PropertyRequestObserver
         Cache::forget("dashboard_requests_{$propertyRequest->user_id}");
         Cache::forget("dashboard_matches_outbound_{$propertyRequest->user_id}");
         $this->clearAffectedListingCaches($propertyRequest);
+
+        event(new PropertyRequestCreated($propertyRequest));
     }
 
     /**

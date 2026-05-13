@@ -216,6 +216,12 @@ return [
         'send_email' => 'Send email',
         'request_created' => 'Request created',
         'top_of_total' => 'Top :top of :total matches',
+        'total_matches' => 'Total matches',
+        'new_this_week' => 'New this week',
+        'listings_with_matches' => 'Listings with matches',
+        'last_match' => 'Latest request',
+        'this_week' => 'this week',
+        'matches' => 'matches',
     ],
     
     // Messages

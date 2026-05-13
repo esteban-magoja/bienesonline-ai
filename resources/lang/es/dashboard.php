@@ -216,6 +216,12 @@ return [
         'send_email' => 'Enviar email',
         'request_created' => 'Solicitud creada',
         'top_of_total' => 'Top :top de :total coincidencias',
+        'total_matches' => 'Total de matches',
+        'new_this_week' => 'Nuevos esta semana',
+        'listings_with_matches' => 'Anuncios con matches',
+        'last_match' => 'Última solicitud',
+        'this_week' => 'esta semana',
+        'matches' => 'matches',
     ],
     
     // Mensajes

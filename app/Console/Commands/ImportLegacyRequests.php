@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Events\PropertyRequestCreated;
+use App\Models\PropertyRequest;
 use App\Models\PropertyType;
 use App\Models\TransactionType;
 use Illuminate\Console\Command;
@@ -19,6 +21,7 @@ class ImportLegacyRequests extends Command
                             {--skip-embeddings : Omitir la generación de embeddings (Fase 2)}
                             {--only-embeddings : Solo generar embeddings para registros pendientes (omite Fase 1)}
                             {--chunk=50 : Registros por lote al generar embeddings}
+                            {--skip-whatsapp : No enviar notificaciones de WhatsApp a dueños de anuncios compatibles}
                             {--dry-run : Simula la importación sin guardar datos}';
 
     protected $description = 'Importa solicitudes (pedidos) desde un archivo JSON del proyecto legacy';
@@ -81,7 +84,8 @@ class ImportLegacyRequests extends Command
 
     protected function runImport(string $filePath, int $userId, string $countryName, bool $dryRun, ?int $limit): int
     {
-        $records = $this->parseJsonFile($filePath);
+        $records      = $this->parseJsonFile($filePath);
+        $skipWhatsapp = $this->option('skip-whatsapp');
 
         if ($records === null) {
             $this->error('No se pudo parsear el archivo JSON o no contiene datos de tabla.');
@@ -124,7 +128,12 @@ class ImportLegacyRequests extends Command
                         continue;
                     }
 
-                    DB::table('property_requests')->insert($mapped);
+                    $insertedId      = DB::table('property_requests')->insertGetId($mapped);
+                    $propertyRequest = PropertyRequest::find($insertedId);
+
+                    if ($propertyRequest && !$skipWhatsapp) {
+                        event(new PropertyRequestCreated($propertyRequest));
+                    }
                 }
 
                 $created++;
@@ -142,7 +151,8 @@ class ImportLegacyRequests extends Command
         $bar->finish();
         $this->newLine();
 
-        $this->info("   ✅ Importados: {$created}  ⏭️  Saltados (duplicados): {$skipped}  ❌ Errores: {$errors}");
+        $suffix = $skipWhatsapp ? '' : ' (notificaciones WhatsApp encoladas)';
+        $this->info("   ✅ Importados: {$created}  ⏭️  Saltados (duplicados): {$skipped}  ❌ Errores: {$errors}{$suffix}");
 
         if ($this->unmappedPropertyTypes) {
             $unique = array_unique($this->unmappedPropertyTypes);

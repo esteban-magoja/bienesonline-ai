@@ -26,6 +26,8 @@ class PropertyMatchController extends Controller
         $listings = Cache::remember("matches_index_{$userId}", 3600, function () use ($userId) {
             return PropertyListing::select('property_listings.*')
                 ->selectRaw('COUNT(DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)) AS match_count')
+                ->selectRaw("COUNT(DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)) FILTER (WHERE property_requests.created_at > NOW() - INTERVAL '7 days') AS new_match_count")
+                ->selectRaw('MAX(property_requests.created_at) AS latest_match_at')
                 ->join('property_requests', function ($join) {
                     $join->whereRaw('LOWER(property_requests.property_type) = LOWER(property_listings.property_type)')
                          ->whereRaw('LOWER(property_requests.transaction_type) = LOWER(property_listings.transaction_type)')
@@ -54,7 +56,7 @@ class PropertyMatchController extends Controller
                 ->where('property_listings.is_active', true)
                 ->groupBy('property_listings.id')
                 ->havingRaw('COUNT(DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)) > 0')
-                ->orderByDesc('match_count')
+                ->orderByDesc('latest_match_at')
                 ->get();
         });
 
@@ -66,7 +68,16 @@ class PropertyMatchController extends Controller
             ['path' => request()->url(), 'query' => request()->query()]
         );
 
-        return view('theme::pages.dashboard.matches.index', ['allMatches' => $paginated]);
+        $summary = [
+            'total_matches'    => $listings->sum('match_count'),
+            'new_this_week'    => $listings->sum('new_match_count'),
+            'listings_count'   => $listings->count(),
+        ];
+
+        return view('theme::pages.dashboard.matches.index', [
+            'allMatches' => $paginated,
+            'summary'    => $summary,
+        ]);
     }
 
     /**

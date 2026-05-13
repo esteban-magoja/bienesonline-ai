@@ -56,6 +56,21 @@ return [
                 'language' => env('WHATSAPP_VERIFY_LANGUAGE_EN', 'en'),
             ],
         ],
+
+        /*
+         * Template enviado a propietarios de anuncios cuando una nueva solicitud
+         * de búsqueda coincide con su propiedad publicada.
+         */
+        'match_ad' => [
+            'es' => [
+                'name' => env('WHATSAPP_MATCH_AD_TEMPLATE_ES', 'matchanuncio'),
+                'language' => env('WHATSAPP_MATCH_AD_LANGUAGE_ES', 'es'),
+            ],
+            'en' => [
+                'name' => env('WHATSAPP_MATCH_AD_TEMPLATE_EN', 'matchad'),
+                'language' => env('WHATSAPP_MATCH_AD_LANGUAGE_EN', 'en'),
+            ],
+        ],
     ],
 
     /*
