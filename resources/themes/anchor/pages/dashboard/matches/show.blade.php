@@ -91,23 +91,31 @@
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($matches as $request)
-                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        @php $isRecent = $request->created_at >= $recentThreshold; @endphp
+                        <div class="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow {{ $isRecent ? 'border-green-400 ring-1 ring-green-300' : 'border-gray-200' }}">
                             <!-- Match Level Badge -->
                             <div class="flex justify-between items-start mb-4">
-                                @if($request->match_level === 'exact')
-                                    <span class="px-3 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">
-                                        {{ __('dashboard.matches_section.exact_match') }}
-                                    </span>
-                                @elseif($request->match_level === 'semantic')
-                                    <span class="px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full">
-                                        {{ __('dashboard.matches_section.intelligent_match') }}
-                                    </span>
-                                @else
-                                    <span class="px-3 py-1 text-sm font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                                        {{ __('dashboard.matches_section.flexible_match') }}
-                                    </span>
-                                @endif
-                                <span class="text-sm text-gray-500">{{ __('dashboard.matches_section.match_score', ['score' => $request->match_score]) }}</span>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    @if($request->match_level === 'exact')
+                                        <span class="px-3 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">
+                                            {{ __('dashboard.matches_section.exact_match') }}
+                                        </span>
+                                    @elseif($request->match_level === 'semantic')
+                                        <span class="px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full">
+                                            {{ __('dashboard.matches_section.intelligent_match') }}
+                                        </span>
+                                    @else
+                                        <span class="px-3 py-1 text-sm font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                                            {{ __('dashboard.matches_section.flexible_match') }}
+                                        </span>
+                                    @endif
+                                    @if($isRecent)
+                                        <span class="px-2 py-1 text-xs font-bold bg-green-500 text-white rounded-full uppercase tracking-wide">
+                                            ✦ {{ __('dashboard.matches_section.new') }}
+                                        </span>
+                                    @endif
+                                </div>
+                                <span class="text-sm text-gray-500 shrink-0">{{ __('dashboard.matches_section.match_score', ['score' => $request->match_score]) }}</span>
                             </div>
 
                             <!-- Request Details -->

@@ -97,6 +97,21 @@ class PropertyMatchController extends Controller
             return $this->matchingService->countMatchesForListing($listing);
         });
 
-        return view('theme::pages.dashboard.matches.show', compact('listing', 'matches', 'totalMatches'));
+        $recentThreshold = now()->subDays(7);
+
+        // Recent matches (last 7 days) first sorted by score, then older ones sorted by score
+        $sortedMatches = $matches
+            ->sortByDesc(fn ($r) => [
+                $r->created_at >= $recentThreshold ? 1 : 0,
+                $r->match_score,
+            ])
+            ->values();
+
+        return view('theme::pages.dashboard.matches.show', [
+            'listing'          => $listing,
+            'matches'          => $sortedMatches,
+            'totalMatches'     => $totalMatches,
+            'recentThreshold'  => $recentThreshold,
+        ]);
     }
 }

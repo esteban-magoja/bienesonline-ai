@@ -221,6 +221,7 @@ return [
         'listings_with_matches' => 'Anuncios con matches',
         'last_match' => 'Última solicitud',
         'this_week' => 'esta semana',
+        'new' => 'Nueva',
         'matches' => 'matches',
     ],
     
