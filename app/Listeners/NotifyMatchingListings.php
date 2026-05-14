@@ -16,10 +16,10 @@ class NotifyMatchingListings implements ShouldQueue
     use InteractsWithQueue;
 
     /** Hora de inicio del rango permitido de envío (inclusive). */
-    private const SEND_HOUR_START = 11;
+    private const SEND_HOUR_START = 10;
 
-    /** Hora de fin del rango permitido de envío (exclusive). */
-    private const SEND_HOUR_END = 18;
+    /** Hora de fin del rango permitido de envío (exclusive, 24 = medianoche). */
+    private const SEND_HOUR_END = 24;
 
     public function __construct(private PropertyMatchingService $matchingService) {}
 
@@ -78,14 +78,14 @@ class NotifyMatchingListings implements ShouldQueue
             return false;
         }
 
-        $next11am = $now->copy()->setTime(self::SEND_HOUR_START, 0, 0);
-        if ($now->gte($next11am)) {
-            $next11am->addDay();
+        $nextWindowStart = $now->copy()->setTime(self::SEND_HOUR_START, 0, 0);
+        if ($now->gte($nextWindowStart)) {
+            $nextWindowStart->addDay();
         }
 
-        $delaySeconds = max(1, $next11am->getTimestamp() - $now->getTimestamp());
+        $delaySeconds = max(1, $nextWindowStart->getTimestamp() - $now->getTimestamp());
 
-        Log::info("NotifyMatchingListings: fuera de horario ({$hour}h), reagendando en {$delaySeconds}s hasta las 11:00.");
+        Log::info("NotifyMatchingListings: fuera de horario ({$hour}h), reagendando en {$delaySeconds}s hasta las 10:00.");
 
         $this->release($delaySeconds);
 
