@@ -53,7 +53,9 @@ class NotifyMatchingListings implements ShouldQueue
                     continue;
                 }
 
-                $user->notify(new PropertyMatchAdNotification());
+                $user->notify(new PropertyMatchAdNotification(
+                    propertyRequestId: $propertyRequest->id,
+                ));
 
                 Log::info("Notified listing owner #{$user->id} about new request #{$propertyRequest->id} ({$ownerListings->count()} matching listings)");
             }

@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Channels\WhatsAppChannel;
+use App\Contracts\ProvidesWhatsAppLogContext;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use App\Channels\WhatsAppChannel;
 
-class WelcomeWhatsAppNotification extends Notification implements ShouldQueue
+class WelcomeWhatsAppNotification extends Notification implements ShouldQueue, ProvidesWhatsAppLogContext
 {
     use Queueable;
 
@@ -30,7 +31,19 @@ class WelcomeWhatsAppNotification extends Notification implements ShouldQueue
         return [
             'template' => $templateConfig['name'],
             'language' => $templateConfig['language'],
-            'params'   => ['customer_name' => $notifiable->name], // Variable {{customer_name}} del template
+            'params'   => ['customer_name' => $notifiable->name],
+        ];
+    }
+
+    /**
+     * @return array{event_type: string, property_listing_id: null, property_request_id: null}
+     */
+    public function getWhatsAppLogContext(): array
+    {
+        return [
+            'event_type'          => 'welcome',
+            'property_listing_id' => null,
+            'property_request_id' => null,
         ];
     }
 }

@@ -30,9 +30,9 @@ class WhatsAppService
      * @param string $languageCode  Código de idioma (ej: es, en)
      * @param array  $bodyParams    Parámetros del cuerpo: {{1}}, {{2}}, etc.
      * @param array  $buttonParams  Parámetros del botón URL dinámico ({{token}} u otros)
-     * @return bool
+     * @return string|false  El message_id de Meta si se envió, false en caso contrario
      */
-    public function sendTemplate(string $to, string $templateName, string $languageCode, array $bodyParams = [], array $buttonParams = []): bool
+    public function sendTemplate(string $to, string $templateName, string $languageCode, array $bodyParams = [], array $buttonParams = []): string|false
     {
         if (!$this->enabled) {
             if (config('whatsapp.logging')) {
@@ -106,14 +106,15 @@ class WhatsAppService
                 ->post("{$this->apiUrl}/{$this->apiVersion}/{$this->phoneNumberId}/messages", $payload);
 
             if ($response->successful()) {
+                $messageId = $response->json('messages.0.id') ?? '';
                 if (config('whatsapp.logging')) {
                     Log::info('WhatsApp: template enviado correctamente', [
                         'to' => $to,
                         'template' => $templateName,
-                        'message_id' => $response->json('messages.0.id'),
+                        'message_id' => $messageId,
                     ]);
                 }
-                return true;
+                return $messageId ?: 'sent';
             }
 
             Log::error('WhatsApp: error al enviar template', [
@@ -137,8 +138,10 @@ class WhatsAppService
     /**
      * Enviar un mensaje de texto libre (solo válido dentro de la ventana de 24h
      * tras una interacción del usuario).
+     *
+     * @return string|false  El message_id de Meta si se envió, false en caso contrario
      */
-    public function sendText(string $to, string $message): bool
+    public function sendText(string $to, string $message): string|false
     {
         if (!$this->enabled) {
             return false;
@@ -164,7 +167,7 @@ class WhatsAppService
                 ->post("{$this->apiUrl}/{$this->apiVersion}/{$this->phoneNumberId}/messages", $payload);
 
             if ($response->successful()) {
-                return true;
+                return $response->json('messages.0.id') ?? 'sent';
             }
 
             Log::error('WhatsApp: error al enviar texto', [
