@@ -111,7 +111,8 @@ class ImportLegacyRequests extends Command
                 $mapped = $this->mapRecord($row, $userId, $countryName, strtoupper(pathinfo($filePath, PATHINFO_FILENAME)));
 
                 if (!$dryRun) {
-                    // Detectar duplicados por combinación de campos únicos del registro
+                    // Detectar duplicados por combinación de campos únicos del registro.
+                    // No se usa created_at porque se guarda con la fecha actual (not legacy).
                     $exists = DB::table('property_requests')
                         ->where('client_email',     $mapped['client_email'])
                         ->where('property_type',    $mapped['property_type'])
@@ -119,7 +120,6 @@ class ImportLegacyRequests extends Command
                         ->where('city',             $mapped['city'])
                         ->where('state',            $mapped['state'])
                         ->where('country',          $mapped['country'])
-                        ->where('created_at',       $mapped['created_at'])
                         ->exists();
 
                     if ($exists) {
@@ -305,8 +305,8 @@ class ImportLegacyRequests extends Command
             'country'          => $countryName,
             'is_active'        => true,
             'expires_at'       => null,
-            'created_at'       => $fecha ?? now(),
-            'updated_at'       => $fecha ?? now(),
+            'created_at'       => now(),
+            'updated_at'       => now(),
         ];
 
         return $record;

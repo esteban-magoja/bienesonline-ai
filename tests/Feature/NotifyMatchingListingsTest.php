@@ -219,4 +219,92 @@ describe('NotifyMatchingListings listener', function () {
         // If we reach here without exception the release() was called (Mockery verifies it)
         expect(true)->toBeTrue();
     });
+
+    it('does not send a second notification to a user notified less than 60 minutes ago', function () {
+        Notification::fake();
+        Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
+
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $requester    = makeTestUser();
+
+        // Registrar un envío reciente en el log (hace 30 minutos)
+        DB::table('whatsapp_message_logs')->insert([
+            'notifiable_type'    => User::class,
+            'notifiable_id'      => $listingOwner->id,
+            'phone'              => $listingOwner->movil,
+            'notification_class' => 'App\Notifications\PropertyMatchAdNotification',
+            'event_type'         => 'match_ad',
+            'status'             => 'sent',
+            'created_at'         => now()->subMinutes(30),
+            'updated_at'         => now()->subMinutes(30),
+        ]);
+
+        $request = PropertyRequest::create([
+            'user_id'          => $requester->id,
+            'title'            => 'Busco depto',
+            'description'      => 'Departamento en Palermo con luz',
+            'property_type'    => 'departamento',
+            'transaction_type' => 'alquiler',
+            'country'          => 'Argentina',
+            'currency'         => 'ARS',
+            'is_active'        => true,
+        ]);
+
+        $listing             = PropertyListing::factory()->make(['user_id' => $listingOwner->id]);
+        $listing->match_score = 90;
+
+        $matchingService = Mockery::mock(PropertyMatchingService::class);
+        $matchingService->shouldReceive('findMatchesForRequest')
+            ->once()
+            ->andReturn(collect([$listing]));
+
+        $listener = new NotifyMatchingListings($matchingService);
+        $listener->handle(new PropertyRequestCreated($request));
+
+        Notification::assertNothingSent();
+    });
+
+    it('sends a notification to a user whose last message was more than 60 minutes ago', function () {
+        Notification::fake();
+        Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
+
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $requester    = makeTestUser();
+
+        // Registrar un envío antiguo en el log (hace 90 minutos)
+        DB::table('whatsapp_message_logs')->insert([
+            'notifiable_type'    => User::class,
+            'notifiable_id'      => $listingOwner->id,
+            'phone'              => $listingOwner->movil,
+            'notification_class' => 'App\Notifications\PropertyMatchAdNotification',
+            'event_type'         => 'match_ad',
+            'status'             => 'sent',
+            'created_at'         => now()->subMinutes(90),
+            'updated_at'         => now()->subMinutes(90),
+        ]);
+
+        $request = PropertyRequest::create([
+            'user_id'          => $requester->id,
+            'title'            => 'Busco casa grande',
+            'description'      => 'Casa con jardín en zona norte',
+            'property_type'    => 'casa',
+            'transaction_type' => 'venta',
+            'country'          => 'Argentina',
+            'currency'         => 'USD',
+            'is_active'        => true,
+        ]);
+
+        $listing             = PropertyListing::factory()->make(['user_id' => $listingOwner->id]);
+        $listing->match_score = 85;
+
+        $matchingService = Mockery::mock(PropertyMatchingService::class);
+        $matchingService->shouldReceive('findMatchesForRequest')
+            ->once()
+            ->andReturn(collect([$listing]));
+
+        $listener = new NotifyMatchingListings($matchingService);
+        $listener->handle(new PropertyRequestCreated($request));
+
+        Notification::assertSentTo($listingOwner, PropertyMatchAdNotification::class);
+    });
 });

@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\PropertyRequestCreated;
 use App\Models\User;
+use App\Models\WhatsAppMessageLog;
 use App\Notifications\PropertyMatchAdNotification;
 use App\Services\PropertyMatchingService;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -20,6 +21,9 @@ class NotifyMatchingListings implements ShouldQueue
 
     /** Hora de fin del rango permitido de envío (exclusive, 24 = medianoche). */
     private const SEND_HOUR_END = 24;
+
+    /** Mínimo de minutos que deben pasar entre mensajes al mismo usuario. */
+    private const THROTTLE_MINUTES = 60;
 
     public function __construct(private PropertyMatchingService $matchingService) {}
 
@@ -53,6 +57,11 @@ class NotifyMatchingListings implements ShouldQueue
                     continue;
                 }
 
+                if ($this->wasRecentlyNotified($user)) {
+                    Log::debug("NotifyMatchingListings: user #{$ownerId} notificado hace menos de " . self::THROTTLE_MINUTES . "min, saltando.");
+                    continue;
+                }
+
                 $user->notify(new PropertyMatchAdNotification(
                     propertyRequestId: $propertyRequest->id,
                 ));
@@ -62,6 +71,19 @@ class NotifyMatchingListings implements ShouldQueue
         } catch (\Exception $e) {
             Log::error("Error processing listing matches for PropertyRequest #{$propertyRequest->id}: " . $e->getMessage());
         }
+    }
+
+    /**
+     * Devuelve true si el usuario recibió un mensaje WhatsApp
+     * en los últimos THROTTLE_MINUTES minutos.
+     */
+    private function wasRecentlyNotified(User $user): bool
+    {
+        return WhatsAppMessageLog::where('notifiable_type', User::class)
+            ->where('notifiable_id', $user->id)
+            ->where('status', 'sent')
+            ->where('created_at', '>=', now()->subMinutes(self::THROTTLE_MINUTES))
+            ->exists();
     }
 
     /**

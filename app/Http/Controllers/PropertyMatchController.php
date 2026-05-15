@@ -23,9 +23,10 @@ class PropertyMatchController extends Controller
         $perPage = 10;
         $page    = (int) request()->input('page', 1);
 
-        $listings = Cache::remember("matches_index_{$userId}", 3600, function () use ($userId) {
+        $listings = Cache::remember("matches_index_v2_{$userId}", 3600, function () use ($userId) {
             return PropertyListing::select('property_listings.*')
                 ->selectRaw('COUNT(DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)) AS match_count')
+                ->selectRaw("COUNT(DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)) FILTER (WHERE property_requests.created_at > NOW() - INTERVAL '24 hours') AS new_today_count")
                 ->selectRaw("COUNT(DISTINCT COALESCE(property_requests.client_email, property_requests.id::text)) FILTER (WHERE property_requests.created_at > NOW() - INTERVAL '7 days') AS new_match_count")
                 ->selectRaw('MAX(property_requests.created_at) AS latest_match_at')
                 ->join('property_requests', function ($join) {

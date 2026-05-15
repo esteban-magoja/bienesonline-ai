@@ -63,8 +63,11 @@
         @else
             <div class="space-y-3">
                 @foreach($allMatches as $listing)
-                    @php $isNew = $listing->new_match_count > 0; @endphp
-                    <div class="bg-white dark:bg-gray-800 rounded-xl border {{ $isNew ? 'border-green-300 dark:border-green-700' : 'border-gray-200 dark:border-gray-700' }} shadow-sm hover:shadow-md transition-shadow">
+                    @php
+                        $isToday = $listing->new_today_count > 0;
+                        $isNew   = $listing->new_match_count > 0;
+                    @endphp
+                    <div class="bg-white dark:bg-gray-800 rounded-xl border {{ $isToday ? 'border-red-400 dark:border-red-600' : ($isNew ? 'border-green-300 dark:border-green-700' : 'border-gray-200 dark:border-gray-700') }} shadow-sm hover:shadow-md transition-shadow">
                         <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
 
                             {{-- Imagen --}}
@@ -84,7 +87,11 @@
                             <div class="flex-1 min-w-0">
                                 <div class="flex flex-wrap items-center gap-2 mb-1">
                                     <h3 class="font-semibold text-gray-900 dark:text-gray-100 truncate">{{ $listing->title }}</h3>
-                                    @if($isNew)
+                                    @if($isToday)
+                                        <span class="px-2 py-0.5 bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 text-xs font-semibold rounded-full whitespace-nowrap">
+                                            +{{ $listing->new_today_count }} AHORA
+                                        </span>
+                                    @elseif($isNew)
                                         <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 text-xs font-semibold rounded-full whitespace-nowrap">
                                             +{{ $listing->new_match_count }} {{ __('dashboard.matches_section.this_week') }}
                                         </span>

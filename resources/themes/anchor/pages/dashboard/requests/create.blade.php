@@ -90,14 +90,18 @@ new class extends Component {
         return State::find($this->selectedState)?->name;
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->countries = CountrySetting::getEnabledCountries();
-        $this->propertyTypes = PropertyType::getByCountry('INTL');
-        $this->transactionTypes = TransactionType::getByCountry('INTL');
-        // Valores por defecto con los primeros de la lista INTL
-        $this->property_type = $this->propertyTypes->first()?->value ?? 'casa';
-        $this->transaction_type = $this->transactionTypes->first()?->value ?? 'venta';
+        $this->propertyTypes = collect();
+        $this->transactionTypes = collect();
+        $this->property_type = '';
+        $this->transaction_type = '';
+
+        $user = auth()->user();
+        $this->client_name = $user->name ?? '';
+        $this->client_email = $user->email ?? '';
+        $this->client_phone = $user->movil ?? '';
     }
 
     public function updatedSelectedCountry($countryId)
@@ -121,10 +125,10 @@ new class extends Component {
         // Cargar tipos de inmueble y operación del país seleccionado
         $iso2 = $country?->iso2;
         if ($iso2) {
-            $this->propertyTypes   = PropertyType::getByCountry($iso2);
+            $this->propertyTypes    = PropertyType::getByCountry($iso2);
             $this->transactionTypes = TransactionType::getByCountry($iso2);
-            $this->property_type   = $this->propertyTypes->first()?->value ?? $this->property_type;
-            $this->transaction_type = $this->transactionTypes->first()?->value ?? $this->transaction_type;
+            $this->property_type    = '';
+            $this->transaction_type = '';
         }
     }
 
@@ -247,65 +251,6 @@ new class extends Component {
                 </div>
 
                 <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('dashboard.request_form.basic_info') }}</h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-                                {{ __('dashboard.request_form.title') }} *
-                            </label>
-                            <input type="text" 
-                                   wire:model="title" 
-                                   id="title" 
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                   :placeholder="__('dashboard.request_form.title_placeholder')">
-                            @error('title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                                {{ __('dashboard.request_form.description') }} *
-                            </label>
-                            <textarea wire:model="description" 
-                                      id="description" 
-                                      rows="5"
-                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                      :placeholder="__('dashboard.request_form.description_placeholder')"></textarea>
-                            <p class="mt-1 text-sm text-gray-500">{{ __('dashboard.request_form.min_chars', ['min' => 20]) }}</p>
-                            @error('description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="property_type" class="block text-sm font-medium text-gray-700 mb-2">
-                                    {{ __('dashboard.request_form.property_type') }} *
-                                </label>
-                                <select wire:model="property_type" 
-                                        id="property_type" 
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    @foreach($propertyTypes as $type)
-                                        <option value="{{ $type->value }}">{{ $type->label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="transaction_type" class="block text-sm font-medium text-gray-700 mb-2">
-                                    {{ __('dashboard.request_form.transaction_type') }} *
-                                </label>
-                                <select wire:model="transaction_type" 
-                                        id="transaction_type" 
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    @foreach($transactionTypes as $type)
-                                        <option value="{{ $type->value }}">{{ $type->label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('dashboard.request_form.location') }}</h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -352,6 +297,77 @@ new class extends Component {
                                     <option value="{{ $cityItem->name }}">{{ $cityItem->name }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('dashboard.request_form.basic_info') }}</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ __('dashboard.request_form.title') }} *
+                            </label>
+                            <input type="text" 
+                                   wire:model="title" 
+                                   id="title" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   :placeholder="__('dashboard.request_form.title_placeholder')">
+                            @error('title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ __('dashboard.request_form.description') }} *
+                            </label>
+                            <textarea wire:model="description" 
+                                      id="description" 
+                                      rows="5"
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                      :placeholder="__('dashboard.request_form.description_placeholder')"></textarea>
+                            <p class="mt-1 text-sm text-gray-500">{{ __('dashboard.request_form.min_chars', ['min' => 20]) }}</p>
+                            @error('description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="property_type" class="block text-sm font-medium text-gray-700 mb-2">
+                                    {{ __('dashboard.request_form.property_type') }} *
+                                </label>
+                                <select wire:model="property_type" 
+                                        id="property_type" 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        @if($propertyTypes->isEmpty()) disabled @endif>
+                                    <option value="">{{ __('listings.select_property_type') }}</option>
+                                    @foreach($propertyTypes as $type)
+                                        <option value="{{ $type->value }}">{{ $type->label }}</option>
+                                    @endforeach
+                                </select>
+                                @error('property_type') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                                @if($propertyTypes->isEmpty())
+                                    <p class="mt-1 text-sm text-gray-500">{{ __('listings.select_country_first') }}</p>
+                                @endif
+                            </div>
+
+                            <div>
+                                <label for="transaction_type" class="block text-sm font-medium text-gray-700 mb-2">
+                                    {{ __('dashboard.request_form.transaction_type') }} *
+                                </label>
+                                <select wire:model="transaction_type" 
+                                        id="transaction_type" 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        @if($transactionTypes->isEmpty()) disabled @endif>
+                                    <option value="">{{ __('listings.select_transaction_type') }}</option>
+                                    @foreach($transactionTypes as $type)
+                                        <option value="{{ $type->value }}">{{ $type->label }}</option>
+                                    @endforeach
+                                </select>
+                                @error('transaction_type') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                                @if($transactionTypes->isEmpty())
+                                    <p class="mt-1 text-sm text-gray-500">{{ __('listings.select_country_first') }}</p>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
