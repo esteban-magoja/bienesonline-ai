@@ -3,31 +3,12 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2025-10-11 15:58:38","nombre":"Gerardo","email":"ato.aguilar@gmail.com","telefono":"74495181","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santa Ana","localidad_inmueble":"Santa Ana"},
-{"fecha":"2025-10-23 17:45:44","nombre":"ANA VELASQUEZ","email":"anapaservices@gmail.com","telefono":"(615)755-4327","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"Zaragoza"},
-{"fecha":"2025-11-01 18:51:04","nombre":"EDWIN ARGUETA","email":"salvatax@hotmail.com","telefono":"2368883181","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"La Libertad"},
-{"fecha":"2025-11-27 10:14:35","nombre":"mauricio arias","email":"ariasmauricio297@gmail.com","telefono":"77470909","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"San Salvador"},
-{"fecha":"2025-12-04 20:15:24","nombre":"victor arias","email":"ariasv733@gmail.com","telefono":"6314807633","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Chalatenango","localidad_inmueble":"Citala"},
-{"fecha":"2025-12-14 20:18:51","nombre":"Jose Monge","email":"joseh.monge@yahoo.com","telefono":"","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Ahuachapán","localidad_inmueble":"Atiquizaya"},
-{"fecha":"2025-12-16 07:52:16","nombre":"Juan pablo campos","email":"juan.pabloagreda17@gmail.com","telefono":"70650416","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santa Ana","localidad_inmueble":"Santa Ana"},
-{"fecha":"2025-12-17 11:54:02","nombre":"Francisco Avil?s Orellana","email":"fcoleso6@gmail.com","telefono":"79654913","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Sonsonate","localidad_inmueble":"Sonsonate"},
-{"fecha":"2025-12-22 16:41:57","nombre":"Alessandro ramirez","email":"ejecutivosv01@gspcorp.com","telefono":"77440903","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"La Libertad","localidad_inmueble":"Santa Tecla"},
-{"fecha":"2026-01-02 17:42:17","nombre":"Imelda Garay","email":"imeldagg7@gmail.com","telefono":"7127-7627","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santa Ana","localidad_inmueble":"Santa Ana"},
-{"fecha":"2026-01-02 17:43:18","nombre":"Imelda Garay","email":"imeldagg7@gmail.com","telefono":"7127-7627","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santa Ana","localidad_inmueble":"Santa Ana"},
-{"fecha":"2026-01-14 21:28:42","nombre":"mario","email":"mario_orrego@yahoo.com","telefono":"72869173","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santa Ana","localidad_inmueble":"Santa Ana"},
-{"fecha":"2026-01-19 22:20:07","nombre":"Dayana Esmeralda Mancia Mejia","email":"dayanamanciamejia1415@gmail.com","telefono":"72242097","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"La Libertad"},
-{"fecha":"2026-02-02 12:25:27","nombre":"Hector Cuellar","email":"reycue2013@gmail.com","telefono":"79335467","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santa Ana","localidad_inmueble":"Santa Ana"},
-{"fecha":"2026-02-08 16:03:29","nombre":"Rocio Arana","email":"rocio_asd789@hotmail.com","telefono":"79963080","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"La Libertad"},
-{"fecha":"2026-02-11 10:09:38","nombre":"Andrea Dominguez","email":"cajasalv@alimentosgourmet.com","telefono":"75442147","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"San Salvador"},
-{"fecha":"2026-02-21 11:07:00","nombre":"Mirna Mendoza","email":"mirna.mendoza3@gmail.com","telefono":"323-788-8364","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"La Libertad"},
-{"fecha":"2026-03-02 14:51:50","nombre":"Jose Edgardo Aparicio","email":"lissettecordova@gmail.com","telefono":"77553202","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San Salvador","localidad_inmueble":"San Salvador"},
-{"fecha":"2026-03-14 19:46:13","nombre":"Claudia","email":"elizabethdorath@me.com","telefono":"79300199","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"San Salvador"},
-{"fecha":"2026-03-16 21:44:42","nombre":"Antonio","email":"leodan11@aol.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia Flor Blanca"},
-{"fecha":"2026-03-21 13:19:23","nombre":"Antonio","email":"leodan11@aol.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San Salvador","localidad_inmueble":"San Salvador"},
-{"fecha":"2026-03-25 14:42:04","nombre":"ERASMO MEDINA","email":"erasmomedina@gmail.com","telefono":"4166609595","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"La Libertad"},
 {"fecha":"2026-04-04 19:06:58","nombre":"Ellen Lainez","email":"emjlv2010@gmail.com","telefono":"72320174","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia Escalón"},
 {"fecha":"2026-04-05 10:22:21","nombre":"Mirtala Duncan","email":"mirtala.duncan55@gmail.com","telefono":"617 834 0202","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"La Libertad"},
-{"fecha":"2026-04-06 13:12:04","nombre":"MIRIAN GONZALEZ SANCHEZ","email":"mgonzalezsanchez@yahoo.es","telefono":"78517441","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"La Libertad"}
+{"fecha":"2026-04-06 13:12:04","nombre":"MIRIAN GONZALEZ SANCHEZ","email":"mgonzalezsanchez@yahoo.es","telefono":"78517441","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"La Libertad"},
+{"fecha":"2026-04-08 19:02:12","nombre":"Andrea","email":"andrearponcem@gmail.com","telefono":"70854596","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia Escalon"},
+{"fecha":"2026-04-27 09:44:46","nombre":"Mario Cortez","email":"mario.cortez@albertsons.com.sv","telefono":"77532880","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Soyapango"},
+{"fecha":"2026-04-27 09:46:07","nombre":"Mario Cortez","email":"mario.cortez@albertsons.com.sv","telefono":"77532880","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"San Salvador"}
 ]
 }
 ]
