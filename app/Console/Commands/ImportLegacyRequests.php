@@ -194,55 +194,39 @@ class ImportLegacyRequests extends Command
             ->whereNull('embedding')
             ->chunkById($chunkSize, function ($requests) use ($client, $model, $bar, &$generated, &$failed) {
                 foreach ($requests as $request) {
-                    $attempts = 0;
-                    $maxRetries = 3;
-                    $success = false;
+                    try {
+                        $text = implode(' ', array_filter([
+                            $request->title,
+                            $request->description,
+                            $request->property_type,
+                            $request->transaction_type,
+                            $request->city,
+                            $request->state,
+                            $request->country,
+                        ]));
 
-                    while ($attempts < $maxRetries && !$success) {
-                        try {
-                            $text = implode(' ', array_filter([
-                                $request->title,
-                                $request->description,
-                                $request->property_type,
-                                $request->transaction_type,
-                                $request->city,
-                                $request->state,
-                                $request->country,
-                            ]));
+                        $response  = $client->embeddings()->create(['model' => $model, 'input' => $text]);
+                        $vector    = new \Pgvector\Laravel\Vector($response->embeddings[0]->embedding);
 
-                            $response = $client->embeddings()->create(['model' => $model, 'input' => $text]);
-                            $vector   = new \Pgvector\Laravel\Vector($response->embeddings[0]->embedding);
+                        \App\Models\PropertyRequest::where('id', $request->id)
+                            ->update(['embedding' => $vector]);
 
-                            \App\Models\PropertyRequest::where('id', $request->id)
-                                ->update(['embedding' => $vector]);
-
-                            $generated++;
-                            $success = true;
-                        } catch (\Exception $e) {
-                            $attempts++;
-                            $isRateLimit = str_contains($e->getMessage(), 'rate limit') || str_contains($e->getMessage(), 'Rate limit');
-
-                            if ($isRateLimit && $attempts < $maxRetries) {
-                                $waitSeconds = 60 * $attempts;
-                                $this->newLine();
-                                $this->warn("   Rate limit. Esperando {$waitSeconds}s antes de reintentar (intento {$attempts}/{$maxRetries})...");
-                                sleep($waitSeconds);
-                            } else {
-                                $failed++;
-                                $this->newLine();
-                                $this->error("   Request #{$request->id}: " . $e->getMessage());
-                                Log::warning('ImportLegacyRequests: error generando embedding', [
-                                    'request_id' => $request->id,
-                                    'error'      => $e->getMessage(),
-                                ]);
-                            }
-                        }
+                        $generated++;
+                    } catch (\Exception $e) {
+                        $failed++;
+                        $this->newLine();
+                        $this->error("   Request #{$request->id}: " . $e->getMessage());
+                        Log::warning('ImportLegacyRequests: error generando embedding', [
+                            'request_id' => $request->id,
+                            'error'      => $e->getMessage(),
+                        ]);
                     }
 
                     $bar->advance();
-                    // Pausa entre requests para respetar rate limits de OpenAI
-                    usleep(500000); // 0.5 segundos
                 }
+
+                // Pausa entre chunks para respetar rate limits de OpenAI
+                sleep(1);
             });
 
         $bar->finish();
