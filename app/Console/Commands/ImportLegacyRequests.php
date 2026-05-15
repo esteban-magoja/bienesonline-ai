@@ -214,6 +214,8 @@ class ImportLegacyRequests extends Command
                         $generated++;
                     } catch (\Exception $e) {
                         $failed++;
+                        $this->newLine();
+                        $this->error("   Request #{$request->id}: " . $e->getMessage());
                         Log::warning('ImportLegacyRequests: error generando embedding', [
                             'request_id' => $request->id,
                             'error'      => $e->getMessage(),
