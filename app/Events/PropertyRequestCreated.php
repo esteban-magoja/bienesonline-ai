@@ -11,5 +11,8 @@ class PropertyRequestCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public PropertyRequest $propertyRequest) {}
+    public function __construct(
+        public PropertyRequest $propertyRequest,
+        public bool $isLegacyImport = false,
+    ) {}
 }

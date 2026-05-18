@@ -132,7 +132,7 @@ class ImportLegacyRequests extends Command
                     $propertyRequest = PropertyRequest::find($insertedId);
 
                     if ($propertyRequest && !$skipWhatsapp) {
-                        event(new PropertyRequestCreated($propertyRequest));
+                        event(new PropertyRequestCreated($propertyRequest, isLegacyImport: true));
                     }
                 }
 

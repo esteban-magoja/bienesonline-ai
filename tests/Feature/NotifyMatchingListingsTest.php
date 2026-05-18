@@ -307,4 +307,92 @@ describe('NotifyMatchingListings listener', function () {
 
         Notification::assertSentTo($listingOwner, PropertyMatchAdNotification::class);
     });
+
+    it('does not send a second notification during legacy import if a message was sent less than 24 hours ago', function () {
+        Notification::fake();
+        Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
+
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $requester    = makeTestUser();
+
+        // Registrar un envío reciente en el log (hace 2 horas — pasaría el throttle de 60min pero no el de 24h)
+        DB::table('whatsapp_message_logs')->insert([
+            'notifiable_type'    => User::class,
+            'notifiable_id'      => $listingOwner->id,
+            'phone'              => $listingOwner->movil,
+            'notification_class' => 'App\Notifications\PropertyMatchAdNotification',
+            'event_type'         => 'match_ad',
+            'status'             => 'sent',
+            'created_at'         => now()->subHours(2),
+            'updated_at'         => now()->subHours(2),
+        ]);
+
+        $request = PropertyRequest::create([
+            'user_id'          => $requester->id,
+            'title'            => 'Busco casa legacy',
+            'description'      => 'Casa con pileta en zona norte',
+            'property_type'    => 'casa',
+            'transaction_type' => 'venta',
+            'country'          => 'Argentina',
+            'currency'         => 'USD',
+            'is_active'        => true,
+        ]);
+
+        $listing              = PropertyListing::factory()->make(['user_id' => $listingOwner->id]);
+        $listing->match_score = 85;
+
+        $matchingService = Mockery::mock(PropertyMatchingService::class);
+        $matchingService->shouldReceive('findMatchesForRequest')
+            ->once()
+            ->andReturn(collect([$listing]));
+
+        $listener = new NotifyMatchingListings($matchingService);
+        $listener->handle(new PropertyRequestCreated($request, isLegacyImport: true));
+
+        Notification::assertNothingSent();
+    });
+
+    it('sends a notification during legacy import if the last message was more than 24 hours ago', function () {
+        Notification::fake();
+        Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
+
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $requester    = makeTestUser();
+
+        // Registrar un envío hace 25 horas (fuera del throttle de 24h)
+        DB::table('whatsapp_message_logs')->insert([
+            'notifiable_type'    => User::class,
+            'notifiable_id'      => $listingOwner->id,
+            'phone'              => $listingOwner->movil,
+            'notification_class' => 'App\Notifications\PropertyMatchAdNotification',
+            'event_type'         => 'match_ad',
+            'status'             => 'sent',
+            'created_at'         => now()->subHours(25),
+            'updated_at'         => now()->subHours(25),
+        ]);
+
+        $request = PropertyRequest::create([
+            'user_id'          => $requester->id,
+            'title'            => 'Busco terreno legacy',
+            'description'      => 'Terreno en provincia, zona tranquila',
+            'property_type'    => 'terreno',
+            'transaction_type' => 'venta',
+            'country'          => 'Argentina',
+            'currency'         => 'USD',
+            'is_active'        => true,
+        ]);
+
+        $listing              = PropertyListing::factory()->make(['user_id' => $listingOwner->id]);
+        $listing->match_score = 80;
+
+        $matchingService = Mockery::mock(PropertyMatchingService::class);
+        $matchingService->shouldReceive('findMatchesForRequest')
+            ->once()
+            ->andReturn(collect([$listing]));
+
+        $listener = new NotifyMatchingListings($matchingService);
+        $listener->handle(new PropertyRequestCreated($request, isLegacyImport: true));
+
+        Notification::assertSentTo($listingOwner, PropertyMatchAdNotification::class);
+    });
 });

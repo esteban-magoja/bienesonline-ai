@@ -22,8 +22,11 @@ class NotifyMatchingListings implements ShouldQueue
     /** Hora de fin del rango permitido de envío (exclusive, 24 = medianoche). */
     private const SEND_HOUR_END = 24;
 
-    /** Mínimo de minutos que deben pasar entre mensajes al mismo usuario. */
+    /** Mínimo de minutos entre mensajes al mismo usuario (flujo normal). */
     private const THROTTLE_MINUTES = 60;
+
+    /** Mínimo de minutos entre mensajes al mismo usuario durante importación legacy (1 día). */
+    private const THROTTLE_MINUTES_LEGACY = 1440;
 
     public function __construct(private PropertyMatchingService $matchingService) {}
 
@@ -35,6 +38,7 @@ class NotifyMatchingListings implements ShouldQueue
 
         $propertyRequest = $event->propertyRequest;
         $minScore        = config('matching.min_score_to_notify', 70);
+        $throttleMinutes = $event->isLegacyImport ? self::THROTTLE_MINUTES_LEGACY : self::THROTTLE_MINUTES;
 
         try {
             $matches = $this->matchingService->findMatchesForRequest($propertyRequest, 50);
@@ -57,8 +61,8 @@ class NotifyMatchingListings implements ShouldQueue
                     continue;
                 }
 
-                if ($this->wasRecentlyNotified($user)) {
-                    Log::debug("NotifyMatchingListings: user #{$ownerId} notificado hace menos de " . self::THROTTLE_MINUTES . "min, saltando.");
+                if ($this->wasRecentlyNotified($user, $throttleMinutes)) {
+                    Log::debug("NotifyMatchingListings: user #{$ownerId} notificado hace menos de {$throttleMinutes}min, saltando.");
                     continue;
                 }
 
@@ -75,14 +79,14 @@ class NotifyMatchingListings implements ShouldQueue
 
     /**
      * Devuelve true si el usuario recibió un mensaje WhatsApp
-     * en los últimos THROTTLE_MINUTES minutos.
+     * en los últimos $minutes minutos.
      */
-    private function wasRecentlyNotified(User $user): bool
+    private function wasRecentlyNotified(User $user, int $minutes): bool
     {
         return WhatsAppMessageLog::where('notifiable_type', User::class)
             ->where('notifiable_id', $user->id)
             ->where('status', 'sent')
-            ->where('created_at', '>=', now()->subMinutes(self::THROTTLE_MINUTES))
+            ->where('created_at', '>=', now()->subMinutes($minutes))
             ->exists();
     }
 
