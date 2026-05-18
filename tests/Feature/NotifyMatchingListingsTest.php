@@ -11,11 +11,15 @@ use App\Notifications\PropertyMatchAdNotification;
 use App\Services\PropertyMatchingService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
 uses(DatabaseTransactions::class);
+
+// Limpiar cache entre tests para evitar que los locks de throttle persistan entre casos.
+afterEach(fn () => Cache::flush());
 
 /** Helper: crea un usuario con los campos mínimos necesarios. */
 function makeTestUser(array $overrides = []): User

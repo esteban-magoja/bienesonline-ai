@@ -10,6 +10,7 @@ use App\Services\PropertyMatchingService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class NotifyMatchingListings implements ShouldQueue
@@ -61,8 +62,17 @@ class NotifyMatchingListings implements ShouldQueue
                     continue;
                 }
 
+                // Gate atómico via cache: previene duplicados en jobs concurrentes.
+                // Cache::add() es atómica — solo retorna true la primera vez que se llama
+                // con esa key, incluso con múltiples workers corriendo en paralelo.
+                if (!$this->acquireThrottleLock($user->id, $throttleMinutes)) {
+                    Log::debug("NotifyMatchingListings: user #{$ownerId} ya tiene lock de throttle ({$throttleMinutes}min), saltando.");
+                    continue;
+                }
+
+                // Respaldo DB: cubre el caso de que el cache se haya vaciado (restart, etc.)
                 if ($this->wasRecentlyNotified($user, $throttleMinutes)) {
-                    Log::debug("NotifyMatchingListings: user #{$ownerId} notificado hace menos de {$throttleMinutes}min, saltando.");
+                    Log::debug("NotifyMatchingListings: user #{$ownerId} notificado hace menos de {$throttleMinutes}min (DB check), saltando.");
                     continue;
                 }
 
@@ -75,6 +85,26 @@ class NotifyMatchingListings implements ShouldQueue
         } catch (\Exception $e) {
             Log::error("Error processing listing matches for PropertyRequest #{$propertyRequest->id}: " . $e->getMessage());
         }
+    }
+
+    /**
+     * Intenta adquirir el lock de throttle para el usuario.
+     * Usa Cache::add() que es atómica — solo retorna true la primera vez
+     * que se llama con esa key, previniendo duplicados en jobs concurrentes.
+     */
+    private function acquireThrottleLock(int $userId, int $minutes): bool
+    {
+        if ($minutes >= 1440) {
+            // Throttle diario: key por día, TTL hasta fin del día
+            $cacheKey = "wa_notify_throttle_{$userId}_" . now()->format('Y-m-d');
+            $ttl      = now()->secondsUntilEndOfDay() + 1;
+        } else {
+            // Throttle por minutos: TTL exacto en segundos
+            $cacheKey = "wa_notify_throttle_{$userId}_" . now()->format('Y-m-d-H');
+            $ttl      = $minutes * 60;
+        }
+
+        return Cache::add($cacheKey, 1, $ttl);
     }
 
     /**
