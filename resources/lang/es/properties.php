@@ -108,6 +108,7 @@ return [
     'send_message' => 'Enviar Mensaje',
     'call_now' => 'Llamar Ahora',
     'whatsapp_contact' => 'Contactar por WhatsApp',
+    'video_tour' => 'Video Tour',
     
     // Estados
     'available' => 'Disponible',

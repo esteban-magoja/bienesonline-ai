@@ -161,6 +161,9 @@ return [
         'total_area' => 'Área Total (m²)',
         'land_area' => 'Área de Terreno (m²)',
         'year_built' => 'Año de Construcción',
+        'youtube_url' => 'Video de YouTube',
+        'youtube_url_help' => 'Pegá la URL de tu video de YouTube (ej: https://www.youtube.com/watch?v=...)',
+        'optional' => 'opcional',
         
         // Imágenes
         'images' => 'Imágenes',

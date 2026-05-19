@@ -70,6 +70,9 @@ new class extends Component {
     #[Rule('nullable|numeric')]
     public ?float $longitude = null;
 
+    #[Rule('nullable|url|max:255')]
+    public string $youtube_url = '';
+
     public $countries;
     public $states = [];
     public $cities = [];
@@ -106,6 +109,7 @@ new class extends Component {
         $this->city            = $this->listing->city ?? '';
         $this->latitude        = $this->listing->latitude;
         $this->longitude       = $this->listing->longitude;
+        $this->youtube_url     = $this->listing->youtube_url ?? '';
 
         $this->countries = CountrySetting::getEnabledCountries();
 
@@ -184,6 +188,7 @@ new class extends Component {
         $validated['state']   = $this->state ?? $this->listing->state;
         $validated['latitude']  = $this->latitude;
         $validated['longitude'] = $this->longitude;
+        $validated['youtube_url'] = $this->youtube_url ?: null;
 
         // Remove Volt-computed keys not in DB
         unset($validated['selectedCountry'], $validated['selectedState']);
@@ -337,6 +342,16 @@ new class extends Component {
                     <div class="sm:col-span-2">
                         <label for="lotsize" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('listings.form.land_area') }}</label>
                         <input type="number" wire:model="lotsize" id="lotsize" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="youtube_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ __('listings.form.youtube_url') }}
+                            <span class="ml-1 text-gray-400 font-normal">({{ __('listings.form.optional') }})</span>
+                        </label>
+                        <input type="url" wire:model="youtube_url" id="youtube_url" placeholder="https://www.youtube.com/watch?v=..." class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('listings.form.youtube_url_help') }}</p>
+                        @error('youtube_url') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>

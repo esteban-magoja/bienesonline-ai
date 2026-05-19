@@ -108,6 +108,7 @@ return [
     'send_message' => 'Send Message',
     'call_now' => 'Call Now',
     'whatsapp_contact' => 'Contact via WhatsApp',
+    'video_tour' => 'Video Tour',
     
     // Status
     'available' => 'Available',

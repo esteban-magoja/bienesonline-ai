@@ -410,6 +410,24 @@
                                     </p>
                                 </div>
                             @endif
+
+                            @php $youtubeId = $property->youtubeEmbedId(); @endphp
+                            @if($youtubeId)
+                                <!-- YouTube Video -->
+                                <div class="mt-6">
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">{{ __('properties.video_tour') }}</h3>
+                                    <div class="relative w-full" style="padding-top: 56.25%;">
+                                        <iframe
+                                            class="absolute inset-0 w-full h-full rounded-lg shadow-md"
+                                            src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                                            title="{{ __('properties.video_tour') }}"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen
+                                        ></iframe>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

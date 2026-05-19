@@ -61,6 +61,7 @@ class PropertyListing extends Model
         // import fields
         'external_id',
         'source',
+        'youtube_url',
     ];
 
     /**
@@ -81,6 +82,25 @@ class PropertyListing extends Model
         'features_i18n' => 'array',
         'location_details_i18n' => 'array'
     ];
+
+    /**
+     * Extract the YouTube video ID from a YouTube URL.
+     * Supports youtube.com/watch?v=ID, youtu.be/ID, and youtube.com/shorts/ID formats.
+     */
+    public function youtubeEmbedId(): ?string
+    {
+        if (empty($this->youtube_url)) {
+            return null;
+        }
+
+        preg_match(
+            '/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
+            $this->youtube_url,
+            $matches
+        );
+
+        return $matches[1] ?? null;
+    }
 
     /**
      * Get the user that owns the property listing.
