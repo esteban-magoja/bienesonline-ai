@@ -48,3 +48,10 @@ resources/plugins/*
 # But do not ignore the resources/plugins folder itself
 !resources/plugins/
 !resources/plugins/installed.json
+
+# AI Assistants / Laravel Boost & Antigravity
+/.agents
+/.antigravitycli
+/.claude
+/.github/skills
+/AGENTS.md

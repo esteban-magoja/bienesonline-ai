@@ -3,31 +3,11 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-04-01 22:18:05","nombre":"Luis Angel","email":"luis1402siempre@gmail.com","telefono":"935333901","tipo_inmueble":"Cochera","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-04-02 12:45:30","nombre":"Melany","email":"tmelany292@gmail.com","telefono":"902416661","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"La Victoria"},
-{"fecha":"2026-04-05 03:37:07","nombre":"Mariana Belo","email":"marianabelofv@gmail.com","telefono":"963262274","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santiago De Surco"},
-{"fecha":"2026-04-08 10:07:31","nombre":"Adania","email":"adania2407@gmail.com","telefono":"946547363","tipo_inmueble":"Cochera","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Miraflores"},
-{"fecha":"2026-04-08 11:50:33","nombre":"LUCIANA","email":"llevy@beta.com.pe","telefono":"998339579","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Borja"},
-{"fecha":"2026-04-08 13:23:41","nombre":"Hector Alvarez","email":"haaa_one@hotmail.com","telefono":"997879997","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Trujillo","localidad_inmueble":"Trujillo"},
-{"fecha":"2026-04-08 13:33:32","nombre":"Hector Alvarez","email":"haaa_one@hotmail.com","telefono":"997879997","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Trujillo","localidad_inmueble":"Trujillo"},
-{"fecha":"2026-04-09 16:50:48","nombre":"brenda ascona","email":"brendaab226@gmail.com","telefono":"924082434","tipo_inmueble":"Cochera","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Todas las ciudades"},
-{"fecha":"2026-04-16 14:21:13","nombre":"mariela","email":"marielaramos5208@gmail.com","telefono":"972523910","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Callao","localidad_inmueble":"Bellavista"},
-{"fecha":"2026-04-23 20:19:29","nombre":"Alberto vicente","email":"mercado.locales2099@gmail.com","telefono":"980418626","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Miraflores"},
-{"fecha":"2026-04-25 22:55:51","nombre":"Naomi Rojas","email":"naomi.jamile03@gmail.com","telefono":"919605523","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Surquillo"},
-{"fecha":"2026-04-25 23:17:07","nombre":"Sharon Helen","email":"ortegajerisharon@gmail.com","telefono":"916537485","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Magdalena del Mar"},
-{"fecha":"2026-04-27 16:18:11","nombre":"PIERO","email":"Piercri27@hotmail.com","telefono":"949562641","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Callao","localidad_inmueble":"Bellavista"},
-{"fecha":"2026-05-05 20:02:29","nombre":"Georgina","email":"georgina.chang.carr@gmail.com","telefono":"992341613","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Pueblo libre"},
-{"fecha":"2026-05-06 14:25:54","nombre":"Adriana hierro","email":"adrianitah7@gmail.com","telefono":"914353470","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"},
-{"fecha":"2026-05-08 02:35:05","nombre":"DAVID TELLO","email":"ingetell@hotmail.com","telefono":"993763102","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Santa","localidad_inmueble":"Nuevo Chimbote"},
-{"fecha":"2026-05-08 14:01:59","nombre":"Pamela Padilla","email":"pamfype27@gmail.com","telefono":"992224506","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Carabayllo"},
-{"fecha":"2026-05-09 16:10:20","nombre":"Yamir Orrego","email":"danielom1411@gmail.com","telefono":"989053177","tipo_inmueble":"Cochera","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-05-10 20:03:45","nombre":"Jhamile","email":"jhc457sptt@gmail.com","telefono":"957330435","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Puente Piedra"},
-{"fecha":"2026-05-10 20:37:54","nombre":"Angela","email":"angelyvbb@gmail.com","telefono":"999413434","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Borja"},
-{"fecha":"2026-05-11 17:30:12","nombre":"Ronny Noriega","email":"teamnoroega@hotmail.com","telefono":"987215205","tipo_inmueble":"Cochera","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
-{"fecha":"2026-05-11 17:41:48","nombre":"Ronny Noriega","email":"teamnoroega@hotmail.com","telefono":"987215205","tipo_inmueble":"Cochera","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
 {"fecha":"2026-05-14 18:46:19","nombre":"anely valeria JIMENEZ ROJAS","email":"VALERIAJIMENEZROJAS91@GMAIL.COM","telefono":"965349331","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Pueblo libre"},
 {"fecha":"2026-05-14 18:48:07","nombre":"anely valeria JIMENEZ ROJAS","email":"VALERIAJIMENEZROJAS91@GMAIL.COM","telefono":"965349331","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Pueblo libre"},
-{"fecha":"2026-05-15 00:11:02","nombre":"Gabriela Abreu","email":"gabrielaabreudq@gmail.com","telefono":"914693001","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"}
+{"fecha":"2026-05-15 00:11:02","nombre":"Gabriela Abreu","email":"gabrielaabreudq@gmail.com","telefono":"914693001","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
+{"fecha":"2026-05-17 21:10:52","nombre":"cristina","email":"crisnimo713@gmail.com","telefono":"960488520","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Callao","localidad_inmueble":"Bellavista"},
+{"fecha":"2026-05-20 13:16:30","nombre":"Jaime","email":"jvasqueze@outlook.com","telefono":"","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Surquillo"}
 ]
 }
 ]

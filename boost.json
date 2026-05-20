@@ -4,10 +4,16 @@
         "copilot",
         "gemini"
     ],
-    "editors": [
-        "claude_code",
-        "gemini",
-        "vscode"
-    ],
-    "guidelines": []
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "sail": false,
+    "skills": [
+        "folio-routing",
+        "laravel-best-practices",
+        "livewire-development",
+        "volt-development",
+        "pest-testing",
+        "tailwindcss-development"
+    ]
 }

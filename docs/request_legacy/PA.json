@@ -3,19 +3,7 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-04-06 15:41:42","nombre":"Jacqueline Hines","email":"curaremyluv@gmail.com","telefono":"1-919-332-9751","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad de Panamá"},
-{"fecha":"2026-04-11 16:56:52","nombre":"Dora","email":"desperanza2343@gmail.com","telefono":"6989-8565","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Villa maria"},
-{"fecha":"2026-04-14 16:49:48","nombre":"Mariel","email":"mmsm1197@hotmail.com","telefono":"67790654","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Vista Alegre"},
-{"fecha":"2026-04-16 10:06:44","nombre":"Luis Eduardo","email":"luissantos201700@gmail.com","telefono":"6916-1791","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Colón","localidad_inmueble":"Cristóbal"},
-{"fecha":"2026-04-25 20:14:31","nombre":"Daniela","email":"dricigliano@hotmail.com","telefono":"66384106","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"COSTA DEL ESTE"},
-{"fecha":"2026-04-30 10:42:39","nombre":"Carlos","email":"carlosespinosa701@gmail.com","telefono":"","tipo_inmueble":"Finca","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Capira"},
-{"fecha":"2026-05-01 19:23:33","nombre":"TATIANA YOVANKA GONZALEZ MORDOCK","email":"t.ygm@hotmail.com","telefono":"65372433","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Pueblo Nuevo"},
-{"fecha":"2026-05-06 08:38:24","nombre":"Arthur Rickman","email":"arthurandeva@gmail.com","telefono":"68186484","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ancón"},
-{"fecha":"2026-05-06 08:58:58","nombre":"Arthur Rickman","email":"arthurandeva@gmail.com","telefono":"68186484","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ancón"},
-{"fecha":"2026-05-06 14:27:27","nombre":"Julio Saldaña","email":"jul_saldana@hotmail.com","telefono":"69260720","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad de Panamá"},
-{"fecha":"2026-05-08 06:59:17","nombre":"Dayuri troya","email":"dayuri.elena@gmail.com","telefono":"6879-2966","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"PEREJIL"},
-{"fecha":"2026-05-11 13:51:10","nombre":"Patrick Maupoint de Vandeul","email":"plmdv12@gmail.com","telefono":"65455311","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad de Panamá"},
-{"fecha":"2026-05-11 15:15:43","nombre":"ALEXIS PAYNE","email":"alexisstephaniepayne@yahoo.com","telefono":"12542288021","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Colón","localidad_inmueble":"calle 2 nuevo cristobal"}
+{"fecha":"2026-05-17 16:58:36","nombre":"Mariam Peters","email":"mariampeters76@gmail.com","telefono":"61301870","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"PUEBLO NUEVO"}
 ]
 }
 ]

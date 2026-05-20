@@ -3,20 +3,7 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-03-31 11:39:52","nombre":"Gema Gonzalez","email":"gemagonz@gmail.com","telefono":"0983348233","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Imbabura","localidad_inmueble":"Ibarra"},
-{"fecha":"2026-04-01 10:43:50","nombre":"RAMMY CALLES","email":"rammy.calles@gmail.com","telefono":"0969334274","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
-{"fecha":"2026-04-02 22:23:35","nombre":"Aida Cifuentes","email":"aidareinamag@gmail.com","telefono":"0990709521","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Guayas","localidad_inmueble":"Guayaquil"},
-{"fecha":"2026-04-03 17:32:34","nombre":"Shugey Habano","email":"shugeyy@gmail.com","telefono":"0959987449","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Pichincha","localidad_inmueble":"BARRIO INCHALILLO"},
-{"fecha":"2026-04-05 10:49:45","nombre":"Anthony Herrera","email":"herreraanthony297@gmail.com","telefono":"0981951048","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santo Domingo de los Tsachilas","localidad_inmueble":"Santo Domingo"},
-{"fecha":"2026-04-06 01:25:50","nombre":"CHRISTIAN","email":"santiruizp@hotmail.com","telefono":"0984183265","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
-{"fecha":"2026-04-06 10:28:40","nombre":"FLAVIO QUINAPAXI","email":"favio.uito45@gmail.com","telefono":"0995026379","tipo_inmueble":"Finca","tipo_operacion":"Arriendo","provincia_inmueble":"Santa Elena","localidad_inmueble":"Vía"},
-{"fecha":"2026-04-09 12:40:16","nombre":"DAYANA","email":"contabilidaduio@ecucomer.com","telefono":"0986886662","tipo_inmueble":"Oficina","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
-{"fecha":"2026-04-09 19:11:01","nombre":"Laura Reyes","email":"laurareyescoronel.1999@gmail.com","telefono":"0995441886","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
-{"fecha":"2026-04-28 18:12:11","nombre":"Gabriel","email":"sergiogabrielmaldonado1@gmail.com","telefono":"0991734474","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guayas","localidad_inmueble":"Guayaquil"},
-{"fecha":"2026-05-01 01:39:39","nombre":"Melissa","email":"mdnp1985@gmail.com","telefono":"0990325529","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
-{"fecha":"2026-05-03 13:29:31","nombre":"wenceslao Quezada","email":"wesfinelandcorp@gmail.com","telefono":"6312763544","tipo_inmueble":"Hacienda","tipo_operacion":"Venta","provincia_inmueble":"Azuay","localidad_inmueble":"Nabón"},
-{"fecha":"2026-05-04 13:34:54","nombre":"Melissa Abigail Rosero Ruiz","email":"melissaabigailroseroruiz@gmail.com","telefono":"0987498513","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"AUTOPISTA GENERAL RIMUÑAHUI"},
-{"fecha":"2026-05-05 18:49:04","nombre":"Luis Jaramillo","email":"jaramillo@windowslive.com","telefono":"","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Esmeraldas","localidad_inmueble":"Recinto Libertad Lojana"}
+{"fecha":"2026-05-19 00:41:23","nombre":"Leonardo Portilla","email":"leonardoportilla77@gmail.com","telefono":"0961046040","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Guayas","localidad_inmueble":"Guayaquil"}
 ]
 }
 ]

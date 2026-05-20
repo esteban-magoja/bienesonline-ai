@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 uses(DatabaseTransactions::class);
 
-function makeTestUser(string $suffix): User
+function makeContactTestUser(string $suffix): User
 {
     $id = DB::table('users')->insertGetId([
         'name'              => "Test User {$suffix}",
@@ -31,8 +31,8 @@ function makeTestUser(string $suffix): User
 
 beforeEach(function (): void {
     $suffix = uniqid('', true);
-    $this->owner   = makeTestUser("owner-{$suffix}");
-    $this->visitor = makeTestUser("visitor-{$suffix}");
+    $this->owner   = makeContactTestUser("owner-{$suffix}");
+    $this->visitor = makeContactTestUser("visitor-{$suffix}");
     $this->listing = PropertyListing::factory()->create([
         'user_id'          => $this->owner->id,
         'is_active'        => true,
