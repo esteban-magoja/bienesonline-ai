@@ -261,7 +261,7 @@ new class extends Component {
                         <select wire:model.live="selectedCountry" id="country" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                             <option value="">{{ __('listings.select_country') }}</option>
                             @foreach($countries as $country)
-                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                <option value="{{ $country->id }}" data-iso2="{{ strtolower($country->iso2) }}">{{ $country->name }}</option>
                             @endforeach
                         </select>
                         @error('selectedCountry') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -475,16 +475,62 @@ new class extends Component {
 
                 // Address search
                 document.getElementById('search-address-btn')?.addEventListener('click', function() {
-                    const address = document.getElementById('address').value;
+                    const address = document.getElementById('address').value.trim();
                     if (!address) return;
-                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+
+                    const countrySelect = document.getElementById('country');
+                    const stateSelect   = document.getElementById('state');
+                    const citySelect    = document.getElementById('city');
+
+                    const selectedCountryOption = countrySelect?.options[countrySelect.selectedIndex];
+                    const countryIso2  = selectedCountryOption?.dataset?.iso2 || '';
+                    const countryName  = selectedCountryOption?.text || '';
+                    const state = stateSelect?.options[stateSelect.selectedIndex]?.text || '';
+                    const city  = citySelect?.value || '';
+
+                    const isValidCity    = city    && city    !== 'Select a city'    && city    !== '';
+                    const isValidState   = state   && state   !== 'Select a state'   && state   !== '';
+                    const isValidCountry = countryName && countryName !== 'Select a country' && countryName !== '';
+
+                    const baseParams = countryIso2 ? `&countrycodes=${countryIso2}` : '';
+
+                    // Structured search (more precise for clean addresses)
+                    const structuredParams = new URLSearchParams({
+                        street: address,
+                        ...(isValidCity    ? { city }              : {}),
+                        ...(isValidState   ? { state }             : {}),
+                        ...(isValidCountry ? { country: countryName } : {}),
+                        format: 'json',
+                        limit: '1',
+                        addressdetails: '1',
+                    });
+                    const structuredUrl = `https://nominatim.openstreetmap.org/search?${structuredParams}${baseParams}`;
+
+                    // Free-text fallback (tolerant with extra text from the user)
+                    const fallbackParts = [address];
+                    if (isValidCity)    fallbackParts.push(city);
+                    if (isValidState)   fallbackParts.push(state);
+                    if (isValidCountry) fallbackParts.push(countryName);
+                    const fallbackUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fallbackParts.join(', '))}&format=json&limit=1${baseParams}`;
+
+                    fetch(structuredUrl)
                         .then(r => r.json())
                         .then(data => {
                             if (data.length > 0) {
                                 placeMarker(parseFloat(data[0].lat), parseFloat(data[0].lon));
-                                map.setView([parseFloat(data[0].lat), parseFloat(data[0].lon)], 15);
+                                map.setView([parseFloat(data[0].lat), parseFloat(data[0].lon)], 16);
+                            } else {
+                                return fetch(fallbackUrl)
+                                    .then(r => r.json())
+                                    .then(fallbackData => {
+                                        if (fallbackData.length > 0) {
+                                            placeMarker(parseFloat(fallbackData[0].lat), parseFloat(fallbackData[0].lon));
+                                            map.setView([parseFloat(fallbackData[0].lat), parseFloat(fallbackData[0].lon)], 16);
+                                        }
+                                    });
                             }
-                        });
+                        })
+                        .catch(error => console.error('Error geocoding address:', error));
                 });
             });
         </script>

@@ -349,7 +349,7 @@ new class extends Component {
                                 <select wire:model.live="selectedCountry" id="country" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     <option value="">{{ __('listings.select_country') }}</option>
                                     @foreach($countries as $country)
-                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        <option value="{{ $country->id }}" data-iso2="{{ strtolower($country->iso2) }}">{{ $country->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('country') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -756,31 +756,69 @@ new class extends Component {
                 const stateSelect = document.getElementById('state');
                 const citySelect = document.getElementById('city');
 
-                const address = addressInput.value;
+                const address = addressInput.value.trim();
                 if (!address) return;
 
-                const country = countrySelect.options[countrySelect.selectedIndex]?.text;
-                const state = stateSelect.options[stateSelect.selectedIndex]?.text;
-                const city = citySelect.value;
+                const selectedCountryOption = countrySelect.options[countrySelect.selectedIndex];
+                const countryIso2 = selectedCountryOption?.dataset?.iso2 || '';
+                const countryName = selectedCountryOption?.text || '';
+                const state = stateSelect.options[stateSelect.selectedIndex]?.text || '';
+                const city = citySelect.value || '';
 
-                let queryParts = [address];
-                if (city && city !== 'Select a city' && city !== '') queryParts.push(city);
-                if (state && state !== 'Select a state' && state !== '') queryParts.push(state);
-                if (country && country !== 'Select a country' && country !== '') queryParts.push(country);
+                const isValidCity = city && city !== 'Select a city' && city !== '';
+                const isValidState = state && state !== 'Select a state' && state !== '';
+                const isValidCountry = countryName && countryName !== 'Select a country' && countryName !== '';
 
-                const query = queryParts.join(', ');
+                const baseParams = countryIso2 ? `&countrycodes=${countryIso2}` : '';
 
-                fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`)
+                /**
+                 * Structured search: passes street, city and country as separate parameters.
+                 * More precise when address is clean (e.g. "Av. Corrientes 1234").
+                 */
+                const structuredParams = new URLSearchParams({
+                    street: address,
+                    ...(isValidCity  ? { city }  : {}),
+                    ...(isValidState ? { state }  : {}),
+                    ...(isValidCountry ? { country: countryName } : {}),
+                    format: 'json',
+                    limit: '1',
+                    addressdetails: '1',
+                });
+                const structuredUrl = `https://nominatim.openstreetmap.org/search?${structuredParams}${baseParams}`;
+
+                /**
+                 * Free-text fallback: concatenates all parts into a single query string.
+                 * More tolerant when the user adds extra text (neighbourhood, floor, etc.).
+                 */
+                const fallbackParts = [address];
+                if (isValidCity)    fallbackParts.push(city);
+                if (isValidState)   fallbackParts.push(state);
+                if (isValidCountry) fallbackParts.push(countryName);
+                const fallbackUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fallbackParts.join(', '))}&format=json&limit=1${baseParams}`;
+
+                const applyResult = (lat, lon) => {
+                    const parsedLat = parseFloat(lat);
+                    const parsedLon = parseFloat(lon);
+                    window.map.flyTo([parsedLat, parsedLon], 16);
+                    window.updateMarkerAndInputs(parsedLat, parsedLon);
+                };
+
+                fetch(structuredUrl)
                     .then(response => response.json())
                     .then(data => {
                         if (data.length > 0) {
-                            const { lat, lon } = data[0];
-                            const parsedLat = parseFloat(lat);
-                            const parsedLon = parseFloat(lon);
-                            window.map.flyTo([parsedLat, parsedLon], 16);
-                            window.updateMarkerAndInputs(parsedLat, parsedLon);
+                            applyResult(data[0].lat, data[0].lon);
                         } else {
-                            alert('Address not found. Please try a different address or click on the map to set the location manually.');
+                            // Structured search returned nothing — try free-text fallback
+                            return fetch(fallbackUrl)
+                                .then(response => response.json())
+                                .then(fallbackData => {
+                                    if (fallbackData.length > 0) {
+                                        applyResult(fallbackData[0].lat, fallbackData[0].lon);
+                                    } else {
+                                        alert('Address not found. Please try a different address or click on the map to set the location manually.');
+                                    }
+                                });
                         }
                     })
                     .catch(error => {
