@@ -3,20 +3,22 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-05-14 19:10:07","nombre":"Emilio S?nchez","email":"eme.sanchez9294@hotmail.com","telefono":"2225807156","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Puebla","localidad_inmueble":"Puebla"},
-{"fecha":"2026-05-14 22:39:21","nombre":"Erika Quintero","email":"estrella7067@gmail.com","telefono":"3315647979","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Zapopan"},
-{"fecha":"2026-05-16 02:14:12","nombre":"Fidencio","email":"fidehernandezaguirre@gmail.com","telefono":"9541265538","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Oaxaca","localidad_inmueble":"San Juan Bautista Tuxtepec"},
-{"fecha":"2026-05-16 10:05:46","nombre":"Osiris Ricardo","email":"ortorres39@gmail.com","telefono":"5578431109","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuauhtémoc"},
-{"fecha":"2026-05-16 10:11:06","nombre":"Osiris Ricardo","email":"ortorres39@gmail.com","telefono":"5578431109","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-05-17 18:30:49","nombre":"Mario Rodr?guez","email":"maacro.co@gmail.com","telefono":"5564883016","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuauhtémoc"},
-{"fecha":"2026-05-18 13:26:50","nombre":"David Ivan","email":"ivanovichduarte158521@gmail.com","telefono":"5574673373","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
-{"fecha":"2026-05-18 15:56:15","nombre":"GRACIELA","email":"bravogreys98@gmail.com","telefono":"5570119946","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Chalco de Díaz Covarrubias"},
-{"fecha":"2026-05-18 17:49:04","nombre":"LILIANA MARISOL","email":"lilianamarisolr287@gmail.com","telefono":"2711371422","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Córdoba"},
-{"fecha":"2026-05-19 08:07:37","nombre":"Belen Mart?nez","email":"martinezbelen973@gmail.com","telefono":"5573611600","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-05-19 19:16:18","nombre":"Belen Mart?nez","email":"martinezbelen973@gmail.com","telefono":"5573611600","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-05-19 20:40:04","nombre":"EDUARDO","email":"lauraenrique422@gmail.com","telefono":"5572968672","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"VALLE DE CHALCO"},
-{"fecha":"2026-05-19 20:44:13","nombre":"EDUARDO","email":"lauraenrique422@gmail.com","telefono":"5572968672","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"VALLE DE CHALCO"},
-{"fecha":"2026-05-20 13:13:03","nombre":"Veronica Lozoya","email":"vero_lozoya@hotmail.com","telefono":"6144049233","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Chihuahua","localidad_inmueble":"chihuahua"}
+{"fecha":"2026-05-20 13:13:03","nombre":"Veronica Lozoya","email":"vero_lozoya@hotmail.com","telefono":"6144049233","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Chihuahua","localidad_inmueble":"chihuahua"},
+{"fecha":"2026-05-20 18:19:02","nombre":"jorge migue moreno martinez","email":"jmmm6d@gmai.com","telefono":"47478383004","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Lagos de Moreno"},
+{"fecha":"2026-05-20 20:32:00","nombre":"Karina Castillo","email":"karina.castillo.unam@gmail.com","telefono":"5577901286","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-05-21 11:25:22","nombre":"ENRIQUE","email":"leocruz@hotmail.com","telefono":"7445259741","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Guerrero","localidad_inmueble":"Chilpancingo de los Bravo"},
+{"fecha":"2026-05-21 16:13:51","nombre":"Raul Linares","email":"rlinarez43@gmail.com","telefono":"5540760800","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
+{"fecha":"2026-05-21 17:07:30","nombre":"IRIS","email":"nomatter1315@gmail.com","telefono":"5574169886","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Azcapotzalco"},
+{"fecha":"2026-05-21 18:52:58","nombre":"Janeth Espinoza","email":"ejaneth712@gmail.com","telefono":"3320853168","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlaquepaque"},
+{"fecha":"2026-05-21 23:19:29","nombre":"Lizbeth","email":"liz_alvarez77@livr.con","telefono":"5636027292","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuauhtémoc"},
+{"fecha":"2026-05-22 00:16:22","nombre":"Erik eduardo","email":"erik9326@gmail.com","telefono":"2292922768","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Córdoba"},
+{"fecha":"2026-05-22 14:19:38","nombre":"Susana Padilla","email":"susaudrey@gmail.com","telefono":"5521831272","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
+{"fecha":"2026-05-23 10:33:55","nombre":"Fabiana","email":"fabiimier@gmail.com","telefono":"7226837591","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
+{"fecha":"2026-05-23 19:33:04","nombre":"Scarlette Colorado","email":"821sact821.sact@gmail.com","telefono":"5529224090","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuauhtémoc"},
+{"fecha":"2026-05-23 20:30:20","nombre":"Ricardo Santillan","email":"santillan.rica@gmail.com","telefono":"3333942743","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlajomulco de Zúñiga"},
+{"fecha":"2026-05-24 18:39:35","nombre":"Alejandra","email":"ale.gora10@gmail.com","telefono":"5528663960","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-05-24 21:57:09","nombre":"Jocelyne","email":"jocelynenoriega5@gmail.com","telefono":"3334031453","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Ixtlahuacán de los Membrillos"},
+{"fecha":"2026-05-24 23:17:41","nombre":"Rafaello Oropesa","email":"tmrafaello@gmail.com","telefono":"5542753910","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuauhtémoc"}
 ]
 }
 ]

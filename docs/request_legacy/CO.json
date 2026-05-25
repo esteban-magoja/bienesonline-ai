@@ -3,11 +3,13 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-05-15 21:23:48","nombre":"Luz nieves","email":"manynp05@gmail.com","telefono":"3123511820","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle del Cauca","localidad_inmueble":"Cali"},
-{"fecha":"2026-05-17 18:18:43","nombre":"carlos saul pinto duarte","email":"carlossaulpintoduarte393@gmail.com","telefono":"3166261598","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Floridablanca"},
-{"fecha":"2026-05-18 07:36:43","nombre":"Alejandro Forero","email":"alejoforero1@yahoo.com","telefono":"3143594134","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Cajicá"},
-{"fecha":"2026-05-18 22:11:45","nombre":"Analida Coronell","email":"acoronellospina@gmail.com","telefono":"3104840404","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"},
-{"fecha":"2026-05-19 14:25:20","nombre":"Yolanda","email":"yolandapuentespulido@gmail.com","telefono":"3105798214","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Cajicá"}
+{"fecha":"2026-05-20 17:18:04","nombre":"Wilson Benitez Correa","email":"wbenitez16@gmail.com","telefono":"3168727288","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Zipaquirá"},
+{"fecha":"2026-05-20 23:00:24","nombre":"Jose Alejandro","email":"joalepalo3@hotmail.com","telefono":"3123780974","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Chapinero"},
+{"fecha":"2026-05-21 07:05:04","nombre":"Sandra Sánchez","email":"sandraa-1966@hotmail.com","telefono":"3158110544","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"},
+{"fecha":"2026-05-22 10:20:21","nombre":"Ricardo Alberto Vivas Guerrero","email":"ricardovivasavaluos@gmail.com","telefono":"3116502078","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Magdalena","localidad_inmueble":"Fundación"},
+{"fecha":"2026-05-22 12:33:56","nombre":"Joan","email":"sjoangabriel@gmail.com","telefono":"3001688708","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-05-23 14:52:49","nombre":"Luisa Peña","email":"luiferpero.tito@gmail.com","telefono":"3165782985","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"},
+{"fecha":"2026-05-23 21:46:28","nombre":"Pedro Javier Rueda","email":"ruedapedrojavier@gmail.com","telefono":"3112857229","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Floridablanca"}
 ]
 }
 ]

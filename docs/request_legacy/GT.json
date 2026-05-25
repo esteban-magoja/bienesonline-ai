@@ -3,15 +3,9 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-05-15 12:22:32","nombre":"Mercedes Ruiz","email":"mechjae@gmail.com","telefono":"42181334","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
-{"fecha":"2026-05-17 07:42:45","nombre":"Hilcy","email":"ailymv24@gmail.com","telefono":"42937388","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-05-17 20:05:04","nombre":"Hilcy mendez","email":"ailymv24@gmail.com","telefono":"42937388","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-05-18 08:36:31","nombre":"Hilcy Mendez","email":"ailymv24@gmail.com","telefono":"42937388","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-05-19 13:20:39","nombre":"HERBERTH  GIOVANNI","email":"giovannic1980@hotmail.com","telefono":"59385490","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Zona 10"},
-{"fecha":"2026-05-19 13:51:19","nombre":"HERBERTH  GIOVANNI","email":"giovannic1980@hotmail.com","telefono":"59385490","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Zona 10"},
-{"fecha":"2026-05-19 13:54:31","nombre":"HERBERTH  GIOVANNI","email":"giovannic1980@hotmail.com","telefono":"59385490","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-05-19 14:50:53","nombre":"HERBERTH  GIOVANNI","email":"giovannic1980@hotmail.com","telefono":"59385490","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-05-20 12:59:58","nombre":"Ximena Santizo","email":"ximenasantizo96@gmail.com","telefono":"40093090","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"}
+{"fecha":"2026-05-20 12:59:58","nombre":"Ximena Santizo","email":"ximenasantizo96@gmail.com","telefono":"40093090","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
+{"fecha":"2026-05-22 12:25:38","nombre":"oswaldo rodas","email":"rodasjuarez@hotmail.com","telefono":"57042200","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
+{"fecha":"2026-05-22 19:10:57","nombre":"Israel Hernandez","email":"israhernandezgomez@gmail.com","telefono":"48054748","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"San José Pinula"}
 ]
 }
 ]

@@ -3,16 +3,10 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-05-14 15:13:54","nombre":"JORGE VELAZCO GONZALEZ","email":"KAMAJOR@GMAIL.COM","telefono":"84713119","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"},
-{"fecha":"2026-05-17 14:15:56","nombre":"Osvalso","email":"Osvaldomendez09@hotmail.com","telefono":"61228305","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Desamparados"},
-{"fecha":"2026-05-17 14:45:54","nombre":"Peter","email":"pitres88@gmail.com","telefono":"13077058787","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Moravia"},
-{"fecha":"2026-05-17 14:49:53","nombre":"Peter","email":"pitres88@gmail.com","telefono":"+13077058787","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"San Vicente"},
-{"fecha":"2026-05-17 21:36:44","nombre":"Maria Victoria Segreda","email":"mavi4749@aol.com","telefono":"8307-2660","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Cartago","localidad_inmueble":"La Unión"},
-{"fecha":"2026-05-19 13:25:19","nombre":"Johan Gonzalez","email":"johangonz@gmail.com","telefono":"+506-60585885","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Pavas"},
-{"fecha":"2026-05-19 13:29:18","nombre":"Johan Gonzalez","email":"johangonz@gmail.com","telefono":"+506-60585885","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"San José"},
-{"fecha":"2026-05-19 13:32:18","nombre":"Johan","email":"johangonz@gmail.com","telefono":"+506-60585885","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Pavas"},
-{"fecha":"2026-05-19 16:01:39","nombre":"Bernardo Vargas","email":"bernardo@inveasyble.com","telefono":"88230996","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"},
-{"fecha":"2026-05-19 16:02:10","nombre":"Bernardo Vargas","email":"bernardo@inveasyble.com","telefono":"88230996","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"}
+{"fecha":"2026-05-21 17:14:00","nombre":"Jose Ernesto Sánchez Altamirano","email":"jose.ernesto.sa@outlook.com","telefono":"88943754","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Curridabat"},
+{"fecha":"2026-05-22 03:51:41","nombre":"Adrian Solano Garcia","email":"adriankarlsolanogarcia@gmail.com","telefono":"61658630","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Desamparados"},
+{"fecha":"2026-05-23 15:16:37","nombre":"Wendel","email":"wendellmora13@gmail.com","telefono":"83298036","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Alajuela","localidad_inmueble":"San Rafael"},
+{"fecha":"2026-05-24 23:05:19","nombre":"Katherine Molina C","email":"katymolinac@gmail.com","telefono":"87134017","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Curridabat"}
 ]
 }
 ]

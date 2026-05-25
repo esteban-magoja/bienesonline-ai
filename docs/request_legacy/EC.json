@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-05-19 00:41:23","nombre":"Leonardo Portilla","email":"leonardoportilla77@gmail.com","telefono":"0961046040","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Guayas","localidad_inmueble":"Guayaquil"}
+{"fecha":"2026-05-24 14:49:18","nombre":"Mauricio Coronel","email":"mauriciocrnl3@gmail.com","telefono":"0981567805","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Azuay","localidad_inmueble":"Cuenca"}
 ]
 }
 ]

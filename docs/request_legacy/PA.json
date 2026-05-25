@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-05-17 16:58:36","nombre":"Mariam Peters","email":"mariampeters76@gmail.com","telefono":"61301870","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"PUEBLO NUEVO"}
+{"fecha":"2026-05-21 01:35:44","nombre":"Alvaro Nuñez","email":"alvarito507@gmail.com","telefono":"67066898","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"San Francisco"},
+{"fecha":"2026-05-22 22:08:22","nombre":"Angeles","email":"corderoangeles.99@gmail.com","telefono":"62700640","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Obarrio, Campo Alegre"}
 ]
 }
 ]
