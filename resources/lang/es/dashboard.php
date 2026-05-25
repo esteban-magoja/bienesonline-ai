@@ -389,6 +389,9 @@ return [
         'for_term' => 'para ":term"',
         'relevance' => 'Relevancia',
         'valid_until' => 'Válida hasta',
+        'page_info' => 'Mostrando :from–:to de :total resultados',
+        'prev' => 'Anterior',
+        'next' => 'Siguiente',
         'validation' => [
             'country_required' => 'Debes seleccionar un país.',
             'search_required' => 'Debes escribir un término de búsqueda.',

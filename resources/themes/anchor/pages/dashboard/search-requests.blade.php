@@ -6,7 +6,7 @@ use App\Models\PropertyRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-middleware('auth');
+middleware(['auth']);
 name('dashboard.search-requests');
 
 new class extends Component {
@@ -19,10 +19,13 @@ new class extends Component {
     public $searchTime = 0;
     public bool $isSearching = false;
     public $validationErrors = [];
+    public int $currentPage = 1;
+    public int $totalPages = 0;
+
+    const PER_PAGE = 20;
     
     public function mount()
     {
-        // Get unique countries from active property requests
         $this->countries = PropertyRequest::where('is_active', true)
             ->whereNotNull('country')
             ->distinct()
@@ -36,10 +39,10 @@ new class extends Component {
     {
         $this->validationErrors = [];
         $this->isSearching = true;
+        $this->currentPage = 1;
         
         $startTime = microtime(true);
         
-        // Validation
         if (empty($this->selectedCountry)) {
             $this->validationErrors[] = __('dashboard.search_requests.validation.country_required');
         }
@@ -60,19 +63,16 @@ new class extends Component {
                 ->where('user_id', '!=', auth()->id())
                 ->where('country', $this->selectedCountry);
             
-            // Generate embedding for search term
             $searchEmbedding = $this->generateEmbedding($this->searchTerm);
             
             if ($searchEmbedding) {
-                // Convert array to PostgreSQL vector format
                 $embeddingString = '[' . implode(',', $searchEmbedding) . ']';
                 
-                // Search by similarity using pgvector
                 $this->requests = $query
                     ->selectRaw("*, (embedding <=> ?::vector) * -1 + 1 as similarity_raw", [$embeddingString])
                     ->whereNotNull('embedding')
                     ->orderByRaw("embedding <=> ?::vector", [$embeddingString])
-                    ->limit(50)
+                    ->limit(200)
                     ->get()
                     ->map(function ($request) {
                         $request->similarity = max(0, min(100, $request->similarity_raw * 100));
@@ -85,10 +85,11 @@ new class extends Component {
                 
                 $this->totalResults = $this->requests->count();
             } else {
-                $this->requests = $query->latest()->take(20)->get();
+                $this->requests = $query->latest()->get();
                 $this->totalResults = $this->requests->count();
             }
-            
+
+            $this->totalPages = (int) ceil($this->totalResults / self::PER_PAGE);
             $this->searchTime = round((microtime(true) - $startTime) * 1000);
             
         } catch (\Exception $e) {
@@ -96,9 +97,31 @@ new class extends Component {
             $this->validationErrors[] = __('dashboard.search_requests.validation.search_error');
             $this->requests = collect();
             $this->totalResults = 0;
+            $this->totalPages = 0;
         }
         
         $this->isSearching = false;
+    }
+
+    public function nextPage(): void
+    {
+        if ($this->currentPage < $this->totalPages) {
+            $this->currentPage++;
+        }
+    }
+
+    public function prevPage(): void
+    {
+        if ($this->currentPage > 1) {
+            $this->currentPage--;
+        }
+    }
+
+    public function goToPage(int $page): void
+    {
+        if ($page >= 1 && $page <= $this->totalPages) {
+            $this->currentPage = $page;
+        }
     }
     
     public function clearSearch()
@@ -109,6 +132,8 @@ new class extends Component {
         $this->totalResults = 0;
         $this->searchTime = 0;
         $this->validationErrors = [];
+        $this->currentPage = 1;
+        $this->totalPages = 0;
     }
     
     private function generateEmbedding(string $text): ?array
@@ -188,6 +213,28 @@ new class extends Component {
             </div>
         @endif
 
+        {{-- Premium gate --}}
+        @if(!auth()->user()->hasRole('premium'))
+            <div class="mt-6 bg-amber-50 border border-amber-300 rounded-xl p-8 text-center shadow-sm">
+                <svg class="w-14 h-14 mx-auto text-amber-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                <h3 class="text-xl font-bold text-amber-800 mb-2">
+                    {{ __('dashboard.search_requests.premium_required') }}
+                </h3>
+                <p class="text-amber-700 mb-6 max-w-md mx-auto">
+                    {{ __('dashboard.search_requests.premium_description') }}
+                </p>
+                <a href="/settings/subscription"
+                   class="inline-flex items-center px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-colors duration-150 shadow-sm">
+                    {{ __('dashboard.search_requests.get_premium') }}
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </a>
+            </div>
+        @else
+
         <!-- Search Form -->
         <div class="mt-6">
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -220,7 +267,7 @@ new class extends Component {
                                 type="text" 
                                 wire:model="searchTerm"
                                 id="search"
-                                :placeholder="__('dashboard.search_requests.search_placeholder')" 
+                                placeholder="{{ __('dashboard.search_requests.search_placeholder') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 required
                                 minlength="5"
@@ -322,13 +369,22 @@ new class extends Component {
 
                 <!-- Results Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    @foreach($requests as $propertyRequest)
+                    @foreach(collect($requests)->forPage($currentPage, 20) as $propertyRequest)
                         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow duration-200">
                             <!-- Header -->
                             <div class="mb-3">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-                                    {{ $propertyRequest->title }}
-                                </h3>
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
+                                        {{ $propertyRequest->title }}
+                                    </h3>
+                                    @if(isset($propertyRequest->similarity))
+                                        @php $sim = (int) $propertyRequest->similarity; @endphp
+                                        <span class="shrink-0 inline-flex items-center px-2.5 py-1 rounded-full text-sm font-bold
+                                            {{ $sim >= 70 ? 'bg-green-100 text-green-800' : ($sim >= 45 ? 'bg-yellow-100 text-yellow-800' : 'bg-orange-100 text-orange-800') }}">
+                                            {{ $sim }}%
+                                        </span>
+                                    @endif
+                                </div>
                                 
                                 <!-- Badges -->
                                 <div class="flex flex-wrap gap-2 mb-3">
@@ -395,28 +451,95 @@ new class extends Component {
                                 </div>
                             @endif
                             
-                            <!-- Similarity Score -->
-                            @if($searchTerm && isset($propertyRequest->similarity))
-                                <div class="mb-3">
-                                    <div class="flex items-center justify-between text-sm">
-                                        <span class="text-gray-600">{{ __('dashboard.search_requests.relevance') }}:</span>
-                                        <span class="font-medium text-green-600">{{ number_format($propertyRequest->similarity, 0) }}%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
-                                        <div class="bg-green-600 h-2 rounded-full" style="width: {{ $propertyRequest->similarity }}%"></div>
-                                    </div>
-                                </div>
-                            @endif
-                            
                             <!-- Expiration Date -->
                             @if($propertyRequest->expires_at)
                                 <p class="text-xs text-gray-500 mt-2">
                                     {{ __('dashboard.search_requests.valid_until') }}: {{ $propertyRequest->expires_at->format('d/m/Y') }}
                                 </p>
                             @endif
+
+                            <!-- Contact Info -->
+                            @if($propertyRequest->client_name || $propertyRequest->client_email || $propertyRequest->client_phone)
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
+                                    <div class="flex items-center gap-1 mb-2">
+                                        <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                        <span class="text-xs font-semibold text-blue-900">{{ __('dashboard.requests.client') }}</span>
+                                    </div>
+                                    <div class="space-y-1 text-sm">
+                                        @if($propertyRequest->client_name)
+                                            <div class="flex items-center gap-1">
+                                                <span class="text-blue-700">👤</span>
+                                                <span class="text-blue-900 font-medium">{{ $propertyRequest->client_name }}</span>
+                                            </div>
+                                        @endif
+                                        @if($propertyRequest->client_email)
+                                            <div class="flex items-center gap-1">
+                                                <span class="text-blue-700">✉️</span>
+                                                <a href="mailto:{{ $propertyRequest->client_email }}" class="text-blue-900 hover:underline truncate">
+                                                    {{ $propertyRequest->client_email }}
+                                                </a>
+                                            </div>
+                                        @endif
+                                        @if($propertyRequest->client_phone)
+                                            <div class="flex items-center gap-1">
+                                                <span class="text-blue-700">📱</span>
+                                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $propertyRequest->client_phone) }}"
+                                                   target="_blank"
+                                                   class="text-blue-900 hover:underline">
+                                                    {{ $propertyRequest->client_phone }}
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>
+
+                <!-- Pagination Controls -->
+                @if($totalPages > 1)
+                    <div class="mt-6 flex items-center justify-between">
+                        <p class="text-sm text-gray-600">
+                            {{ __('dashboard.search_requests.page_info', [
+                                'from' => ($currentPage - 1) * 20 + 1,
+                                'to'   => min($currentPage * 20, $totalResults),
+                                'total' => $totalResults,
+                            ]) }}
+                        </p>
+                        <div class="flex items-center gap-1">
+                            <button wire:click="prevPage"
+                                    @if($currentPage <= 1) disabled @endif
+                                    class="px-3 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                                ← {{ __('dashboard.search_requests.prev') }}
+                            </button>
+
+                            @for($p = 1; $p <= $totalPages; $p++)
+                                @if($p <= 2 || $p >= $totalPages - 1 || abs($p - $currentPage) <= 1)
+                                    <button wire:click="goToPage({{ $p }})"
+                                            class="px-3 py-2 text-sm font-medium rounded-lg border transition-colors
+                                                {{ $currentPage === $p
+                                                    ? 'bg-blue-600 border-blue-600 text-white'
+                                                    : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50' }}">
+                                        {{ $p }}
+                                    </button>
+                                @elseif($p === 3 && $currentPage > 4)
+                                    <span class="px-2 text-gray-400">…</span>
+                                @elseif($p === $totalPages - 2 && $currentPage < $totalPages - 3)
+                                    <span class="px-2 text-gray-400">…</span>
+                                @endif
+                            @endfor
+
+                            <button wire:click="nextPage"
+                                    @if($currentPage >= $totalPages) disabled @endif
+                                    class="px-3 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                                {{ __('dashboard.search_requests.next') }} →
+                            </button>
+                        </div>
+                    </div>
+                @endif
             </div>
         @elseif($searchTerm && !$isSearching && empty($validationErrors))
             <!-- No Results -->
@@ -432,6 +555,7 @@ new class extends Component {
                 </div>
             </div>
         @endif
+        @endif {{-- premium gate --}}
     </x-app.container>
     @endvolt
 </x-layouts.app>
