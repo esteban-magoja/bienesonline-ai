@@ -45,8 +45,13 @@ class NotifyMatchingRequests implements ShouldQueue
 
             Log::info("PropertyListing #{$listing->id} created. Found {$qualityMatches->count()} quality matches (score >= {$minScore})");
 
-            // Notificar a cada solicitante
+            // Notificar a cada solicitante (solo solicitudes reales, no legacy importadas)
             foreach ($qualityMatches as $request) {
+                // Omitir solicitudes importadas del legacy
+                if ($request->source === 'legacy' || !empty($request->client_email)) {
+                    continue;
+                }
+
                 // Obtener el usuario de la solicitud
                 $user = User::find($request->user_id);
                 

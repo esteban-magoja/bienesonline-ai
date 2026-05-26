@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Str; @endphp
 @component('mail::message')
 # {{ __('emails.property_match.greeting', ['name' => $user->name]) }}
 
@@ -28,7 +29,7 @@
 @endforeach
 @endif
 
-@component('mail::button', ['url' => route('property.show', $property->id)])
+@component('mail::button', ['url' => url('/es/'.Str::slug($property->country).'/'.Str::slug($property->city).'/propiedad/'.$property->id.'-'.Str::slug($property->title))])
 {{ __('emails.property_match.view_property') }}
 @endcomponent
 
