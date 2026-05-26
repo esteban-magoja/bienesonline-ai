@@ -161,6 +161,11 @@ new class extends Component {
 
     public function updatedSelectedState($stateId)
     {
+        if (empty($stateId)) {
+            $this->cities = collect();
+            return;
+        }
+
         $this->cities = City::where('state_id', $stateId)->get();
     }
 
