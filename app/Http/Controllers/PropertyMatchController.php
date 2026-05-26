@@ -91,7 +91,8 @@ class PropertyMatchController extends Controller
         }
 
         $matches = Cache::remember("matches_listing_{$listing->id}", 3600, function () use ($listing) {
-            return $this->matchingService->findMatchesForListing($listing, 20);
+            return $this->matchingService->findMatchesForListing($listing, 20)
+                ->each(fn ($r) => $r->makeHidden('embedding'));
         });
 
         $totalMatches = Cache::remember("matches_listing_count_{$listing->id}", 3600, function () use ($listing) {
