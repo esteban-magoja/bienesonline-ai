@@ -69,13 +69,15 @@ new class extends Component {
                 $embeddingString = '[' . implode(',', $searchEmbedding) . ']';
                 
                 $this->requests = $query
-                    ->selectRaw("*, (embedding <=> ?::vector) * -1 + 1 as similarity_raw", [$embeddingString])
+                    ->with('user:id,name,email,movil')
+                    ->selectRaw("id, user_id, title, description, property_type, transaction_type, min_budget, max_budget, currency, min_bedrooms, min_bathrooms, min_parking_spaces, min_area, city, state, country, is_active, expires_at, created_at, client_name, client_email, client_phone, (embedding <=> ?::vector) * -1 + 1 as similarity_raw", [$embeddingString])
                     ->whereNotNull('embedding')
                     ->orderByRaw("embedding <=> ?::vector", [$embeddingString])
                     ->limit(200)
                     ->get()
                     ->map(function ($request) {
                         $request->setAttribute('similarity', max(0, min(100, $request->similarity_raw * 100)));
+                        $request->makeHidden(['similarity_raw']);
                         return $request;
                     })
                     ->filter(function ($request) {
@@ -463,7 +465,12 @@ new class extends Component {
                             @endif
 
                             <!-- Contact Info -->
-                            @if($propertyRequest->client_name || $propertyRequest->client_email || $propertyRequest->client_phone)
+                            @php
+                                $contactName  = $propertyRequest->client_name  ?: ($propertyRequest->user->name  ?? null);
+                                $contactEmail = $propertyRequest->client_email ?: ($propertyRequest->user->email ?? null);
+                                $contactPhone = $propertyRequest->client_phone ?: ($propertyRequest->user->movil ?? null);
+                            @endphp
+                            @if($contactName || $contactEmail || $contactPhone)
                                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
                                     <div class="flex items-center gap-1 mb-2">
                                         <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -472,27 +479,27 @@ new class extends Component {
                                         <span class="text-xs font-semibold text-blue-900">{{ __('dashboard.requests.client') }}</span>
                                     </div>
                                     <div class="space-y-1 text-sm">
-                                        @if($propertyRequest->client_name)
+                                        @if($contactName)
                                             <div class="flex items-center gap-1">
                                                 <span class="text-blue-700">👤</span>
-                                                <span class="text-blue-900 font-medium">{{ $propertyRequest->client_name }}</span>
+                                                <span class="text-blue-900 font-medium">{{ $contactName }}</span>
                                             </div>
                                         @endif
-                                        @if($propertyRequest->client_email)
+                                        @if($contactEmail)
                                             <div class="flex items-center gap-1">
                                                 <span class="text-blue-700">✉️</span>
-                                                <a href="mailto:{{ $propertyRequest->client_email }}" class="text-blue-900 hover:underline truncate">
-                                                    {{ $propertyRequest->client_email }}
+                                                <a href="mailto:{{ $contactEmail }}" class="text-blue-900 hover:underline truncate">
+                                                    {{ $contactEmail }}
                                                 </a>
                                             </div>
                                         @endif
-                                        @if($propertyRequest->client_phone)
+                                        @if($contactPhone)
                                             <div class="flex items-center gap-1">
                                                 <span class="text-blue-700">📱</span>
-                                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $propertyRequest->client_phone) }}"
+                                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $contactPhone) }}"
                                                    target="_blank"
                                                    class="text-blue-900 hover:underline">
-                                                    {{ $propertyRequest->client_phone }}
+                                                    {{ $contactPhone }}
                                                 </a>
                                             </div>
                                         @endif
