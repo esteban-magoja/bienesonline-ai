@@ -191,7 +191,6 @@ class ImportListingsJob implements ShouldQueue
             'u$d'          => 'USD',
             'u$s'          => 'USD',
             'usd'          => 'USD',
-            '$'            => 'USD',
             // Euros
             'euros'        => 'EUR',
             'euro'         => 'EUR',
@@ -244,6 +243,11 @@ class ImportListingsJob implements ShouldQueue
         // Resolver "pesos" / "peso" usando el país de origen
         if (in_array($normalized, ['pesos', 'peso'])) {
             return $this->pesosByCountry($country);
+        }
+
+        // "$" es ambiguo: en Latinoamérica suele ser moneda local, no USD
+        if ($normalized === '$') {
+            return $this->dollarSignByCountry($country);
         }
 
         if (isset($map[$normalized])) {
@@ -300,6 +304,36 @@ class ImportListingsJob implements ShouldQueue
         Log::warning('ImportListingsJob: "pesos" sin país reconocido, usando USD como fallback', [
             'country' => $country,
         ]);
+        return 'USD';
+    }
+
+    /**
+     * Resuelve el símbolo "$" según el país.
+     * En la mayoría de países latinoamericanos "$" es la moneda local, no el dólar estadounidense.
+     * Solo Ecuador y El Salvador (que usan USD oficialmente) y países sin mapeo devuelven USD.
+     */
+    private function dollarSignByCountry(string $country): string
+    {
+        $countryMap = [
+            'argentina'            => 'ARS',
+            'mexico'               => 'MXN',
+            'méxico'               => 'MXN',
+            'colombia'             => 'COP',
+            'chile'                => 'CLP',
+            'uruguay'              => 'UYU',
+            'republica dominicana' => 'DOP',
+            'república dominicana' => 'DOP',
+            'dominican republic'   => 'DOP',
+            'cuba'                 => 'CUP',
+            // Ecuador y El Salvador usan USD oficialmente → no están en este mapa
+        ];
+
+        $key = strtolower(trim($country));
+        if (isset($countryMap[$key])) {
+            return $countryMap[$key];
+        }
+
+        // Fallback: USD (incluye Ecuador, El Salvador, y países desconocidos)
         return 'USD';
     }
 

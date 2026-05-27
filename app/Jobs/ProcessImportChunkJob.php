@@ -333,7 +333,7 @@ class ProcessImportChunkJob implements ShouldQueue
         $map = [
             'colones' => 'CRC', 'colon' => 'CRC', 'colón' => 'CRC', 'crc' => 'CRC', '₡' => 'CRC',
             'dolares' => 'USD', 'dólares' => 'USD', 'dolar' => 'USD', 'dólar' => 'USD',
-            'u$d' => 'USD', 'u$s' => 'USD', 'usd' => 'USD', '$' => 'USD',
+            'u$d' => 'USD', 'u$s' => 'USD', 'usd' => 'USD',
             'euros' => 'EUR', 'euro' => 'EUR', 'eur' => 'EUR', '€' => 'EUR',
             'quetzales' => 'GTQ', 'quetzal' => 'GTQ', 'gtq' => 'GTQ',
             'soles' => 'PEN', 'sol' => 'PEN', 'pen' => 'PEN',
@@ -349,6 +349,11 @@ class ProcessImportChunkJob implements ShouldQueue
 
         if (in_array($normalized, ['pesos', 'peso'])) {
             return $this->pesosByCountry($country);
+        }
+
+        // "$" es ambiguo: en Latinoamérica suele ser moneda local, no USD
+        if ($normalized === '$') {
+            return $this->dollarSignByCountry($country);
         }
 
         if (isset($map[$normalized])) {
@@ -391,6 +396,30 @@ class ProcessImportChunkJob implements ShouldQueue
         Log::warning('ProcessImportChunkJob: "pesos" sin país reconocido, fallback USD', [
             'country' => $country,
         ]);
+        return 'USD';
+    }
+
+    private function dollarSignByCountry(string $country): string
+    {
+        $countryMap = [
+            'argentina'            => 'ARS',
+            'mexico'               => 'MXN',
+            'méxico'               => 'MXN',
+            'colombia'             => 'COP',
+            'chile'                => 'CLP',
+            'uruguay'              => 'UYU',
+            'republica dominicana' => 'DOP',
+            'república dominicana' => 'DOP',
+            'dominican republic'   => 'DOP',
+            'cuba'                 => 'CUP',
+            // Ecuador y El Salvador usan USD oficialmente → no están en este mapa
+        ];
+
+        $key = strtolower(trim($country));
+        if (isset($countryMap[$key])) {
+            return $countryMap[$key];
+        }
+
         return 'USD';
     }
 
