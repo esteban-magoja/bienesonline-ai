@@ -3,13 +3,7 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-05-20 17:18:04","nombre":"Wilson Benitez Correa","email":"wbenitez16@gmail.com","telefono":"3168727288","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Zipaquirá"},
-{"fecha":"2026-05-20 23:00:24","nombre":"Jose Alejandro","email":"joalepalo3@hotmail.com","telefono":"3123780974","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Chapinero"},
-{"fecha":"2026-05-21 07:05:04","nombre":"Sandra Sánchez","email":"sandraa-1966@hotmail.com","telefono":"3158110544","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"},
-{"fecha":"2026-05-22 10:20:21","nombre":"Ricardo Alberto Vivas Guerrero","email":"ricardovivasavaluos@gmail.com","telefono":"3116502078","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Magdalena","localidad_inmueble":"Fundación"},
-{"fecha":"2026-05-22 12:33:56","nombre":"Joan","email":"sjoangabriel@gmail.com","telefono":"3001688708","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-05-23 14:52:49","nombre":"Luisa Peña","email":"luiferpero.tito@gmail.com","telefono":"3165782985","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"},
-{"fecha":"2026-05-23 21:46:28","nombre":"Pedro Javier Rueda","email":"ruedapedrojavier@gmail.com","telefono":"3112857229","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Floridablanca"}
+{"fecha":"2026-05-26 16:39:24","nombre":"SONIA ALARCON","email":"sonia.alarcon06@gmail.com","telefono":"3103316026","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Sasaima"}
 ]
 }
 ]

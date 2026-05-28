@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-05-21 01:35:44","nombre":"Alvaro Nuñez","email":"alvarito507@gmail.com","telefono":"67066898","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"San Francisco"},
-{"fecha":"2026-05-22 22:08:22","nombre":"Angeles","email":"corderoangeles.99@gmail.com","telefono":"62700640","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Obarrio, Campo Alegre"}
+{"fecha":"2026-05-26 23:02:28","nombre":"Norma","email":"jacobsnorma@gmail.com","telefono":"64742912","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá Oeste, Panamá Pacífico"},
+{"fecha":"2026-05-27 17:29:32","nombre":"Edgardo Marquez","email":"eamarquez2909@gmail.com","telefono":"62333666","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Amelia Denis De Icaza"}
 ]
 }
 ]

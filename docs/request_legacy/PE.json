@@ -3,13 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-05-20 13:16:30","nombre":"Jaime","email":"jvasqueze@outlook.com","telefono":"","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Surquillo"},
-{"fecha":"2026-05-20 16:24:18","nombre":"Dylan Brepoels","email":"dlt.brepoels@outlook.com","telefono":"973478259","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Cusco","localidad_inmueble":"Cusco"},
-{"fecha":"2026-05-20 22:32:09","nombre":"Jesus Koo","email":"jakch57@gmail.com","telefono":"955442307","tipo_inmueble":"Industrial","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Industrial comas"},
-{"fecha":"2026-05-20 22:37:01","nombre":"Jesus Koo","email":"jakch57@gmail.com","telefono":"955442307","tipo_inmueble":"Industrial","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"},
-{"fecha":"2026-05-21 10:18:38","nombre":"Mar","email":"mariatamani2291@gmail.com","telefono":"992023120","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lince"},
-{"fecha":"2026-05-22 12:49:38","nombre":"Gabriela Mena","email":"ignaby2021@gmail.com","telefono":"959297318","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"},
-{"fecha":"2026-05-22 23:03:01","nombre":"javier Mauricio","email":"javiermauriciopj2@gmail.com","telefono":"981848880","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Callao","localidad_inmueble":"Callao"}
+{"fecha":"2026-05-25 16:45:18","nombre":"Roseline","email":"rosse2538@gmail.com","telefono":"919028107","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santiago De Surco"}
 ]
 }
 ]
