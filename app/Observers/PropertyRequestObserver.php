@@ -53,10 +53,17 @@ class PropertyRequestObserver
             ->where('transaction_type', $propertyRequest->transaction_type)
             ->pluck('user_id', 'id');
 
-        $affectedListings->each(function (int $userId, int $listingId): void {
+        $clearedUserIds = [];
+
+        $affectedListings->each(function (int $userId, int $listingId) use (&$clearedUserIds): void {
             Cache::forget("matches_listing_count_{$listingId}");
             Cache::forget("matches_listing_{$listingId}");
             Cache::forget("matches_index_{$userId}");
+
+            if (! in_array($userId, $clearedUserIds, true)) {
+                Cache::forget("matches_summary_{$userId}");
+                $clearedUserIds[] = $userId;
+            }
         });
     }
 }
