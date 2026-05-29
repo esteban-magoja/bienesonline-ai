@@ -246,6 +246,30 @@ class UserManagementResource extends Resource
                         ->badge()
                         ->color('info')
                         ->placeholder('—'),
+                    TextEntry::make('vendor_customer_id')
+                        ->label('Customer ID (Stripe)')
+                        ->state(function (User $record): string {
+                            $sub = $record->subscriptions()->orderByDesc('created_at')->first();
+
+                            return $sub?->vendor_customer_id ?? '—';
+                        })
+                        ->copyable()
+                        ->copyMessage('Customer ID copiado')
+                        ->fontFamily('mono')
+                        ->columnSpan(1)
+                        ->placeholder('—'),
+                    TextEntry::make('vendor_subscription_id')
+                        ->label('Subscription ID (Stripe)')
+                        ->state(function (User $record): string {
+                            $sub = $record->subscriptions()->orderByDesc('created_at')->first();
+
+                            return $sub?->vendor_subscription_id ?? '—';
+                        })
+                        ->copyable()
+                        ->copyMessage('Subscription ID copiado')
+                        ->fontFamily('mono')
+                        ->columnSpan(1)
+                        ->placeholder('—'),
                 ]),
 
             Section::make('Actividad en la Plataforma')
