@@ -3,23 +3,16 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-05-25 14:32:51","nombre":"YOHANNA","email":"yohanna52@gmail.com","telefono":"04129731115","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
-{"fecha":"2026-05-25 19:50:12","nombre":"JOGLAYDIS GIRART","email":"jtgirart@gmail.com","telefono":"04163932947","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
-{"fecha":"2026-05-25 19:58:41","nombre":"JOGLAYDIS GIRART","email":"jtgirart@gmail.com","telefono":"04163932947","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"sabana grande"},
-{"fecha":"2026-05-25 23:35:51","nombre":"Elbia Gabriela Cosse","email":"gabriela.cosse87@gmail.com","telefono":"+56 9 61307288","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Puerto Cabello"},
-{"fecha":"2026-05-26 03:28:52","nombre":"RAUL BRU","email":"renttoworkcfl@gmail.com","telefono":"+34608460672","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"},
-{"fecha":"2026-05-26 06:14:47","nombre":"Milagros torres","email":"miliristorres@gmail.com","telefono":"+393803408203","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-05-26 11:04:43","nombre":"Yuradis","email":"pyuradis@gmail.com","telefono":"04142291209","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-05-26 18:57:57","nombre":"Ingrid","email":"ingridspa2022@gmail.com","telefono":"+17206537132","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Los Teques"},
-{"fecha":"2026-05-26 20:54:58","nombre":"LIDICE NAVEDA","email":"lidicenavedajimenez@gmail.com","telefono":"04126527744","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Falcón","localidad_inmueble":"Coro"},
-{"fecha":"2026-05-26 21:07:10","nombre":"LIDICE NAVEDA","email":"lidicenavedajimenez@gmail.com","telefono":"0412-6527744","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Falcón","localidad_inmueble":"Coro"},
-{"fecha":"2026-05-27 02:58:12","nombre":"José Fuenmayor","email":"josegfd1@gmail.com","telefono":"04125140186","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Mérida","localidad_inmueble":"Mérida"},
-{"fecha":"2026-05-27 10:26:42","nombre":"Karem","email":"karemrementeria@gmail.com","telefono":"04144222269","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Naguanagua"},
-{"fecha":"2026-05-27 12:42:43","nombre":"José Rojas","email":"joseramonrojas682@gmail.com","telefono":"04244631895","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
-{"fecha":"2026-05-27 15:45:48","nombre":"Arnaldo Rosa","email":"arnaldorosa202@gmail.com","telefono":"04247774397","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Tabay"},
-{"fecha":"2026-05-27 16:01:45","nombre":"Armando Rangel","email":"armador725@gmail.com","telefono":"0414-2301813","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caricuao"},
-{"fecha":"2026-05-27 20:35:23","nombre":"Maylin","email":"maylinpc@gmail.com","telefono":"528110504810","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Portuguesa","localidad_inmueble":"Araure"},
-{"fecha":"2026-05-28 08:16:33","nombre":"Mauricio Cedeño","email":"mauricioced.12@gmail.com","telefono":"04247069271","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Mérida"}
+{"fecha":"2026-05-29 12:18:42","nombre":"JOHANA","email":"ruthsely@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"San Joaquín"},
+{"fecha":"2026-05-29 14:18:09","nombre":"Arnaldo","email":"arnaldorosa202@gmail.com","telefono":"04247774397","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Tabay"},
+{"fecha":"2026-05-29 14:42:09","nombre":"Julio Leal","email":"juliolealc2906@gmail.com","telefono":"+1 (407) 242-0920","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"El Yaque"},
+{"fecha":"2026-05-29 21:17:48","nombre":"José Rojas","email":"joseramonrojas682@gmail.com","telefono":"04244631895","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
+{"fecha":"2026-05-30 11:00:44","nombre":"LISSETH BALBINA","email":"movesave2025@gmail.com","telefono":"04143133883","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"chacao"},
+{"fecha":"2026-05-30 12:07:59","nombre":"Jean silva","email":"jeancarlossilva211@gmail.com","telefono":"04129089647","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Guacara"},
+{"fecha":"2026-05-31 09:45:10","nombre":"María Zambrano","email":"maolzamo@gmail.com","telefono":"04267020145","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Mérida"},
+{"fecha":"2026-05-31 16:57:09","nombre":"Robert Salas","email":"ecotrigorestaurant@gmail.com","telefono":"04129541796","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Lara","localidad_inmueble":"Barquisimeto"},
+{"fecha":"2026-05-31 18:12:48","nombre":"Ireida Diaz","email":"inversionestj16@gmail.com","telefono":"04128855702","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
+{"fecha":"2026-05-31 19:46:15","nombre":"Maivi Davila","email":"maivi_206@hotmail.com","telefono":"04141318576","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"PALO VERDE"}
 ]
 }
 ]

@@ -1,0 +1,9 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_argentina"},
+{"type":"table","name":"c","database":"admin_bienes_argentina","data":
+[
+{"fecha":"2026-05-31 00:13:49","nombre":"Agustin","email":"beatsmuelle@gmail.com","telefono":"1148707361","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Santiago del Estero","localidad_inmueble":"Campo Gallo"}
+]
+}
+]

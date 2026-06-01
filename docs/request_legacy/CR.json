@@ -3,9 +3,11 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-05-25 23:37:54","nombre":"Sergio tenorio","email":"tenoriocalderonsergiomartin9@gmail.com","telefono":"88299137","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"Grecia"},
-{"fecha":"2026-05-26 14:27:50","nombre":"Graciela Fonseca","email":"graciefonseca15@gmail.com","telefono":"+1 4162788559","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Cartago","localidad_inmueble":"El Guarco"},
-{"fecha":"2026-05-26 17:57:23","nombre":"Mildred","email":"milcerdasrojas@gmail.com","telefono":"86394201","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Alajuela","localidad_inmueble":"Rio Segundo"}
+{"fecha":"2026-05-29 10:06:12","nombre":"Roy Bogantes","email":"bogantesaguilarroydaniel@gmail.com","telefono":"89118883","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Zapote"},
+{"fecha":"2026-05-29 13:21:18","nombre":"Emy Sequeira","email":"emylisa2010@hotmail.com","telefono":"87545050","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Moravia"},
+{"fecha":"2026-05-29 13:24:02","nombre":"Emy Sequeira","email":"emylisa2010@hotmail.com","telefono":"87545050","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Moravia"},
+{"fecha":"2026-05-31 05:49:42","nombre":"don","email":"rakowskiconstruction@gmail.com","telefono":"61801464","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"Poás"},
+{"fecha":"2026-05-31 06:35:35","nombre":"Crissia Zamora Fernandez","email":"crissiazf11@gmail.com","telefono":"86362154","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Pozos"}
 ]
 }
 ]

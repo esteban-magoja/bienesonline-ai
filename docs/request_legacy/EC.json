@@ -3,11 +3,7 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-05-25 14:22:38","nombre":"Fernanda Orellana","email":"mariafernandaorellana@gmail.com","telefono":"0998998961","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Azuay","localidad_inmueble":"Cuenca"},
-{"fecha":"2026-05-25 16:15:24","nombre":"Adriana","email":"maldonadoadri6@gmail.com","telefono":"0984167882","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santa Elena","localidad_inmueble":"Santa Elena"},
-{"fecha":"2026-05-25 16:26:38","nombre":"Fer","email":"ferkg85@hotmail.com","telefono":"0996234048","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
-{"fecha":"2026-05-26 12:57:44","nombre":"Fernanda Orellana","email":"mariafernandaorellana@gmail.com","telefono":"0998998961","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Azuay","localidad_inmueble":"Cuenca"},
-{"fecha":"2026-05-26 18:19:45","nombre":"Elizabeth","email":"pilisba@yahoo.es","telefono":"0994658773","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Imbabura","localidad_inmueble":"Ibarra"}
+{"fecha":"2026-06-01 08:30:10","nombre":"Jos? Antonio Hidalgo Campos","email":"josehidalgocampos30@gmail.com","telefono":"0986592110","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guayas","localidad_inmueble":"Colimes"}
 ]
 }
 ]

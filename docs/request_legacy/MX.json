@@ -3,13 +3,12 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-05-25 13:26:31","nombre":"Sebastian Vázquez","email":"msvazquezs177@gmail.com","telefono":"5550744692","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
-{"fecha":"2026-05-25 14:20:56","nombre":"Francisco Quiñones","email":"fcoquinones@hotmail.com","telefono":"5535545155","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Aguascalientes","localidad_inmueble":"Aguascalientes"},
-{"fecha":"2026-05-25 18:19:01","nombre":"Shantal Alonso","email":"stellae_caeli@hotmail.com","telefono":"5635583707","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
-{"fecha":"2026-05-26 01:36:41","nombre":"Monica Nohemí García Méndez","email":"meli_1127@hotmail.com","telefono":"2282104602","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Veracruz","localidad_inmueble":"Xalapa-Enríquez"},
-{"fecha":"2026-05-26 19:51:37","nombre":"Javier Rodriguez","email":"jsanta757@gmail.com","telefono":"3319757462","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlaquepaque"},
-{"fecha":"2026-05-26 22:58:41","nombre":"Andrea","email":"alducin0670@gmail.com","telefono":"9841775027","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Quintana Roo","localidad_inmueble":"Cancún"},
-{"fecha":"2026-05-27 15:01:03","nombre":"Sandra Sanchez","email":"sandy.a21@outlook.com","telefono":"5554639587","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuauhtémoc"}
+{"fecha":"2026-05-28 09:56:17","nombre":"Annel Alexandra","email":"jose.roberto.annel@gmail.com","telefono":"7331084592","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Veracruz","localidad_inmueble":"Minatitlán"},
+{"fecha":"2026-05-28 23:52:44","nombre":"Miguel Angel Bello","email":"Miguelbello65@gmail.com","telefono":"747-162-3642","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-05-30 11:22:21","nombre":"Shirley Erlandin Salazar Rocha","email":"shirleyerlandin.rocha@gmail.com","telefono":"4434832384","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Michoacan de Ocampo","localidad_inmueble":"Tarímbaro"},
+{"fecha":"2026-05-30 19:59:23","nombre":"Rodrigo Lopez Lule","email":"rololu@gmail.com","telefono":"5554038640","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Coyoacán"},
+{"fecha":"2026-05-31 14:40:12","nombre":"Selene valencia","email":"Selene.valencia@gmail.com","telefono":"5537902130","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Huixquilucan de Degollado"},
+{"fecha":"2026-06-01 07:26:25","nombre":"Ignacio Ram?rez","email":"ignarc6@gmail.com","telefono":"5573428529","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"}
 ]
 }
 ]

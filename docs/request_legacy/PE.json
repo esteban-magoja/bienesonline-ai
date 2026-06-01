@@ -3,7 +3,9 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-05-25 16:45:18","nombre":"Roseline","email":"rosse2538@gmail.com","telefono":"919028107","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santiago De Surco"}
+{"fecha":"2026-05-29 13:58:36","nombre":"Melisa","email":"melisa_yv.25@hotmail.com","telefono":"981033009","tipo_inmueble":"Deposito","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Ate"},
+{"fecha":"2026-05-30 10:52:08","nombre":"DAVID TELLO","email":"ingetell@hotmail.com","telefono":"993763102","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Santa","localidad_inmueble":"Nuevo Chimbote"},
+{"fecha":"2026-05-30 10:59:09","nombre":"Natali Alexandra","email":"vnatalialexandra@gmail.com","telefono":"999292426","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Pueblo libre"}
 ]
 }
 ]
