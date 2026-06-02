@@ -95,11 +95,17 @@ class PropertyRequestController extends Controller
             abort(403);
         }
 
-        // Obtener matches (top 20) y total real
-        $matches = $this->matchingService->findMatchesForRequest($propertyRequest, 20);
+        // Obtener matches (top 20) con caché de 1 hora y total SQL rápido
+        $matches = Cache::remember(
+            "request_matches_{$propertyRequest->id}",
+            3600,
+            fn () => $this->matchingService->findMatchesForRequest($propertyRequest, 20)
+                ->each(fn ($l) => $l->makeHidden('embedding'))
+        );
+
         $totalMatches = Cache::remember(
             "request_match_count_{$propertyRequest->id}",
-            900,
+            3600,
             fn() => $this->matchingService->countMatchesForRequest($propertyRequest)
         );
 

@@ -31,7 +31,7 @@ class PropertyMatchingService
      */
     public function countMatchesForRequest(PropertyRequest $request): int
     {
-        return $this->getAllScoredMatchesForRequest($request)->count();
+        return $this->countExactMatchesForRequest($request);
     }
 
     /**
@@ -76,7 +76,7 @@ class PropertyMatchingService
             $query->where('area', '>=', $request->min_area);
         }
 
-        return $query->count(\Illuminate\Support\Facades\DB::raw('DISTINCT COALESCE(client_email, id::text)'));
+        return $query->count();
     }
 
     /**
@@ -251,7 +251,16 @@ class PropertyMatchingService
             $query->where('area', '>=', $request->min_area);
         }
 
-        return $query->with(['user', 'primaryImage', 'firstImage'])->get();
+        return $query
+            ->select([
+                'id', 'user_id', 'title', 'property_type', 'transaction_type',
+                'price', 'currency', 'bedrooms', 'bathrooms', 'parking_spaces',
+                'area', 'city', 'state', 'country', 'is_active',
+            ])
+            ->with(['user', 'primaryImage', 'firstImage'])
+            ->orderByDesc('id')
+            ->limit(500)
+            ->get();
     }
 
     /**

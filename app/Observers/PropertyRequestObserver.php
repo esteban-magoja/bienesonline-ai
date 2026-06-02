@@ -28,6 +28,8 @@ class PropertyRequestObserver
     {
         Cache::forget("dashboard_requests_{$propertyRequest->user_id}");
         Cache::forget("dashboard_matches_outbound_{$propertyRequest->user_id}");
+        Cache::forget("request_matches_{$propertyRequest->id}");
+        Cache::forget("request_match_count_{$propertyRequest->id}");
         $this->clearAffectedListingCaches($propertyRequest);
     }
 
@@ -38,6 +40,8 @@ class PropertyRequestObserver
     {
         Cache::forget("dashboard_requests_{$propertyRequest->user_id}");
         Cache::forget("dashboard_matches_outbound_{$propertyRequest->user_id}");
+        Cache::forget("request_matches_{$propertyRequest->id}");
+        Cache::forget("request_match_count_{$propertyRequest->id}");
         $this->clearAffectedListingCaches($propertyRequest);
     }
 
