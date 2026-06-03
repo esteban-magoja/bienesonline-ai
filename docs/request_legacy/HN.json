@@ -1,9 +1,0 @@
-[
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
-{"type":"database","name":"admin_bienes_honduras"},
-{"type":"table","name":"c","database":"admin_bienes_honduras","data":
-[
-{"fecha":"2026-05-30 03:15:28","nombre":"Paco","email":"p.duarte66@hotmail.com","telefono":"639947227","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cortés","localidad_inmueble":"San Pedro Sula"}
-]
-}
-]

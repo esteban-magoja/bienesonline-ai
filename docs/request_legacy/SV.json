@@ -1,9 +1,0 @@
-[
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
-{"type":"database","name":"admin_bienes_elsalvador"},
-{"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
-[
-{"fecha":"2026-05-31 20:15:42","nombre":"Jose","email":"jrmarquezr@gmail.com","telefono":"71180931","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Ahuachapán","localidad_inmueble":"Apaneca"}
-]
-}
-]

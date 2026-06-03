@@ -1,9 +1,0 @@
-[
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
-{"type":"database","name":"admin_bienes_colombia"},
-{"type":"table","name":"c","database":"admin_bienes_colombia","data":
-[
-{"fecha":"2026-05-29 15:40:18","nombre":"LUS STELLA SANCHEZ GIRALDO","email":"s123brokers@gmail.com","telefono":"3054516034","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Valle del Cauca","localidad_inmueble":"Jamundí"}
-]
-}
-]
