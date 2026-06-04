@@ -1,0 +1,11 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_ecuador"},
+{"type":"table","name":"c","database":"admin_bienes_ecuador","data":
+[
+{"fecha":"2026-06-01 08:30:10","nombre":"Jose Antonio Hidalgo Campos","email":"josehidalgocampos30@gmail.com","telefono":"0986592110","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guayas","localidad_inmueble":"Colimes"},
+{"fecha":"2026-06-01 17:35:02","nombre":"carmen gaibor","email":"labimed@yahoo.com","telefono":"0993682103","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guayas","localidad_inmueble":"Guayaquil"},
+{"fecha":"2026-06-03 16:05:23","nombre":"VICTOR SALCEDO","email":"bodegauio.matriz@booksandbits.com.ec","telefono":"0995157502","tipo_inmueble":"Local","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"QUITO"}
+]
+}
+]

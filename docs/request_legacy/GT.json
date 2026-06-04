@@ -1,0 +1,9 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_guatemala"},
+{"type":"table","name":"c","database":"admin_bienes_guatemala","data":
+[
+{"fecha":"2026-06-02 13:22:12","nombre":"Pablo Josu","email":"pablorossil63@gmail.com","telefono":"47379443","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Alta Verapaz","localidad_inmueble":"Cobán"}
+]
+}
+]

@@ -1,0 +1,11 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_elsalvador"},
+{"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
+[
+{"fecha":"2026-05-31 20:15:42","nombre":"Jose","email":"jrmarquezr@gmail.com","telefono":"71180931","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Ahuachapán","localidad_inmueble":"Apaneca"},
+{"fecha":"2026-06-01 13:50:58","nombre":"Ruth Noemi","email":"ruth10052000@gmail.com","telefono":"77983002","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santa Ana","localidad_inmueble":"Santa Ana"},
+{"fecha":"2026-06-03 12:28:49","nombre":"Alejandro Cedillos","email":"alejandro.cedillos@reginsacorp.com","telefono":"74658529","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Soyapango"}
+]
+}
+]

@@ -1,0 +1,17 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_mexico"},
+{"type":"table","name":"c","database":"admin_bienes_mexico","data":
+[
+{"fecha":"2026-05-31 14:40:12","nombre":"Selene valencia","email":"Selene.valencia@gmail.com","telefono":"5537902130","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Huixquilucan de Degollado"},
+{"fecha":"2026-06-01 07:26:25","nombre":"Ignacio Ram?rez","email":"ignarc6@gmail.com","telefono":"5573428529","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
+{"fecha":"2026-06-01 11:41:38","nombre":"pamela feria","email":"pam.sigler21@gmail.com","telefono":"4421320791","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
+{"fecha":"2026-06-01 12:05:29","nombre":"Pamela feria","email":"pam.sigler21@gmail.com","telefono":"4421320791","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
+{"fecha":"2026-06-01 12:20:53","nombre":"Fabiola Gomez","email":"fabygomez5103@gmail.com","telefono":"5634564520","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-06-01 15:35:12","nombre":"Yair Miranda","email":"y4irmiranda@gmail.com","telefono":"5561303027","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuajimalpa de Morelos"},
+{"fecha":"2026-06-02 15:16:04","nombre":"Leslie Reyes","email":"leslie.reyes.09@gmail.com","telefono":"5525321109","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
+{"fecha":"2026-06-02 21:39:39","nombre":"DARIO JULIO CESAR","email":"meed740322hb4@gmail.com","telefono":"5519010170","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Puebla","localidad_inmueble":"Puebla"},
+{"fecha":"2026-06-03 12:15:38","nombre":"Paulina Rivera","email":"pau.rg16@hotmail.com","telefono":"5548809565","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"}
+]
+}
+]

@@ -1,0 +1,9 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_panama"},
+{"type":"table","name":"c","database":"admin_bienes_panama","data":
+[
+{"fecha":"2026-06-02 16:03:23","nombre":"Elvis Delgado","email":"elvisdelgado18@hotmail.com","telefono":"64048309","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Colón","localidad_inmueble":"Medalla Milagrosa, Cristobal"}
+]
+}
+]

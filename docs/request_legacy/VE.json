@@ -1,0 +1,23 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_venezuela"},
+{"type":"table","name":"c","database":"admin_bienes_venezuela","data":
+[
+{"fecha":"2026-05-31 09:45:10","nombre":"Maria Zambrano","email":"maolzamo@gmail.com","telefono":"04267020145","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Mérida"},
+{"fecha":"2026-05-31 16:57:09","nombre":"Robert Salas","email":"ecotrigorestaurant@gmail.com","telefono":"04129541796","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Lara","localidad_inmueble":"Barquisimeto"},
+{"fecha":"2026-05-31 18:12:48","nombre":"Ireida Diaz","email":"inversionestj16@gmail.com","telefono":"04128855702","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
+{"fecha":"2026-05-31 19:46:15","nombre":"Maivi Davila","email":"maivi_206@hotmail.com","telefono":"04141318576","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"PALO VERDE"},
+{"fecha":"2026-06-01 14:54:55","nombre":"Juan Palmero","email":"juanpalmerov@gmail.com","telefono":"34665668660","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Juan Griego"},
+{"fecha":"2026-06-01 18:55:39","nombre":"Jesus","email":"ramijesus@gmail.com","telefono":"04129490678","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Mérida"},
+{"fecha":"2026-06-01 20:31:18","nombre":"Yenny Pineda","email":"pinedayenny73@gmail.com","telefono":"042420093555","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"Barcelona"},
+{"fecha":"2026-06-02 03:29:11","nombre":"Alejandro Rosado","email":"aleross10111093@gmail.com","telefono":"+56995372167","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-06-02 05:23:58","nombre":"Maria","email":"maru.fagundez@gmail.com","telefono":"","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"},
+{"fecha":"2026-06-02 10:25:06","nombre":"Ensina Ferrara","email":"chony-8-fer@hotmail.com","telefono":"+58 414-4233453","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"San Diego"},
+{"fecha":"2026-06-02 12:45:01","nombre":"Karina Bruzual","email":"karisbruzual@gmail.com","telefono":"04241956309","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Los Teques"},
+{"fecha":"2026-06-02 14:09:29","nombre":"Nader","email":"victorygoodsoutlet@gmail.com","telefono":"+58 414-8069408","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"},
+{"fecha":"2026-06-02 16:31:15","nombre":"Jose David Cardozo Muñoz","email":"jose75cardozo@gmail.com","telefono":"04148405440","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Bolívar","localidad_inmueble":"Ciudad Bolívar"},
+{"fecha":"2026-06-03 10:19:18","nombre":"Milagros Torres","email":"miliristorres@gmail.com","telefono":"+393803408203","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-06-03 23:20:34","nombre":"Piudmeny Salinas","email":"psalinas1369@gmail.com","telefono":"+56949759962","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"San Diego"}
+]
+}
+]

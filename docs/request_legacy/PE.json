@@ -1,0 +1,11 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_peru"},
+{"type":"table","name":"c","database":"admin_bienes_peru","data":
+[
+{"fecha":"2026-06-01 11:45:14","nombre":"Jorge Rios Aramayo","email":"jriosaramayo@hotmail.com","telefono":"989057461","tipo_inmueble":"Industrial","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santa Anita"},
+{"fecha":"2026-06-03 01:34:14","nombre":"Angel","email":"zamoraromeroangel30@gmail.com","telefono":"923305441","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Ate"},
+{"fecha":"2026-06-03 22:17:45","nombre":"Helen Samira","email":"contrerashelen103@gmail.com","telefono":"960568225","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lince"}
+]
+}
+]
