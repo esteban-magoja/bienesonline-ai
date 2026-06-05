@@ -51,13 +51,19 @@ return [
     // Verify Email
     'verify' => [
         'page_title' => 'Verificar tu Cuenta',
-        'headline' => 'Verifica tu correo electrónico',
-        'subheadline' => 'Antes de continuar, debes verificar tu email.',
-        'description' => 'Antes de continuar, por favor revisa tu correo electrónico para el enlace de verificación. Si no recibiste el email,',
-        'new_request_link' => 'haz clic aquí para solicitar otro',
+        'headline' => 'Verifica tu cuenta',
+        'subheadline' => 'Dos pasos para activar tu acceso completo.',
+        'email_step_title' => '1. Verifica tu correo electrónico',
+        'description' => 'Te enviamos un enlace de verificación. Revisá también la carpeta de SPAM. Si no lo recibiste,',
+        'new_request_link' => 'haz clic aquí para reenviar',
+        'check_spam' => 'Revisá la carpeta de spam si no aparece en tu bandeja.',
+        'whatsapp_step_title' => '2. Confirma tu número de WhatsApp',
+        'whatsapp_description' => 'Te enviamos un mensaje de WhatsApp al número que registraste. Seguí las instrucciones del mensaje para verificar tu número.',
+        'whatsapp_required_notice' => 'La verificación de WhatsApp es obligatoria. Todo el sistema de alertas, matches y notificaciones funciona a través de ese número.',
+        'go_dashboard' => 'Ir al panel de control',
         'new_link_sent' => 'Se ha enviado un nuevo enlace a tu dirección de correo.',
         'or' => 'O',
-        'logout' => 'haz clic aquí para cerrar sesión',
+        'logout' => 'cerrar sesión',
     ],
 
     // Password Confirm
