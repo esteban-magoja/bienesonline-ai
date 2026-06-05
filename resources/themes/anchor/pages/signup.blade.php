@@ -18,7 +18,7 @@ new class extends Component
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
-    public string $phoneCountryCode = '54';
+    public string $phoneCountryCode = '';
     public string $phoneLocal = '';
     public bool $whatsapp_opt_in = false;
 
@@ -197,6 +197,7 @@ new class extends Component
                             required
                             class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
                         >
+                            <option value="" disabled selected>{{ app()->getLocale() === 'en' ? '— Select country —' : '— Selecciona tu país —' }}</option>
                             <optgroup label="— Populares —">
                                 @foreach ($phoneCountries['priority'] as $country)
                                     <option value="{{ $country->phone_code }}" @selected($phoneCountryCode === $country->phone_code)>
