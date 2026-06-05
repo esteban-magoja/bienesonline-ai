@@ -158,6 +158,11 @@ Route::post('/locale/switch', function(Request $request) {
 Route::post('/auth/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout');
 Route::get('/auth/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout.get');
 
+// Override vendor verify page (Folio vendor path has priority over theme; this route wins over both)
+Route::get('/auth/verify', \App\Livewire\Auth\VerifyEmail::class)
+    ->name('verification.notice')
+    ->middleware(['auth', 'throttle:6,1']);
+
 // ============================================================================
 // 4. RUTAS PRIVADAS SIN PREFIJO (usan locale de sesión)
 // ============================================================================
