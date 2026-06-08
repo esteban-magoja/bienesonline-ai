@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-06-02 16:03:23","nombre":"Elvis Delgado","email":"elvisdelgado18@hotmail.com","telefono":"64048309","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Colón","localidad_inmueble":"Medalla Milagrosa, Cristobal"}
+{"fecha":"2026-06-04 12:38:54","nombre":"Cassiana","email":"cassianabmoliveira@yahoo.com.br","telefono":"62920151","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad de Panamá"},
+{"fecha":"2026-06-06 05:01:03","nombre":"Antonino","email":"antoni.campisi@virgilio.it","telefono":"","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad de Panamá"}
 ]
 }
 ]
