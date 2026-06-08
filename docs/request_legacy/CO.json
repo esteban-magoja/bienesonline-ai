@@ -4,7 +4,6 @@
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
 {"fecha":"2026-06-04 23:19:53","nombre":"Yenny Bernal","email":"yvaleria1018@gmail.com","telefono":"3108570846","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"},
-{"fecha":"2026-06-05 13:42:11","nombre":"Yenny","email":"yvaleria1018@gmail.com","telefono":"3108570846","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"},
 {"fecha":"2026-06-06 00:25:53","nombre":"Ingrid Esmeralda Carre?o Suarez","email":"d.Ingrid.Carreno@bucaramanga.edu.co","telefono":"3164122708","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"}
 ]
 }

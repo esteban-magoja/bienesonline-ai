@@ -4,7 +4,7 @@
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
 {"fecha":"2026-06-05 09:33:36","nombre":"Dsnay","email":"danaydela77@ocloud.com","telefono":"84586390","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Ulloa"},
-{"fecha":"2026-06-05 14:14:22","nombre":"Jos? Luis Cerdas S?nchez","email":"jlcerdas21@gmail.com","telefono":"83752888","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Cartago","localidad_inmueble":"Oreamuno"},
+{"fecha":"2026-06-05 14:14:22","nombre":"Jose Luis Cerdas SSanchez","email":"jlcerdas21@gmail.com","telefono":"83752888","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Cartago","localidad_inmueble":"Oreamuno"},
 {"fecha":"2026-06-06 12:27:23","nombre":"Emy Sequeira  Soto","email":"emylisa2010@hotmail.com","telefono":"+13078715194","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"San Vicente"},
 {"fecha":"2026-06-07 17:57:48","nombre":"Karen","email":"kcastillo2075@gmail.com","telefono":"8324-2799","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Belén"},
 {"fecha":"2026-06-07 23:15:39","nombre":"Yajaira Taylor","email":"yahataylor@gmail.com","telefono":"72721793","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Heredia","localidad_inmueble":"San Rafael"}
