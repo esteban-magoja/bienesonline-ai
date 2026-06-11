@@ -3,14 +3,15 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-06-04 18:46:45","nombre":"Zyanya Montoya","email":"zyanya3028@gmail.com","telefono":"5581215751","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-06-04 23:54:23","nombre":"Rosa Martha Arias Ramirez","email":"mart.rouse@gmail.com","telefono":"4422198003","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
-{"fecha":"2026-06-05 11:12:48","nombre":"Marco Galicia","email":"markoghz285@gmail.com","telefono":"2941697227","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Veracruz"},
-{"fecha":"2026-06-05 13:23:47","nombre":"Miguel Angel","email":"Miguelbello65@gmail.com","telefono":"747-162-3642","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-06-05 18:29:03","nombre":"Heber Peña Ramírez","email":"unamheber@gmail.com","telefono":"5573242532","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Morelos","localidad_inmueble":"Cuautla"},
-{"fecha":"2026-06-06 02:33:42","nombre":"Sujey Reyes","email":"lorireyes39@gmail.com","telefono":"5640039566","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
-{"fecha":"2026-06-06 18:21:04","nombre":"Antonio Calderón","email":"tonycalderob05@gmail.com","telefono":"6622332391","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Nuevo Leon","localidad_inmueble":"Monterrey"},
-{"fecha":"2026-06-07 17:51:18","nombre":"Iván Rosas","email":"ivanrosas_mad@hotmail.com","telefono":"4425927110","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"}
+{"fecha":"2026-06-07 17:51:18","nombre":"Iván Rosas","email":"ivanrosas_mad@hotmail.com","telefono":"4425927110","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
+{"fecha":"2026-06-08 15:56:26","nombre":"Diego campos","email":"camposdiego696@gmail.com","telefono":"5643759732","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-06-08 20:28:44","nombre":"JOSUE","email":"chavezbravojosue@gmail.com","telefono":"5535788067","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Iztapalapa"},
+{"fecha":"2026-06-08 22:46:00","nombre":"ENRIQUE","email":"enrique.abogado3012@gmail.com","telefono":"5611468910","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlaquepaque"},
+{"fecha":"2026-06-09 01:24:26","nombre":"Alejandra Anaya","email":"entornos_soporte.8f@icloud.com","telefono":"5511929742","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Cuautitlán Izcalli"},
+{"fecha":"2026-06-09 01:30:47","nombre":"Alejandra Morales","email":"entornos_soporte.8f@icloud.com","telefono":"5511929742","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Cuautitlán Izcalli"},
+{"fecha":"2026-06-10 16:23:23","nombre":"ALEX","email":"djbz821@gmail.com","telefono":"7441016549","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Guerrero","localidad_inmueble":"Acapulco de Juárez"},
+{"fecha":"2026-06-10 17:05:46","nombre":"jose rivera","email":"ricortazar.jose@gmail.com","telefono":"5529289063","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
+{"fecha":"2026-06-11 01:25:20","nombre":"Alexa Mar","email":"marinalexa725@gmail.com","telefono":"5531455047","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"}
 ]
 }
 ]

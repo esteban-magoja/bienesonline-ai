@@ -3,9 +3,9 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-06-04 17:24:47","nombre":"Jorge Fernandez","email":"jfernandez@oj.gob.gt","telefono":"54988959","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
-{"fecha":"2026-06-07 13:23:44","nombre":"Claudia Palencia","email":"clololo1965@yahoo.com","telefono":"50657674","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Chimaltenango","localidad_inmueble":"Chimaltenango"},
-{"fecha":"2026-06-07 22:51:47","nombre":"Claudia Alonso","email":"camarilis.alonso@gmail.com","telefono":"41206378","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Santiago Sacatepequez"}
+{"fecha":"2026-06-07 22:51:47","nombre":"Claudia Alonso","email":"camarilis.alonso@gmail.com","telefono":"41206378","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Santiago Sacatepequez"},
+{"fecha":"2026-06-08 14:00:19","nombre":"Eduardo Guzman","email":"melodywright70@gmail.com","telefono":"53066164","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"San Lucas Sacatepéquez"},
+{"fecha":"2026-06-09 08:58:18","nombre":"Rosmery Ramos","email":"sindyragiron83@gmail.com","telefono":"59064633","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"San Jose Pinula"}
 ]
 }
 ]

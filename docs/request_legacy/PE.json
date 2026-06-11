@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-06-04 11:04:39","nombre":"Milagros","email":"catano.m@hotmail.com","telefono":"987402329","tipo_inmueble":"Cochera","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Lima"}
+{"fecha":"2026-06-09 16:39:51","nombre":"Cristhian Chiroque","email":"chiroquecristhianmpp@gmail.com","telefono":"993781581","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"}
 ]
 }
 ]

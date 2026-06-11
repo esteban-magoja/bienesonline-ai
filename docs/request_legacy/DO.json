@@ -1,0 +1,9 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_dominicana"},
+{"type":"table","name":"c","database":"admin_bienes_dominicana","data":
+[
+{"fecha":"2026-06-08 14:36:33","nombre":"irene burgos","email":"burgos.irene@gmail.com","telefono":"(829) 703-7136","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Monte Plata","localidad_inmueble":"Monte Plata"}
+]
+}
+]
