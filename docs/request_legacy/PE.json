@@ -3,7 +3,11 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-06-09 16:39:51","nombre":"Cristhian Chiroque","email":"chiroquecristhianmpp@gmail.com","telefono":"993781581","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"}
+{"fecha":"2026-06-11 23:42:06","nombre":"Medaly","email":"Villarrealmedaly@gmail.com","telefono":"900641078","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"La Victoria"},
+{"fecha":"2026-06-12 08:15:13","nombre":"Johan","email":"johanur.1988@gmail.com","telefono":"993397038","tipo_inmueble":"Cochera","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
+{"fecha":"2026-06-12 16:45:17","nombre":"Natalia","email":"natali.bq89@gmail.com","telefono":"989084898","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
+{"fecha":"2026-06-12 16:46:46","nombre":"Natalia","email":"natali.bq89@gmail.com","telefono":"989084898","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
+{"fecha":"2026-06-13 10:37:09","nombre":"Fernanda","email":"lfernandar2.04@gmail.com","telefono":"979444559","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Callao","localidad_inmueble":"Bellavista"}
 ]
 }
 ]

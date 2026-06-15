@@ -3,15 +3,16 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-06-07 17:51:18","nombre":"Iván Rosas","email":"ivanrosas_mad@hotmail.com","telefono":"4425927110","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
-{"fecha":"2026-06-08 15:56:26","nombre":"Diego campos","email":"camposdiego696@gmail.com","telefono":"5643759732","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-06-08 20:28:44","nombre":"JOSUE","email":"chavezbravojosue@gmail.com","telefono":"5535788067","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Iztapalapa"},
-{"fecha":"2026-06-08 22:46:00","nombre":"ENRIQUE","email":"enrique.abogado3012@gmail.com","telefono":"5611468910","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlaquepaque"},
-{"fecha":"2026-06-09 01:24:26","nombre":"Alejandra Anaya","email":"entornos_soporte.8f@icloud.com","telefono":"5511929742","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Cuautitlán Izcalli"},
-{"fecha":"2026-06-09 01:30:47","nombre":"Alejandra Morales","email":"entornos_soporte.8f@icloud.com","telefono":"5511929742","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Cuautitlán Izcalli"},
-{"fecha":"2026-06-10 16:23:23","nombre":"ALEX","email":"djbz821@gmail.com","telefono":"7441016549","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Guerrero","localidad_inmueble":"Acapulco de Juárez"},
-{"fecha":"2026-06-10 17:05:46","nombre":"jose rivera","email":"ricortazar.jose@gmail.com","telefono":"5529289063","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
-{"fecha":"2026-06-11 01:25:20","nombre":"Alexa Mar","email":"marinalexa725@gmail.com","telefono":"5531455047","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"}
+{"fecha":"2026-06-11 23:03:51","nombre":"Miguel Angel","email":"miguelbello65@gmail.com","telefono":"7471623642","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-06-12 01:36:08","nombre":"Juan Daniel","email":"jh009985@gmail.com","telefono":"5519298322","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
+{"fecha":"2026-06-12 13:14:31","nombre":"Javier B?ez D?az","email":"medirefi@gmail.com","telefono":"5560964138","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-06-13 01:17:55","nombre":"Maria Varela","email":"varelarivasmariaguadalupe@gmail.com","telefono":"56 1439 5019","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlajomulco de Zúñiga"},
+{"fecha":"2026-06-13 11:51:37","nombre":"Carlos M?rquez","email":"marquezgc@gmail.com","telefono":"5640019492","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
+{"fecha":"2026-06-13 12:26:42","nombre":"Carlos M?rquez","email":"marquezgc@gmail.com","telefono":"5640019492","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
+{"fecha":"2026-06-13 13:18:12","nombre":"Irma L?pez","email":"eneakorn@gmail.com","telefono":"5567080753","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
+{"fecha":"2026-06-13 13:49:18","nombre":"Javier B?ez D?az","email":"medirefi@gmail.com","telefono":"5560964138","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-06-13 15:27:26","nombre":"Alejandra Serrano","email":"alejandracortes12serrano@gmail.com","telefono":"5548220365","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlajomulco de Zúñiga"},
+{"fecha":"2026-06-14 14:33:29","nombre":"joel ramirez arredondo","email":"joelseg1@outlook.es","telefono":"6568631738","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"}
 ]
 }
 ]

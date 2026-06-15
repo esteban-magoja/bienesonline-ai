@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-06-10 12:33:57","nombre":"daniela narvaez","email":"danielanarvaez89@gmail.com","telefono":"3188716603","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"},
-{"fecha":"2026-06-10 12:55:03","nombre":"Diana Marcela Florez Rios","email":"diamar1000@gmail.com","telefono":"3103577817","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Caldas","localidad_inmueble":"Manizales"}
+{"fecha":"2026-06-13 13:51:25","nombre":"Juan David Ram?n Cano","email":"juan0110ramon@gmail.com","telefono":"318 7711581","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Modelia"}
 ]
 }
 ]

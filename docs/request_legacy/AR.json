@@ -1,0 +1,9 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_argentina"},
+{"type":"table","name":"c","database":"admin_bienes_argentina","data":
+[
+{"fecha":"2026-06-14 01:34:05","nombre":"Daniela","email":"danielaaylen@hotmail.com","telefono":"3516696220","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mendoza","localidad_inmueble":"Las Heras"}
+]
+}
+]

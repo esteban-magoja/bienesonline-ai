@@ -1,0 +1,9 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_bolivia"},
+{"type":"table","name":"c","database":"admin_bienes_bolivia","data":
+[
+{"fecha":"2026-06-13 13:49:21","nombre":"Ramiro","email":"ecsanguezaraasza@gmail.com","telefono":"79353353","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cochabamba","localidad_inmueble":"Cochabamba"}
+]
+}
+]
