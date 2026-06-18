@@ -262,6 +262,12 @@ new class extends Component
                 </div>
             @endif
 
+            @if(!$showPasswordField)
+                <div class="mt-2 text-sm leading-5 @if(config('devdojo.auth.settings.center_align_text')){{ 'text-center' }}@else{{ 'text-left' }}@endif">
+                    <x-auth::elements.text-link href="{{ route('auth.password.request') }}" data-auth="forgot-password-link-initial">{{ config('devdojo.auth.language.login.forget_password') }}</x-auth::elements.text-link>
+                </div>
+            @endif
+
             @if(config('devdojo.auth.settings.login_show_social_providers') && config('devdojo.auth.settings.social_providers_location') != 'top')
                 <x-auth::elements.social-providers />
             @endif
