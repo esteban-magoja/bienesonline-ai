@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-06-12 11:47:05","nombre":"JeoGhersetich","email":"jerryghersetich74@gmail.com","telefono":"3463707004","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"La Vega","localidad_inmueble":"Jarabacoa"}
+{"fecha":"2026-06-16 10:58:41","nombre":"Guy Lafrance","email":"guylafrance@yahoo.com","telefono":"8299694670","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Puerto Plata","localidad_inmueble":"San Felipe de Puerto Plata"}
 ]
 }
 ]

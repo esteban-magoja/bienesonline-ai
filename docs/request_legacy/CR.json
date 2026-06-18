@@ -3,7 +3,9 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-06-11 20:59:34","nombre":"santiago naim","email":"naimsantiago572@gmail.com","telefono":"63067819","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"San Jose"}
+{"fecha":"2026-06-15 12:22:37","nombre":"OSCAR ROJAS","email":"OSCARROJASISASECA@GMAIL.COM","telefono":"64837748","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Puntarenas","localidad_inmueble":"Miramar"},
+{"fecha":"2026-06-16 16:26:19","nombre":"Fernando Blanco Aragon","email":"vequium@gmail.com","telefono":"84191144","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Escazú"},
+{"fecha":"2026-06-17 11:26:32","nombre":"Daniel","email":"ddelgadoacuna@gmail.com","telefono":"72988343","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Heredia"}
 ]
 }
 ]

@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-06-13 13:51:25","nombre":"Juan David Ramón Cano","email":"juan0110ramon@gmail.com","telefono":"318 7711581","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Modelia"}
+{"fecha":"2026-06-17 10:37:12","nombre":"Gredmary Cedeño","email":"gredmary804@gmail.com","telefono":"3161336990","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
+{"fecha":"2026-06-17 20:18:13","nombre":"Juan Camilo","email":"juancarangomartinez@gmail.com","telefono":"323 4570733","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"}
 ]
 }
 ]
