@@ -3,10 +3,8 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-06-15 11:24:49","nombre":"Lorena Diaz","email":"lorenina2012@gmail.com","telefono":"997619927","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Borja"},
-{"fecha":"2026-06-16 13:53:35","nombre":"Andrea","email":"andreamacedo23@gmail.com","telefono":"977140142","tipo_inmueble":"Cochera","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-06-17 14:50:56","nombre":"Gary Durand llanos","email":"liaseb32@gmail.com","telefono":"973118910","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"},
-{"fecha":"2026-06-17 14:52:41","nombre":"Gary Durand llanos","email":"liaseb32@gmail.com","telefono":"973118910","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"}
+{"fecha":"2026-06-18 13:50:46","nombre":"Ana yudi huaman","email":"anayudihuaman@gmail.com","telefono":"+376664330","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Lamas","localidad_inmueble":"tarapoto"},
+{"fecha":"2026-06-19 17:52:52","nombre":"Fiorella Vilchez","email":"fiorellavilc0993@gmail.com","telefono":"912102064","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"}
 ]
 }
 ]

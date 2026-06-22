@@ -3,11 +3,8 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-06-15 10:49:44","nombre":"Bartolo Acevedo Benito","email":"tochoacevedo@gmail.com","telefono":"40989303","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-06-15 21:10:34","nombre":"Oscar Maldonado","email":"Chiva.maldonado@yahoo.com","telefono":"51157272","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-06-16 18:10:19","nombre":"Claudia Salguero","email":"claudiae2salguero@gmail.com","telefono":"42101066","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-06-17 08:25:55","nombre":"Edgar López","email":"arquiedlopez@yahoo.com","telefono":"42637149","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Jutiapa","localidad_inmueble":"Quesada"},
-{"fecha":"2026-06-17 11:51:48","nombre":"Gabriela","email":"gh.herrerahernandez@gmail.com","telefono":"42208716","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"}
+{"fecha":"2026-06-21 20:02:19","nombre":"Juan Bucaro","email":"juanbucaro@hotmail.com","telefono":"37417997","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
+{"fecha":"2026-06-21 23:01:43","nombre":"Pamela Perez","email":"perezpamela@gmail.com","telefono":"52084920","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Antigua Guatemala"}
 ]
 }
 ]

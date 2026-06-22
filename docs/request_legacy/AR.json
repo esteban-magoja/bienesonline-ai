@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-06-14 01:34:05","nombre":"Daniela","email":"danielaaylen@hotmail.com","telefono":"3516696220","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mendoza","localidad_inmueble":"Las Heras"}
+{"fecha":"2026-06-18 13:30:41","nombre":"Joaquin","email":"joakosepul123@gmail.com","telefono":"2995890490","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Recoleta"},
+{"fecha":"2026-06-21 08:00:10","nombre":"juan","email":"juangcm1192@gmail.com","telefono":"03541547099","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Cordoba","localidad_inmueble":"Agua de Oro"}
 ]
 }
 ]

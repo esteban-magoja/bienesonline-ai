@@ -3,23 +3,18 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-06-14 12:05:31","nombre":"Andrea Garboza","email":"Andreap.garboza@gmail.com","telefono":"0414 493 4230","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Aragua","localidad_inmueble":"El Limón"},
-{"fecha":"2026-06-15 14:57:56","nombre":"genesis velazco","email":"velazcogenesis046@gmail.com","telefono":"9207573469","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Juan Griego"},
-{"fecha":"2026-06-15 16:19:16","nombre":"Antonio Jose Carrero","email":"ajcarrero1@gmail.com","telefono":"04141370245","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Lara","localidad_inmueble":"Zona este de Barquisimeto"},
-{"fecha":"2026-06-15 19:29:33","nombre":"Yader","email":"yaderdario@gmail.com","telefono":"04146969974","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
-{"fecha":"2026-06-15 22:32:07","nombre":"Gleiser","email":"gleiser123@icloud.com","telefono":"7702319891","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"BOSQUESERINO"},
-{"fecha":"2026-06-15 22:50:22","nombre":"César","email":"cesarorcines@gmail.com","telefono":"04144285458","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"La cumaca"},
-{"fecha":"2026-06-16 17:02:41","nombre":"Iris Alexandra Garcia Golindano","email":"irisgar@gmail.com","telefono":"8324348276","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"Lechería"},
-{"fecha":"2026-06-16 21:00:19","nombre":"daniela","email":"dagd1707@gmail.com","telefono":"04129699912","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
-{"fecha":"2026-06-16 23:31:15","nombre":"damary paez","email":"franklinleonardguillen0504@gmail.com","telefono":"0424-4515121","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Aragua","localidad_inmueble":"Maracay"},
-{"fecha":"2026-06-17 08:55:54","nombre":"zulay lopez","email":"zullylopez.1974@gimail.com","telefono":"04121616941","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Cabimas"},
-{"fecha":"2026-06-17 09:55:09","nombre":"norespia.sept30@gmail.com","email":"norespia.sept30@gmail.com","telefono":"04243630057","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Aragua","localidad_inmueble":"Turmero"},
-{"fecha":"2026-06-17 10:16:11","nombre":"wilfredo","email":"blancowilfredo812@gmail.com","telefono":"4226342297","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
-{"fecha":"2026-06-17 14:13:32","nombre":"Andreina Perez","email":"andrepego@yahoo.com","telefono":"+13054979967","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"},
-{"fecha":"2026-06-17 14:55:21","nombre":"Gabriela","email":"dramariagabrielagh@gmail.com","telefono":"04249116681","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Bolívar","localidad_inmueble":"Ciudad Bolívar"},
-{"fecha":"2026-06-17 16:25:46","nombre":"MELANNY VILORIA","email":"viloriamelanny1@gmail.com","telefono":"04145112840","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Mérida"},
-{"fecha":"2026-06-17 23:26:30","nombre":"Roussbell","email":"roussbelljd@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-06-18 07:18:58","nombre":"Maria","email":"mariaalejandrasanchezjuare@gmail.com","telefono":"+34671226860","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Falcón","localidad_inmueble":"Tucacas"}
+{"fecha":"2026-06-18 13:09:01","nombre":"Jean","email":"jcnc98@gmail.com","telefono":"04148890687","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Bolívar","localidad_inmueble":"Ciudad Guayana"},
+{"fecha":"2026-06-18 14:56:29","nombre":"Wilfredo","email":"blancowilfredo812@gmail.com","telefono":"4226342297","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
+{"fecha":"2026-06-19 06:21:21","nombre":"Gabriela","email":"ariannagt2019@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Higuerote"},
+{"fecha":"2026-06-19 14:37:39","nombre":"María Mujica","email":"66.53.mmcr@gmail.com","telefono":"O4228877533","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Prebo"},
+{"fecha":"2026-06-19 16:55:34","nombre":"Yesi","email":"dyesi2518@gmail.com","telefono":"04149143452","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Guatire"},
+{"fecha":"2026-06-19 21:49:11","nombre":"Dayana Leon","email":"cecilmartin_79@hotmail.com","telefono":"04124807268","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"San Joaquín"},
+{"fecha":"2026-06-20 10:12:37","nombre":"Pedro","email":"santos_vnzla@hotmail.com","telefono":"","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"},
+{"fecha":"2026-06-20 15:53:53","nombre":"Anexy Doria","email":"draanexydoria2020@gmail.com","telefono":"04246261856","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-06-20 22:53:01","nombre":"Josué Oquendo","email":"josueoquendo7@gmail.com","telefono":"04123822877","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-06-21 17:51:58","nombre":"Grismairy","email":"grismajm.98@gmail.com","telefono":"04121321544","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"Barcelona"},
+{"fecha":"2026-06-21 21:23:43","nombre":"Jesús Pérez","email":"75jesusperez@gmail.com","telefono":"04160155680","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Ciudad Ojeda"},
+{"fecha":"2026-06-22 05:34:21","nombre":"Gabriela","email":"ariannagt2019@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Higuerote"}
 ]
 }
 ]

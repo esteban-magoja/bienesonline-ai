@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-06-09 01:10:14","nombre":"Karen Urquilla","email":"urquilla.karen@gmail.com","telefono":"79898073","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"La Libertad","localidad_inmueble":"Santa Tecla"},
-{"fecha":"2026-06-10 19:39:09","nombre":"Andrea Diaz","email":"andreamariadiaz16@gmail.com","telefono":"72517181","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"San Marcos"}
+{"fecha":"2026-06-18 16:02:22","nombre":"Esmeralda Orellana","email":"orellanaesmeralda318@gmail.com","telefono":"6827 5661","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"San Marcos"}
 ]
 }
 ]

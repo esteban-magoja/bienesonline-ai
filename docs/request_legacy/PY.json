@@ -1,0 +1,10 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_paraguay"},
+{"type":"table","name":"c","database":"admin_bienes_paraguay","data":
+[
+{"fecha":"2026-06-18 18:41:14","nombre":"Tais Cardozo","email":"cardozotais5@gmail.com","telefono":"0994256736","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Pinoza"},
+{"fecha":"2026-06-20 16:02:42","nombre":"Martin Masson","email":"olafmasson@gmail.com","telefono":"+542281520359","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"San Pedro","localidad_inmueble":"Asunción"}
+]
+}
+]
