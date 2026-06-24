@@ -55,3 +55,4 @@ resources/plugins/*
 /.claude
 /.github/skills
 /AGENTS.md
+/opencode.json

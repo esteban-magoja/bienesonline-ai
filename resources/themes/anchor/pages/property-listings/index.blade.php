@@ -6,11 +6,11 @@ use App\Models\PropertyListing;
 use App\Models\PropertyType;
 use App\Models\TransactionType;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 use Pgvector\Laravel\Vector;
 use App\Models\PropertyContact;
 use App\Models\PropertyRequest;
+use App\Jobs\DeleteListingImages;
 
 middleware('auth');
 name('property-listings.index');
@@ -163,18 +163,27 @@ new class extends Component {
 
         $this->listingToDelete->load('images');
 
-        foreach ($this->listingToDelete->images as $image) {
-            Storage::disk('public')->delete($image->image_path);
+        $imagePaths = $this->listingToDelete->images->pluck('image_path')->filter()->values()->toArray();
+
+        if (!empty($imagePaths)) {
+            DeleteListingImages::dispatch($imagePaths);
         }
 
-        $listingId = $this->listingToDelete->id;
+        $deletedId = $this->listingToDelete->id;
         $this->listingToDelete->delete();
 
-        Cache::forget("matches_listing_count_{$listingId}");
-        Cache::forget("matches_listing_{$listingId}");
+        // Mutar la colección en memoria: sin queries adicionales
+        $this->propertyListings = $this->propertyListings->reject(fn($l) => $l->id === $deletedId);
+        unset($this->matchCounts[$deletedId]);
+        unset($this->contactCounts[$deletedId]);
+        $this->pagination['total'] = max(0, ($this->pagination['total'] ?? 1) - 1);
 
-        $this->loadFilterOptions();
-        $this->loadAllListings();
+        // Si la página actual quedó vacía y no es la primera, retroceder y recargar
+        if ($this->propertyListings->isEmpty() && $this->page > 1) {
+            $this->page--;
+            $this->loadAllListings();
+        }
+
         $this->cancelDelete();
     }
 
