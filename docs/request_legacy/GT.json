@@ -4,7 +4,8 @@
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
 {"fecha":"2026-06-21 20:02:19","nombre":"Juan Bucaro","email":"juanbucaro@hotmail.com","telefono":"37417997","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
-{"fecha":"2026-06-21 23:01:43","nombre":"Pamela Perez","email":"perezpamela@gmail.com","telefono":"52084920","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Antigua Guatemala"}
+{"fecha":"2026-06-21 23:01:43","nombre":"Pamela Perez","email":"perezpamela@gmail.com","telefono":"52084920","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Antigua Guatemala"},
+{"fecha":"2026-06-24 13:01:15","nombre":"Carlos Emmanuel Hernandez","email":"carher65@gmail.com","telefono":"7703677534","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sololá","localidad_inmueble":"San Pedro La Laguna"}
 ]
 }
 ]

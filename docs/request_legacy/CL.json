@@ -3,20 +3,19 @@
 {"type":"database","name":"admin_bienes_chile"},
 {"type":"table","name":"c","database":"admin_bienes_chile","data":
 [
-{"fecha":"2026-06-18 12:15:12","nombre":"José Pérez Fuentes","email":"edgardofuentes494@gmail.com","telefono":"997181000","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Chacabuco","localidad_inmueble":"Lampa"},
-{"fecha":"2026-06-18 14:09:46","nombre":"Robinson Jara Boezio","email":"robinson.jara.boezio@gmail.com","telefono":"995830361","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Providencia"},
-{"fecha":"2026-06-18 15:01:13","nombre":"Francesca lorena ortiz muñoz","email":"francescapielysalud@gmail.com","telefono":"931315376","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Ñuñoa"},
-{"fecha":"2026-06-19 11:56:12","nombre":"Sebastian Del Pino","email":"sebadelpine@gmail.com","telefono":"989963608","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Copiapó","localidad_inmueble":"Copiapo"},
-{"fecha":"2026-06-19 17:36:33","nombre":"Yazmin Estrella","email":"yazmin.nunezz@gmail.com","telefono":"920267721","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
-{"fecha":"2026-06-19 20:08:46","nombre":"Yolanda Aedo","email":"yolanda.aedo.gomez@gmail.com","telefono":"984428075","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Concepción","localidad_inmueble":"Concepción"},
-{"fecha":"2026-06-19 22:02:58","nombre":"Nicolás Reyes","email":"nikogutierrez239@gmail.com","telefono":"955222924","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
-{"fecha":"2026-06-20 01:51:10","nombre":"Myriam Cofré","email":"miriam.cofre29@gmail.com","telefono":"972560572","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
-{"fecha":"2026-06-20 09:46:46","nombre":"Mical","email":"maldaysaldivar@gmail.com","telefono":"937216033","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Ñuñoa"},
-{"fecha":"2026-06-20 12:36:07","nombre":"Catalina Bruron","email":"catalinabruron1@gmail.com","telefono":"989706358","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
-{"fecha":"2026-06-20 14:28:31","nombre":"Paola","email":"paola.pellegrini.ibanez@gmail.com","telefono":"998920211","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
-{"fecha":"2026-06-21 07:34:11","nombre":"Cristóbal","email":"pilitaloica@gmail.com","telefono":"+56974108694","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"La Florida"},
-{"fecha":"2026-06-21 10:46:56","nombre":"Victoria","email":"victoria.fespinosa@gmail.com","telefono":"951409617","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Coihaique","localidad_inmueble":"Coihaique"},
-{"fecha":"2026-06-21 19:01:44","nombre":"Catalina Andreani","email":"cataandreanic@gmail.com","telefono":"998694350","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"}
+{"fecha":"2026-06-21 10:46:56","nombre":"victoria","email":"victoria.fespinosa@gmail.com","telefono":"951409617","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Coihaique","localidad_inmueble":"Coihaique"},
+{"fecha":"2026-06-21 18:57:58","nombre":"Catalina Andreani","email":"cataandreanic@gmail.com","telefono":"998694350","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-06-22 23:26:36","nombre":"Ismael","email":"ismaelaros@outlook.com","telefono":"933728232","tipo_inmueble":"Bodega","tipo_operacion":"Arriendo","provincia_inmueble":"Cachapoal","localidad_inmueble":"Machalí"},
+{"fecha":"2026-06-23 01:19:21","nombre":"Matilde Gatica","email":"carolaalejandra111@gmail.com","telefono":"967520452","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valdivia","localidad_inmueble":"Valdivia"},
+{"fecha":"2026-06-23 09:29:54","nombre":"Ginessa.aceiton@gmail.com","email":"ginessa.aceiton@gmail.com","telefono":"952047546","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Alto Peñalolen"},
+{"fecha":"2026-06-23 14:20:22","nombre":"Maria Ignacia Fuentes","email":"fignacia.to@gmail.com","telefono":"+56849916804","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"La Florida"},
+{"fecha":"2026-06-23 17:47:06","nombre":"Jorge","email":"jorgestecher621@gmail.com","telefono":"991325597","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Ñuñoa"},
+{"fecha":"2026-06-23 22:35:07","nombre":"Lilian Diaz","email":"diazlabrinlilian@gmail.com","telefono":"+56935848018","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-06-23 23:43:30","nombre":"angela tamara villanueva rojas","email":"villanuevarojasangelatamara@gmail.com","telefono":"941407172","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
+{"fecha":"2026-06-24 09:48:35","nombre":"Javier rojas","email":"Javier.ignacio.513@gmail.com","telefono":"973871982","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"San felipe"},
+{"fecha":"2026-06-24 11:50:58","nombre":"Andrea Robledo","email":"aerobledomena@gmail.com","telefono":"952287300","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"San Felipe de Aconcagua","localidad_inmueble":"San Felipe"},
+{"fecha":"2026-06-24 23:49:17","nombre":"Valentina","email":"valentinnavp21@gmail.com","telefono":"957977910","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cordillera","localidad_inmueble":"Puente Alto"},
+{"fecha":"2026-06-25 06:49:20","nombre":"Angi Coromoto","email":"angipadron83@gmail.com","telefono":"959344734","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"La Florida"}
 ]
 }
 ]

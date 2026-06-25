@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-06-20 21:21:07","nombre":"INGRIG MAYERLY AYALA HERNANDEZ","email":"ingrigmayerly@gmail.com","telefono":"3134903374","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"},
-{"fecha":"2026-06-21 16:59:49","nombre":"Gredmary Cedeño","email":"gredmary804@gmail.com","telefono":"3161336990","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"}
+{"fecha":"2026-06-21 16:59:49","nombre":"Gredmary Cedeño","email":"gredmary804@gmail.com","telefono":"3161336990","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
+{"fecha":"2026-06-22 23:17:32","nombre":"PIEDAD GONZALEZ","email":"piedadgonzalezp1321@gmail.com","telefono":"3186082224","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Fontibón"},
+{"fecha":"2026-06-23 11:37:56","nombre":"yera","email":"yeraangelito@hotmail.com","telefono":"3123006192","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Usaquén"}
 ]
 }
 ]

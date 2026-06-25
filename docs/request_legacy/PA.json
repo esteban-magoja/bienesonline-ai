@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-06-19 02:56:33","nombre":"Yuris Camero","email":"cameroyuris01@gmail.com","telefono":"6388-0866","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Las Cumbres"}
+{"fecha":"2026-06-24 12:01:40","nombre":"Zukeika","email":"sotozuleika0@gmail.com","telefono":"64841382","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Colón","localidad_inmueble":"Colón"}
 ]
 }
 ]

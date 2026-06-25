@@ -3,17 +3,13 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-06-18 19:40:39","nombre":"Maria Felix","email":"mfmendoza34@gmail.com","telefono":"2288398424","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Xalapa-Enríquez"},
-{"fecha":"2026-06-19 10:30:10","nombre":"Rosario Montero","email":"rosariiomontero@gmail.com","telefono":"4421457217","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
-{"fecha":"2026-06-19 16:08:53","nombre":"Karla Sánchez","email":"fabysanchezleal83@gmail.com","telefono":"3318712758","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"El Salto"},
-{"fecha":"2026-06-19 17:19:55","nombre":"Jhonatan Alvarado","email":"john.verde.22@gmail.com","telefono":"5626918095","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
-{"fecha":"2026-06-19 20:41:58","nombre":"Wilbert Roberto Tah Cetzal","email":"robertotah65@gmail.com","telefono":"9981030942","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Yucatan","localidad_inmueble":"Kanasín"},
-{"fecha":"2026-06-19 21:04:33","nombre":"Carolina","email":"carovaca95@hotmail.com","telefono":"5587952577","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-06-20 20:31:30","nombre":"Claudia Ruiz","email":"vanessarn8888@gmail.com","telefono":"4421865056","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-06-21 00:05:37","nombre":"Yareth Torres","email":"amisaddaitorres@gmail.com","telefono":"5519704230","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Ixtapaluca"},
 {"fecha":"2026-06-21 13:40:01","nombre":"Farush","email":"tapetesfar@hotmail.com","telefono":"2281999627","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Xalapa-Enríquez"},
 {"fecha":"2026-06-21 18:01:48","nombre":"Lesly","email":"draleslyrehu@gmail.com","telefono":"5534495786","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Baja California","localidad_inmueble":"Tijuana"},
-{"fecha":"2026-06-21 21:07:32","nombre":"Alis Luna","email":"alislunamx@gmail.com","telefono":"5534041461","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"}
+{"fecha":"2026-06-21 21:07:32","nombre":"Alis Luna","email":"alislunamx@gmail.com","telefono":"5534041461","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-06-22 15:30:10","nombre":"Azucena","email":"azucena.alquicira@gmail.com","telefono":"5513619598","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-06-23 13:00:34","nombre":"Renata Gutierrez","email":"renatta.gr@icloud.com","telefono":"5569323123","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-06-24 13:37:42","nombre":"Viridian Perez","email":"mirza.perez.ch@gmail.com","telefono":"5535754104","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Texcoco de Mora"},
+{"fecha":"2026-06-24 21:39:15","nombre":"Christopher Alejandro Rios","email":"christoperrios40@gmail.com","telefono":"8130694218","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Nuevo Leon","localidad_inmueble":"Ciénega de Flores"}
 ]
 }
 ]

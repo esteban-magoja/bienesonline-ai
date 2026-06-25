@@ -3,15 +3,10 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-06-19 15:20:39","nombre":"Noelia Velasquez Padilla","email":"noelia13031@hotmail.es","telefono":"71899244","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Florida de Tibás"},
-{"fecha":"2026-06-19 16:26:47","nombre":"Jonathan Cardenas","email":"jcarden10@icloud.com","telefono":"6192505551","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Cartago","localidad_inmueble":"El Guarco"},
-{"fecha":"2026-06-19 22:34:41","nombre":"Ricardo Chinchilla","email":"ricardochp08@gmail.com","telefono":"84984540","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Nicoya"},
-{"fecha":"2026-06-19 22:37:14","nombre":"Ricardo Chinchilla","email":"ricardochp08@gmail.com","telefono":"84984540","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Santa Cruz"},
-{"fecha":"2026-06-19 22:50:08","nombre":"Ricardo Chinchilla","email":"ricardochp08@gmail.com","telefono":"84984540","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Bagaces"},
-{"fecha":"2026-06-19 22:56:33","nombre":"Ricardo Chinchilla","email":"ricardochp08@gmail.com","telefono":"84984540","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Nicoya"},
-{"fecha":"2026-06-20 15:43:32","nombre":"Gabriela","email":"gcastilloj0804@gmail.com","telefono":"86660019","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Piedades"},
-{"fecha":"2026-06-21 03:41:37","nombre":"Cathy Hartke","email":"cathyhartke03@gmail.com","telefono":"+12013294038","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"Poás"},
-{"fecha":"2026-06-21 13:03:31","nombre":"Haidy Fallas Solano","email":"haidyfallas@yahoo.com","telefono":"87786791","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Mata Redonda"}
+{"fecha":"2026-06-21 13:03:31","nombre":"Haidy Fallas Solano","email":"haidyfallas@yahoo.com","telefono":"87786791","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Mata Redonda"},
+{"fecha":"2026-06-23 15:36:19","nombre":"Fernando Blanco Aragon","email":"vequium@gmail.com","telefono":"84191144","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Escazú"},
+{"fecha":"2026-06-23 16:10:44","nombre":"andrea","email":"paolamathiu@gmail.com","telefono":"61020625","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"San José"},
+{"fecha":"2026-06-24 21:38:33","nombre":"Tatiana Brenes","email":"tatybrezu@gmail.com","telefono":"83175954","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cartago","localidad_inmueble":"Paraíso"}
 ]
 }
 ]
