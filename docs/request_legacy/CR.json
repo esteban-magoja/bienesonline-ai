@@ -3,10 +3,8 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-06-21 13:03:31","nombre":"Haidy Fallas Solano","email":"haidyfallas@yahoo.com","telefono":"87786791","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Mata Redonda"},
-{"fecha":"2026-06-23 15:36:19","nombre":"Fernando Blanco Aragon","email":"vequium@gmail.com","telefono":"84191144","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Escazú"},
-{"fecha":"2026-06-23 16:10:44","nombre":"andrea","email":"paolamathiu@gmail.com","telefono":"61020625","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"San José"},
-{"fecha":"2026-06-24 21:38:33","nombre":"Tatiana Brenes","email":"tatybrezu@gmail.com","telefono":"83175954","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cartago","localidad_inmueble":"Paraíso"}
+{"fecha":"2026-06-25 15:42:02","nombre":"Franchesca","email":"franchescavalverdes@gmail.com","telefono":"83419926","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Tibás"},
+{"fecha":"2026-06-28 23:56:21","nombre":"Mariel","email":"marielibarra21@hotmail.com","telefono":"61242104","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Tamarindo"}
 ]
 }
 ]

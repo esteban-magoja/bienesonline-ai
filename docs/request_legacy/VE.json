@@ -3,16 +3,14 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-06-21 17:51:58","nombre":"Grismairy","email":"grismajm.98@gmail.com","telefono":"04121321544","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"Barcelona"},
-{"fecha":"2026-06-21 21:23:43","nombre":"Jesús Pérez","email":"75jesusperez@gmail.com","telefono":"04160155680","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Ciudad Ojeda"},
-{"fecha":"2026-06-22 05:32:28","nombre":"Gabriela","email":"ariannagt2019@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Higuerote"},
-{"fecha":"2026-06-22 16:35:38","nombre":"Jenny Araujo","email":"jennyaraujo0901@gmail.com","telefono":"+56964936269","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lara","localidad_inmueble":"Barquisimeto"},
-{"fecha":"2026-06-22 16:40:19","nombre":"Hernán Zamora","email":"hj141128@gmail.com","telefono":"04220319295","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"san pedro"},
-{"fecha":"2026-06-22 22:09:32","nombre":"Cristopher","email":"villabarroso88@gmail.com","telefono":"+34665482106","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Falcón","localidad_inmueble":"Chichiriviche"},
-{"fecha":"2026-06-23 18:40:11","nombre":"Yahendis","email":"yahendisc@gmail.com","telefono":"04146662526","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-06-23 18:47:53","nombre":"Yoheinis Corzo","email":"corzoyoheinis56@gmail.com","telefono":"04246677189","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-06-24 06:02:14","nombre":"Wilmer","email":"wilmerjosebenitezvillegas@gmail.com","telefono":"04142701751","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Baruta la Trinidad"},
-{"fecha":"2026-06-24 15:32:34","nombre":"Erika","email":"borgesseerika@gmail.com","telefono":"4227166805","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Táchira","localidad_inmueble":"San Cristóbal"}
+{"fecha":"2026-06-25 12:33:42","nombre":"Jeusmar camacho","email":"jeusmarjose@gmail.com","telefono":"04244965629","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Guacara"},
+{"fecha":"2026-06-25 14:32:51","nombre":"Am?rica Col?n","email":"ameruska@gmail.com","telefono":"04125124816","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
+{"fecha":"2026-06-25 18:21:14","nombre":"Victor Lamus","email":"lamusvictor022@gmail.com","telefono":"04246077319","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-06-27 11:03:14","nombre":"Cesar","email":"aguirreven@gmail.com","telefono":"4126808101","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Miranda","localidad_inmueble":"Chacaito"},
+{"fecha":"2026-06-27 17:45:39","nombre":"Ricardo Parra","email":"manuelparraz0829@gmail.com","telefono":"04262462459","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
+{"fecha":"2026-06-28 00:48:04","nombre":"Fray","email":"galindofray97@gmail.com","telefono":"04241875578 wasapp","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"la california"},
+{"fecha":"2026-06-28 17:21:34","nombre":"KrysdeVasco","email":"jhonvasco2350@gmail.com","telefono":"04148981662","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Miranda","localidad_inmueble":"Chacao"},
+{"fecha":"2026-06-29 03:58:51","nombre":"Lenin naranjo","email":"lanp_0685@hotmail.com","telefono":"04246913930","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"}
 ]
 }
 ]

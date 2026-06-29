@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-06-16 10:58:41","nombre":"Guy Lafrance","email":"guylafrance@yahoo.com","telefono":"8299694670","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Puerto Plata","localidad_inmueble":"San Felipe de Puerto Plata"}
+{"fecha":"2026-06-27 13:03:35","nombre":"CARLOS MANUEL FELICIANO CEDE?O","email":"cfeliciano9406@gmail.com","telefono":"8097534970","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"La Altagracia","localidad_inmueble":"Bayahibe"},
+{"fecha":"2026-06-28 11:02:31","nombre":"goldbet","email":"goldbetbupt@gmail.com","telefono":"87887217466","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago de los Caballeros"}
 ]
 }
 ]

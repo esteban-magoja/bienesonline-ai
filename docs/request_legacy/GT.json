@@ -3,9 +3,11 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-06-21 20:02:19","nombre":"Juan Bucaro","email":"juanbucaro@hotmail.com","telefono":"37417997","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
-{"fecha":"2026-06-21 23:01:43","nombre":"Pamela Perez","email":"perezpamela@gmail.com","telefono":"52084920","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Antigua Guatemala"},
-{"fecha":"2026-06-24 13:01:15","nombre":"Carlos Emmanuel Hernandez","email":"carher65@gmail.com","telefono":"7703677534","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sololá","localidad_inmueble":"San Pedro La Laguna"}
+{"fecha":"2026-06-25 17:04:02","nombre":"sandra celis","email":"chile2@icloud.com","telefono":"3065963191","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Santa Lucía Milpas Altas"},
+{"fecha":"2026-06-26 10:37:27","nombre":"laura","email":"lltzay1397@hotmail.com","telefono":"54283955","tipo_inmueble":"Condominio","tipo_operacion":"Venta","provincia_inmueble":"Suchitepéquez","localidad_inmueble":"Mazatenango"},
+{"fecha":"2026-06-26 12:36:36","nombre":"Javier del CId","email":"delcidvielman@gmail.com","telefono":"33234456","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
+{"fecha":"2026-06-26 18:35:31","nombre":"Javier del Cid","email":"dwlcidvielman@gmail.com","telefono":"33234456","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Ciudad de Guatemala"},
+{"fecha":"2026-06-27 13:21:07","nombre":"Jorge Buitrago","email":"jorge66a@hotmail.com","telefono":"39957485","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Santa Lucía Milpas Altas"}
 ]
 }
 ]

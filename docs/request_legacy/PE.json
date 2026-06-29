@@ -3,10 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-06-22 12:04:49","nombre":"Yadira","email":"dessiresalgadoreque@gmail.com","telefono":"957799331","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
-{"fecha":"2026-06-23 18:46:33","nombre":"Betsaida Arostegui","email":"bkac26@gmail.com","telefono":"974763340","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-06-23 18:51:59","nombre":"Betsaida","email":"bkac26@gmail.com","telefono":"974763340","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Pueblo libre"},
-{"fecha":"2026-06-23 23:24:41","nombre":"Carlos loaiza","email":"carloslv944@gmail.com","telefono":"924040166","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"}
+{"fecha":"2026-06-28 11:04:04","nombre":"Elvira Escudero","email":"elviraescuderovalencia@gmail.com","telefono":"986676646","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"}
 ]
 }
 ]

@@ -3,7 +3,9 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-06-24 12:01:40","nombre":"Zukeika","email":"sotozuleika0@gmail.com","telefono":"64841382","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Colón","localidad_inmueble":"Colón"}
+{"fecha":"2026-06-26 20:12:30","nombre":"Zukeika","email":"sotozuleika0@gmail.com","telefono":"64841382","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Colón","localidad_inmueble":"Colón"},
+{"fecha":"2026-06-27 23:40:03","nombre":"Faruk ahmed","email":"bathafaruk@gmail.com","telefono":"68756760","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"La Locería"},
+{"fecha":"2026-06-28 16:14:47","nombre":"Iv?n Mar","email":"marincolinaij@gmail.com","telefono":"62747338","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"San Miguelito"}
 ]
 }
 ]
