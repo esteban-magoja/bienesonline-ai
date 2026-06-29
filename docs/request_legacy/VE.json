@@ -4,7 +4,7 @@
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
 {"fecha":"2026-06-25 12:33:42","nombre":"Jeusmar camacho","email":"jeusmarjose@gmail.com","telefono":"04244965629","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Guacara"},
-{"fecha":"2026-06-25 14:32:51","nombre":"Am?rica Col?n","email":"ameruska@gmail.com","telefono":"04125124816","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
+{"fecha":"2026-06-25 14:32:51","nombre":"América Colón","email":"ameruska@gmail.com","telefono":"04125124816","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
 {"fecha":"2026-06-25 18:21:14","nombre":"Victor Lamus","email":"lamusvictor022@gmail.com","telefono":"04246077319","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
 {"fecha":"2026-06-27 11:03:14","nombre":"Cesar","email":"aguirreven@gmail.com","telefono":"4126808101","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Miranda","localidad_inmueble":"Chacaito"},
 {"fecha":"2026-06-27 17:45:39","nombre":"Ricardo Parra","email":"manuelparraz0829@gmail.com","telefono":"04262462459","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},

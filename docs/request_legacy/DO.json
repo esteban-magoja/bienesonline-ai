@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-06-27 13:03:35","nombre":"CARLOS MANUEL FELICIANO CEDE?O","email":"cfeliciano9406@gmail.com","telefono":"8097534970","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"La Altagracia","localidad_inmueble":"Bayahibe"},
-{"fecha":"2026-06-28 11:02:31","nombre":"goldbet","email":"goldbetbupt@gmail.com","telefono":"87887217466","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago de los Caballeros"}
+{"fecha":"2026-06-27 13:03:35","nombre":"CARLOS MANUEL FELICIANO CEDEÑO","email":"cfeliciano9406@gmail.com","telefono":"8097534970","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"La Altagracia","localidad_inmueble":"Bayahibe"}
 ]
 }
 ]

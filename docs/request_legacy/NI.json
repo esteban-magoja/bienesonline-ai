@@ -3,8 +3,6 @@
 {"type":"database","name":"admin_bienes_nicaragua"},
 {"type":"table","name":"c","database":"admin_bienes_nicaragua","data":
 [
-{"fecha":"2026-06-28 16:12:13","nombre":"Fabiola","email":"guerrerofabiola575@gmail.com","telefono":"571 671 5286","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Managua","localidad_inmueble":"Managua"},
-{"fecha":"2026-06-28 16:20:06","nombre":"Fabiola","email":"guerrerofabiola575@gmail.com","telefono":"571 671 5286","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Managua","localidad_inmueble":"Managua"},
 {"fecha":"2026-06-28 16:27:46","nombre":"Fabiola","email":"guerrerofabiola575@gmail.com","telefono":"571 671 5286","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Managua","localidad_inmueble":"Managua"}
 ]
 }
