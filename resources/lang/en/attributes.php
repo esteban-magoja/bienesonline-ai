@@ -47,4 +47,6 @@ return [
     'date' => 'date',
     'time' => 'time',
     'status' => 'status',
+    'lotsize' => 'lot size',
+    'youtube_url' => 'YouTube link',
 ];

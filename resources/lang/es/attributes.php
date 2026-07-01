@@ -47,4 +47,6 @@ return [
     'date' => 'fecha',
     'time' => 'hora',
     'status' => 'estado',
+    'lotsize' => 'superficie de terreno',
+    'youtube_url' => 'enlace de YouTube',
 ];

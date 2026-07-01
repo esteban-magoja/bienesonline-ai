@@ -60,6 +60,7 @@ return [
     'select_property_type' => 'Selecciona un tipo',
     'select_transaction_type' => 'Selecciona una operación',
     'select_country_first' => 'Primero selecciona un país',
+    'validation_errors_title' => 'Revisa los siguientes campos antes de continuar:',
     'search_location' => 'Buscar ubicación',
     'map_location' => 'Ubicación en el Mapa (opcional)',
     'select_country_for_map' => 'Por favor selecciona un país para mostrar el mapa.',
