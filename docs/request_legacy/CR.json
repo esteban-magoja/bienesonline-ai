@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-06-25 15:42:02","nombre":"Franchesca","email":"franchescavalverdes@gmail.com","telefono":"83419926","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Tibás"},
-{"fecha":"2026-06-28 23:56:21","nombre":"Mariel","email":"marielibarra21@hotmail.com","telefono":"61242104","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Tamarindo"}
+{"fecha":"2026-06-28 23:56:21","nombre":"Mariel","email":"marielibarra21@hotmail.com","telefono":"61242104","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Tamarindo"},
+{"fecha":"2026-07-01 01:33:24","nombre":"Alejandro Rodriguez moya","email":"arodriguez@para-arq.com","telefono":"63354803","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"Palmares"},
+{"fecha":"2026-07-01 01:59:43","nombre":"Alejandro Rodriguez moya","email":"arodriguez@para-arq.com","telefono":"63354803","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"San Ramón"}
 ]
 }
 ]

@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-06-26 10:23:00","nombre":"Andrea Carreno","email":"emilia022018@gmail.com","telefono":"3001603013","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"}
+{"fecha":"2026-06-30 03:41:56","nombre":"Marisol","email":"marisolarreaga@gmail.com","telefono":"3209159986","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Tolima","localidad_inmueble":"Melgar"},
+{"fecha":"2026-07-01 03:57:01","nombre":"LEONARDO MANTILLA","email":"leonardomantillagonzalez@gmail.com","telefono":"3102270545","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"}
 ]
 }
 ]

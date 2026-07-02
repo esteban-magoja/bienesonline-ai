@@ -3,13 +3,13 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-06-25 13:35:56","nombre":"SUGEY","email":"sugeyalcocer@outlook.com","telefono":"7471276312","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Guerrero","localidad_inmueble":"Chilpancingo de los Bravo"},
-{"fecha":"2026-06-25 16:05:58","nombre":"Orianna Vildosola Silva","email":"ovildosola@hotmail.com","telefono":"9211010921","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"San Andrés Tuxtla"},
-{"fecha":"2026-06-27 14:55:09","nombre":"Alejandro Olvera","email":"0aaalejandro@gmail.com","telefono":"4423692898","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
-{"fecha":"2026-06-27 19:34:54","nombre":"Miguel Ángel López","email":"angel_wcb@prodigy.net.mx","telefono":"5572204720","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
 {"fecha":"2026-06-28 13:33:15","nombre":"Victor","email":"espinov@gmail.com","telefono":"5516144155","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
 {"fecha":"2026-06-28 20:56:05","nombre":"LAURA URIBE","email":"lru7@live.com","telefono":"4421709269","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
-{"fecha":"2026-06-28 21:42:16","nombre":"William Omar Hernández Madrigal","email":"whernandezmadrigal@gmail.com","telefono":"3333934694","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tonalá"}
+{"fecha":"2026-06-28 21:42:16","nombre":"William Omar Hernandez Madrigal","email":"whernandezmadrigal@gmail.com","telefono":"3333934694","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tonalá"},
+{"fecha":"2026-06-29 13:40:33","nombre":"ANA VERONICA BUSTOS HERNANDEZ","email":"veronicabustosh@hotmail.com","telefono":"5541919622","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Morelos","localidad_inmueble":"Tlayacapan"},
+{"fecha":"2026-06-29 17:28:44","nombre":"Natalia","email":"nattcalma@gmail.com","telefono":"7443393706","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
+{"fecha":"2026-07-01 03:30:56","nombre":"Ana Itzel Ayala L?pez","email":"ayalalopez8814@gmail.com","telefono":"5513936299","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Coyoacán"},
+{"fecha":"2026-07-01 12:21:40","nombre":"Rudy Rosales","email":"rudyrosales@mac.com","telefono":"5554038057","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Coyoacán"}
 ]
 }
 ]

@@ -3,10 +3,7 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-06-11 11:33:15","nombre":"ALVARO XAVIER DAVILA VILLAGRAN","email":"alvaro.zamorano18@gmail.com","telefono":"0981803757","tipo_inmueble":"Finca","tipo_operacion":"Arriendo","provincia_inmueble":"Manabi","localidad_inmueble":"LAS VAINAS"},
-{"fecha":"2026-06-11 11:41:01","nombre":"ALVARO XAVIER DAVILA VILLAGRAN","email":"alvaro.zamorano18@gmail.com","telefono":"0981803757","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Pichincha","localidad_inmueble":"Puerto Quito"},
-{"fecha":"2026-06-11 11:52:03","nombre":"ALVARO DAVILA","email":"alvaro.zamorano18@gmail.com","telefono":"0981803757","tipo_inmueble":"Quinta","tipo_operacion":"Venta","provincia_inmueble":"Manabi","localidad_inmueble":"Flavio Alfaro"},
-{"fecha":"2026-06-11 20:01:46","nombre":"Maria Cristina","email":"cristina.polanco.salgado@gmail.com","telefono":"+593 99 736 4631","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Rumiñahui"}
+{"fecha":"2026-07-01 13:21:04","nombre":"carlos amador","email":"camador117@hotmail.com","telefono":"0980869885","tipo_inmueble":"Hacienda","tipo_operacion":"Venta","provincia_inmueble":"Guayas","localidad_inmueble":"El Triunfo"}
 ]
 }
 ]
