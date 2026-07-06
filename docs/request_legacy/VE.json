@@ -3,16 +3,11 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-06-28 17:21:34","nombre":"KrysdeVasco","email":"jhonvasco2350@gmail.com","telefono":"04148981662","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Miranda","localidad_inmueble":"Chacao"},
-{"fecha":"2026-06-29 03:58:51","nombre":"Lenin Naranjo","email":"lanp_0685@hotmail.com","telefono":"04246913930","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-06-29 12:34:16","nombre":"Carlos Rojas","email":"rojashery@gmail.com","telefono":"04145388164","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Lara","localidad_inmueble":"Cabudare"},
-{"fecha":"2026-06-29 18:28:17","nombre":"iris pena","email":"ipena@maploca.com","telefono":"04241603213","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"San Diego"},
-{"fecha":"2026-06-30 08:06:03","nombre":"Iris Peña","email":"ipena@maploca.com","telefono":"04241603213","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
-{"fecha":"2026-06-30 15:28:57","nombre":"Marianyely torres","email":"mt9691658@gmail.com","telefono":"04243131103","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Yaracuy","localidad_inmueble":"Independencia"},
-{"fecha":"2026-06-30 15:39:07","nombre":"elkin alejandro archibold archibold","email":"elkin.aaa@hotmail.com","telefono":"3142255276","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Táchira","localidad_inmueble":"Cordero"},
-{"fecha":"2026-07-01 09:06:52","nombre":"Luisa palmar","email":"LUISAPALMAR64@GMAIL.COM","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"San Francisco"},
-{"fecha":"2026-07-01 12:45:27","nombre":"Alicia Ambrosino","email":"aliciaambrosinos@gmail.com","telefono":"0416-6396859","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"San Antonio de Los Altos"},
-{"fecha":"2026-07-02 05:52:36","nombre":"Nellys trosel","email":"troselnellys@gmail.com","telefono":"04144727183","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Naguanagua"}
+{"fecha":"2026-07-02 11:09:22","nombre":"Thatyana","email":"thatyanaalexandrar@gmail.com","telefono":"04244556466","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"San Diego"},
+{"fecha":"2026-07-02 13:12:05","nombre":"Elaine","email":"nanicenteno1012@gmail.com","telefono":"04122476490","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Tabay"},
+{"fecha":"2026-07-03 12:03:04","nombre":"Xiomara Lameda","email":"xiomaralameda48@gmail.com","telefono":"04245379067","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Lara","localidad_inmueble":"Barquisimeto"},
+{"fecha":"2026-07-03 13:08:20","nombre":"Alex Almeida","email":"alexalmeidavic@gmail.com","telefono":"4246579877","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-07-05 18:30:06","nombre":"Mary","email":"rangelmarianela@gmail.com","telefono":"04247252455","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Urbanización Don Pancho"}
 ]
 }
 ]

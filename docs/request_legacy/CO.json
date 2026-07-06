@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-06-30 03:41:56","nombre":"Marisol","email":"marisolarreaga@gmail.com","telefono":"3209159986","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Tolima","localidad_inmueble":"Melgar"},
-{"fecha":"2026-07-01 03:57:01","nombre":"LEONARDO MANTILLA","email":"leonardomantillagonzalez@gmail.com","telefono":"3102270545","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"}
+{"fecha":"2026-07-02 12:46:09","nombre":"Mariana","email":"endesmariana@gmail.com","telefono":"3153153619","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Cajicá"},
+{"fecha":"2026-07-05 23:26:48","nombre":"Maria Victoria Osorio","email":"mariaveo@gmail.com","telefono":"3162312647","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Chía"}
 ]
 }
 ]

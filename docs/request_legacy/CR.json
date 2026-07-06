@@ -3,9 +3,12 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-06-28 23:56:21","nombre":"Mariel","email":"marielibarra21@hotmail.com","telefono":"61242104","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Tamarindo"},
-{"fecha":"2026-07-01 01:33:24","nombre":"Alejandro Rodriguez moya","email":"arodriguez@para-arq.com","telefono":"63354803","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"Palmares"},
-{"fecha":"2026-07-01 01:59:43","nombre":"Alejandro Rodriguez moya","email":"arodriguez@para-arq.com","telefono":"63354803","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"San Ramón"}
+{"fecha":"2026-07-03 15:18:28","nombre":"Bernardo","email":"machokopper@gmail.com","telefono":"85700110","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"},
+{"fecha":"2026-07-03 22:41:45","nombre":"Daniel Peralta","email":"danielperaltah@hotmail.com","telefono":"83164045","tipo_inmueble":"Bodega","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Pozos"},
+{"fecha":"2026-07-03 22:53:12","nombre":"Daniel Peralta","email":"danielperaltah@hotmail.com","telefono":"83164045","tipo_inmueble":"Bodega","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"},
+{"fecha":"2026-07-03 22:55:34","nombre":"Daniel Peralta","email":"danielperaltah@hotmail.com","telefono":"83164045","tipo_inmueble":"Bodega","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"San José"},
+{"fecha":"2026-07-03 23:00:30","nombre":"Daniel Peralta","email":"danielperaltah@hotmail.com","telefono":"83164045","tipo_inmueble":"Bodega","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Uruca"},
+{"fecha":"2026-07-05 11:55:23","nombre":"Lili","email":"lilicantrell.cr@gmail.com","telefono":"87639828","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Heredia"}
 ]
 }
 ]

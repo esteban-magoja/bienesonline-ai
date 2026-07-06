@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-06-28 11:04:04","nombre":"Elvira Escudero","email":"elviraescuderovalencia@gmail.com","telefono":"986676646","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-06-29 18:09:01","nombre":"ANGEL BALDEON ROJAS","email":"yystorepe@gmail.com","telefono":"912686793","tipo_inmueble":"Industrial","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Cercado De Lima"}
+{"fecha":"2026-07-05 23:44:31","nombre":"Gonzalo","email":"tarush647@gmail.com","telefono":"904092013","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"}
 ]
 }
 ]

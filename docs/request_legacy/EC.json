@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-07-01 13:21:04","nombre":"carlos amador","email":"camador117@hotmail.com","telefono":"0980869885","tipo_inmueble":"Hacienda","tipo_operacion":"Venta","provincia_inmueble":"Guayas","localidad_inmueble":"El Triunfo"}
+{"fecha":"2026-07-04 12:09:10","nombre":"CARLOS ABAD","email":"carlosabad2010@hotmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Canar","localidad_inmueble":"Azogues"}
 ]
 }
 ]

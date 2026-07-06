@@ -3,7 +3,11 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-07-02 09:52:44","nombre":"Alberto Pineda","email":"albertoisaacpineda@gmail.com","telefono":"59449478","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"}
+{"fecha":"2026-07-02 09:52:44","nombre":"Alberto Pineda","email":"albertoisaacpineda@gmail.com","telefono":"59449478","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
+{"fecha":"2026-07-04 02:59:57","nombre":"Edwin Augusto Vela Castañeda","email":"eavelac@gmail.com","telefono":"35708106","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Villa Nueva"},
+{"fecha":"2026-07-04 10:20:14","nombre":"Andres Herrera","email":"andrew_c5@yahoo.com","telefono":"42678327","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
+{"fecha":"2026-07-04 10:21:30","nombre":"Andres Herrera","email":"andrew_c5@yahoo.com","telefono":"42678327","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Pinares Mixco"},
+{"fecha":"2026-07-04 17:29:53","nombre":"Andres Herrera","email":"andrew_c5@yahoo.com","telefono":"42678327","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"}
 ]
 }
 ]
