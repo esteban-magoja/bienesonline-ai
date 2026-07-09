@@ -3,11 +3,15 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-07-02 11:09:22","nombre":"Thatyana","email":"thatyanaalexandrar@gmail.com","telefono":"04244556466","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"San Diego"},
-{"fecha":"2026-07-02 13:12:05","nombre":"Elaine","email":"nanicenteno1012@gmail.com","telefono":"04122476490","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Tabay"},
-{"fecha":"2026-07-03 12:03:04","nombre":"Xiomara Lameda","email":"xiomaralameda48@gmail.com","telefono":"04245379067","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Lara","localidad_inmueble":"Barquisimeto"},
-{"fecha":"2026-07-03 13:08:20","nombre":"Alex Almeida","email":"alexalmeidavic@gmail.com","telefono":"4246579877","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-07-05 18:30:06","nombre":"Mary","email":"rangelmarianela@gmail.com","telefono":"04247252455","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Urbanización Don Pancho"}
+{"fecha":"2026-07-05 18:30:06","nombre":"Mary","email":"rangelmarianela@gmail.com","telefono":"04247252455","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Urbanización Don Pancho"},
+{"fecha":"2026-07-06 17:23:58","nombre":"Keinner","email":"keinnervarela23@gmail.com","telefono":"04247388163","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Táchira","localidad_inmueble":"San Cristóbal"},
+{"fecha":"2026-07-06 21:05:38","nombre":"Mariangela","email":"angeleslizarazo20@gmail.com","telefono":"04224990997","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Naguanagua"},
+{"fecha":"2026-07-07 03:00:07","nombre":"Wister Jose Marquez Alfonzo","email":"wisterj.marquez@gmail.com","telefono":"00410793219181","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Mérida"},
+{"fecha":"2026-07-07 15:54:16","nombre":"GRACIETTE CAMACHO","email":"graciettec@gmail.com","telefono":"13057428619","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"},
+{"fecha":"2026-07-07 19:36:46","nombre":"Maryorie Martinez","email":"kateriera09@gmail.com","telefono":"04245385131","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Lara","localidad_inmueble":"Cabudare"},
+{"fecha":"2026-07-07 20:38:19","nombre":"Víctor Salgado","email":"deuspater2027@gmail.com","telefono":"04249042153","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Monagas","localidad_inmueble":"Maturin"},
+{"fecha":"2026-07-08 10:48:16","nombre":"wilfredo blanco","email":"blancowilfredo812@gmail.com","telefono":"4226342297","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"san pedro"},
+{"fecha":"2026-07-08 22:25:04","nombre":"José Gregorio Veliz","email":"josegregorioveliz63@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Naguanagua"}
 ]
 }
 ]

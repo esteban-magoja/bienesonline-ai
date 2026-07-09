@@ -3,12 +3,9 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-07-02 15:15:44","nombre":"CEA MEXICALI","email":"mexicalicea@gmail.com","telefono":"6862920533","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Baja California","localidad_inmueble":"Tecate"},
-{"fecha":"2026-07-03 00:05:07","nombre":"Josué Iván Victoria","email":"jehosuavic@gmail.com","telefono":"4611193840","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guanajuato","localidad_inmueble":"Celaya"},
-{"fecha":"2026-07-04 17:00:23","nombre":"Abigail Gómez","email":"gomezuae@gmail.com","telefono":"4423457488","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
-{"fecha":"2026-07-04 20:41:35","nombre":"Jesús Ureña","email":"gdjurena@gmail.com","telefono":"3328357172","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlajomulco de Zúñiga"},
 {"fecha":"2026-07-05 17:46:36","nombre":"Ingrid cruz","email":"ingridherz106@gmail.com","telefono":"5545451019","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
-{"fecha":"2026-07-05 19:07:59","nombre":"Karen lima","email":"karenlimaco3@gmail.com","telefono":"5528484473","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuajimalpa de Morelos"}
+{"fecha":"2026-07-05 19:07:59","nombre":"Karen lima","email":"karenlimaco3@gmail.com","telefono":"5528484473","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuajimalpa de Morelos"},
+{"fecha":"2026-07-08 00:06:45","nombre":"Jesús Ureña","email":"gdjurena@gmail.com","telefono":"3328357172","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlajomulco de Zúñiga"}
 ]
 }
 ]

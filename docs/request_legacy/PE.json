@@ -3,7 +3,9 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-07-05 23:44:31","nombre":"Gonzalo","email":"tarush647@gmail.com","telefono":"904092013","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"}
+{"fecha":"2026-07-05 23:44:31","nombre":"Gonzalo","email":"tarush647@gmail.com","telefono":"904092013","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"},
+{"fecha":"2026-07-06 19:41:46","nombre":"Brunella","email":"grettasignori@gmail.com","telefono":"956973477","tipo_inmueble":"Industrial","tipo_operacion":"Venta","provincia_inmueble":"Callao","localidad_inmueble":"Callao"},
+{"fecha":"2026-07-07 13:29:36","nombre":"Leonel","email":"leovalverde173011@gmail.com","telefono":"913170991","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Trujillo","localidad_inmueble":"Victor Larco Herrera"}
 ]
 }
 ]
