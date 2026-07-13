@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-06-27 13:03:35","nombre":"CARLOS MANUEL FELICIANO CEDEÑO","email":"cfeliciano9406@gmail.com","telefono":"8097534970","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"La Altagracia","localidad_inmueble":"Bayahibe"}
+{"fecha":"2026-07-09 16:50:00","nombre":"Eliana","email":"meliana.acosta@gmail.com","telefono":"8297143842","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Nacional","localidad_inmueble":"Santo Domingo de Guzmán"},
+{"fecha":"2026-07-12 12:23:34","nombre":"Janet Semerene","email":"semerenejanet2@gmail.com","telefono":"+18493971562","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santo Domingo","localidad_inmueble":"Distrito nacional"}
 ]
 }
 ]

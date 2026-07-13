@@ -5,7 +5,12 @@
     use Filament\Forms\Contracts\HasForms;
     use Filament\Forms\Form;
     use Filament\Schemas\Schema;
+    use Filament\Schemas\Components\Utilities\Get;
     use Filament\Notifications\Notification;
+    use App\Models\CountrySetting;
+    use Nnjeim\World\Models\Country;
+    use Nnjeim\World\Models\State;
+    use Nnjeim\World\Models\City;
 	use Livewire\Volt\Component;
 	use Wave\Traits\HasDynamicFields;
     use Wave\ApiKey;
@@ -20,9 +25,66 @@
         public ?array $data = [];
 		public ?string $avatar = null;
 
-		public function mount(): void
+        public function mount(): void
         {
             $this->form->fill();
+        }
+
+        protected function resolveCountryId(): ?int
+        {
+            $name = auth()->user()->country;
+            if (empty($name)) {
+                return null;
+            }
+            return Country::where('name', $name)->value('id');
+        }
+
+        protected function resolveStateId(): ?int
+        {
+            $name = auth()->user()->state;
+            $countryId = $this->resolveCountryId();
+            if (empty($name) || empty($countryId)) {
+                return null;
+            }
+            return State::where('name', $name)
+                ->where('country_id', $countryId)
+                ->value('id');
+        }
+
+        protected function resolveCityId(): ?int
+        {
+            $name = auth()->user()->city;
+            $stateId = $this->resolveStateId();
+            if (empty($name) || empty($stateId)) {
+                return null;
+            }
+            return City::where('name', $name)
+                ->where('state_id', $stateId)
+                ->value('id');
+        }
+
+        protected function resolveStateOptions(Get $get): array
+        {
+            $countryId = $get('country');
+            if (empty($countryId)) {
+                return [];
+            }
+            return State::where('country_id', $countryId)
+                ->orderBy('name')
+                ->pluck('name', 'id')
+                ->all();
+        }
+
+        protected function resolveCityOptions(Get $get): array
+        {
+            $stateId = $get('state');
+            if (empty($stateId)) {
+                return [];
+            }
+            return City::where('state_id', $stateId)
+                ->orderBy('name')
+                ->pluck('name', 'id')
+                ->all();
         }
 
        public function form(Schema $schema): Schema
@@ -49,22 +111,37 @@
                         ->required()
 						->rules('required|string|max:20')
 						->default(auth()->user()->movil),
+					\Filament\Forms\Components\Select::make('country')
+                        ->label(__('settings.profile.country'))
+                        ->options(CountrySetting::getEnabledCountries()->pluck('name', 'id')->all())
+                        ->placeholder(__('settings.profile.select_country'))
+                        ->searchable()
+                        ->live()
+                        ->rules('nullable|integer|exists:countries,id')
+                        ->default(fn () => $this->resolveCountryId()),
+					\Filament\Forms\Components\Select::make('state')
+                        ->label(__('settings.profile.state'))
+                        ->options(fn (Get $get): array => $this->resolveStateOptions($get))
+                        ->placeholder(fn (Get $get): string => $get('country')
+                            ? __('settings.profile.select_state')
+                            : __('settings.profile.select_state_first'))
+                        ->searchable()
+                        ->live()
+                        ->rules('nullable|integer|exists:states,id')
+                        ->default(fn () => $this->resolveStateId()),
+					\Filament\Forms\Components\Select::make('city')
+                        ->label(__('settings.profile.city'))
+                        ->options(fn (Get $get): array => $this->resolveCityOptions($get))
+                        ->placeholder(fn (Get $get): string => $get('state')
+                            ? __('settings.profile.select_city')
+                            : __('settings.profile.select_city_first'))
+                        ->searchable()
+                        ->rules('nullable|integer|exists:cities,id')
+                        ->default(fn () => $this->resolveCityId()),
 					\Filament\Forms\Components\TextInput::make('address')
                         ->label(__('settings.profile.address'))
 						->rules('nullable|string|max:255')
 						->default(auth()->user()->address),
-					\Filament\Forms\Components\TextInput::make('city')
-                        ->label(__('settings.profile.city'))
-						->rules('nullable|string|max:255')
-						->default(auth()->user()->city),
-					\Filament\Forms\Components\TextInput::make('state')
-                        ->label(__('settings.profile.state'))
-						->rules('nullable|string|max:255')
-						->default(auth()->user()->state),
-					\Filament\Forms\Components\TextInput::make('country')
-                        ->label(__('settings.profile.country'))
-						->rules('nullable|string|max:255')
-						->default(auth()->user()->country),
 					\Filament\Forms\Components\Select::make('locale')
                         ->label(__('settings.profile.language'))
                         ->helperText(__('settings.profile.language_description'))
@@ -74,12 +151,6 @@
 						])
 						->default(auth()->user()->locale ?? 'es')
 						->required(),
-					\Filament\Forms\Components\Toggle::make('whatsapp_opt_in')
-                        ->label(__('settings.profile.whatsapp_opt_in'))
-                        ->helperText(__('settings.profile.whatsapp_opt_in_description'))
-                        ->default(auth()->user()->whatsapp_opt_in ?? false)
-                        ->onColor('success')
-                        ->offColor('danger'),
 					...($this->dynamicFields( config('profile.fields') ))
                 ])
                 ->statePath('data');
@@ -133,21 +204,19 @@
 		}
 
 		private function saveFormFields($state){
+			$countryId = $state['country'] ?? null;
+			$stateId = $state['state'] ?? null;
+			$cityId = $state['city'] ?? null;
+
 			auth()->user()->name = $state['name'];
 			auth()->user()->email = $state['email'];
 			auth()->user()->agency = $state['agency'] ?? null;
 			auth()->user()->movil = $state['movil'] ?? null;
 			auth()->user()->address = $state['address'] ?? null;
-			auth()->user()->city = $state['city'] ?? null;
-			auth()->user()->state = $state['state'] ?? null;
-			auth()->user()->country = $state['country'] ?? null;
+			auth()->user()->country = $countryId ? Country::find($countryId)?->name : null;
+			auth()->user()->state = $stateId ? State::find($stateId)?->name : null;
+			auth()->user()->city = $cityId ? City::find($cityId)?->name : null;
 			auth()->user()->locale = $state['locale'] ?? 'es';
-			auth()->user()->whatsapp_opt_in = $state['whatsapp_opt_in'] ?? false;
-			if ($state['whatsapp_opt_in'] && !auth()->user()->whatsapp_opt_in_at) {
-                auth()->user()->whatsapp_opt_in_at = now();
-            } elseif (!$state['whatsapp_opt_in']) {
-                auth()->user()->whatsapp_opt_in_at = null;
-            }
 			auth()->user()->save();
 			$fieldsToSave = config('profile.fields');
 			$this->saveDynamicFields($fieldsToSave);

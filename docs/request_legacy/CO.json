@@ -3,10 +3,9 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-07-05 23:26:48","nombre":"Maria Victoria Osorio","email":"mariaveo@gmail.com","telefono":"3162312647","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Chía"},
-{"fecha":"2026-07-07 08:31:46","nombre":"Lorena plazas","email":"solanslorenaplazas@gmail.com","telefono":"3058183945","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"},
-{"fecha":"2026-07-08 16:41:28","nombre":"Genoveva saucedo","email":"genovevas039@gmail.com","telefono":"3115383594","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"},
-{"fecha":"2026-07-09 01:00:36","nombre":"felix vargas","email":"felix.f83@gmail.com","telefono":"3004117204","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"}
+{"fecha":"2026-07-09 14:20:29","nombre":"Oscar Antun Castro","email":"oscant7093@yahoo.com","telefono":"3006330896","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"},
+{"fecha":"2026-07-09 16:13:42","nombre":"Bibiana","email":"bibianabonilla6@gmail.com","telefono":"3113373078","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Toberín"},
+{"fecha":"2026-07-10 19:34:55","nombre":"Eliana Andrea Pedraza Sabogal","email":"elianapedrazasabogal@gmail.com","telefono":"013142987214","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Chapinero"}
 ]
 }
 ]

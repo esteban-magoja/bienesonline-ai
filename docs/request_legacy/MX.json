@@ -3,9 +3,7 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-07-05 17:46:36","nombre":"Ingrid cruz","email":"ingridherz106@gmail.com","telefono":"5545451019","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
-{"fecha":"2026-07-05 19:07:59","nombre":"Karen lima","email":"karenlimaco3@gmail.com","telefono":"5528484473","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Cuajimalpa de Morelos"},
-{"fecha":"2026-07-08 00:06:45","nombre":"Jesús Ureña","email":"gdjurena@gmail.com","telefono":"3328357172","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlajomulco de Zúñiga"}
+{"fecha":"2026-07-13 09:16:17","nombre":"Yedani López","email":"esbeidyparra00@gmail.com","telefono":"2871107688","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Oaxaca","localidad_inmueble":"San Juan Bautista Tuxtepec"}
 ]
 }
 ]

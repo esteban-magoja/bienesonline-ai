@@ -3,9 +3,8 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-07-05 23:44:31","nombre":"Gonzalo","email":"tarush647@gmail.com","telefono":"904092013","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"},
-{"fecha":"2026-07-06 19:41:46","nombre":"Brunella","email":"grettasignori@gmail.com","telefono":"956973477","tipo_inmueble":"Industrial","tipo_operacion":"Venta","provincia_inmueble":"Callao","localidad_inmueble":"Callao"},
-{"fecha":"2026-07-07 13:29:36","nombre":"Leonel","email":"leovalverde173011@gmail.com","telefono":"913170991","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Trujillo","localidad_inmueble":"Victor Larco Herrera"}
+{"fecha":"2026-07-09 23:54:43","nombre":"Lakeli","email":"lakelithcl@gmail.com","telefono":"985489950","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Tacna","localidad_inmueble":"Tacna"},
+{"fecha":"2026-07-12 16:36:15","nombre":"Elizabeth","email":"nicolhilario70@gmail.com","telefono":"963554142","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"}
 ]
 }
 ]

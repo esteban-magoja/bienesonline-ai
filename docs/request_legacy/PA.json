@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-07-03 13:11:00","nombre":"Genaro Abrego","email":"abrego1214@gmail.com","telefono":"67713788","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Chiriquí","localidad_inmueble":"David"}
+{"fecha":"2026-07-09 21:50:19","nombre":"Yohelis pinto","email":"pintoyohelis074@gmail.com","telefono":"65586275","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Colón","localidad_inmueble":"Buena Vista"}
 ]
 }
 ]

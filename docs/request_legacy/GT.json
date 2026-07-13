@@ -3,9 +3,8 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-07-06 12:47:54","nombre":"Lic. Miguel Ceballos","email":"pastorceballos33@gmail.com","telefono":"56322890","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Escuintla","localidad_inmueble":"Palín"},
-{"fecha":"2026-07-06 22:27:46","nombre":"Rosangela","email":"r.angelacabrera@gmail.com","telefono":"54586923","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
-{"fecha":"2026-07-08 13:25:16","nombre":"Amoz Murga","email":"joelamoz1973@gmail.com","telefono":"55952039","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Alta Verapaz","localidad_inmueble":"San Cristóbal Verapaz"}
+{"fecha":"2026-07-12 10:35:15","nombre":"Vitti de Ramos","email":"vittideramos@gmail.com","telefono":"42184416","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
+{"fecha":"2026-07-12 18:55:08","nombre":"Andres Herrera","email":"andrew_c5@yahoo.com","telefono":"42648327","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"}
 ]
 }
 ]

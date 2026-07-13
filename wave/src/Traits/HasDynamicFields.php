@@ -10,7 +10,7 @@ trait HasDynamicFields
     {
         $dynamicFields = [];
         foreach ($fields as $field) {
-            $key = Str::slug($field['label']);
+            $key = $field['key'] ?? Str::slug($field['label']);
 
             if (! class_exists($field['type'])) {
                 $fieldType = '\Filament\Forms\Components\\'.$field['type'];
@@ -21,7 +21,11 @@ trait HasDynamicFields
             $newField = $fieldType::make($key);
 
             if (isset($field['label'])) {
-                $newField->label($field['label']);
+                $label = $field['label'];
+                if (is_string($label) && str_contains($label, '.') && ! str_contains($label, ' ')) {
+                    $label = __($label);
+                }
+                $newField->label($label);
             }
 
             if (isset($field['options'])) {
@@ -39,6 +43,14 @@ trait HasDynamicFields
                 if (in_array('required', $rules)) {
                     $newField->required();
                 }
+            }
+
+            if (isset($field['rows']) && method_exists($newField, 'rows')) {
+                $newField->rows($field['rows']);
+            }
+
+            if (isset($field['cols']) && method_exists($newField, 'cols')) {
+                $newField->cols($field['cols']);
             }
 
             $keyValue = auth()->user()->profileKeyValues->where('key', $key)->first();
@@ -63,7 +75,7 @@ trait HasDynamicFields
     {
         $state = $this->form->getState();
         foreach ($fields as $field) {
-            $key = Str::slug($field['label']);
+            $key = $field['key'] ?? Str::slug($field['label']);
 
             if (isset($state[$key])) {
                 $value = $state[$key];

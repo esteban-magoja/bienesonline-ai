@@ -25,6 +25,11 @@ return [
         'city' => 'Ciudad',
         'state' => 'Estado/Provincia',
         'country' => 'País',
+        'select_country' => 'Selecciona un país',
+        'select_state' => 'Selecciona una provincia/estado',
+        'select_city' => 'Selecciona una ciudad',
+        'select_state_first' => 'Primero selecciona un país',
+        'select_city_first' => 'Primero selecciona una provincia/estado',
         'avatar' => 'Foto de perfil',
         'change_avatar' => 'Cambiar foto',
         'save' => 'Guardar Cambios',
@@ -33,6 +38,7 @@ return [
         'language_description' => 'Selecciona el idioma para emails y notificaciones',
         'whatsapp_opt_in' => 'Notificaciones por WhatsApp',
         'whatsapp_opt_in_description' => 'Recibir alertas de matches, nuevas propiedades y novedades por WhatsApp. Podés desactivarlo en cualquier momento.',
+        'company_description' => 'Descripción de la empresa',
     ],
 
     // Security

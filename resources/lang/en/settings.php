@@ -25,6 +25,11 @@ return [
         'city' => 'City',
         'state' => 'State/Province',
         'country' => 'Country',
+        'select_country' => 'Select a country',
+        'select_state' => 'Select a state/province',
+        'select_city' => 'Select a city',
+        'select_state_first' => 'Select a country first',
+        'select_city_first' => 'Select a state/province first',
         'avatar' => 'Profile Photo',
         'change_avatar' => 'Change Photo',
         'save' => 'Save Changes',
@@ -33,6 +38,7 @@ return [
         'language_description' => 'Select your language for emails and notifications',
         'whatsapp_opt_in' => 'WhatsApp Notifications',
         'whatsapp_opt_in_description' => 'Receive match alerts, new properties and updates via WhatsApp. You can disable it at any time.',
+        'company_description' => 'Company Description',
     ],
 
     // Security
