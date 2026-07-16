@@ -3,10 +3,9 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-07-05 11:55:23","nombre":"Lili","email":"lilicantrell.cr@gmail.com","telefono":"87639828","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Heredia"},
-{"fecha":"2026-07-06 18:32:42","nombre":"María Jesús Zúñiga","email":"machuzuto@gmail.com","telefono":"60482545","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Mora"},
-{"fecha":"2026-07-08 18:16:57","nombre":"Nicole Tames","email":"nico.tames864@gmail.com","telefono":"85415901","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Ulloa"},
-{"fecha":"2026-07-09 00:59:04","nombre":"Rebeca Osuna","email":"rebeca_osuna@outlook.com","telefono":"62687453","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Heredia"}
+{"fecha":"2026-07-13 17:55:58","nombre":"Nicole Tames","email":"nico.tames864@gmail.com","telefono":"85415902","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Ulloa"},
+{"fecha":"2026-07-14 23:09:41","nombre":"Michael Bolaños Zamora","email":"mistudio26@gmail.com","telefono":"70548553","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Escazú"},
+{"fecha":"2026-07-14 23:38:50","nombre":"Michael Bolaños Zamora","email":"mistudio26@gmail.com","telefono":"70548553","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Pavas"}
 ]
 }
 ]

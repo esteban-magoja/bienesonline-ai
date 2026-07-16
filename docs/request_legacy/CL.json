@@ -3,15 +3,24 @@
 {"type":"database","name":"admin_bienes_chile"},
 {"type":"table","name":"c","database":"admin_bienes_chile","data":
 [
-{"fecha":"2026-07-09 13:04:25","nombre":"Catalina Pinto","email":"catapintor1@gmail.com","telefono":"992960858","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
-{"fecha":"2026-07-09 15:28:52","nombre":"Daira","email":"dairaantonia2108@gmail.com","telefono":"930267905","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"Quilpué"},
-{"fecha":"2026-07-09 16:22:10","nombre":"Mauricio Elgueta","email":"elgueta.mau@gmail.com","telefono":"+56945216699","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
-{"fecha":"2026-07-09 22:42:33","nombre":"Marcela","email":"marcelaoyarzunsaavedra@gmail.com","telefono":"982842104","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Los Andes","localidad_inmueble":"Rinconada"},
-{"fecha":"2026-07-09 23:44:44","nombre":"Scarlett retamal","email":"scarlet471@gmail.com","telefono":"984004967","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
-{"fecha":"2026-07-09 23:48:43","nombre":"Cristóbal Pérez","email":"cristobal.perez.p99@gmail.com","telefono":"962572305","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
-{"fecha":"2026-07-10 01:37:18","nombre":"Teddy neira","email":"tneirajones@gmail.com","telefono":"993182395","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Cautin","localidad_inmueble":"Padre Las Casas"},
-{"fecha":"2026-07-10 18:55:42","nombre":"Eder","email":"ederchina26@gmail.com","telefono":"941441497","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"La Florida"},
-{"fecha":"2026-07-11 18:53:41","nombre":"Javiera Araya","email":"jam213669966@gmail.com","telefono":"981412819","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"Buin"}
+{"fecha":"2026-07-13 10:44:56","nombre":"Marcela","email":"mar.jimenezinfante@gmail.com","telefono":"978960367","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"Valparaíso"},
+{"fecha":"2026-07-13 10:49:03","nombre":"Daniel Palominos","email":"daniel.palonarbona@gmail.com","telefono":"+56942401792","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
+{"fecha":"2026-07-13 12:57:55","nombre":"Verónica Martinez Nogueira","email":"vmmartineznogueira@gmail.com","telefono":"979379982","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"Buin"},
+{"fecha":"2026-07-13 16:26:23","nombre":"Andrea Cabrera","email":"pacita18@hotmail.com","telefono":"56973691890","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
+{"fecha":"2026-07-13 17:00:35","nombre":"Melanny Salas","email":"Salasmelanny@gmail.com","telefono":"97615406","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"La Florida"},
+{"fecha":"2026-07-13 17:46:54","nombre":"Andrea Cabrera","email":"pacita18@hotmail.com","telefono":"56973691890","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
+{"fecha":"2026-07-14 11:16:18","nombre":"Miquías Rodrigues","email":"miqueias75@hotmail.com","telefono":"944276821","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Ñuñoa"},
+{"fecha":"2026-07-14 12:55:44","nombre":"Tania Franchesca","email":"t.h.candia@gmail.com","telefono":"931398971","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cordillera","localidad_inmueble":"Puente Alto"},
+{"fecha":"2026-07-14 13:52:16","nombre":"Christian Hormazabal","email":"hormazabal.aguayo@gmail.com","telefono":"994407512","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Chacabuco","localidad_inmueble":"Colina"},
+{"fecha":"2026-07-14 16:36:29","nombre":"Paulina garrido","email":"paulinavictoria73@gmail.com","telefono":"+56974400720","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Maipú"},
+{"fecha":"2026-07-14 20:18:59","nombre":"Marcela","email":"marcelaoyarzunsaavedra@gmail.com","telefono":"982842104","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Los Andes","localidad_inmueble":"Rinconada"},
+{"fecha":"2026-07-15 00:26:30","nombre":"Camila castro","email":"andrea.amigonzalez@gmail.com","telefono":"9 5904 9573","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"Villa Alemana"},
+{"fecha":"2026-07-15 08:35:27","nombre":"Catalina Torres","email":"katalina.jimenez16@gmail.com","telefono":"964012037","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
+{"fecha":"2026-07-15 08:50:23","nombre":"Daniela karina Rojas Veas","email":"dveasrojas@gmail.com","telefono":"965111398","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
+{"fecha":"2026-07-15 14:46:00","nombre":"Andrea Simunovic","email":"asimunovic@live.cl","telefono":"937296350","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-07-15 18:37:08","nombre":"Erika Rodríguez","email":"ekira.rodriguez16@gmail.com","telefono":"975797883","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
+{"fecha":"2026-07-15 22:14:06","nombre":"Nataly Lacruz","email":"Nlacruz.c@atlasren.com","telefono":"950544640","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-07-15 23:37:29","nombre":"Jessica lazo","email":"jekalr08@gmail.com","telefono":"932612613","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"}
 ]
 }
 ]

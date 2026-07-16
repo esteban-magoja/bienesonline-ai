@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-07-09 23:54:43","nombre":"Lakeli","email":"lakelithcl@gmail.com","telefono":"985489950","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Tacna","localidad_inmueble":"Tacna"},
-{"fecha":"2026-07-12 16:36:15","nombre":"Elizabeth","email":"nicolhilario70@gmail.com","telefono":"963554142","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"}
+{"fecha":"2026-07-12 16:34:41","nombre":"Elizabeth","email":"nicolhilario70@gmail.com","telefono":"963554142","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"},
+{"fecha":"2026-07-13 20:11:46","nombre":"Angela","email":"angelazaratec3606@gmail.com","telefono":"915955247","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Magdalena del Mar"},
+{"fecha":"2026-07-14 21:20:26","nombre":"azucena","email":"ordinolaguerreroazucena@gmail.com","telefono":"963441382","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"}
 ]
 }
 ]
