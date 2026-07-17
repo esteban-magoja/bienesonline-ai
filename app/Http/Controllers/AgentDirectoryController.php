@@ -53,9 +53,13 @@ class AgentDirectoryController extends Controller
             ->paginate(18)
             ->withQueryString();
 
-        $routeName = $locale === 'es' ? 'agents.directory.es' : 'agents.directory.en';
+        $baseRouteName = $locale === 'es' ? 'agents.directory.es' : 'agents.directory.en';
+        $locationRouteName = $locale === 'es'
+            ? 'agents.directory.es.location'
+            : 'agents.directory.en.location';
+        $routeName = $resolvedCountry ? $locationRouteName : $baseRouteName;
         $profileRouteName = $locale === 'es' ? 'user.profile.es' : 'user.profile.en';
-        $locationLinks = $this->getLocationLinks($routeName, $resolvedCountry, $resolvedState, $resolvedCity);
+        $locationLinks = $this->getLocationLinks($locationRouteName, $resolvedCountry, $resolvedState, $resolvedCity);
         $locationLevel = $resolvedState ? 'cities' : ($resolvedCountry ? 'states' : 'countries');
         $locationLabel = collect([$resolvedCity, $resolvedState, $resolvedCountry])->filter()->join(', ');
         $directoryLabel = __('properties.agents_directory.directory');
@@ -79,13 +83,13 @@ class AgentDirectoryController extends Controller
             'og_description' => $description,
             'og_type' => 'website',
             'hreflang' => [
-                'es' => route('agents.directory.es', array_filter([
+                'es' => route($resolvedCountry ? 'agents.directory.es.location' : 'agents.directory.es', array_filter([
                     'locale' => 'es',
                     'country' => $resolvedCountry ? PropertySlugHelper::normalize($resolvedCountry) : null,
                     'state' => $resolvedState ? PropertySlugHelper::normalize($resolvedState) : null,
                     'city' => $resolvedCity ? PropertySlugHelper::normalize($resolvedCity) : null,
                 ])),
-                'en' => route('agents.directory.en', array_filter([
+                'en' => route($resolvedCountry ? 'agents.directory.en.location' : 'agents.directory.en', array_filter([
                     'locale' => 'en',
                     'country' => $resolvedCountry ? PropertySlugHelper::normalize($resolvedCountry) : null,
                     'state' => $resolvedState ? PropertySlugHelper::normalize($resolvedState) : null,
@@ -96,7 +100,8 @@ class AgentDirectoryController extends Controller
 
         $breadcrumbs = $this->buildBreadcrumbs(
             $locale,
-            $routeName,
+            $baseRouteName,
+            $locationRouteName,
             $directoryLabel,
             $resolvedCountry,
             $resolvedState,
@@ -116,7 +121,8 @@ class AgentDirectoryController extends Controller
 
     private function buildBreadcrumbs(
         string $locale,
-        string $routeName,
+        string $baseRouteName,
+        string $locationRouteName,
         string $directoryLabel,
         ?string $country,
         ?string $state,
@@ -129,14 +135,14 @@ class AgentDirectoryController extends Controller
             ],
             [
                 'label' => $directoryLabel,
-                'url' => route($routeName, ['locale' => $locale]),
+                'url' => route($baseRouteName, ['locale' => $locale]),
             ],
         ];
 
         if ($country) {
             $breadcrumbs[] = [
                 'label' => $country,
-                'url' => route($routeName, [
+                'url' => route($locationRouteName, [
                     'locale' => $locale,
                     'country' => PropertySlugHelper::normalize($country),
                 ]),
@@ -146,7 +152,7 @@ class AgentDirectoryController extends Controller
         if ($state) {
             $breadcrumbs[] = [
                 'label' => $state,
-                'url' => route($routeName, [
+                'url' => route($locationRouteName, [
                     'locale' => $locale,
                     'country' => PropertySlugHelper::normalize((string) $country),
                     'state' => PropertySlugHelper::normalize($state),

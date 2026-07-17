@@ -55,7 +55,7 @@ it('links the realtor breadcrumb to the profile country directory and shows comp
 
     $this->get("/es/inmobiliaria/{$user->username}")
         ->assertSuccessful()
-        ->assertSee('/es/inmobiliarias/ecuador', false)
+        ->assertSee('/es/ecuador/inmobiliarias', false)
         ->assertSee('Descripción de la empresa')
         ->assertSee('Somos una empresa inmobiliaria familiar.')
         ->assertSee('Dirección')

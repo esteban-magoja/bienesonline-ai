@@ -192,6 +192,10 @@ class UserProfileController extends Controller
         $routeName = $locale === 'es' ? 'agents.directory.es' : 'agents.directory.en';
 
         if (filled($user->country)) {
+            $routeName = $locale === 'es'
+                ? 'agents.directory.es.location'
+                : 'agents.directory.en.location';
+
             return route($routeName, [
                 'locale' => $locale,
                 'country' => \App\Helpers\PropertySlugHelper::normalize($user->country),

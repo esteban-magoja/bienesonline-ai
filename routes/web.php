@@ -116,21 +116,27 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
     Route::get('/search-requests', [RequestSearchController::class, 'index'])->name('requests.search');
 
     // Agents/Realtors public directories
-    Route::get('/inmobiliarias/{country?}/{state?}/{city?}', [AgentDirectoryController::class, 'index'])
-        ->where([
-            'country' => '[a-z\-]+',
-            'state' => '[a-z\-]+',
-            'city' => '[a-z\-]+',
-        ])
+    Route::get('/inmobiliarias', [AgentDirectoryController::class, 'index'])
         ->name('agents.directory.es');
 
-    Route::get('/agents/{country?}/{state?}/{city?}', [AgentDirectoryController::class, 'index'])
+    Route::get('/{country}/inmobiliarias/{state?}/{city?}', [AgentDirectoryController::class, 'index'])
         ->where([
             'country' => '[a-z\-]+',
             'state' => '[a-z\-]+',
             'city' => '[a-z\-]+',
         ])
+        ->name('agents.directory.es.location');
+
+    Route::get('/agents', [AgentDirectoryController::class, 'index'])
         ->name('agents.directory.en');
+
+    Route::get('/{country}/agents/{state?}/{city?}', [AgentDirectoryController::class, 'index'])
+        ->where([
+            'country' => '[a-z\-]+',
+            'state' => '[a-z\-]+',
+            'city' => '[a-z\-]+',
+        ])
+        ->name('agents.directory.en.location');
     
     // User Profile / Realtor Profile (pública) - DEBE IR ANTES de property listings
     // Estructura: /{locale}/inmobiliaria/{username} o /{locale}/realtor/{username}

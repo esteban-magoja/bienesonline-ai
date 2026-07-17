@@ -80,7 +80,7 @@ it('lists agencies ordered by active listing count in the selected location', fu
     createListing($noAgencyId, ['title' => 'No debe verse']);
     createListing($inactiveAgencyId, ['title' => 'Inactivo', 'is_active' => false]);
 
-    $this->get('/es/inmobiliarias/argentina/cordoba/villa-carlos-paz')
+    $this->get('/es/argentina/inmobiliarias/cordoba/villa-carlos-paz')
         ->assertSuccessful()
         ->assertSeeInOrder(['Inmobiliaria Top', 'Inmobiliaria Segunda'])
         ->assertDontSee('Sin Agencia')
@@ -114,7 +114,7 @@ it('returns not found for an invalid country slug', function () {
         'email' => 'inmobiliaria-valida@example.com',
     ]);
 
-    $this->get('/es/inmobiliarias/pais-inexistente')->assertNotFound();
+    $this->get('/es/pais-inexistente/inmobiliarias')->assertNotFound();
 });
 
 it('matches country and location filters despite casing and whitespace differences', function () {
@@ -130,7 +130,7 @@ it('matches country and location filters despite casing and whitespace differenc
         'city' => 'VILLA CARLOS PAZ',
     ]);
 
-    $this->get('/es/inmobiliarias/argentina/cordoba/villa-carlos-paz')
+    $this->get('/es/argentina/inmobiliarias/cordoba/villa-carlos-paz')
         ->assertSuccessful()
         ->assertSee('Inmobiliaria Normalizada')
         ->assertSee('1 anuncio publicado');
@@ -158,7 +158,7 @@ it('shows the filtered location instead of the agents profile location', functio
         'title' => 'Listado Córdoba',
     ]);
 
-    $this->get('/es/inmobiliarias/argentina')
+    $this->get('/es/argentina/inmobiliarias')
         ->assertSuccessful()
         ->assertSee('Agencia Multipaís')
         ->assertSee('Argentina')
@@ -180,20 +180,30 @@ it('provides navigation links for available countries, states, and cities', func
 
     $this->get('/es/inmobiliarias')
         ->assertSuccessful()
-        ->assertSee('/es/inmobiliarias/argentina', false);
+        ->assertSee('/es/argentina/inmobiliarias', false);
 
-    $this->get('/es/inmobiliarias/argentina')
+    $this->get('/es/argentina/inmobiliarias')
         ->assertSuccessful()
         ->assertSee('Explorar por zona')
         ->assertSee('<details', false)
-        ->assertSee('/es/inmobiliarias/argentina/cordoba', false);
+        ->assertSee('/es/argentina/inmobiliarias/cordoba', false);
 
-    $this->get('/es/inmobiliarias/argentina/cordoba')
+    $this->get('/es/argentina/inmobiliarias/cordoba')
         ->assertSuccessful()
-        ->assertSee('/es/inmobiliarias/argentina/cordoba/villa-carlos-paz', false);
+        ->assertSee('/es/argentina/inmobiliarias/cordoba/villa-carlos-paz', false);
 
-    $this->get('/es/inmobiliarias/argentina/cordoba/villa-carlos-paz')
+    $this->get('/es/argentina/inmobiliarias/cordoba/villa-carlos-paz')
         ->assertSuccessful()
         ->assertDontSee('Explorar por ciudad')
-        ->assertDontSee('/es/inmobiliarias/argentina/cordoba/cordoba', false);
+        ->assertDontSee('/es/argentina/inmobiliarias/cordoba/cordoba', false);
+});
+
+it('does not capture property listing routes', function () {
+    $agentId = createAgent();
+    createListing($agentId);
+
+    $this->get('/es/argentina/venta')
+        ->assertSuccessful();
+
+    expect($this->app['router']->currentRouteName())->toBe('property.listings');
 });
