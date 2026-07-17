@@ -316,5 +316,22 @@ return [
         'contact_advertiser' => 'Contact Advertiser',
         'send_whatsapp' => 'Send WhatsApp',
         'call_now' => 'Call Now',
+        'company_description' => 'Company Description',
+        'address' => 'Address',
+        'area' => 'Area / State / Province',
+    ],
+
+    'agents_directory' => [
+        'directory' => 'Agents',
+        'description' => 'Directory of agents and real estate agencies with active listings.',
+        'description_with_location' => 'Directory of agents and real estate agencies with active listings in :location.',
+        'browse_countries' => 'Browse by country',
+        'browse_states' => 'Browse by area',
+        'browse_cities' => 'Browse by city',
+        'results' => 'Showing :from - :to of :total agents',
+        'listings_count' => ':count published listing|:count published listings',
+        'view_profile' => 'View profile',
+        'no_results_title' => 'No agents found',
+        'no_results_message' => 'There are no agents with active listings for this location.',
     ],
 ];

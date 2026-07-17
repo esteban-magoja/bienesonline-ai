@@ -18,6 +18,7 @@ use App\Http\Controllers\PropertyRequestController;
 use App\Http\Controllers\PropertyMatchController;
 use App\Http\Controllers\PropertyMessageController;
 use App\Http\Controllers\PropertyListingController;
+use App\Http\Controllers\AgentDirectoryController;
 use App\Http\Controllers\PropertyContactController;
 use App\Http\Controllers\RequestSearchController;
 use App\Http\Controllers\TermsController;
@@ -113,6 +114,23 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
 
     // Request Search (pública)
     Route::get('/search-requests', [RequestSearchController::class, 'index'])->name('requests.search');
+
+    // Agents/Realtors public directories
+    Route::get('/inmobiliarias/{country?}/{state?}/{city?}', [AgentDirectoryController::class, 'index'])
+        ->where([
+            'country' => '[a-z\-]+',
+            'state' => '[a-z\-]+',
+            'city' => '[a-z\-]+',
+        ])
+        ->name('agents.directory.es');
+
+    Route::get('/agents/{country?}/{state?}/{city?}', [AgentDirectoryController::class, 'index'])
+        ->where([
+            'country' => '[a-z\-]+',
+            'state' => '[a-z\-]+',
+            'city' => '[a-z\-]+',
+        ])
+        ->name('agents.directory.en');
     
     // User Profile / Realtor Profile (pública) - DEBE IR ANTES de property listings
     // Estructura: /{locale}/inmobiliaria/{username} o /{locale}/realtor/{username}

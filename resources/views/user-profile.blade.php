@@ -46,6 +46,15 @@
                             </p>
                         @endif
 
+                        @if($companyDescription)
+                            <div class="max-w-2xl text-gray-600 text-left">
+                                <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-1">
+                                    {{ __('properties.user_profile.company_description') }}
+                                </h2>
+                                <p class="whitespace-pre-line">{{ $companyDescription }}</p>
+                            </div>
+                        @endif
+
                         {{-- Estadísticas --}}
                         <div class="flex flex-wrap gap-4 justify-center md:justify-start">
                             <div class="bg-white border border-gray-200 rounded-lg px-4 py-2 shadow-sm">
@@ -123,6 +132,19 @@
                                     </a>
                                 </div>
                             @endif
+
+                            @if($user->address)
+                                <div class="flex items-start">
+                                    <svg class="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9-7 9 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21v-6h6v6"></path>
+                                    </svg>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs text-gray-500 mb-1">{{ __('properties.user_profile.address') }}</p>
+                                        <p class="text-sm text-gray-900 font-medium">{{ $user->address }}</p>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -177,9 +199,49 @@
             {{-- Filtros y Ordenamiento (Sticky Bar) --}}
             <div class="bg-white rounded-lg shadow-md p-4 mb-6">
                 <form method="GET" action="{{ url()->current() }}" class="flex flex-wrap gap-4 items-end">
+                @php
+                    $profileCountries = collect($locationOptions)
+                        ->pluck('country')
+                        ->filter()
+                        ->unique()
+                        ->values();
+                @endphp
+
+                {{-- País --}}
+                <div class="flex-1 min-w-[200px]">
+                    <label for="profile_country" class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ __('properties.country') }}
+                    </label>
+                    <select name="country" id="profile_country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">{{ __('properties.all') }}</option>
+                        @foreach($profileCountries as $country)
+                            <option value="{{ $country }}" @selected(strtolower($selectedCountry) === strtolower($country))>{{ $country }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Provincia/Estado --}}
+                <div class="flex-1 min-w-[200px]">
+                    <label for="profile_state" class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ __('properties.user_profile.area') }}
+                    </label>
+                    <select name="state" id="profile_state" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" disabled>
+                        <option value="">{{ __('properties.all') }}</option>
+                    </select>
+                </div>
+
+                {{-- Ciudad --}}
+                <div class="flex-1 min-w-[200px]">
+                    <label for="profile_city" class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ __('properties.city') }}
+                    </label>
+                    <select name="city" id="profile_city" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" disabled>
+                        <option value="">{{ __('properties.all') }}</option>
+                    </select>
+                </div>
                     
-                    {{-- Tipo de Operación --}}
-                    <div class="flex-1 min-w-[200px]">
+                {{-- Tipo de Operación --}}
+                <div class="flex-1 min-w-[200px]">
                         <label for="transaction_type" class="block text-sm font-medium text-gray-700 mb-1">
                             {{ __('properties.filters_label.transaction_type') }}
                         </label>
@@ -336,5 +398,66 @@
             </div>
         @endif
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const locations = @js($locationOptions);
+            const countrySelect = document.getElementById('profile_country');
+            const stateSelect = document.getElementById('profile_state');
+            const citySelect = document.getElementById('profile_city');
+            let selectedState = @js($selectedState);
+            let selectedCity = @js($selectedCity);
+
+            const normalize = (value) => value.trim().toLowerCase();
+
+            const uniqueValues = (values) => values.filter((value, index, list) =>
+                list.findIndex((candidate) => normalize(candidate) === normalize(value)) === index
+            );
+
+            const setOptions = (select, values, selectedValue) => {
+                select.replaceChildren(new Option('{{ __('properties.all') }}', ''));
+                uniqueValues(values).forEach((value) => {
+                    select.add(new Option(value, value, false, normalize(value) === normalize(selectedValue)));
+                });
+                select.disabled = values.length === 0;
+            };
+
+            const refreshCities = () => {
+                const country = normalize(countrySelect.value);
+                const state = normalize(stateSelect.value);
+                const cities = locations
+                    .filter((location) => normalize(location.country || '') === country)
+                    .filter((location) => normalize(location.state || '') === state)
+                    .map((location) => location.city)
+                    .filter(Boolean);
+
+                setOptions(citySelect, cities, selectedCity);
+            };
+
+            const refreshStates = () => {
+                const country = normalize(countrySelect.value);
+                const states = locations
+                    .filter((location) => normalize(location.country || '') === country)
+                    .map((location) => location.state)
+                    .filter(Boolean);
+
+                setOptions(stateSelect, states, selectedState);
+                refreshCities();
+            };
+
+            countrySelect.addEventListener('change', () => {
+                selectedState = '';
+                selectedCity = '';
+                refreshStates();
+            });
+
+            stateSelect.addEventListener('change', () => {
+                selectedCity = '';
+                refreshCities();
+            });
+
+            refreshStates();
+        });
+    </script>
 
 </x-layouts.marketing>

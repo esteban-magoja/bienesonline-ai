@@ -24,11 +24,26 @@ class UserProfileController extends Controller
 
         // Buscar usuario por username
         $user = User::where('username', $username)->firstOrFail();
+        $selectedCountry = trim($request->string('country')->toString());
+        $selectedState = trim($request->string('state')->toString());
+        $selectedCity = trim($request->string('city')->toString());
 
         // Construir query de propiedades activas del usuario
         $query = PropertyListing::where('user_id', $user->id)
             ->where('is_active', true)
             ->with(['primaryImage', 'firstImage', 'images']);
+
+        if ($selectedCountry !== '') {
+            $query->whereRaw('LOWER(TRIM(country)) = LOWER(TRIM(?))', [$selectedCountry]);
+        }
+
+        if ($selectedState !== '') {
+            $query->whereRaw('LOWER(TRIM(state)) = LOWER(TRIM(?))', [$selectedState]);
+        }
+
+        if ($selectedCity !== '') {
+            $query->whereRaw('LOWER(TRIM(city)) = LOWER(TRIM(?))', [$selectedCity]);
+        }
 
         // Aplicar filtros de query string
         if ($request->filled('transaction_type')) {
@@ -77,6 +92,7 @@ class UserProfileController extends Controller
 
         // Generar breadcrumbs
         $breadcrumbs = $this->generateBreadcrumbs($user, $locale);
+        $companyDescription = $user->profile('about');
 
         // Generar SEO
         $seo = $this->generateSeo($user, $properties->total(), $locale);
@@ -109,7 +125,43 @@ class UserProfileController extends Controller
             ->distinct()
             ->pluck('transaction_type');
 
-        return view('user-profile', compact('user', 'properties', 'breadcrumbs', 'seo', 'stats', 'userPropertyTypes', 'userTransactionTypes'));
+        $locationOptions = $this->getLocationOptions($user->id);
+
+        return view('user-profile', compact(
+            'user',
+            'properties',
+            'breadcrumbs',
+            'seo',
+            'stats',
+            'userPropertyTypes',
+            'userTransactionTypes',
+            'companyDescription',
+            'locationOptions',
+            'selectedCountry',
+            'selectedState',
+            'selectedCity'
+        ));
+    }
+
+    private function getLocationOptions(int $userId): array
+    {
+        return PropertyListing::query()
+            ->where('user_id', $userId)
+            ->where('is_active', true)
+            ->whereNotNull('country')
+            ->whereRaw("TRIM(country) != ''")
+            ->selectRaw('DISTINCT TRIM(country) as country, TRIM(state) as state, TRIM(city) as city')
+            ->orderBy('country')
+            ->orderBy('state')
+            ->orderBy('city')
+            ->get()
+            ->map(fn (PropertyListing $listing): array => [
+                'country' => $listing->country,
+                'state' => $listing->state,
+                'city' => $listing->city,
+            ])
+            ->values()
+            ->all();
     }
 
     /**
@@ -124,7 +176,7 @@ class UserProfileController extends Controller
             ],
             [
                 'label' => __('properties.user_profile.realtors'),
-                'url' => null
+                'url' => $this->getDirectoryUrl($user, $locale)
             ],
             [
                 'label' => $user->agency ?: $user->name,
@@ -133,6 +185,20 @@ class UserProfileController extends Controller
         ];
 
         return $breadcrumbs;
+    }
+
+    private function getDirectoryUrl(User $user, string $locale): string
+    {
+        $routeName = $locale === 'es' ? 'agents.directory.es' : 'agents.directory.en';
+
+        if (filled($user->country)) {
+            return route($routeName, [
+                'locale' => $locale,
+                'country' => \App\Helpers\PropertySlugHelper::normalize($user->country),
+            ]);
+        }
+
+        return route($routeName, ['locale' => $locale]);
     }
 
     /**

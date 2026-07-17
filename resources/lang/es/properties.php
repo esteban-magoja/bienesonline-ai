@@ -316,5 +316,22 @@ return [
         'contact_advertiser' => 'Contactar al Anunciante',
         'send_whatsapp' => 'Enviar WhatsApp',
         'call_now' => 'Llamar Ahora',
+        'company_description' => 'Descripción de la empresa',
+        'address' => 'Dirección',
+        'area' => 'Zona / Provincia / Estado',
+    ],
+
+    'agents_directory' => [
+        'directory' => 'Inmobiliarias',
+        'description' => 'Listado de inmobiliarias y agentes con anuncios activos.',
+        'description_with_location' => 'Listado de inmobiliarias y agentes con anuncios activos en :location.',
+        'browse_countries' => 'Explorar por país',
+        'browse_states' => 'Explorar por zona',
+        'browse_cities' => 'Explorar por ciudad',
+        'results' => 'Mostrando :from - :to de :total inmobiliarias',
+        'listings_count' => ':count anuncio publicado|:count anuncios publicados',
+        'view_profile' => 'Ver perfil',
+        'no_results_title' => 'No se encontraron inmobiliarias',
+        'no_results_message' => 'No hay inmobiliarias con anuncios activos para esta ubicación.',
     ],
 ];
