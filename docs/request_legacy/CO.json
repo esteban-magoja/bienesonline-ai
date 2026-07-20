@@ -3,9 +3,10 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-07-14 12:27:10","nombre":"Nick Valencia","email":"nick.valencia@me.com","telefono":"3226530952","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"La Guajira","localidad_inmueble":"Dibulla"},
-{"fecha":"2026-07-14 20:24:43","nombre":"LAURA ANDREA CORREDOR SERRANO","email":"lauritacorredor4@gmail.com","telefono":"3172869583","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Cajicá"},
-{"fecha":"2026-07-14 21:07:16","nombre":"Walter Castro","email":"misoaned@gmail.com","telefono":"7704801996","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"La Vega"}
+{"fecha":"2026-07-18 15:29:21","nombre":"Laura Andrea Corredor Serrano","email":"lauritacorredor4@gmail.com","telefono":"3172869583","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Cajicá"},
+{"fecha":"2026-07-18 15:49:56","nombre":"ASCENCION MARTINEZ ROMERO","email":"fierrozenayda@gmail.com","telefono":"3164618975","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Caquetá","localidad_inmueble":"El Doncello"},
+{"fecha":"2026-07-18 21:35:44","nombre":"DOLMAN RUBIO VILLA","email":"dolman.rubio@ucaldas.edu.co","telefono":"3122416237","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Magdalena","localidad_inmueble":"Santa Marta"},
+{"fecha":"2026-07-19 20:40:18","nombre":"Maria Isolina Romero Merchan","email":"romeromerchan@hotmail.com","telefono":"3123050583","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"}
 ]
 }
 ]

@@ -3,12 +3,14 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-07-13 09:16:17","nombre":"Yedani López","email":"esbeidyparra00@gmail.com","telefono":"2871107688","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Oaxaca","localidad_inmueble":"San Juan Bautista Tuxtepec"},
-{"fecha":"2026-07-13 11:24:57","nombre":"AURELIO ULLOA","email":"aurelioulloa@hotmail.com","telefono":"6622980500","tipo_inmueble":"Bodega","tipo_operacion":"Renta","provincia_inmueble":"Sonora","localidad_inmueble":"Agua Prieta"},
-{"fecha":"2026-07-13 12:23:19","nombre":"ANNETTE MICHELLE FRANCESCHI LOZADA","email":"mich.frances.arte@gmail.com","telefono":"5530801618","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
-{"fecha":"2026-07-14 12:18:47","nombre":"Alejandro Rivera","email":"arrr1@hotmail.com","telefono":"5587919009","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Xalapa-Enríquez"},
-{"fecha":"2026-07-14 18:19:01","nombre":"Anabertha Mendoza Alanis","email":"anaberthamendoza1983@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-07-14 21:32:39","nombre":"Gamaliel Mora","email":"ggmora_94@hotmail.com","telefono":"2226794564","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Puebla","localidad_inmueble":"Puebla"}
+{"fecha":"2026-07-16 14:27:07","nombre":"Paola Ugo","email":"paolaugo95@gmail.com","telefono":"3458501491","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-07-16 15:49:38","nombre":"Karla Guillen","email":"kargio2038@gmail.com","telefono":"5536444987","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
+{"fecha":"2026-07-16 23:36:20","nombre":"Constantino de la garza","email":"fulsoundmusic@gmail.com","telefono":"2381198933","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-07-18 14:52:13","nombre":"Edgar Romulo Mimbrera Jimenez","email":"costos@dimetab.com.mx","telefono":"9932642472","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Veracruz","localidad_inmueble":"Veracruz"},
+{"fecha":"2026-07-18 15:15:55","nombre":"Zenaida Martínez","email":"zenita_08@msn.com","telefono":"2221884886","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"},
+{"fecha":"2026-07-18 15:36:51","nombre":"Paulina Mass","email":"pawa82@gmail.com","telefono":"5520312535","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
+{"fecha":"2026-07-19 01:08:02","nombre":"REYNA CASTAÑEDA TRAPALA","email":"trapala.r@gmail.com","telefono":"5534726977","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-07-19 21:11:17","nombre":"Zeila Amaranta Garcia Cacho","email":"zeilamaranta@gmail.com","telefono":"2211027699","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"}
 ]
 }
 ]

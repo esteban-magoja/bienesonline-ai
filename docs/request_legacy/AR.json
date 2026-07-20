@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-06-28 13:45:48","nombre":"Carolina","email":"caro_semmere@hotmail.com","telefono":"3417612022","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santa Fe","localidad_inmueble":"Rosario"}
+{"fecha":"2026-07-19 03:28:10","nombre":"Hortencia","email":"hortymedina@gmail.com","telefono":"+46760739298","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Recoleta"}
 ]
 }
 ]

@@ -3,9 +3,10 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-07-12 16:34:41","nombre":"Elizabeth","email":"nicolhilario70@gmail.com","telefono":"963554142","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"},
-{"fecha":"2026-07-13 20:11:46","nombre":"Angela","email":"angelazaratec3606@gmail.com","telefono":"915955247","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Magdalena del Mar"},
-{"fecha":"2026-07-14 21:20:26","nombre":"azucena","email":"ordinolaguerreroazucena@gmail.com","telefono":"963441382","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"}
+{"fecha":"2026-07-17 23:34:34","nombre":"Giordano","email":"giordanoap5@gmail.com","telefono":"957437331","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
+{"fecha":"2026-07-18 10:07:11","nombre":"JAIR","email":"jvelasquezprincipe@gmail.com","telefono":"989388175","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
+{"fecha":"2026-07-18 20:06:54","nombre":"Yessenia Linares","email":"linaresoberon@gmail.com","telefono":"986447500","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"},
+{"fecha":"2026-07-18 23:50:11","nombre":"Lizbeth","email":"lizbxnfb@gmail.com","telefono":"903453236","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"}
 ]
 }
 ]

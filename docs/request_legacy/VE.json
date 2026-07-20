@@ -3,15 +3,15 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-07-12 16:04:30","nombre":"Yanet","email":"yanet.c2009@gmail.com","telefono":"+584123222225","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-07-13 22:34:07","nombre":"Pavel Uzcategui","email":"antonioandradepavel@gmail.com","telefono":"+584149000022","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-07-14 17:50:09","nombre":"lisa santamar","email":"redaccioncreativa8@gmail.com","telefono":"+584127073895","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-07-14 23:26:03","nombre":"BETZABE","email":"betzavotenpormi@gmail.com","telefono":"+573249447424","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"MARACAIBO NORTE"},
-{"fecha":"2026-07-15 13:58:19","nombre":"Aminta","email":"mignogna1@gmail.com","telefono":"+584127784651","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Aragua","localidad_inmueble":"Maracay"},
-{"fecha":"2026-07-15 14:26:12","nombre":"rosa rangel","email":"rosa23.8463@gmail.com","telefono":"+584120779603","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-07-15 23:12:00","nombre":"Samuel","email":"Sachenk30@hotmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Aragua","localidad_inmueble":"Cagua"},
-{"fecha":"2026-07-16 01:27:18","nombre":"Nehyda Alas","email":"alasnehyda2013@gmail.com","telefono":"+584143978638","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-07-16 01:37:31","nombre":"Nehyda Alas","email":"alasnehyda2013@gmail.com","telefono":"+584143978638","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"El Hatillo"}
+{"fecha":"2026-07-16 11:39:03","nombre":"Aimar","email":"aimarvalencia@gmail.com","telefono":"04122203522","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
+{"fecha":"2026-07-16 13:27:27","nombre":"Jenyreth Alvarez","email":"ajenyreth@gmail.com","telefono":"04264184440","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"chacaito"},
+{"fecha":"2026-07-16 13:29:29","nombre":"Jenyreth Alvarez","email":"ajenyreth@gmail.com","telefono":"04264184440","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Miranda","localidad_inmueble":"Chacaito"},
+{"fecha":"2026-07-16 19:47:33","nombre":"Helder","email":"helder19906497@gmail.com","telefono":"04246730008","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-07-17 12:41:57","nombre":"ORLANDO JOSE","email":"iorlandogz@gmail.com","telefono":"04140833854","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"Lechería"},
+{"fecha":"2026-07-18 01:47:15","nombre":"nehyda alas","email":"alasnehyda2013@gmail.com","telefono":"+58 4143978638","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"El Hatillo"},
+{"fecha":"2026-07-19 14:29:43","nombre":"Renny Nu?ez","email":"20josuen@gmail.com","telefono":"04242943439","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
+{"fecha":"2026-07-19 21:42:57","nombre":"Corina Coromoto Urbina Ramirez","email":"corinaurbi31@gmail.com","telefono":"4247311547","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Ejido"},
+{"fecha":"2026-07-19 23:02:55","nombre":"Diego","email":"armandod22@hotmail.com","telefono":"","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"}
 ]
 }
 ]

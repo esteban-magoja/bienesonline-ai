@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-06-18 16:02:22","nombre":"Esmeralda Orellana","email":"orellanaesmeralda318@gmail.com","telefono":"6827 5661","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"San Marcos"}
+{"fecha":"2026-07-17 01:16:44","nombre":"Angelo Disanto","email":"Angelinoorders@gmail.com","telefono":"8187425011","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia Escalón"}
 ]
 }
 ]
