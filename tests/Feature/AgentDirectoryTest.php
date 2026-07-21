@@ -107,6 +107,18 @@ it('supports pagination in the english directory', function () {
         ->assertSee('?page=2');
 });
 
+it('uses the localized directory URL in marketing navigation', function () {
+    $this->get('/es')
+        ->assertSuccessful()
+        ->assertSee('/es/inmobiliarias', false)
+        ->assertDontSee('/es/agents', false);
+
+    $this->get('/en')
+        ->assertSuccessful()
+        ->assertSee('/en/agents', false)
+        ->assertDontSee('/en/inmobiliarias', false);
+});
+
 it('returns not found for an invalid country slug', function () {
     createAgent([
         'agency' => 'Inmobiliaria Valida',

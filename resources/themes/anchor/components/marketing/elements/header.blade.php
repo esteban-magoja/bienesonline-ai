@@ -1,3 +1,9 @@
+@php
+    $agentsDirectoryRoute = app()->getLocale() === 'es'
+        ? 'agents.directory.es'
+        : 'agents.directory.en';
+@endphp
+
 <header 
     x-data="{ 
         mobileMenuOpen: false, 
@@ -58,6 +64,11 @@
                     <li class="flex-shrink-0 h-16 border-b border-zinc-800 md:border-b-0 md:h-full">
                         <a href="{{ route_localized('property.search') }}" class="flex items-center h-full text-sm font-semibold text-zinc-300 transition-all duration-200 md:px-0 px-7 hover:bg-white/5 md:hover:bg-transparent hover:text-zinc-100 md:hover:underline md:hover:decoration-2 md:hover:underline-offset-4 md:hover:decoration-zinc-500">
                             {{ __('properties.search_properties') }}
+                        </a>
+                    </li>
+                    <li class="flex-shrink-0 h-16 border-b border-zinc-800 md:border-b-0 md:h-full">
+                        <a href="{{ route_localized($agentsDirectoryRoute) }}" class="flex items-center h-full text-sm font-semibold text-zinc-300 transition-all duration-200 md:px-0 px-7 hover:bg-white/5 md:hover:bg-transparent hover:text-zinc-100 md:hover:underline md:hover:decoration-2 md:hover:underline-offset-4 md:hover:decoration-zinc-500">
+                            {{ __('properties.agents_directory.directory') }}
                         </a>
                     </li>
                     <li class="flex-shrink-0 h-16 border-b border-zinc-800 md:border-b-0 md:h-full">

@@ -1,3 +1,9 @@
+@php
+    $agentsDirectoryRoute = app()->getLocale() === 'es'
+        ? 'agents.directory.es'
+        : 'agents.directory.en';
+@endphp
+
 <section class="flex relative top-0 flex-col justify-center items-center -mt-24 w-full  bg-white pb-5">
     <div class="flex flex-col flex-1 gap-6 justify-between items-center px-8 pt-32 mx-auto w-full max-w-2xl text-center md:px-12 xl:px-20 lg:pt-32 lg:pb-16 lg:max-w-7xl lg:flex-row">
         <div class="w-full">
@@ -61,6 +67,13 @@
                     </svg>
                     {{ __('messages.publish_request') }}
                 </a>
+                <a href="{{ route_localized($agentsDirectoryRoute) }}"
+                   class="inline-flex items-center gap-2 w-auto justify-center px-7 py-3.5 text-sm font-semibold text-white bg-violet-600 rounded-xl shadow-md hover:bg-violet-700 active:scale-95 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16M8 7h2m-2 4h2m4-4h2m-2 4h2M9 21v-4h6v4"/>
+                    </svg>
+                    {{ __('properties.agents_directory.directory') }}
+                </a>
                 @else
                 <a href="/property-listings/create"
                    class="inline-flex items-center gap-2 w-auto justify-center px-7 py-3.5 text-sm font-semibold text-white bg-blue-600 rounded-xl shadow-md hover:bg-blue-700 active:scale-95 transition-all duration-200">
@@ -75,6 +88,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
                     </svg>
                     {{ __('messages.publish_request') }}
+                </a>
+                <a href="{{ route_localized($agentsDirectoryRoute) }}"
+                   class="inline-flex items-center gap-2 w-auto justify-center px-7 py-3.5 text-sm font-semibold text-white bg-violet-600 rounded-xl shadow-md hover:bg-violet-700 active:scale-95 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16M8 7h2m-2 4h2m4-4h2m-2 4h2M9 21v-4h6v4"/>
+                    </svg>
+                    {{ __('properties.agents_directory.directory') }}
                 </a>
                 @endguest
             </div>
