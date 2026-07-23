@@ -31,6 +31,14 @@ class SitemapController extends Controller
     {
         $lastPropUpdate = PropertyListing::active()->latest('updated_at')->value('updated_at');
         $lastPropMod    = $lastPropUpdate ? $lastPropUpdate->toW3cString() : now()->toW3cString();
+        $lastAgentUpdate = DB::table('property_listings as pl')
+            ->join('users as u', 'u.id', '=', 'pl.user_id')
+            ->where('pl.is_active', true)
+            ->whereNotNull('u.agency')
+            ->whereRaw("TRIM(u.agency) != ''")
+            ->latest('pl.updated_at')
+            ->value('pl.updated_at');
+        $lastAgentMod = $lastAgentUpdate ? \Carbon\Carbon::parse($lastAgentUpdate)->toW3cString() : $lastPropMod;
         $totalActive    = PropertyListing::active()->count();
         $totalPages     = max(1, (int) ceil($totalActive / self::PROPERTY_SITEMAP_URL_LIMIT));
 
@@ -46,6 +54,7 @@ class SitemapController extends Controller
                 ];
             }
             $sitemaps[] = ['loc' => url("/sitemap-listings-{$locale}.xml"), 'lastmod' => $lastPropMod];
+            $sitemaps[] = ['loc' => url("/sitemap-agents-{$locale}.xml"), 'lastmod' => $lastAgentMod];
         }
 
         $sitemaps[] = ['loc' => url('/sitemap-profiles.xml'), 'lastmod' => $lastPropMod];
@@ -180,6 +189,24 @@ class SitemapController extends Controller
 
         $urls = Cache::remember("sitemap_listings_{$locale}", 3600, function () use ($locale) {
             return $this->buildListingUrls($locale);
+        });
+
+        return response()
+            ->view('sitemap.listings', compact('urls'))
+            ->header('Content-Type', 'application/xml');
+    }
+
+    /**
+     * Agent directory sitemap: /{locale}/inmobiliarias and /{locale}/{country}/inmobiliarias/{state?}/{city?}.
+     */
+    public function agents(string $locale): Response
+    {
+        if (!in_array($locale, ['es', 'en'])) {
+            abort(404);
+        }
+
+        $urls = Cache::remember("sitemap_agents_{$locale}", 3600, function () use ($locale) {
+            return $this->buildAgentDirectoryUrls($locale);
         });
 
         return response()
@@ -348,6 +375,145 @@ class SitemapController extends Controller
                 "/{$locale}/{$countrySlug}/{$transSlug}/{$typeSlug}/{$citySlug}",
                 "/{$altLocale}/{$countrySlug}/{$altTransSlug}/{$altTypeSlug}/{$citySlug}",
                 $lastmod, 'weekly', '0.5'
+            );
+        }
+
+        return $urls;
+    }
+
+    /**
+     * Build all public agent directory URLs for a locale.
+     */
+    private function buildAgentDirectoryUrls(string $locale): array
+    {
+        $altLocale = $locale === 'es' ? 'en' : 'es';
+        $segment = $locale === 'es' ? 'inmobiliarias' : 'agents';
+        $altSegment = $locale === 'es' ? 'agents' : 'inmobiliarias';
+
+        $latestUpdated = DB::table('property_listings as pl')
+            ->join('users as u', 'u.id', '=', 'pl.user_id')
+            ->where('pl.is_active', true)
+            ->whereNotNull('u.agency')
+            ->whereRaw("TRIM(u.agency) != ''")
+            ->latest('pl.updated_at')
+            ->value('pl.updated_at');
+
+        $defaultLastmod = $latestUpdated ? \Carbon\Carbon::parse($latestUpdated)->toW3cString() : now()->toW3cString();
+        $urls = [];
+        $seen = [];
+
+        $this->addListingUrl(
+            $urls,
+            $seen,
+            "/{$locale}/{$segment}",
+            "/{$altLocale}/{$altSegment}",
+            $defaultLastmod,
+            'daily',
+            '0.7'
+        );
+
+        $countries = DB::table('property_listings as pl')
+            ->join('users as u', 'u.id', '=', 'pl.user_id')
+            ->where('pl.is_active', true)
+            ->whereNotNull('u.agency')
+            ->whereRaw("TRIM(u.agency) != ''")
+            ->whereNotNull('pl.country')
+            ->whereRaw("TRIM(pl.country) != ''")
+            ->selectRaw('TRIM(pl.country) as country, MAX(pl.updated_at) as last_updated')
+            ->groupByRaw('TRIM(pl.country)')
+            ->get();
+
+        foreach ($countries as $country) {
+            $countrySlug = PropertySlugHelper::normalize($country->country);
+            if (!$countrySlug) {
+                continue;
+            }
+
+            $lastmod = $country->last_updated
+                ? \Carbon\Carbon::parse($country->last_updated)->toW3cString()
+                : $defaultLastmod;
+
+            $this->addListingUrl(
+                $urls,
+                $seen,
+                "/{$locale}/{$countrySlug}/{$segment}",
+                "/{$altLocale}/{$countrySlug}/{$altSegment}",
+                $lastmod,
+                'weekly',
+                '0.6'
+            );
+        }
+
+        $states = DB::table('property_listings as pl')
+            ->join('users as u', 'u.id', '=', 'pl.user_id')
+            ->where('pl.is_active', true)
+            ->whereNotNull('u.agency')
+            ->whereRaw("TRIM(u.agency) != ''")
+            ->whereNotNull('pl.country')
+            ->whereRaw("TRIM(pl.country) != ''")
+            ->whereNotNull('pl.state')
+            ->whereRaw("TRIM(pl.state) != ''")
+            ->selectRaw('TRIM(pl.country) as country, TRIM(pl.state) as state, MAX(pl.updated_at) as last_updated')
+            ->groupByRaw('TRIM(pl.country), TRIM(pl.state)')
+            ->get();
+
+        foreach ($states as $state) {
+            $countrySlug = PropertySlugHelper::normalize($state->country);
+            $stateSlug = PropertySlugHelper::normalize($state->state);
+            if (!$countrySlug || !$stateSlug) {
+                continue;
+            }
+
+            $lastmod = $state->last_updated
+                ? \Carbon\Carbon::parse($state->last_updated)->toW3cString()
+                : $defaultLastmod;
+
+            $this->addListingUrl(
+                $urls,
+                $seen,
+                "/{$locale}/{$countrySlug}/{$segment}/{$stateSlug}",
+                "/{$altLocale}/{$countrySlug}/{$altSegment}/{$stateSlug}",
+                $lastmod,
+                'weekly',
+                '0.5'
+            );
+        }
+
+        $cities = DB::table('property_listings as pl')
+            ->join('users as u', 'u.id', '=', 'pl.user_id')
+            ->where('pl.is_active', true)
+            ->whereNotNull('u.agency')
+            ->whereRaw("TRIM(u.agency) != ''")
+            ->whereNotNull('pl.country')
+            ->whereRaw("TRIM(pl.country) != ''")
+            ->whereNotNull('pl.state')
+            ->whereRaw("TRIM(pl.state) != ''")
+            ->whereNotNull('pl.city')
+            ->whereRaw("TRIM(pl.city) != ''")
+            ->selectRaw('TRIM(pl.country) as country, TRIM(pl.state) as state, TRIM(pl.city) as city, MAX(pl.updated_at) as last_updated')
+            ->groupByRaw('TRIM(pl.country), TRIM(pl.state), TRIM(pl.city)')
+            ->get();
+
+        foreach ($cities as $city) {
+            $countrySlug = PropertySlugHelper::normalize($city->country);
+            $stateSlug = PropertySlugHelper::normalize($city->state);
+            $citySlug = PropertySlugHelper::normalize($city->city);
+            if (!$countrySlug || !$stateSlug || !$citySlug) {
+                continue;
+            }
+
+            $lastmod = $city->last_updated
+                ? \Carbon\Carbon::parse($city->last_updated)->toW3cString()
+                : $defaultLastmod;
+
+            $this->addListingUrl(
+                $urls,
+                $seen,
+                "/{$locale}/{$countrySlug}/{$segment}/{$stateSlug}/{$citySlug}",
+                "/{$altLocale}/{$countrySlug}/{$altSegment}/{$stateSlug}/{$citySlug}",
+                $lastmod,
+                'weekly',
+                '0.4'
             );
         }
 

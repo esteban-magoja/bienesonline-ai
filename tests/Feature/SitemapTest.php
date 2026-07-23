@@ -58,6 +58,117 @@ it('emits absolute image URLs in property sitemaps when stored image URLs are re
     expect($listingId)->toBeInt();
 });
 
+it('includes user profile pages in profiles sitemap', function () {
+    $timestamp = now();
+    $uniqueId = str_replace('.', '', uniqid('', true));
+    $username = "profiletest{$uniqueId}";
+
+    $userId = DB::table('users')->insertGetId([
+        'name' => 'Profile Sitemap User',
+        'email' => "profile-sitemap-{$uniqueId}@example.com",
+        'username' => $username,
+        'agency' => 'Profile Agency',
+        'avatar' => 'demo/default.png',
+        'password' => bcrypt('password'),
+        'locale' => 'es',
+        'terms_accepted' => true,
+        'terms_accepted_at' => $timestamp,
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ]);
+
+    DB::table('property_listings')->insert([
+        'user_id' => $userId,
+        'title' => 'Profile sitemap listing',
+        'description' => 'Listing created to include user profile in sitemap.',
+        'property_type' => 'house',
+        'transaction_type' => 'sale',
+        'price' => 100000,
+        'bedrooms' => 3,
+        'bathrooms' => 2,
+        'parking_spaces' => 1,
+        'area' => 120,
+        'address' => 'Street 10',
+        'city' => 'Cuenca',
+        'state' => 'Azuay',
+        'country' => 'Ecuador',
+        'postal_code' => '010101',
+        'latitude' => null,
+        'longitude' => null,
+        'is_featured' => false,
+        'is_active' => true,
+        'currency' => 'USD',
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ]);
+
+    $response = $this->get('/sitemap-profiles.xml');
+
+    $response->assertSuccessful();
+    $response->assertSee("/es/inmobiliaria/{$username}", false);
+    $response->assertSee("/en/realtor/{$username}", false);
+});
+
+it('generates agents directory sitemap with country state and city pages', function () {
+    $timestamp = now();
+    $uniqueId = str_replace('.', '', uniqid('', true));
+
+    $userId = DB::table('users')->insertGetId([
+        'name' => 'Agent Sitemap User',
+        'email' => "agent-sitemap-{$uniqueId}@example.com",
+        'username' => "agentsitemap{$uniqueId}",
+        'agency' => 'Agent Sitemap Agency',
+        'avatar' => 'demo/default.png',
+        'password' => bcrypt('password'),
+        'locale' => 'es',
+        'terms_accepted' => true,
+        'terms_accepted_at' => $timestamp,
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ]);
+
+    DB::table('property_listings')->insert([
+        'user_id' => $userId,
+        'title' => 'Agent directory sitemap listing',
+        'description' => 'Listing created to include location pages in agent sitemap.',
+        'property_type' => 'house',
+        'transaction_type' => 'sale',
+        'price' => 100000,
+        'bedrooms' => 3,
+        'bathrooms' => 2,
+        'parking_spaces' => 1,
+        'area' => 120,
+        'address' => 'Street 20',
+        'city' => 'Cuenca',
+        'state' => 'Azuay',
+        'country' => 'Ecuador',
+        'postal_code' => '010101',
+        'latitude' => null,
+        'longitude' => null,
+        'is_featured' => false,
+        'is_active' => true,
+        'currency' => 'USD',
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ]);
+
+    $response = $this->get('/sitemap-agents-es.xml');
+
+    $response->assertSuccessful();
+    $response->assertSee('/es/inmobiliarias', false);
+    $response->assertSee('/es/ecuador/inmobiliarias', false);
+    $response->assertSee('/es/ecuador/inmobiliarias/azuay', false);
+    $response->assertSee('/es/ecuador/inmobiliarias/azuay/cuenca', false);
+});
+
+it('includes agent directory sitemaps in sitemap index', function () {
+    $response = $this->get('/sitemap.xml');
+
+    $response->assertSuccessful();
+    $response->assertSee('/sitemap-agents-es.xml', false);
+    $response->assertSee('/sitemap-agents-en.xml', false);
+});
+
 function seedPropertyListingsForSitemapTest(int $count): int
 {
     $timestamp = now();
