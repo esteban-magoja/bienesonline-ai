@@ -3,14 +3,17 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-07-16 14:27:07","nombre":"Paola Ugo","email":"paolaugo95@gmail.com","telefono":"3458501491","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-07-16 15:49:38","nombre":"Karla Guillen","email":"kargio2038@gmail.com","telefono":"5536444987","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Venustiano Carranza"},
-{"fecha":"2026-07-16 23:36:20","nombre":"Constantino de la garza","email":"fulsoundmusic@gmail.com","telefono":"2381198933","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-07-18 14:52:13","nombre":"Edgar Romulo Mimbrera Jimenez","email":"costos@dimetab.com.mx","telefono":"9932642472","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Veracruz","localidad_inmueble":"Veracruz"},
-{"fecha":"2026-07-18 15:15:55","nombre":"Zenaida Martínez","email":"zenita_08@msn.com","telefono":"2221884886","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"},
-{"fecha":"2026-07-18 15:36:51","nombre":"Paulina Mass","email":"pawa82@gmail.com","telefono":"5520312535","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
-{"fecha":"2026-07-19 01:08:02","nombre":"REYNA CASTAÑEDA TRAPALA","email":"trapala.r@gmail.com","telefono":"5534726977","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-07-19 21:11:17","nombre":"Zeila Amaranta Garcia Cacho","email":"zeilamaranta@gmail.com","telefono":"2211027699","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"}
+{"fecha":"2026-07-19 21:11:17","nombre":"Zeila Amaranta Garcia Cacho","email":"zeilamaranta@gmail.com","telefono":"2211027699","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"},
+{"fecha":"2026-07-20 13:41:50","nombre":"Zenaida Alejandra Martínez Martínez","email":"zenita_08@msn.com","telefono":"2221884886","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"},
+{"fecha":"2026-07-20 13:54:55","nombre":"Brandon Rodríguez","email":"brandon.05.10.rdz@gmail.com","telefono":"5530079908","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-07-20 13:59:31","nombre":"Lizeth","email":"lizeth.arteaga.aguirre@gmail.com","telefono":"7442868200","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-07-20 17:06:14","nombre":"Lian","email":"aguillonlian081@gmail.com","telefono":"5551101267","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-07-21 11:49:16","nombre":"Adriana Castillo","email":"nanimaoli0515@gmail.com","telefono":"5577489325","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-07-21 15:16:58","nombre":"Velazquez Wong","email":"velazquezwong@gmail.com","telefono":"(633) 3347019","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Sonora","localidad_inmueble":"Agua Prieta"},
+{"fecha":"2026-07-21 22:18:34","nombre":"laura","email":"lauracondoricastro@gmail.com","telefono":"5611236217","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Coyoacán"},
+{"fecha":"2026-07-22 12:30:10","nombre":"LUIS ADAN LOPEZ CHAVELAS","email":"luischavelas1@gmail.com","telefono":"5534638759","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Cuautitlán Izcalli"},
+{"fecha":"2026-07-22 13:01:40","nombre":"jose antonio cazares","email":"PEPE221317@hotmail.com","telefono":"4431288853","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Michoacan de Ocampo","localidad_inmueble":"Morelia"},
+{"fecha":"2026-07-22 16:06:09","nombre":"Zenaida Alejandra Martinez Martinez","email":"zenita_08@msn.com","telefono":"2221884886","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"}
 ]
 }
 ]

@@ -3,10 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-07-17 23:34:34","nombre":"Giordano","email":"giordanoap5@gmail.com","telefono":"957437331","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-07-18 10:07:11","nombre":"JAIR","email":"jvelasquezprincipe@gmail.com","telefono":"989388175","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-07-18 20:06:54","nombre":"Yessenia Linares","email":"linaresoberon@gmail.com","telefono":"986447500","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"},
-{"fecha":"2026-07-18 23:50:11","nombre":"Lizbeth","email":"lizbxnfb@gmail.com","telefono":"903453236","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Los Olivos"}
+{"fecha":"2026-07-21 20:56:57","nombre":"jose","email":"jose.limascca.cr@gmail.com","telefono":"943743890","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Villa El Salvador"}
 ]
 }
 ]

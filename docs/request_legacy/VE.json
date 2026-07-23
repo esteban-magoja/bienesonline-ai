@@ -3,15 +3,15 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-07-16 11:39:03","nombre":"Aimar","email":"aimarvalencia@gmail.com","telefono":"04122203522","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-07-16 13:27:27","nombre":"Jenyreth Alvarez","email":"ajenyreth@gmail.com","telefono":"04264184440","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"chacaito"},
-{"fecha":"2026-07-16 13:29:29","nombre":"Jenyreth Alvarez","email":"ajenyreth@gmail.com","telefono":"04264184440","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Miranda","localidad_inmueble":"Chacaito"},
-{"fecha":"2026-07-16 19:47:33","nombre":"Helder","email":"helder19906497@gmail.com","telefono":"04246730008","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
-{"fecha":"2026-07-17 12:41:57","nombre":"ORLANDO JOSE","email":"iorlandogz@gmail.com","telefono":"04140833854","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"Lechería"},
-{"fecha":"2026-07-18 01:47:15","nombre":"nehyda alas","email":"alasnehyda2013@gmail.com","telefono":"+58 4143978638","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"El Hatillo"},
 {"fecha":"2026-07-19 14:29:43","nombre":"Renny Nu?ez","email":"20josuen@gmail.com","telefono":"04242943439","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
 {"fecha":"2026-07-19 21:42:57","nombre":"Corina Coromoto Urbina Ramirez","email":"corinaurbi31@gmail.com","telefono":"4247311547","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Ejido"},
-{"fecha":"2026-07-19 23:02:55","nombre":"Diego","email":"armandod22@hotmail.com","telefono":"","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"}
+{"fecha":"2026-07-19 23:02:55","nombre":"Diego","email":"armandod22@hotmail.com","telefono":"","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-07-20 21:27:24","nombre":"Juan Sevilla","email":"mombraytips@gmail.com","telefono":"04243534506","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Aragua","localidad_inmueble":"Maracay"},
+{"fecha":"2026-07-21 13:17:11","nombre":"nicolas","email":"nicolasramondiazcordero@hotmail.com","telefono":"04167634353","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Bolívar","localidad_inmueble":"Ciudad Guayana"},
+{"fecha":"2026-07-21 22:00:24","nombre":"Hexglenis Castro","email":"hexgleniscastro@gmail.com","telefono":"04146012888","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
+{"fecha":"2026-07-21 22:39:14","nombre":"Manuel Mar","email":"manuelmarinriv@gmail.com","telefono":"04128846595","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"urbanizacion carabobo"},
+{"fecha":"2026-07-21 22:42:05","nombre":"Manuel Mar","email":"manuelmarinriv@gmail.com","telefono":"04128846595","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Agua Blanca"},
+{"fecha":"2026-07-22 08:24:49","nombre":"Dayana","email":"dayanamicel82@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Portuguesa","localidad_inmueble":"Guanare"}
 ]
 }
 ]

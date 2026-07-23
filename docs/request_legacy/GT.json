@@ -3,7 +3,12 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-07-17 16:10:53","nombre":"Gerardo Alfaro","email":"doctorgalfaro@gmail.com","telefono":"+1 8177147520","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"}
+{"fecha":"2026-07-20 14:05:53","nombre":"Maria","email":"alejandratobias@guatehomestays.com","telefono":"31538177","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Santa Lucía Milpas Altas"},
+{"fecha":"2026-07-20 14:07:42","nombre":"Maria","email":"alejandratobias@guatehomestays.com","telefono":"31538177","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Santa Lucía Milpas Altas"},
+{"fecha":"2026-07-20 14:08:14","nombre":"Eddi Sicaja","email":"e.nando502@gmail.com","telefono":"59979184","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Mixco"},
+{"fecha":"2026-07-21 16:21:25","nombre":"Olga Enríquez","email":"olgaenriquez2003@yahoo.es","telefono":"47399165","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Zona 10"},
+{"fecha":"2026-07-22 11:33:33","nombre":"BARTOLO ACEVEDO BENITO","email":"tochoacevedo@gmail.com","telefono":"40989303","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
+{"fecha":"2026-07-22 11:39:11","nombre":"juan torres","email":"gguate@gmail.com","telefono":"52875950","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"San Lucas Sacatepéquez"}
 ]
 }
 ]

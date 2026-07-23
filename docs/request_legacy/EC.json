@@ -3,7 +3,6 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-07-16 09:55:55","nombre":"Fernanda Pazmiño","email":"nandy103@hotmail.com","telefono":"0996423067","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
 {"fecha":"2026-07-19 15:22:00","nombre":"Johan Perez","email":"johanperez96.jp@gmail.com","telefono":"0983126261","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Azuay","localidad_inmueble":"Cuenca"}
 ]
 }

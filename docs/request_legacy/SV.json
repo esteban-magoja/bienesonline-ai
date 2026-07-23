@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-07-17 01:16:44","nombre":"Angelo Disanto","email":"Angelinoorders@gmail.com","telefono":"8187425011","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia Escalón"}
+{"fecha":"2026-07-20 12:34:34","nombre":"Daniel","email":"danieldefrancisco88@gmail.com","telefono":"76001311","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia San Mateo"},
+{"fecha":"2026-07-20 12:39:22","nombre":"DANIEL","email":"danieldefrancisco88@gmail.com","telefono":"76001311","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Mejicanos"}
 ]
 }
 ]
