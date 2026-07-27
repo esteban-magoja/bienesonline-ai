@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-07-20 12:34:34","nombre":"Daniel","email":"danieldefrancisco88@gmail.com","telefono":"76001311","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia San Mateo"},
-{"fecha":"2026-07-20 12:39:22","nombre":"DANIEL","email":"danieldefrancisco88@gmail.com","telefono":"76001311","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Mejicanos"}
+{"fecha":"2026-07-25 18:36:57","nombre":"Wendy Rodriguez","email":"w.rora1195@gmail.com","telefono":"78401723","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia San Mateo"}
 ]
 }
 ]

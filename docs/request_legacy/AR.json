@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-07-19 03:28:10","nombre":"Hortencia","email":"hortymedina@gmail.com","telefono":"+46760739298","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Recoleta"}
+{"fecha":"2026-07-24 20:00:54","nombre":"julio rodolfo","email":"agrimensormolina@yahoo.com.ar","telefono":"03814136109","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Tucuman","localidad_inmueble":"Trancas"},
+{"fecha":"2026-07-25 15:17:09","nombre":"Victor","email":"vam6@hotmail.com","telefono":"02284682004","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Olavarria"}
 ]
 }
 ]

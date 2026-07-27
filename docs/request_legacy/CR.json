@@ -3,8 +3,10 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-07-16 17:02:52","nombre":"Ana Zuniga","email":"dejesusymaria.24@gmail.com","telefono":"83198433","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Cartago","localidad_inmueble":"Dulce Nombre"},
-{"fecha":"2026-07-16 22:37:25","nombre":"Karen Rebeca Loaiza","email":"karenrloaiza@gmail.com","telefono":"70566633","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Curridabat"}
+{"fecha":"2026-07-23 22:23:36","nombre":"Miguel Córdoba","email":"arq.mcordoba@gmail.com","telefono":"83472533","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Alajuela","localidad_inmueble":"San Rafael"},
+{"fecha":"2026-07-24 12:24:55","nombre":"Elena Gómez","email":"carmen.gomez@techpro.cr","telefono":"61822243","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Alajuela","localidad_inmueble":"Grecia"},
+{"fecha":"2026-07-26 23:59:34","nombre":"Patri","email":"patigq11@gmail.com","telefono":"87371332","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Vasquez de Coronado"},
+{"fecha":"2026-07-27 01:32:23","nombre":"Alexa Cordero Hidalgo","email":"alexacordero1903@gmail.com","telefono":"72758445","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Aserrí"}
 ]
 }
 ]

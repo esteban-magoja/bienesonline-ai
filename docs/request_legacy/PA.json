@@ -3,7 +3,13 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-07-09 21:50:19","nombre":"Yohelis pinto","email":"pintoyohelis074@gmail.com","telefono":"65586275","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Colón","localidad_inmueble":"Buena Vista"}
+{"fecha":"2026-07-23 14:12:14","nombre":"Grace","email":"gracemortega.29@gmail.com","telefono":"6780-1336","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"San Francisco"},
+{"fecha":"2026-07-25 15:02:52","nombre":"Tomas Diaz","email":"tomasjdiaz@gmail.com","telefono":"69400429","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Los Santos","localidad_inmueble":"Cañas, Ojo de Agua"},
+{"fecha":"2026-07-25 15:06:52","nombre":"Tomas Diaz","email":"tomasjdiaz@gmail.com","telefono":"69400429","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Colón","localidad_inmueble":"Santa Isabel"},
+{"fecha":"2026-07-24 23:20:22","nombre":"jacky parra","email":"asesoresinmobiliarios911@gmail.com","telefono":"60263893","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Betania"},
+{"fecha":"2026-07-25 11:44:36","nombre":"ADRIANA CHANG","email":"adriana.chang204@gmail.com","telefono":"66074322","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-07-25 15:09:40","nombre":"Tomas Díaz","email":"tomasjdiaz@gmail.com","telefono":"69400429","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Coclé","localidad_inmueble":"El Harino"},
+{"fecha":"2026-07-26 16:29:09","nombre":"Nabiyah Yehuda","email":"coachedlives@gmail.com","telefono":"561 631 4923","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"San Carlos"}
 ]
 }
 ]
