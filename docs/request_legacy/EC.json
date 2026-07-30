@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-07-26 23:04:29","nombre":"Nicolás Tituaña","email":"nicolastituana2020@hotmail.com","telefono":"0983911528","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"}
+{"fecha":"2026-07-26 23:04:29","nombre":"Nicol?s Titua?a","email":"nicolastituana2020@hotmail.com","telefono":"0983911528","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
+{"fecha":"2026-07-27 22:50:34","nombre":"Natalia","email":"adelanatalia@hotmail.com","telefono":"0992744552","tipo_inmueble":"Oficina","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"}
 ]
 }
 ]

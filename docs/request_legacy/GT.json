@@ -3,7 +3,10 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-07-26 22:12:02","nombre":"Julio Vasquez","email":"julioale@hotmail.es","telefono":"30818599","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Zona 18"}
+{"fecha":"2026-07-26 22:12:02","nombre":"Julio Vasquez","email":"julioale@hotmail.es","telefono":"30818599","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Zona 18"},
+{"fecha":"2026-07-27 22:03:38","nombre":"RAUL","email":"raulmartinez12931@gmail.com","telefono":"30881493","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Antigua Guatemala"},
+{"fecha":"2026-07-27 16:43:02","nombre":"Maynor Perez","email":"esesrochaa@hotmail.com","telefono":"47084885","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
+{"fecha":"2026-07-28 10:59:13","nombre":"Héctor Quiej","email":"hector22culajay@gmail.com","telefono":"58552509","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"San Juan Sacatepéquez"}
 ]
 }
 ]

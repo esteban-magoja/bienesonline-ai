@@ -3,14 +3,18 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-07-23 13:38:24","nombre":"laura ramirez","email":"lauraleticiaramirezmartinez@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Zapopan"},
-{"fecha":"2026-07-23 23:03:53","nombre":"Javier Camacho","email":"javier.cgfb@gmail.com","telefono":"5517778291","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-07-24 05:57:13","nombre":"Fatima carmona","email":"faticarmona357@gmail.com","telefono":"5513635882","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-07-24 09:15:24","nombre":"Cristhian","email":"cristhianrojas@live.com.mx","telefono":"5534594508","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-07-24 10:59:37","nombre":"Zenaida Alejandra Mart?nez Mart?nez","email":"zenita_08@msn.com","telefono":"2221884886","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"},
-{"fecha":"2026-07-24 12:53:39","nombre":"Cristhian","email":"cristhianrojas@live.com.mx","telefono":"5534594508","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-07-24 21:07:48","nombre":"Naydelin Pompa","email":"naydelin.bautista@gmail.com","telefono":"8180173374","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-07-25 00:32:05","nombre":"gloria patricia ramos trujillo","email":"glowpa@gmail.com","telefono":"5612719654","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"}
+{"fecha":"2026-07-27 13:44:13","nombre":"Alejandro Nicolas Luna Vazquez","email":"ale_lv_nico@outlook.com","telefono":"7341568506","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-07-27 19:20:31","nombre":"Alfonso Aguilar","email":"alfamer72@gmail.com","telefono":"5549408979","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Coyoacán"},
+{"fecha":"2026-07-28 13:47:47","nombre":"Claire Leal","email":"treestatecontacto@gmail.com","telefono":"3317404040","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Guadalajara"},
+{"fecha":"2026-07-28 14:07:50","nombre":"ELISA LOPEZ","email":"elisalituggi@hotmail.com","telefono":"5563191998","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-07-28 15:10:59","nombre":"Deborah","email":"evitamarquez624@gmail.com","telefono":"4493494675","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Aguascalientes","localidad_inmueble":"Aguascalientes"},
+{"fecha":"2026-07-28 18:49:47","nombre":"Margarita","email":"margaritacasas91@gmail.com","telefono":"9932169161","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"},
+{"fecha":"2026-07-28 20:24:21","nombre":"Stefany","email":"stef.tums@gmail.com","telefono":"2225304123","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Puebla","localidad_inmueble":"Amozoc de Mota"},
+{"fecha":"2026-07-28 23:26:32","nombre":"tere","email":"teremendez1@live.com.mx","telefono":"5615112312","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-07-29 15:47:30","nombre":"Naydelin","email":"naydelin.bautista@gmail.com","telefono":"8180173374","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
+{"fecha":"2026-07-29 15:54:41","nombre":"Alfonso Aguilar","email":"alfamer72@gmail.com","telefono":"5549408979","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Coyoacán"},
+{"fecha":"2026-07-29 16:56:40","nombre":"Victor Verde","email":"vverdcal79@gmail.com","telefono":"5544946085","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-07-29 22:04:29","nombre":"JESUS EDUARDO HERNANDEZ PADRON","email":"jesus.hernandez.padron.r6@gmail.com","telefono":"4613668032","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guanajuato","localidad_inmueble":"Celaya"}
 ]
 }
 ]

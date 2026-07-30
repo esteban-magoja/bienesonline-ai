@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_honduras"},
 {"type":"table","name":"c","database":"admin_bienes_honduras","data":
 [
-{"fecha":"2026-07-10 22:56:24","nombre":"Diego Borjas","email":"proyectoapp@yahoo.com","telefono":"+50496200506","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Cortés","localidad_inmueble":"San Pedro Sula"}
+{"fecha":"2026-07-29 20:12:11","nombre":"Francia Danelia Amador Rosales ","email":"franciaamador19@gmail.com","telefono":"33534492","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Francisco Morazán","localidad_inmueble":"Tegucigalpa"}
 ]
 }
 ]

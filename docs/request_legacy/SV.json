@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-07-25 18:36:57","nombre":"Wendy Rodriguez","email":"w.rora1195@gmail.com","telefono":"78401723","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Colonia San Mateo"}
+{"fecha":"2026-07-27 11:54:55","nombre":"Daniel","email":"danieldefrancisco88@gmail.com","telefono":"7600 1311","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Mejicanos"},
+{"fecha":"2026-07-29 15:55:10","nombre":"Kelvin Martinez","email":"kemartinramirez89@gmail.com","telefono":"77159490","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"La Libertad","localidad_inmueble":"Nuevo Cuscatlán"}
 ]
 }
 ]

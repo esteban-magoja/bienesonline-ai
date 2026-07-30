@@ -3,7 +3,11 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-07-19 20:40:18","nombre":"Maria Isolina Romero Merchan","email":"romeromerchan@hotmail.com","telefono":"3123050583","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"}
+{"fecha":"2026-07-27 13:13:16","nombre":"Giovanna Avila","email":"gta_apt@hotmail.com","telefono":"3003586650","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Bogotá Dc"},
+{"fecha":"2026-07-28 19:57:26","nombre":"Diana","email":"dianafrankel981@yahoo.com","telefono":"3136124399","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-07-27 17:08:40","nombre":"ADRIANA ","email":"aph891011@gmail.com","telefono":"3103340220","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"San Vicente De Chucurí"},
+{"fecha":"2026-07-27 20:48:28","nombre":"Maria Mateus ","email":"macrimara112@gmail.com","telefono":"3505299447","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santander","localidad_inmueble":"Barbosa"},
+{"fecha":"2026-07-28 21:57:30","nombre":"julian","email":"julianruiz2610@gmail.com","telefono":"3014300099","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Sabaneta"}
 ]
 }
 ]
