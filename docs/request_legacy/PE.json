@@ -3,12 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-07-27 13:07:20","nombre":"John Quispe","email":"operaciones@2myz.com","telefono":"998156539","tipo_inmueble":"Industrial","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santa Anita"},
-{"fecha":"2026-07-27 16:55:01","nombre":"Mariangel","email":"martinezyeni886@gmail.com","telefono":"967773077","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"},
-{"fecha":"2026-07-27 23:31:14","nombre":"Italy","email":"meda_trelles@hotmail.com","telefono":"926455546","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"},
-{"fecha":"2026-07-28 01:45:58","nombre":"ROMINA SANDOVAL","email":"roisa17ss@gmail.com","telefono":"994823362","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Santiago De Surco"},
-{"fecha":"2026-07-28 14:18:05","nombre":"joaquin","email":"joaquinrojas393@gmail.com","telefono":"980800989","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Oxapampa","localidad_inmueble":"Oxapampa"},
-{"fecha":"2026-07-29 23:16:44","nombre":"Luis","email":"sakaymorisakiluiscarlos@gmail.com","telefono":"983561580","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"}
+{"fecha":"2026-08-01 18:25:11","nombre":"Italo","email":"italoarroyopaz@gmail.com","telefono":"953105523","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Luis"}
 ]
 }
 ]

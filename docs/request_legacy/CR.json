@@ -3,9 +3,13 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-07-26 23:59:34","nombre":"Patri","email":"patigq11@gmail.com","telefono":"87371332","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Vasquez de Coronado"},
-{"fecha":"2026-07-27 01:32:23","nombre":"Alexa Cordero Hidalgo","email":"alexacordero1903@gmail.com","telefono":"72758445","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Aserrí"},
-{"fecha":"2026-07-27 22:20:44","nombre":"Shaury Thomas ","email":"shaury13_@hotmail.com","telefono":"87083863","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Moravia"}
+{"fecha":"2026-07-30 12:46:47","nombre":"Karla","email":"china81@hotmail.es","telefono":"88291489","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Hatillo"},
+{"fecha":"2026-07-31 16:08:55","nombre":"Juan Carlos Majano Medina","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Santo Domingo"},
+{"fecha":"2026-07-31 19:56:57","nombre":"Rene","email":"bpctmx@hotmail.com","telefono":"72764036","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"San José"},
+{"fecha":"2026-08-01 18:28:31","nombre":"JUAN CARLOS MAJANO","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Flores"},
+{"fecha":"2026-08-01 18:31:57","nombre":"JUAN CARLOS MAJANO","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Tibás"},
+{"fecha":"2026-08-01 18:38:03","nombre":"JUAN CARLOS MAJANO","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Santo Domingo"},
+{"fecha":"2026-08-01 18:49:36","nombre":"Juan Carlos Majano Medina","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"San Pablo"}
 ]
 }
 ]

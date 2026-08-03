@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-07-24 20:00:54","nombre":"julio rodolfo","email":"agrimensormolina@yahoo.com.ar","telefono":"03814136109","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Tucuman","localidad_inmueble":"Trancas"},
-{"fecha":"2026-07-25 15:17:09","nombre":"Victor","email":"vam6@hotmail.com","telefono":"02284682004","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Olavarria"}
+{"fecha":"2026-08-02 19:56:35","nombre":"Eugenio ","email":"balcarce278@gmail.com","telefono":"1131750645","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Las Flores"},
+{"fecha":"2026-08-01 12:08:33","nombre":"Maria Laura Juarez","email":"marilajuarez2876@gmail.com","telefono":"3541289567","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Córdoba","localidad_inmueble":"Villa Carlos Paz"}
 ]
 }
 ]

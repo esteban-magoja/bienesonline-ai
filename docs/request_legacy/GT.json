@@ -3,10 +3,12 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-07-26 22:12:02","nombre":"Julio Vasquez","email":"julioale@hotmail.es","telefono":"30818599","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Zona 18"},
-{"fecha":"2026-07-27 22:03:38","nombre":"RAUL","email":"raulmartinez12931@gmail.com","telefono":"30881493","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Antigua Guatemala"},
-{"fecha":"2026-07-27 16:43:02","nombre":"Maynor Perez","email":"esesrochaa@hotmail.com","telefono":"47084885","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
-{"fecha":"2026-07-28 10:59:13","nombre":"Héctor Quiej","email":"hector22culajay@gmail.com","telefono":"58552509","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"San Juan Sacatepéquez"}
+{"fecha":"2026-07-30 13:05:38","nombre":"Yasmin L?pez","email":"yasminlopez1976@gmail.com","telefono":"42396225","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
+{"fecha":"2026-07-30 20:43:55","nombre":"Andy","email":"aoliveroa@gmail.com","telefono":"40142014","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santa Rosa","localidad_inmueble":"Ayarza"},
+{"fecha":"2026-08-01 10:32:12","nombre":"Ronald Gonz?lez","email":"gonzalezronald2030@gmail.com","telefono":"32515898","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Jocotenango"},
+{"fecha":"2026-08-01 23:04:41","nombre":"Pauline Decamps","email":"unicornioguatemala@hotmail.com","telefono":"31210524","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Santa Lucía Milpas Altas"},
+{"fecha":"2026-08-02 00:04:43","nombre":"Jessenia Ruano","email":"jesseniaruano1@gmail.com","telefono":"39551410","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
+{"fecha":"2026-08-02 01:48:52","nombre":"Elisa Villamar","email":"mariaelisavillamar@gmail.com","telefono":"58250736","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Ciudad Vieja"}
 ]
 }
 ]

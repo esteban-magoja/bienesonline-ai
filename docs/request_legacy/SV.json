@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-07-27 11:54:55","nombre":"Daniel","email":"danieldefrancisco88@gmail.com","telefono":"7600 1311","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"Mejicanos"},
-{"fecha":"2026-07-29 15:55:10","nombre":"Kelvin Martinez","email":"kemartinramirez89@gmail.com","telefono":"77159490","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"La Libertad","localidad_inmueble":"Nuevo Cuscatlán"}
+{"fecha":"2026-07-31 13:17:18","nombre":"Fernando Valencia","email":"fernando_valencia07@hotmail.com","telefono":"78583871","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Sonsonate","localidad_inmueble":"Juayúa"}
 ]
 }
 ]
