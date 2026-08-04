@@ -180,6 +180,8 @@ class AgentDirectoryController extends Controller
             return null;
         }
 
+        $normalizedSlug = PropertySlugHelper::normalize($slug);
+
         $query = PropertyListing::query()
             ->where('is_active', true)
             ->whereHas('user', function (Builder $builder): void {
@@ -188,11 +190,11 @@ class AgentDirectoryController extends Controller
             });
 
         if ($country) {
-            $query->whereRaw('LOWER(TRIM(country)) = LOWER(TRIM(?))', [$country]);
+            $query->whereRaw('LOWER(unaccent(TRIM(country))) = LOWER(unaccent(TRIM(?)))', [$country]);
         }
 
         if ($state) {
-            $query->whereRaw('LOWER(TRIM(state)) = LOWER(TRIM(?))', [$state]);
+            $query->whereRaw('LOWER(unaccent(TRIM(state))) = LOWER(unaccent(TRIM(?)))', [$state]);
         }
 
         $values = $query
@@ -202,7 +204,7 @@ class AgentDirectoryController extends Controller
             ->pluck('value');
 
         foreach ($values as $value) {
-            if (PropertySlugHelper::normalize($value) === $slug) {
+            if (PropertySlugHelper::normalize($value) === $normalizedSlug) {
                 return $value;
             }
         }
@@ -219,15 +221,15 @@ class AgentDirectoryController extends Controller
         $query->where('is_active', true);
 
         if ($country) {
-            $query->whereRaw('LOWER(TRIM(country)) = LOWER(TRIM(?))', [$country]);
+            $query->whereRaw('LOWER(unaccent(TRIM(country))) = LOWER(unaccent(TRIM(?)))', [$country]);
         }
 
         if ($state) {
-            $query->whereRaw('LOWER(TRIM(state)) = LOWER(TRIM(?))', [$state]);
+            $query->whereRaw('LOWER(unaccent(TRIM(state))) = LOWER(unaccent(TRIM(?)))', [$state]);
         }
 
         if ($city) {
-            $query->whereRaw('LOWER(TRIM(city)) = LOWER(TRIM(?))', [$city]);
+            $query->whereRaw('LOWER(unaccent(TRIM(city))) = LOWER(unaccent(TRIM(?)))', [$city]);
         }
     }
 
@@ -254,9 +256,9 @@ class AgentDirectoryController extends Controller
         $locations = $query
             ->whereNotNull($column)
             ->whereRaw("TRIM({$column}) != ''")
-            ->selectRaw("TRIM({$column}) as value, COUNT(*) as listings_count")
-            ->groupByRaw("TRIM({$column})")
-            ->orderByRaw("TRIM({$column})")
+            ->selectRaw("MAX(TRIM({$column})) as value, COUNT(*) as listings_count")
+            ->groupByRaw("LOWER(unaccent(TRIM({$column})))")
+            ->orderByRaw("LOWER(unaccent(TRIM({$column})))")
             ->get();
 
         return $locations->map(function (PropertyListing $location) use ($routeName, $column, $country, $state): array {

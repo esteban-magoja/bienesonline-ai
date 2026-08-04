@@ -148,6 +148,30 @@ it('matches country and location filters despite casing and whitespace differenc
         ->assertSee('1 anuncio publicado');
 });
 
+it('matches location filters with or without accents', function () {
+    $agentId = createAgent([
+        'agency' => 'Inmobiliaria Córdoba',
+        'username' => 'inmobiliaria-cordoba',
+        'email' => 'inmobiliaria-cordoba@example.com',
+    ]);
+
+    createListing($agentId, [
+        'state' => 'Córdoba',
+        'city' => 'Córdoba',
+    ]);
+    createListing($agentId, [
+        'state' => 'CORDOBA',
+        'city' => 'CORDOBA',
+        'title' => 'Listado sin acento',
+    ]);
+
+    $this->get('/es/argentina/inmobiliarias/cordoba')
+        ->assertSuccessful()
+        ->assertSee('Inmobiliaria Córdoba')
+        ->assertSee('2 anuncios publicados');
+
+});
+
 it('shows the filtered location instead of the agents profile location', function () {
     $agentId = createAgent([
         'agency' => 'Agencia Multipaís',
@@ -208,6 +232,34 @@ it('provides navigation links for available countries, states, and cities', func
         ->assertSuccessful()
         ->assertDontSee('Explorar por ciudad')
         ->assertDontSee('/es/argentina/inmobiliarias/cordoba/cordoba', false);
+});
+
+it('groups location links when city names differ only by accents or casing', function () {
+    $agentId = createAgent([
+        'agency' => 'Agencia Cañar',
+        'username' => 'agencia-canar',
+        'email' => 'agencia-canar@example.com',
+    ]);
+
+    createListing($agentId, [
+        'country' => 'Ecuador',
+        'state' => 'Cañar',
+        'city' => 'cañar',
+    ]);
+    createListing($agentId, [
+        'country' => 'Ecuador',
+        'state' => 'Cañar',
+        'city' => 'Cañar',
+        'title' => 'Listado Cañar',
+    ]);
+
+    $response = $this->get('/es/ecuador/inmobiliarias/canar')
+        ->assertSuccessful()
+        ->assertSee('Cañar')
+        ->assertSee('2 anuncios publicados')
+        ->assertSee('/es/ecuador/inmobiliarias/canar/canar', false);
+
+    expect(substr_count($response->getContent(), '/es/ecuador/inmobiliarias/canar/canar'))->toBe(2);
 });
 
 it('does not capture property listing routes', function () {
