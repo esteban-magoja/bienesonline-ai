@@ -146,11 +146,11 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
     Route::get('/inmobiliaria/{username}', [\App\Http\Controllers\UserProfileController::class, 'show'])
         ->where(['username' => '[a-z0-9\-]+'])
         ->name('user.profile.es');
-    
+
     Route::get('/realtor/{username}', [\App\Http\Controllers\UserProfileController::class, 'show'])
         ->where(['username' => '[a-z0-9\-]+'])
         ->name('user.profile.en');
-    
+
     // ========================================================================
     // PROPERTY LISTINGS - URLs amigables SEO (DEBE IR AL FINAL del grupo)
     // ========================================================================

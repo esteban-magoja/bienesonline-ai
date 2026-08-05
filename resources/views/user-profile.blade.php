@@ -1,20 +1,51 @@
 @php
-    // El SEO ya viene completo del controlador
+    $profileSetting = $profileSetting ?? null;
+    $displayName = $user->agency ?: $user->name;
 @endphp
 
 <x-layouts.marketing :seo="$seo">
-    
+    {{-- Breadcrumbs --}}
+    <div class="border-b border-gray-200 bg-white">
+        <div class="container mx-auto max-w-7xl px-4 py-4">
+            <nav aria-label="Breadcrumb">
+                <ol class="flex flex-wrap items-center gap-2 text-sm">
+                    @foreach($breadcrumbs as $index => $breadcrumb)
+                        <li class="inline-flex items-center gap-2">
+                            @if($index > 0)
+                                <svg class="h-4 w-4 flex-shrink-0 text-gray-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            @endif
+                            @if($breadcrumb['url'])
+                                <a href="{{ $breadcrumb['url'] }}" class="font-medium text-gray-600 transition hover:text-blue-600">
+                                    {{ $breadcrumb['label'] }}
+                                </a>
+                            @else
+                                <span class="font-semibold text-gray-900">
+                                    {{ $breadcrumb['label'] }}
+                                </span>
+                            @endif
+                        </li>
+                    @endforeach
+                </ol>
+            </nav>
+        </div>
+    </div>
+
     {{-- Hero Section con Info del Usuario --}}
-    <div class="bg-gray-100 py-12">
+    <div id="inicio" class="relative overflow-hidden bg-gray-100 py-12">
+        @if($profileSetting?->cover_image_path)
+            <img src="{{ Storage::disk('public')->url($profileSetting->cover_image_path) }}" alt="" class="absolute inset-0 h-full w-full object-cover opacity-20">
+        @endif
         <div class="container mx-auto px-4">
-            <div class="max-w-7xl mx-auto">
+            <div class="relative mx-auto max-w-7xl">
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                     
                     {{-- Avatar --}}
                     <div class="flex-shrink-0">
                         @if($user->avatar)
                             <img src="{{ $user->avatar() }}" 
-                                 alt="{{ $user->name }}" 
+                                 alt="{{ $displayName }}"
                                  class="w-32 h-32 rounded-full border-4 border-white shadow-xl object-cover">
                         @else
                             <div class="w-32 h-32 rounded-full border-4 border-white shadow-xl bg-white flex items-center justify-center">
@@ -28,8 +59,12 @@
                     {{-- Info del Usuario --}}
                     <div class="flex-1 text-center md:text-left">
                         <h1 class="text-4xl font-bold text-gray-900 mb-2">
-                            {{ $user->agency ?: $user->name }}
+                            {{ $displayName }}
                         </h1>
+
+                        <p class="mb-4 text-lg text-gray-700">
+                            {{ $profileSetting?->headline ?: __('properties.user_profile.headline_fallback') }}
+                        </p>
                         
                         @if($user->agency && $user->name)
                             <p class="text-xl text-gray-600 mb-4">{{ $user->name }}</p>
@@ -84,7 +119,7 @@
 
                         <div class="space-y-3">
                             {{-- Email --}}
-                            @if($user->email)
+                            @if($user->email && ($profileSetting?->show_email ?? true))
                                 <div class="flex items-start">
                                     <svg class="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
@@ -99,7 +134,7 @@
                             @endif
 
                             {{-- Teléfono/Móvil --}}
-                            @if($user->movil)
+                            @if($user->movil && ($profileSetting?->show_phone ?? true))
                                 <div class="flex items-start">
                                     <svg class="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
@@ -133,7 +168,7 @@
                                 </div>
                             @endif
 
-                            @if($user->address)
+                            @if($user->address && ($profileSetting?->show_address ?? true))
                                 <div class="flex items-start">
                                     <svg class="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9-7 9 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10z"></path>
@@ -152,36 +187,103 @@
         </div>
     </div>
 
-    {{-- Breadcrumbs --}}
-    <div class="bg-gray-50 border-b">
-        <div class="container mx-auto px-4 py-3">
-            <nav aria-label="Breadcrumb">
-                <ol class="flex flex-wrap items-center gap-1 md:gap-3">
-                    @foreach($breadcrumbs as $index => $breadcrumb)
-                        <li class="inline-flex items-center">
-                            @if($index > 0)
-                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                                </svg>
-                            @endif
-                            @if($breadcrumb['url'])
-                                <a href="{{ $breadcrumb['url'] }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
-                                    {{ $breadcrumb['label'] }}
-                                </a>
-                            @else
-                                <span class="text-sm font-medium text-gray-500">
-                                    {{ $breadcrumb['label'] }}
-                                </span>
-                            @endif
-                        </li>
-                    @endforeach
-                </ol>
-            </nav>
+    <nav aria-label="{{ __('properties.user_profile.mini_site_nav') }}" class="sticky top-0 z-20 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur">
+        <div class="container mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 py-4 sm:grid-cols-3 lg:grid-cols-5">
+            <a href="#inicio" class="group flex items-center gap-3 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-base font-semibold text-blue-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-100 hover:shadow-sm">
+                <x-phosphor-house-duotone class="h-7 w-7 flex-shrink-0" />
+                <span>{{ __('messages.home') }}</span>
+            </a>
+            @if($user->profileServices->isNotEmpty())
+                <a href="#servicios" class="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-base font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700 hover:shadow-sm">
+                    <x-phosphor-briefcase-duotone class="h-7 w-7 flex-shrink-0 text-blue-600" />
+                    <span>{{ __('properties.user_profile.services') }}</span>
+                </a>
+            @endif
+            @if($user->profileMembers->isNotEmpty())
+                <a href="#equipo" class="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-base font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700 hover:shadow-sm">
+                    <x-phosphor-users-three-duotone class="h-7 w-7 flex-shrink-0 text-blue-600" />
+                    <span>{{ __('properties.user_profile.team') }}</span>
+                </a>
+            @endif
+            @if($featuredProperties->isNotEmpty())
+                <a href="#destacadas" class="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-base font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700 hover:shadow-sm">
+                    <x-phosphor-star-duotone class="h-7 w-7 flex-shrink-0 text-blue-600" />
+                    <span>{{ __('properties.user_profile.featured_properties') }}</span>
+                </a>
+            @endif
+            <a href="#propiedades" class="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-base font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700 hover:shadow-sm">
+                <x-phosphor-buildings-duotone class="h-7 w-7 flex-shrink-0 text-blue-600" />
+                <span>{{ __('properties.user_profile.view_all_properties') }}</span>
+            </a>
         </div>
-    </div>
+    </nav>
 
     {{-- Main Content --}}
     <div class="container mx-auto px-4 py-8">
+        @if($user->profileServices->isNotEmpty())
+            <section id="servicios" class="mb-12 scroll-mt-28">
+                <div class="mb-6"><p class="text-sm font-semibold uppercase tracking-wide text-blue-600">{{ __('properties.user_profile.services') }}</p><h2 class="text-3xl font-bold text-gray-900">{{ __('properties.user_profile.services') }}</h2></div>
+                <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    @foreach($user->profileServices as $service)
+                        <article class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                            @if($service->iconComponent())
+                                <div class="mb-4 text-blue-600">
+                                    <x-dynamic-component :component="$service->iconComponent()" class="h-8 w-8" />
+                                </div>
+                            @endif
+                            <h3 class="text-xl font-bold text-gray-900">{{ $service->localizedName() }}</h3>
+                            @if($service->localizedDescription())<p class="mt-2 leading-6 text-gray-600">{{ $service->localizedDescription() }}</p>@endif
+                        </article>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        @if($user->profileMembers->isNotEmpty())
+            <section id="equipo" class="mb-12 scroll-mt-28">
+                <div class="mb-6"><p class="text-sm font-semibold uppercase tracking-wide text-blue-600">{{ __('properties.user_profile.team') }}</p><h2 class="text-3xl font-bold text-gray-900">{{ __('properties.user_profile.team') }}</h2></div>
+                <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    @foreach($user->profileMembers as $member)
+                        <article class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                            @if($member->photo_path)<img src="{{ Storage::disk('public')->url($member->photo_path) }}" alt="{{ $member->name }}" class="mb-4 h-24 w-24 rounded-full object-cover">@endif
+                            <h3 class="text-xl font-bold text-gray-900">{{ $member->name }}</h3>
+                            @if($member->role)<p class="mt-1 font-medium text-blue-600">{{ $member->role }}</p>@endif
+                            @if($member->localizedBio())<p class="mt-3 leading-6 text-gray-600">{{ $member->localizedBio() }}</p>@endif
+                            @if($member->specialties)<p class="mt-3 text-sm text-gray-500">{{ implode(' · ', $member->specialties) }}</p>@endif
+                            @if($member->show_phone && $member->phone)<a href="tel:{{ $member->phone }}" class="mt-3 block text-sm text-blue-600">{{ $member->phone }}</a>@endif
+                            @if($member->show_email && $member->email)<a href="mailto:{{ $member->email }}" class="mt-1 block break-all text-sm text-blue-600">{{ $member->email }}</a>@endif
+                        </article>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        @if($featuredProperties->isNotEmpty())
+            <section id="destacadas" class="mb-12 scroll-mt-28">
+                <div class="mb-6"><p class="text-sm font-semibold uppercase tracking-wide text-blue-600">{{ __('properties.user_profile.featured_properties') }}</p><h2 class="text-3xl font-bold text-gray-900">{{ __('properties.user_profile.featured_properties') }}</h2></div>
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    @foreach($featuredProperties as $featured)
+                        <x-property-profile-card :property="$featured" />
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        @if($profileSetting?->website_url || $profileSetting?->office_hours || filled($profileSetting?->social_links))
+            <section class="mb-12 grid gap-6 rounded-xl bg-white p-6 shadow-sm md:grid-cols-3">
+                @if($profileSetting?->website_url)
+                    <div><h2 class="font-semibold text-gray-900">{{ __('properties.user_profile.website') }}</h2><a href="{{ $profileSetting->website_url }}" target="_blank" rel="noopener" class="mt-2 block break-all text-blue-600">{{ $profileSetting->website_url }}</a></div>
+                @endif
+                @if($profileSetting?->office_hours)
+                    <div><h2 class="font-semibold text-gray-900">{{ __('properties.user_profile.office_hours') }}</h2><p class="mt-2 whitespace-pre-line text-gray-600">{{ $profileSetting->office_hours['text'] ?? '' }}</p></div>
+                @endif
+                @if(filled($profileSetting?->social_links))
+                    <div><h2 class="font-semibold text-gray-900">{{ __('properties.user_profile.social_media') }}</h2><div class="mt-2 flex flex-col gap-1">@foreach($profileSetting->social_links as $network => $url)<a href="{{ $url }}" target="_blank" rel="noopener" class="text-blue-600">{{ ucfirst($network) }}</a>@endforeach</div></div>
+                @endif
+            </section>
+        @endif
+
+        <section id="propiedades" class="scroll-mt-28">
         @if($properties->isEmpty())
             {{-- No Properties --}}
             <div class="bg-white rounded-lg shadow-md p-12 text-center">
@@ -308,6 +410,8 @@
             {{-- Properties Grid --}}
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($properties as $property)
+                    <x-property-profile-card :property="$property" />
+                    @if(false)
                     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         {{-- Image --}}
                         <div class="relative h-48 bg-gray-200">
@@ -389,6 +493,7 @@
                             </a>
                         </div>
                     </div>
+                    @endif
                 @endforeach
             </div>
 
@@ -397,6 +502,8 @@
                 {{ $properties->links() }}
             </div>
         @endif
+        </section>
+
     </div>
 
     <script>

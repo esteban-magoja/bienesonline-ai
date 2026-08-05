@@ -319,6 +319,18 @@ return [
         'company_description' => 'Descripción de la empresa',
         'address' => 'Dirección',
         'area' => 'Zona / Provincia / Estado',
+        'mini_site_nav' => 'Navegación del perfil',
+        'about_us' => 'Quiénes somos',
+        'services' => 'Servicios',
+        'team' => 'Nuestro equipo',
+        'featured_properties' => 'Propiedades destacadas',
+        'service_areas' => 'Zonas de atención',
+        'headline_fallback' => 'Encuentra tu próxima propiedad con nosotros.',
+        'no_services' => 'La inmobiliaria todavía no ha publicado sus servicios.',
+        'no_team' => 'La inmobiliaria todavía no ha publicado información de su equipo.',
+        'office_hours' => 'Horarios de atención',
+        'website' => 'Sitio web',
+        'social_media' => 'Redes sociales',
     ],
 
     'agents_directory' => [

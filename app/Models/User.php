@@ -104,6 +104,21 @@ class User extends WaveUser implements HasLocalePreference
         return $this->hasMany(\App\Models\PropertyListing::class);
     }
 
+    public function profileSetting(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(UserProfileSetting::class);
+    }
+
+    public function profileServices(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserProfileService::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function profileMembers(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserProfileMember::class)->orderBy('sort_order')->orderBy('id');
+    }
+
     /**
      * Get the admin notes for the user.
      */

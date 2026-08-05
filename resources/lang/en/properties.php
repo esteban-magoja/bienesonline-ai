@@ -319,6 +319,18 @@ return [
         'company_description' => 'Company Description',
         'address' => 'Address',
         'area' => 'Area / State / Province',
+        'mini_site_nav' => 'Profile navigation',
+        'about_us' => 'About us',
+        'services' => 'Services',
+        'team' => 'Our team',
+        'featured_properties' => 'Featured properties',
+        'service_areas' => 'Service areas',
+        'headline_fallback' => 'Find your next property with us.',
+        'no_services' => 'This real estate company has not published its services yet.',
+        'no_team' => 'This real estate company has not published team information yet.',
+        'office_hours' => 'Office hours',
+        'website' => 'Website',
+        'social_media' => 'Social media',
     ],
 
     'agents_directory' => [

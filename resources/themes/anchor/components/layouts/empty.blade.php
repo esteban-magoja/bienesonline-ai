@@ -41,7 +41,10 @@
     {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 </head>
 <body class="flex flex-col px-10 min-h-screen bg-white lg:px-0 dark:bg-zinc-950">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W55CSJ8X"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     {{ $slot }}
 </body>
 </html>
-

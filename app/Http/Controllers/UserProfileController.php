@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\PropertyListing;
-use App\Models\PropertyType;
 use App\Models\TransactionType;
 use App\Services\SeoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\View\View;
 
 class UserProfileController extends Controller
 {
@@ -17,13 +17,20 @@ class UserProfileController extends Controller
      * 
      * URL: /{locale}/inmobiliaria/{username} o /{locale}/realtor/{username}
      */
-    public function show(Request $request, string $locale, string $username)
+    public function show(Request $request, string $locale, string $username): View
     {
         // Establecer locale
         App::setLocale($locale);
 
         // Buscar usuario por username
-        $user = User::where('username', $username)->firstOrFail();
+        $user = User::query()
+            ->with([
+                'profileSetting',
+                'profileServices' => fn ($query) => $query->where('is_active', true),
+                'profileMembers' => fn ($query) => $query->where('is_visible', true),
+            ])
+            ->where('username', $username)
+            ->firstOrFail();
         $selectedCountry = trim($request->string('country')->toString());
         $selectedState = trim($request->string('state')->toString());
         $selectedCity = trim($request->string('city')->toString());
@@ -31,7 +38,7 @@ class UserProfileController extends Controller
         // Construir query de propiedades activas del usuario
         $query = PropertyListing::where('user_id', $user->id)
             ->where('is_active', true)
-            ->with(['primaryImage', 'firstImage', 'images']);
+            ->with(['primaryImage', 'firstImage']);
 
         if ($selectedCountry !== '') {
             $query->whereRaw('LOWER(TRIM(country)) = LOWER(TRIM(?))', [$selectedCountry]);
@@ -90,9 +97,51 @@ class UserProfileController extends Controller
         // Paginación
         $properties = $query->paginate(12)->withQueryString();
 
+        $applySelectedFilters = function ($featuredQuery) use ($selectedCountry, $selectedState, $selectedCity, $request): void {
+            if ($selectedCountry !== '') {
+                $featuredQuery->whereRaw('LOWER(TRIM(country)) = LOWER(TRIM(?))', [$selectedCountry]);
+            }
+
+            if ($selectedState !== '') {
+                $featuredQuery->whereRaw('LOWER(TRIM(state)) = LOWER(TRIM(?))', [$selectedState]);
+            }
+
+            if ($selectedCity !== '') {
+                $featuredQuery->whereRaw('LOWER(TRIM(city)) = LOWER(TRIM(?))', [$selectedCity]);
+            }
+
+            foreach (['transaction_type', 'property_type'] as $filter) {
+                if ($request->filled($filter)) {
+                    $featuredQuery->where($filter, $request->input($filter));
+                }
+            }
+        };
+
+        $featuredProperties = PropertyListing::query()
+            ->where('user_id', $user->id)
+            ->where('is_active', true)
+            ->where('is_featured', true)
+            ->tap($applySelectedFilters)
+            ->with(['primaryImage', 'firstImage'])
+            ->latest()
+            ->limit(6)
+            ->get();
+
+        if ($featuredProperties->isEmpty()) {
+            $featuredProperties = PropertyListing::query()
+                ->where('user_id', $user->id)
+                ->where('is_active', true)
+                ->tap($applySelectedFilters)
+                ->with(['primaryImage', 'firstImage'])
+                ->latest()
+                ->limit(6)
+                ->get();
+        }
+
         // Generar breadcrumbs
         $breadcrumbs = $this->generateBreadcrumbs($user, $locale);
         $companyDescription = $user->profile('about');
+        $profileSetting = $user->profileSetting;
 
         // Generar SEO
         $seo = $this->generateSeo($user, $properties->total(), $locale);
@@ -101,18 +150,14 @@ class UserProfileController extends Controller
         $saleValues  = TransactionType::getEquivalentValues('sale', 'INTL');
         $rentValues  = TransactionType::getEquivalentValues('rent', 'INTL');
 
+        $statsQuery = PropertyListing::query()
+            ->where('user_id', $user->id)
+            ->where('is_active', true);
+
         $stats = [
-            'total_active' => PropertyListing::where('user_id', $user->id)
-                ->where('is_active', true)
-                ->count(),
-            'total_sales' => PropertyListing::where('user_id', $user->id)
-                ->where('is_active', true)
-                ->whereIn('transaction_type', $saleValues)
-                ->count(),
-            'total_rentals' => PropertyListing::where('user_id', $user->id)
-                ->where('is_active', true)
-                ->whereIn('transaction_type', $rentValues)
-                ->count(),
+            'total_active' => (clone $statsQuery)->count(),
+            'total_sales' => (clone $statsQuery)->whereIn('transaction_type', $saleValues)->count(),
+            'total_rentals' => (clone $statsQuery)->whereIn('transaction_type', $rentValues)->count(),
         ];
 
         // Tipos disponibles en los anuncios de este usuario (para filtros dinámicos)
@@ -130,12 +175,14 @@ class UserProfileController extends Controller
         return view('user-profile', compact(
             'user',
             'properties',
+            'featuredProperties',
             'breadcrumbs',
             'seo',
             'stats',
             'userPropertyTypes',
             'userTransactionTypes',
             'companyDescription',
+            'profileSetting',
             'locationOptions',
             'selectedCountry',
             'selectedState',
@@ -246,10 +293,30 @@ class UserProfileController extends Controller
             'title' => $title,
             'description' => $description,
             'canonical' => $canonicalUrl,
+            'image' => $ogImage,
+            'type' => 'profile',
             'og_title' => $title,
             'og_description' => $description,
             'og_image' => $ogImage,
             'og_type' => 'profile',
+            'structured_data' => [
+                '@context' => 'https://schema.org',
+                '@type' => $user->agency ? 'RealEstateAgent' : 'Person',
+                'name' => $displayName,
+                'url' => $canonicalUrl,
+                'image' => $ogImage,
+                'email' => ($user->profileSetting?->show_email ?? true) ? $user->email : null,
+                'telephone' => ($user->profileSetting?->show_phone ?? true) ? $user->movil : null,
+                'address' => ($user->profileSetting?->show_address ?? true) && $location
+                    ? [
+                        '@type' => 'PostalAddress',
+                        'addressLocality' => $user->city,
+                        'addressRegion' => $user->state,
+                        'addressCountry' => $user->country,
+                    ]
+                    : null,
+                'sameAs' => array_values(array_filter($user->profileSetting?->social_links ?? [])),
+            ],
             'hreflang' => [
                 'es' => route('user.profile.es', ['locale' => 'es', 'username' => $user->username]),
                 'en' => route('user.profile.en', ['locale' => 'en', 'username' => $user->username]),
