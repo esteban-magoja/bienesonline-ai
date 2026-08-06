@@ -1,15 +1,15 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-08-01 10:36:35","nombre":"Rub","email":"djatlantis@gmail.com","telefono":"722436812","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Chapinero"},
+{"fecha":"2026-08-03 22:54:48","nombre":"Gloria Velez","email":"Glorieta417@yahoo.es","telefono":"3104945098","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Valle del Cauca","localidad_inmueble":"Cali"},
 {"fecha":"2026-08-03 04:08:55","nombre":"Monica","email":"momau14@hotmail.com","telefono":"3103768045","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cartago"},
-{"fecha":"2026-07-30 13:07:48","nombre":"JAIME CANTOR","email":"jcantorh@gmail.com","telefono":"3103668346","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Tolima","localidad_inmueble":"Flandes"},
-{"fecha":"2026-08-02 02:36:26","nombre":"Alejandro de León","email":"adeleonllanos@gmail.com","telefono":"3505404396","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Casanare","localidad_inmueble":"Yopal"},
-{"fecha":"2026-07-31 20:30:50","nombre":"Diana Cifuentes","email":"dianac9714@gmail.com","telefono":"9176009714","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"La Guajira","localidad_inmueble":"Dibulla"},
-
-{"fecha":"2026-08-01 10:38:00","nombre":"Rubenes","email":"rubenesdj@hitmail.com","telefono":"+34722436812","tipo_inmueble":"Garaje","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"}
+{"fecha":"2026-08-04 21:57:10","nombre":"Katleen Lubo","email":"kaluar_94@hotmail.com","telefono":"3043415853","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Atlántico","localidad_inmueble":"Barranquilla"},
+{"fecha":"2026-08-05 17:09:50","nombre":"Adriana","email":"adrianacorrea71@icloud.com","telefono":"3012576737","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Risaralda","localidad_inmueble":"Pereira"},
+{"fecha":"2026-08-05 19:49:00","nombre":"Luna ","email":"lunaalejandracastillo55@gmail.com","telefono":"3187326638","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
+{"fecha":"2026-08-04 12:31:55","nombre":"William","email":"wimoca63@outlook.com","telefono":"3176867747","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valle del Cauca","localidad_inmueble":"Tuluá"},
+{"fecha":"2026-08-04 21:00:35","nombre":"Mariana","email":"marianamu96@gmail.com","telefono":"3185614866","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Quindío","localidad_inmueble":"Armenia"}
 ]
 }
 ]

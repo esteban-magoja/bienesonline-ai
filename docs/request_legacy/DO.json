@@ -1,10 +1,12 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-07-09 16:50:00","nombre":"Eliana","email":"meliana.acosta@gmail.com","telefono":"8297143842","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Nacional","localidad_inmueble":"Santo Domingo de Guzmán"},
-{"fecha":"2026-07-12 12:23:34","nombre":"Janet Semerene","email":"semerenejanet2@gmail.com","telefono":"+18493971562","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santo Domingo","localidad_inmueble":"Distrito nacional"}
+{"fecha":"2026-08-03 09:13:37","nombre":"Johanna Urena","email":"avub9@hotmail.com","telefono":"9393266580","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago de los Caballeros"},
+{"fecha":"2026-08-05 06:18:08","nombre":"Francisco Nuñez","email":"francisconunez312825@gmail.com","telefono":"829-662-5900","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago de los Caballeros"},
+{"fecha":"2026-08-03 14:54:54","nombre":"Ana Rodriguez","email":"rodriguez.ana.julia59@gmail.com","telefono":"3474884244","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Valverde","localidad_inmueble":"Mao"},
+{"fecha":"2026-08-05 16:39:30","nombre":"Diana catel","email":"dianacatelc@gmail.com","telefono":"+34-611807335","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Nacional","localidad_inmueble":"Gazcue"}
 ]
 }
 ]

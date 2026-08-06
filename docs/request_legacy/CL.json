@@ -1,15 +1,24 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_chile"},
 {"type":"table","name":"c","database":"admin_bienes_chile","data":
 [
-{"fecha":"2026-07-30 18:22:58","nombre":"Dielcy","email":"dlopez@cymchile.cl","telefono":"995397694","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"General Carrera","localidad_inmueble":"Chile Chico"},
-{"fecha":"2026-07-31 16:48:43","nombre":"Galvarino Ibaceta","email":"grafo.comic@gmail.com","telefono":"951263324","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"Quilpué"},
-{"fecha":"2026-07-31 22:52:33","nombre":"Juan Antonio Soto","email":"jantoniosotoleal@gmail.com","telefono":"944172239","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
-{"fecha":"2026-08-01 00:22:27","nombre":"VIVIANA ANGELICA","email":"viviana.hernandez.vilo@gmail.com","telefono":"981225472","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Talca","localidad_inmueble":"Talca"},
-{"fecha":"2026-08-01 16:36:20","nombre":"Ignacio Perez","email":"nachoperezb.94@gmail.com","telefono":"989657968","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
 {"fecha":"2026-08-02 19:17:48","nombre":"Diana","email":"dscastroo89@gmail.com","telefono":"+56 9 46388630","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
-{"fecha":"2026-08-02 20:46:41","nombre":"renato defilippi","email":"renato.defilippi.c@gmail.com","telefono":"988196871","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"}
+{"fecha":"2026-08-02 20:46:41","nombre":"renato defilippi","email":"renato.defilippi.c@gmail.com","telefono":"988196871","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-08-03 08:56:35","nombre":"Macarena","email":"makita.munita@gmail.com","telefono":"998187473","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Ñuñoa"},
+{"fecha":"2026-08-03 21:08:10","nombre":"ELIAS AROSTICA GONZALEZ","email":"e.benjamin.a.g@gmail.com","telefono":"971742213","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Copiapó","localidad_inmueble":"Copiapo"},
+{"fecha":"2026-08-04 01:45:36","nombre":"Joaquin Hidalgo","email":"joaquinhjm@gmail.com","telefono":"934045838","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-08-04 11:20:44","nombre":"francisco carrillo","email":"franciscocarrill@gmail.com","telefono":"997397182","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-08-04 12:14:21","nombre":"NELSON RAMIREZ ARANCIBIA","email":"nelson.ramirez@nrservicomex.com","telefono":"975558012","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Concepción","localidad_inmueble":"Talcahuano"},
+{"fecha":"2026-08-04 12:41:27","nombre":"Macarena Carrillo","email":"makarena.cs12@gmail.com","telefono":"933532453","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-08-04 13:23:19","nombre":"francisca gatica","email":"fran.gatica@gmail.com","telefono":"989327617","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"La Florida"},
+{"fecha":"2026-08-05 00:01:39","nombre":"Amanda González","email":"amanda.beleb.gonzalz@gmail.com","telefono":"931776430","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Maipo","localidad_inmueble":"San Bernardo"},
+{"fecha":"2026-08-05 10:49:32","nombre":"ximena mege","email":"xi.mege@hotmail.com","telefono":"56990203352","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Providencia"},
+{"fecha":"2026-08-05 10:53:52","nombre":"Isidora Zuniga","email":"isidorazzuniga77@gmail.com","telefono":"996786336","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Ñuñoa"},
+{"fecha":"2026-08-05 14:13:40","nombre":"Catalina Corvalan","email":"catalinacorvalanta@gmail.com","telefono":"","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Valparaiso","localidad_inmueble":"Valparaíso"},
+{"fecha":"2026-08-05 16:09:08","nombre":"Camila Iturriaga","email":"camilaiturriaga30@gmail.com","telefono":"+56986694261","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-08-05 16:48:46","nombre":"Maria Elena Florez","email":"maelflpe18@gmail.com","telefono":"974233551","tipo_inmueble":"Oficina","tipo_operacion":"Arriendo","provincia_inmueble":"Los Andes","localidad_inmueble":"Los Andes"},
+{"fecha":"2026-08-05 23:25:40","nombre":"Karen","email":"kaaren.iturrieta@gmail.com","telefono":"+56954685643","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"}
 ]
 }
 ]

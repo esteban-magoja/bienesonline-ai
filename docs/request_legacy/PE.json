@@ -1,9 +1,10 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-08-01 18:25:11","nombre":"Italo","email":"italoarroyopaz@gmail.com","telefono":"953105523","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Luis"}
+{"fecha":"2026-08-04 15:09:46","nombre":"Zoe","email":"zoe.ariette.14@gmail.com","telefono":"918286095","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
+{"fecha":"2026-08-05 17:06:12","nombre":"Marlenka twigg","email":"mar.twigg55@gmail.com","telefono":"971417121","tipo_inmueble":"Deposito","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santa Anita"}
 ]
 }
 ]

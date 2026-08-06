@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-07-30 10:42:03","nombre":"CARMEN","email":"gsd212730@gmail.com","telefono":"62868015","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-07-31 01:27:11","nombre":"Petra","email":"petrawickes@gmail.com","telefono":"","tipo_inmueble":"Hacienda","tipo_operacion":"Venta","provincia_inmueble":"Coclé","localidad_inmueble":"Toabré"}
+{"fecha":"2026-08-04 23:05:14","nombre":"Mayra ","email":"mayraflores0392@gmail.com","telefono":"66222924","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Coclé","localidad_inmueble":"Penonomé"}
 ]
 }
 ]

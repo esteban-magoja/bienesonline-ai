@@ -1,23 +1,30 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-07-30 09:49:09","nombre":"Adriana briceño","email":"adrianaluces.2@gmail.com","telefono":"04124565650","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-07-30 10:05:13","nombre":"Adriana briceño","email":"adrianaluces.2@gmail.com","telefono":"04124565650","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
-{"fecha":"2026-07-30 11:19:09","nombre":"Yesenia carrillo","email":"carrilloyesenia246@gmail.com","telefono":"04140550322","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Lara","localidad_inmueble":"Cabudare"},
-{"fecha":"2026-07-30 16:43:35","nombre":"TERESA DE AVENDAÑO","email":"teresaavendano15@gmail.com","telefono":"0412-830.3965","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-07-31 14:04:48","nombre":"Rodolfo Andre","email":"andrerodolfo53@gmail.com","telefono":"04143709996","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Terrazas del Ávila"},
-{"fecha":"2026-08-01 19:02:17","nombre":"Aldo Gregorio","email":"ferrato9@gmail.com","telefono":"04246207979","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Falcón","localidad_inmueble":"Punto Fijo"},
-{"fecha":"2026-08-01 22:01:28","nombre":"Yanelis","email":"kathrinemz2014@gmail.com","telefono":"04141483573","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
-{"fecha":"2026-08-01 22:21:53","nombre":"Jose Machado","email":"frjmachado@gmail.com","telefono":"04146443993","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Zulia","localidad_inmueble":"Maracaibo"},
 {"fecha":"2026-08-02 12:01:31","nombre":"Yeiza Subero","email":"suberoyeiza@gmail.com","telefono":"04129662944","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Bolívar","localidad_inmueble":"Ciudad Guayana"},
 {"fecha":"2026-08-02 12:05:33","nombre":"Rub","email":"rubensaavedra1177@gmail.com","telefono":"04124592176","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Miranda","localidad_inmueble":"Santa Teresa del Tuy"},
-{"fecha":"2026-08-02 13:32:55","nombre":"Careli Anais Hernández Semidey","email":"hernandezcareli9@gmail.com","telefono":"04125608827","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"},
+{"fecha":"2026-08-02 13:32:55","nombre":"Careli Anais Hern?ndez Semidey","email":"hernandezcareli9@gmail.com","telefono":"04125608827","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"},
 {"fecha":"2026-08-02 22:16:41","nombre":"Rosie","email":"rossbric@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Tabay"},
 {"fecha":"2026-08-02 23:07:30","nombre":"Jose luis gomez","email":"jlgm004@gmail.com","telefono":"04228029215","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Anzoátegui","localidad_inmueble":"Barcelona"},
-{"fecha":"2026-07-30 09:13:29","nombre":"Carmen Cedeño","email":"elenacedeno19@gmail.com","telefono":"0414-0211652","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-08-03 01:57:41","nombre":"Marbelis Escalante","email":"marbelisescalante2212@gmail.com","telefono":"04247186125","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Guacara"}
+{"fecha":"2026-08-03 01:57:41","nombre":"Marbelis Escalante","email":"marbelisescalante2212@gmail.com","telefono":"04247186125","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Guacara"},
+{"fecha":"2026-08-03 14:52:03","nombre":"Bel","email":"Asadortaperia@gmail.com","telefono":"+34696468508","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Vargas","localidad_inmueble":"La Guaira"},
+{"fecha":"2026-08-03 17:12:08","nombre":"Apolo Peraza","email":"apoloperaza863@gmail.com","telefono":"+971 50 869 7580","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Falcón","localidad_inmueble":"Punto Fijo"},
+{"fecha":"2026-08-03 17:42:40","nombre":"Karen","email":"karenaleman2006@gmail.com","telefono":"04129905882","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
+{"fecha":"2026-08-03 21:50:21","nombre":"Marleny","email":"arananda11@gmil.com","telefono":"0412-3288733","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"chacaito, beco"},
+{"fecha":"2026-08-04 10:22:54","nombre":"Laura Angulo","email":"Angulolaura403@gmail.com","telefono":"04145539394","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Lara","localidad_inmueble":"Barquisimeto"},
+{"fecha":"2026-08-04 15:40:02","nombre":"GILBERTO GARCIA","email":"gilbertgvz@gmail.com","telefono":"04144120281","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"San Diego"},
+{"fecha":"2026-08-04 19:51:05","nombre":"Bianca","email":"biancaalcocerr@gmail.com","telefono":"4129162518","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Miranda","localidad_inmueble":"Sucre"},
+{"fecha":"2026-08-05 10:55:28","nombre":"GUILLERMO BELLO","email":"belloguillermo04@gmail.com","telefono":"04123865072","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Guatire"},
+{"fecha":"2026-08-05 12:21:57","nombre":"glorys villarroel","email":"glorysvilla@gmail.com","telefono":"04127547107","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Monagas","localidad_inmueble":"Maturín"},
+{"fecha":"2026-08-05 12:28:12","nombre":"glorys villarroel","email":"glorysvilla@gmail.com","telefono":"04127547107","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Monagas","localidad_inmueble":"Monagas"},
+{"fecha":"2026-08-05 13:48:35","nombre":"Liz duarte","email":"duarteramirezlizbeth@gmail.com","telefono":"04247426340","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Hatillo"},
+{"fecha":"2026-08-05 16:29:34","nombre":"JOSE ALEXANDER","email":"josecolina200264@gmail.com","telefono":"4241239092","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Falcón","localidad_inmueble":"Punto Fijo"},
+{"fecha":"2026-08-05 23:42:09","nombre":"Luis Manuel Tovar","email":"manuel.tovar.2503@gmail.com","telefono":"04128185508","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
+{"fecha":"2026-08-05 23:52:36","nombre":"Luis Manuel Tovar","email":"manuel.tovar.2503@gmail.com","telefono":"04128185598","tipo_inmueble":"Habitacion","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Candelaria"},
+{"fecha":"2026-08-06 00:29:39","nombre":"Marbelis Escalante","email":"marbelisescalante2212@gmail.com","telefono":"04247186125","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Guacara"},
+{"fecha":"2026-08-06 01:07:42","nombre":"Ander Reyes","email":"anderreyes913@gmail.com","telefono":"+56997978470","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"villa alianza II"}
 ]
 }
 ]

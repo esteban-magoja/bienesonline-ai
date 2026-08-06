@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_bolivia"},
 {"type":"table","name":"c","database":"admin_bienes_bolivia","data":
 [
-{"fecha":"2026-06-13 13:49:21","nombre":"Ramiro","email":"ecsanguezaraasza@gmail.com","telefono":"79353353","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cochabamba","localidad_inmueble":"Cochabamba"}
+{"fecha":"2026-08-05 22:09:40","nombre":"Cintia ","email":"valentinavargasgomez068@gmail.com","telefono":"60768870","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cochabamba","localidad_inmueble":"Sacaba"}
 ]
 }
 ]

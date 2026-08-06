@@ -3,13 +3,9 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-07-30 12:46:47","nombre":"Karla","email":"china81@hotmail.es","telefono":"88291489","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Hatillo"},
-{"fecha":"2026-07-31 16:08:55","nombre":"Juan Carlos Majano Medina","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Santo Domingo"},
-{"fecha":"2026-07-31 19:56:57","nombre":"Rene","email":"bpctmx@hotmail.com","telefono":"72764036","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Alajuela","localidad_inmueble":"San José"},
-{"fecha":"2026-08-01 18:28:31","nombre":"JUAN CARLOS MAJANO","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Flores"},
-{"fecha":"2026-08-01 18:31:57","nombre":"JUAN CARLOS MAJANO","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Tibás"},
-{"fecha":"2026-08-01 18:38:03","nombre":"JUAN CARLOS MAJANO","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Santo Domingo"},
-{"fecha":"2026-08-01 18:49:36","nombre":"Juan Carlos Majano Medina","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"San Pablo"}
+{"fecha":"2026-08-03 12:02:40","nombre":"JUAN CARLOS MAJANO","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Flores"},
+{"fecha":"2026-08-04 12:03:34","nombre":"Roger Salazar","email":"rogersalazarb@gmail.com","telefono":"6058-2706","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Central"},
+{"fecha":"2026-08-04 14:53:02","nombre":"Jessa York ","email":"Jessa@tough.com","telefono":"72446964","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Nandayure"}
 ]
 }
 ]
