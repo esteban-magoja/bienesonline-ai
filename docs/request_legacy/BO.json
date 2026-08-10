@@ -1,9 +1,9 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_bolivia"},
 {"type":"table","name":"c","database":"admin_bienes_bolivia","data":
 [
-{"fecha":"2026-08-05 22:09:40","nombre":"Cintia ","email":"valentinavargasgomez068@gmail.com","telefono":"60768870","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cochabamba","localidad_inmueble":"Sacaba"}
+{"fecha":"2026-08-08 16:34:55","nombre":"Jorge Chavez","email":"chavez.villavicencio.jorge@gmail.com","telefono":"72081317","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"La Paz","localidad_inmueble":"La Paz"}
 ]
 }
 ]

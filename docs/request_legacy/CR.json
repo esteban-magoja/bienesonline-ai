@@ -1,11 +1,9 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-08-03 12:02:40","nombre":"JUAN CARLOS MAJANO","email":"jcmajano@hotmail.com","telefono":"83250165","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Flores"},
-{"fecha":"2026-08-04 12:03:34","nombre":"Roger Salazar","email":"rogersalazarb@gmail.com","telefono":"6058-2706","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Central"},
-{"fecha":"2026-08-04 14:53:02","nombre":"Jessa York ","email":"Jessa@tough.com","telefono":"72446964","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Guanacaste","localidad_inmueble":"Nandayure"}
+{"fecha":"2026-08-07 12:03:58","nombre":"Cinthya Gomez","email":"cinthyagomez807@gmail.com","telefono":"71560599","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Heredia"}
 ]
 }
 ]

@@ -3,15 +3,9 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-08-02 11:07:07","nombre":"Natalia","email":"serranonaat17@gmail.com","telefono":"5610124879","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-08-02 22:19:46","nombre":"Maritza Rodríguez hdez","email":"maritzarh41@gmail.com","telefono":"2942904698","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"San Andrés Tuxtla"},
-{"fecha":"2026-08-03 16:51:14","nombre":"Elena Barragan","email":"reba85@gmail.com","telefono":"8331366069","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"},
-{"fecha":"2026-08-04 00:01:15","nombre":"ARCADIO","email":"arcadio182@hotmail.com","telefono":"5548235139","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-08-04 13:52:31","nombre":"Omar Periban","email":"omar_periban9@hotmail.com","telefono":"5539623179","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-08-05 04:57:36","nombre":"Melanni Romero","email":"melannimondragon@icloud.com","telefono":"5534493861","tipo_inmueble":"Penthouse","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Benito Juárez"},
-{"fecha":"2026-08-05 12:04:06","nombre":"Daniel Delgado","email":"danieldelbarrera@gmail.com","telefono":"5572707658","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-08-05 13:35:18","nombre":"DANIEL","email":"ing_daniel_garcia@hotmail.com","telefono":"5532237490","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
-{"fecha":"2026-08-05 18:25:34","nombre":"Anna Paola Casta?eda Tiburcio","email":"paolatiburcio89@gmail.com","telefono":"5568027923","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Puebla","localidad_inmueble":"San Andrés Cholula"}
+{"fecha":"2026-08-07 18:31:50","nombre":"Blanca zermeño","email":"blanca.zerme333@gmail.com","telefono":"5543653013","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-08-09 01:10:05","nombre":"Diana Botello","email":"dianisbotello86@gmail.com","telefono":"5576108984","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-08-10 01:03:15","nombre":"ELIAS EDGAR","email":"edhernandez1963@hotmail.com","telefono":"4427040790","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"}
 ]
 }
 ]

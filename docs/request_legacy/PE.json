@@ -3,8 +3,13 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-08-04 15:09:46","nombre":"Zoe","email":"zoe.ariette.14@gmail.com","telefono":"918286095","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
-{"fecha":"2026-08-05 17:06:12","nombre":"Marlenka twigg","email":"mar.twigg55@gmail.com","telefono":"971417121","tipo_inmueble":"Deposito","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santa Anita"}
+{"fecha":"2026-08-07 08:35:13","nombre":"Erick Benites","email":"erick.benites@quetalcompra.com","telefono":"903423569","tipo_inmueble":"Industrial","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Cercado De Lima"},
+{"fecha":"2026-08-07 17:30:41","nombre":"leandro","email":"retamozor13@gmail.com","telefono":"947202732","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"La Victoria"},
+{"fecha":"2026-08-07 21:42:00","nombre":"HELLEN OLIVIA","email":"ellenaccilio2013@gmail.com","telefono":"929263404","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
+{"fecha":"2026-08-08 14:55:08","nombre":"HELLEN OLIVIA","email":"ELLENACCILIO2013@GMAIL.COM","telefono":"929263404","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Callao","localidad_inmueble":"Bellavista"},
+{"fecha":"2026-08-09 12:31:35","nombre":"Miluzka Manrique","email":"miluzkamanrique@hotmail.com","telefono":"974307165","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Miraflores"},
+{"fecha":"2026-08-09 18:58:20","nombre":"joseph cordova","email":"jozefcr91@gmail.com","telefono":"915151675","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
+{"fecha":"2026-08-09 19:36:41","nombre":"michael","email":"md.menda@gmail.com","telefono":"991047981","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"}
 ]
 }
 ]

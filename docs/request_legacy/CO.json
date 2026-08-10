@@ -3,13 +3,7 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-08-03 22:54:48","nombre":"Gloria Velez","email":"Glorieta417@yahoo.es","telefono":"3104945098","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Valle del Cauca","localidad_inmueble":"Cali"},
-{"fecha":"2026-08-03 04:08:55","nombre":"Monica","email":"momau14@hotmail.com","telefono":"3103768045","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cartago"},
-{"fecha":"2026-08-04 21:57:10","nombre":"Katleen Lubo","email":"kaluar_94@hotmail.com","telefono":"3043415853","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Atlántico","localidad_inmueble":"Barranquilla"},
-{"fecha":"2026-08-05 17:09:50","nombre":"Adriana","email":"adrianacorrea71@icloud.com","telefono":"3012576737","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Risaralda","localidad_inmueble":"Pereira"},
-{"fecha":"2026-08-05 19:49:00","nombre":"Luna ","email":"lunaalejandracastillo55@gmail.com","telefono":"3187326638","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
-{"fecha":"2026-08-04 12:31:55","nombre":"William","email":"wimoca63@outlook.com","telefono":"3176867747","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valle del Cauca","localidad_inmueble":"Tuluá"},
-{"fecha":"2026-08-04 21:00:35","nombre":"Mariana","email":"marianamu96@gmail.com","telefono":"3185614866","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Quindío","localidad_inmueble":"Armenia"}
+{"fecha":"2026-08-06 12:05:17","nombre":"Luz","email":"luzdary.rosas2015@gmail.com","telefono":"3103066543","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"}
 ]
 }
 ]
