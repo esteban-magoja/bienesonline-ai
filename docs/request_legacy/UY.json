@@ -1,0 +1,9 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"admin_bienes_elsalvador"},
+{"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
+[
+{"fecha":"2026-08-08 13:00:26","nombre":"Susana Pintos","email":"pintos.su@gmail.com","telefono":"099945384","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Rivera","localidad_inmueble":"Rivera"}
+]
+}
+]

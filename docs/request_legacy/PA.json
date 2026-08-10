@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-08-04 23:05:14","nombre":"Mayra ","email":"mayraflores0392@gmail.com","telefono":"66222924","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Coclé","localidad_inmueble":"Penonomé"}
+{"fecha":"2026-08-07 14:28:18","nombre":"Erika","email":"erikaluoting0910@gamil.com","telefono":"65544005","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-08-09 18:13:45","nombre":"viviana trujillo","email":"darwinlopezlopez46@gmail.com","telefono":"+50760297456","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"}
 ]
 }
 ]
