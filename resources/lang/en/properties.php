@@ -235,6 +235,7 @@ return [
         'transaction_types' => 'By transaction type',
         'property_types' => 'By property type',
         'provinces' => 'By location',
+        'cities' => 'By locality',
         'result' => 'category',
         'results' => 'categories',
     ],

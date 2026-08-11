@@ -6,6 +6,7 @@ use App\Models\PropertyListing;
 use App\Models\PropertyType;
 use App\Models\TransactionType;
 use App\Helpers\PropertySlugHelper;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Nnjeim\World\Models\State;
@@ -95,10 +96,16 @@ class PropertyListingController extends Controller
         // Opciones de filtros para el sidebar
         $filterOptions = $this->getFilterOptions($countryName, $state, $city);
 
-        // Hub de categorías (solo cuando no hay filtros aplicados)
-        $countryHubSections = $this->shouldShowCountryHub($transactionType, $propertyType, $state, $city)
-            ? $this->getCountryHubSections($countryName, $countryCode, $locale)
-            : [];
+        // Navegación contextual para continuar explorando el listado.
+        $countryHubSections = $this->getListingNavigationSections(
+            $countryName,
+            $countryCode,
+            $locale,
+            $transactionType,
+            $propertyType,
+            $state,
+            $city
+        );
 
         // Array de filtros para la vista (compatibilidad)
         $filters = [
@@ -332,93 +339,304 @@ class PropertyListingController extends Controller
         ];
     }
 
-    private function shouldShowCountryHub(
+    /**
+     * Genera los enlaces de navegación del nivel siguiente del listado.
+     *
+     * La ruta canónica siempre conserva el orden operación, tipo, estado y
+     * ciudad, aunque el usuario haya ingresado a un nivel intermedio.
+     */
+    private function getListingNavigationSections(
+        string $countryName,
+        string $countryCode,
+        string $locale,
         ?TransactionType $transactionType,
         ?PropertyType $propertyType,
         ?State $state,
         ?City $city
-    ): bool {
-        return !$transactionType && !$propertyType && !$state && !$city;
+    ): array {
+        $baseQuery = $this->getNavigationBaseQuery(
+            $countryName,
+            $transactionType,
+            $propertyType,
+            $state,
+            $city
+        );
+
+        if ($city) {
+            $sections = [];
+
+            if (!$propertyType) {
+                $sections[] = $this->makeNavigationSection(
+                    __('properties.country_hub.property_types', [], $locale),
+                    $this->getPropertyNavigationItems($baseQuery, $countryCode, $locale, $countryName, $transactionType, $state, $city),
+                    'building'
+                );
+            }
+
+            if (!$transactionType) {
+                $sections[] = $this->makeNavigationSection(
+                    __('properties.country_hub.transaction_types', [], $locale),
+                    $this->getTransactionNavigationItems($baseQuery, $countryCode, $locale, $countryName, $propertyType, $state, $city),
+                    'building'
+                );
+            }
+
+            return $this->filterNavigationSections($sections);
+        }
+
+        if ($state) {
+            $sections = [];
+
+            if (!$propertyType) {
+                $sections[] = $this->makeNavigationSection(
+                    __('properties.country_hub.property_types', [], $locale),
+                    $this->getPropertyNavigationItems($baseQuery, $countryCode, $locale, $countryName, $transactionType, $state),
+                    'building'
+                );
+            }
+
+            if (!$transactionType) {
+                $sections[] = $this->makeNavigationSection(
+                    __('properties.country_hub.transaction_types', [], $locale),
+                    $this->getTransactionNavigationItems($baseQuery, $countryCode, $locale, $countryName, $propertyType, $state),
+                    'building'
+                );
+            }
+
+            $sections[] = $this->makeNavigationSection(
+                __('properties.country_hub.cities', [], $locale),
+                $this->getCityNavigationItems($baseQuery, $locale, $countryName, $transactionType, $propertyType, $state),
+                'map-pin'
+            );
+
+            return $this->filterNavigationSections([
+                ...$sections,
+            ]);
+        }
+
+        if ($propertyType && !$transactionType) {
+            return $this->filterNavigationSections([
+                $this->makeNavigationSection(
+                    __('properties.country_hub.transaction_types', [], $locale),
+                    $this->getTransactionNavigationItems($baseQuery, $countryCode, $locale, $countryName, $propertyType),
+                    'building'
+                ),
+            ]);
+        }
+
+        if ($transactionType && !$propertyType) {
+            return $this->filterNavigationSections([
+                $this->makeNavigationSection(
+                    __('properties.country_hub.property_types', [], $locale),
+                    $this->getPropertyNavigationItems($baseQuery, $countryCode, $locale, $countryName, $transactionType),
+                    'building'
+                ),
+            ]);
+        }
+
+        if ($transactionType && $propertyType) {
+            return $this->filterNavigationSections([
+                $this->makeNavigationSection(
+                    __('properties.country_hub.provinces', [], $locale),
+                    $this->getStateNavigationItems($baseQuery, $countryCode, $locale, $countryName, $transactionType, $propertyType),
+                    'map-pin'
+                ),
+            ]);
+        }
+
+        return $this->filterNavigationSections([
+            $this->makeNavigationSection(
+                __('properties.country_hub.property_types', [], $locale),
+                $this->getPropertyNavigationItems($baseQuery, $countryCode, $locale, $countryName),
+                'building'
+            ),
+            $this->makeNavigationSection(
+                __('properties.country_hub.provinces', [], $locale),
+                $this->getStateNavigationItems($baseQuery, $countryCode, $locale, $countryName),
+                'map-pin'
+            ),
+        ]);
     }
 
-    /**
-     * Genera secciones del hub de categorías para la página de país.
-     * Usa los tipos configurados en DB, sin mapeos ni equivalencias.
-     */
-    private function getCountryHubSections(string $countryName, string $countryCode, string $locale): array
-    {
-        $countrySlug = PropertySlugHelper::normalize($countryName);
-        $baseQuery   = PropertyListing::where('is_active', true)->where('country', $countryName);
+    private function getNavigationBaseQuery(
+        string $countryName,
+        ?TransactionType $transactionType = null,
+        ?PropertyType $propertyType = null,
+        ?State $state = null,
+        ?City $city = null
+    ): Builder {
+        $query = PropertyListing::query()
+            ->where('is_active', true)
+            ->where('country', $countryName);
 
-        // --- Tipos de operación ---
-        $transactionItems = [];
-        foreach (TransactionType::getByCountry($countryCode) as $type) {
-            $count = (clone $baseQuery)
-                ->whereRaw('LOWER(transaction_type) = LOWER(?)', [$type->value])
-                ->count();
-
-            if ($count > 0) {
-                $transactionItems[] = [
-                    'label' => $type->label,
-                    'count' => $count,
-                    'url'   => url("/{$locale}/{$countrySlug}/" . PropertySlugHelper::normalize($type->value)),
-                ];
-            }
+        if ($transactionType) {
+            $query->whereRaw('LOWER(TRIM(transaction_type)) = LOWER(TRIM(?))', [$transactionType->value]);
         }
 
-        // --- Tipos de propiedad ---
-        $propertyItems = [];
-        foreach (PropertyType::getByCountry($countryCode) as $type) {
-            $count = (clone $baseQuery)
-                ->whereRaw('LOWER(property_type) = LOWER(?)', [$type->value])
-                ->count();
-
-            if ($count > 0) {
-                $propertyItems[] = [
-                    'label' => $type->label_plural ?: $type->label,
-                    'count' => $count,
-                    'url'   => url("/{$locale}/{$countrySlug}/" . PropertySlugHelper::normalize($type->value)),
-                ];
-            }
+        if ($propertyType) {
+            $query->whereRaw('LOWER(TRIM(property_type)) = LOWER(TRIM(?))', [$propertyType->value]);
         }
 
-        // --- Estados/Provincias (solo los que están en nnjeim/world) ---
-        $stateItems = [];
+        if ($state) {
+            $query->whereRaw('LOWER(unaccent(TRIM(state))) = LOWER(unaccent(TRIM(?)))', [$state->name]);
+        }
+
+        if ($city) {
+            $query->whereRaw('LOWER(unaccent(TRIM(city))) = LOWER(unaccent(TRIM(?)))', [$city->name]);
+        }
+
+        return $query;
+    }
+
+    private function getTransactionNavigationItems(
+        Builder $baseQuery,
+        string $countryCode,
+        string $locale,
+        string $countryName,
+        ?PropertyType $propertyType = null,
+        ?State $state = null,
+        ?City $city = null
+    ): array {
+        $counts = (clone $baseQuery)
+            ->whereNotNull('transaction_type')
+            ->whereRaw("TRIM(transaction_type) != ''")
+            ->selectRaw('LOWER(TRIM(transaction_type)) as filter_value, COUNT(*) as total')
+            ->groupByRaw('LOWER(TRIM(transaction_type))')
+            ->pluck('total', 'filter_value');
+
+        return TransactionType::getByCountry($countryCode)
+            ->filter(fn(TransactionType $type): bool => $counts->has(strtolower(trim($type->value))))
+            ->map(fn(TransactionType $type): array => [
+                'label' => $type->label,
+                'count' => (int) $counts->get(strtolower(trim($type->value))),
+                'url' => $this->buildListingUrl($locale, $countryName, $type, $propertyType, $state, $city),
+            ])
+            ->values()
+            ->all();
+    }
+
+    private function getPropertyNavigationItems(
+        Builder $baseQuery,
+        string $countryCode,
+        string $locale,
+        string $countryName,
+        ?TransactionType $transactionType = null,
+        ?State $state = null,
+        ?City $city = null
+    ): array {
+        $counts = (clone $baseQuery)
+            ->whereNotNull('property_type')
+            ->whereRaw("TRIM(property_type) != ''")
+            ->selectRaw('LOWER(TRIM(property_type)) as filter_value, COUNT(*) as total')
+            ->groupByRaw('LOWER(TRIM(property_type))')
+            ->pluck('total', 'filter_value');
+
+        return PropertyType::getByCountry($countryCode)
+            ->filter(fn(PropertyType $type): bool => $counts->has(strtolower(trim($type->value))))
+            ->map(fn(PropertyType $type): array => [
+                'label' => $type->label_plural ?: $type->label,
+                'count' => (int) $counts->get(strtolower(trim($type->value))),
+                'url' => $this->buildListingUrl($locale, $countryName, $transactionType, $type, $state, $city),
+            ])
+            ->values()
+            ->all();
+    }
+
+    private function getStateNavigationItems(
+        Builder $baseQuery,
+        string $countryCode,
+        string $locale,
+        string $countryName,
+        ?TransactionType $transactionType = null,
+        ?PropertyType $propertyType = null
+    ): array {
         $listingStates = (clone $baseQuery)
             ->whereNotNull('state')
             ->whereRaw("TRIM(state) != ''")
-            ->selectRaw('TRIM(state) as state_name, COUNT(*) as total')
-            ->groupByRaw('TRIM(state)')
-            ->orderBy('state_name')
+            ->selectRaw('MAX(TRIM(state)) as state_name, COUNT(*) as total')
+            ->groupByRaw('LOWER(unaccent(TRIM(state)))')
+            ->orderByRaw('LOWER(unaccent(TRIM(state)))')
             ->get();
 
-        foreach ($listingStates as $row) {
-            $stateSlug  = PropertySlugHelper::normalize($row->state_name);
+        return $listingStates->map(function (PropertyListing $row) use ($countryCode, $locale, $countryName, $transactionType, $propertyType): ?array {
+            $stateSlug = PropertySlugHelper::normalize($row->state_name);
             $worldState = PropertySlugHelper::getStateBySlug($stateSlug, $countryCode);
 
-            // Solo incluir estados validados contra nnjeim/world
-            if ($worldState) {
-                $stateItems[] = [
-                    'label' => $worldState->name,
-                    'count' => (int) $row->total,
-                    'url'   => url("/{$locale}/{$countrySlug}/{$stateSlug}"),
-                ];
+            if (!$worldState) {
+                return null;
+            }
+
+            return [
+                'label' => $worldState->name,
+                'count' => (int) $row->total,
+                'url' => $this->buildListingUrl($locale, $countryName, $transactionType, $propertyType, $worldState),
+            ];
+        })->filter()->values()->all();
+    }
+
+    private function getCityNavigationItems(
+        Builder $baseQuery,
+        string $locale,
+        string $countryName,
+        ?TransactionType $transactionType,
+        ?PropertyType $propertyType,
+        State $state
+    ): array {
+        $listingCities = (clone $baseQuery)
+            ->whereNotNull('city')
+            ->whereRaw("TRIM(city) != ''")
+            ->selectRaw('MAX(TRIM(city)) as city_name, COUNT(*) as total')
+            ->groupByRaw('LOWER(unaccent(TRIM(city)))')
+            ->orderByRaw('LOWER(unaccent(TRIM(city)))')
+            ->get();
+
+        return $listingCities->map(function (PropertyListing $row) use ($locale, $countryName, $transactionType, $propertyType, $state): ?array {
+            $citySlug = PropertySlugHelper::normalize($row->city_name);
+            $worldCity = PropertySlugHelper::getCityBySlug($citySlug, $state->id);
+
+            if (!$worldCity) {
+                return null;
+            }
+
+            return [
+                'label' => $worldCity->name,
+                'count' => (int) $row->total,
+                'url' => $this->buildListingUrl($locale, $countryName, $transactionType, $propertyType, $state, $worldCity),
+            ];
+        })->filter()->values()->all();
+    }
+
+    private function buildListingUrl(
+        string $locale,
+        string $countryName,
+        ?TransactionType $transactionType = null,
+        ?PropertyType $propertyType = null,
+        ?State $state = null,
+        ?City $city = null
+    ): string {
+        $segments = [$locale, PropertySlugHelper::normalize($countryName)];
+
+        foreach ([$transactionType?->value, $propertyType?->value, $state?->name, $city?->name] as $value) {
+            if ($value !== null) {
+                $segments[] = PropertySlugHelper::normalize($value);
             }
         }
 
-        return array_values(array_filter([
-            [
-                'title'   => __('properties.country_hub.property_types', [], $locale),
-                'items'   => $propertyItems,
-                'columns' => 3,
-                'icon'    => 'building',
-            ],
-            [
-                'title'   => __('properties.country_hub.provinces', [], $locale),
-                'items'   => $stateItems,
-                'columns' => 3,
-                'icon'    => 'map-pin',
-            ],
-        ], fn(array $s) => !empty($s['items'])));
+        return url('/' . implode('/', $segments));
+    }
+
+    private function makeNavigationSection(string $title, array $items, string $icon): array
+    {
+        return [
+            'title' => $title,
+            'items' => $items,
+            'columns' => 3,
+            'icon' => $icon,
+        ];
+    }
+
+    private function filterNavigationSections(array $sections): array
+    {
+        return array_values(array_filter($sections, fn(array $section): bool => !empty($section['items'])));
     }
 }

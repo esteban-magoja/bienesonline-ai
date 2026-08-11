@@ -235,6 +235,7 @@ return [
         'transaction_types' => 'Por tipo de operación',
         'property_types' => 'Por tipo de inmueble',
         'provinces' => 'Por ubicación',
+        'cities' => 'Por localidad',
         'result' => 'categoría',
         'results' => 'categorías',
     ],
