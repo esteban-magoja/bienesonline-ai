@@ -3,10 +3,8 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-08-03 09:13:37","nombre":"Johanna Urena","email":"avub9@hotmail.com","telefono":"9393266580","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago de los Caballeros"},
-{"fecha":"2026-08-05 06:18:08","nombre":"Francisco Nuñez","email":"francisconunez312825@gmail.com","telefono":"829-662-5900","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago de los Caballeros"},
-{"fecha":"2026-08-03 14:54:54","nombre":"Ana Rodriguez","email":"rodriguez.ana.julia59@gmail.com","telefono":"3474884244","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Valverde","localidad_inmueble":"Mao"},
-{"fecha":"2026-08-05 16:39:30","nombre":"Diana catel","email":"dianacatelc@gmail.com","telefono":"+34-611807335","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Nacional","localidad_inmueble":"Gazcue"}
+{"fecha":"2026-08-11 15:49:25","nombre":"valeria","email":"valdcamaraa09@gmail.com","telefono":"8298517927","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago de los Caballeros"},
+{"fecha":"2026-08-13 01:06:38","nombre":"Camila Lajara","email":"camilalajara22@gmail.com","telefono":"8099950370","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"La Altagracia","localidad_inmueble":"Punta Cana"}
 ]
 }
 ]

@@ -3,11 +3,11 @@
 {"type":"database","name":"admin_bienes_chile"},
 {"type":"table","name":"c","database":"admin_bienes_chile","data":
 [
-{"fecha":"2026-08-06 17:54:56","nombre":"Marcela Muñoz Gonzalez","email":"kosmemarcela@gmail.com","telefono":"964717934","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
-{"fecha":"2026-08-06 19:48:42","nombre":"David","email":"davidtorca9@gmail.com","telefono":"","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"Los andes"},
-{"fecha":"2026-08-07 11:38:59","nombre":"Carolina Figueroa","email":"caro.figue.pinto@gmail.com","telefono":"971379446","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Ñuñoa"},
-{"fecha":"2026-08-07 18:33:05","nombre":"Salvador Paredes","email":"salvapele84@gmail.com","telefono":"995385022","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago"},
-{"fecha":"2026-08-09 14:20:56","nombre":"jennifer","email":"jennifer@lapajarerapasteleria.cl","telefono":"930329674","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"Viña del Mar"}
+{"fecha":"2026-08-09 14:20:56","nombre":"jennifer","email":"jennifer@lapajarerapasteleria.cl","telefono":"930329674","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"Viña del Mar"},
+{"fecha":"2026-08-10 20:07:12","nombre":"johan","email":"johand2317@gmail.com","telefono":"936907394","tipo_inmueble":"Bodega","tipo_operacion":"Venta","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago"},
+{"fecha":"2026-08-11 19:49:37","nombre":"Maria pia","email":"laverdeprimavera@hotmail.cl","telefono":"+56981981185","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Santiago","localidad_inmueble":"Providencia"},
+{"fecha":"2026-08-12 17:39:14","nombre":"krishna cavedo","email":"kcavedo08@gmail.com","telefono":"933214740","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"},
+{"fecha":"2026-08-12 19:15:18","nombre":"Danissa","email":"danissa.svarbic@gmail.com","telefono":"+56985200687","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santiago","localidad_inmueble":"Las Condes"}
 ]
 }
 ]

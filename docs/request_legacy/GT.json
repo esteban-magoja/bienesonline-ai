@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-08-04 01:24:39","nombre":"Marleni","email":"brendamateo@hotmail.com","telefono":"42540705","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Zona 5"},
-{"fecha":"2026-08-06 08:38:11","nombre":"Alison ","email":"alisonjeronimo12@gmail.com","telefono":"42325338","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"}
+{"fecha":"2026-08-11 09:18:36","nombre":"Diana","email":"dianamolinaga@gmail.com","telefono":"55671887","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
+{"fecha":"2026-08-11 11:37:14","nombre":"Geovanny Barrios","email":"geobarrios2001@gmail.com","telefono":"51860402","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Villa Nueva"}
 ]
 }
 ]

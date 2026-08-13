@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-08-08 13:00:26","nombre":"Susana Pintos","email":"pintos.su@gmail.com","telefono":"099945384","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Rivera","localidad_inmueble":"Rivera"}
+{"fecha":"2026-08-12 15:00:21","nombre":"Cristian","email":"seba.x2131@gmail.com","telefono":"091742435","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Maldonado","localidad_inmueble":"Maldonado"}
 ]
 }
 ]

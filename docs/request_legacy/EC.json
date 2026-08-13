@@ -1,9 +1,9 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-07-31 10:19:35","nombre":"Paula","email":"paula_lnc@hotmail.com","telefono":"0984480173","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"}
+{"fecha":"2026-08-12 23:14:31","nombre":"Geanella Torres","email":"torresruizgeanella@gmail.com","telefono":"0960596675","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Guayas","localidad_inmueble":"Guayaquil"}
 ]
 }
 ]

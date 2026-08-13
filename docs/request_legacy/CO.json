@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-08-06 11:13:04","nombre":"Liliana","email":"lilian3019@aol.com","telefono":"9546924383","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Dagua"},
-{"fecha":"2026-08-06 12:05:17","nombre":"Luz","email":"luzdary.rosas2015@gmail.com","telefono":"3103066543","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Bucaramanga"}
+{"fecha":"2026-08-11 21:11:32","nombre":"leydy Garcia Cerquera","email":"garcialeydy888@gmail.com","telefono":"3013052353","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Engativá"}
 ]
 }
 ]

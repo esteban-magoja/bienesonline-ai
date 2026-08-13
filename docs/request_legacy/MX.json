@@ -3,9 +3,13 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-08-07 18:31:50","nombre":"Blanca zermeño","email":"blanca.zerme333@gmail.com","telefono":"5543653013","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-08-09 01:10:05","nombre":"Diana Botello","email":"dianisbotello86@gmail.com","telefono":"5576108984","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-08-10 01:03:15","nombre":"ELIAS EDGAR","email":"edhernandez1963@hotmail.com","telefono":"4427040790","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"}
+{"fecha":"2026-08-10 00:13:18","nombre":"Elías Edgar Hernández Velasco","email":"edhernandez1963@hotmail.com","telefono":"4427040790","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
+{"fecha":"2026-08-11 11:29:52","nombre":"Johanna Hernandez","email":"jou121289@gmail.com","telefono":"5540593143","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-08-11 15:29:11","nombre":"Blanca zermeño","email":"ingenieriaicar.bzermeno@gmail.com","telefono":"5543653013","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-08-12 00:01:39","nombre":"Leoncio Garcia Diaz","email":"elfonomada@yahoo.com.mx","telefono":"3312113383","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlajomulco de Zúñiga"},
+{"fecha":"2026-08-12 00:43:39","nombre":"CRISTIAN GALLEGOS","email":"cristian.gallegos@kwmexico.mx","telefono":"444308915","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"San Luis Potosi","localidad_inmueble":"San Luis Potosi"},
+{"fecha":"2026-08-12 13:20:12","nombre":"LAURA KAREN GUTI?RREZ L?PEZ","email":"comarcialquintana@gmail.com","telefono":"5548809592","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Villa Nicolás Romero"},
+{"fecha":"2026-08-12 15:48:00","nombre":"Alberto Pérez","email":"acastilloperez@atomicmail.io","telefono":"2217063693","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Banderilla"}
 ]
 }
 ]

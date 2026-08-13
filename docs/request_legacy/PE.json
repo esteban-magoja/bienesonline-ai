@@ -3,13 +3,15 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-08-07 08:35:13","nombre":"Erick Benites","email":"erick.benites@quetalcompra.com","telefono":"903423569","tipo_inmueble":"Industrial","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Cercado De Lima"},
-{"fecha":"2026-08-07 17:30:41","nombre":"leandro","email":"retamozor13@gmail.com","telefono":"947202732","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"La Victoria"},
-{"fecha":"2026-08-07 21:42:00","nombre":"HELLEN OLIVIA","email":"ellenaccilio2013@gmail.com","telefono":"929263404","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
-{"fecha":"2026-08-08 14:55:08","nombre":"HELLEN OLIVIA","email":"ELLENACCILIO2013@GMAIL.COM","telefono":"929263404","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Callao","localidad_inmueble":"Bellavista"},
 {"fecha":"2026-08-09 12:31:35","nombre":"Miluzka Manrique","email":"miluzkamanrique@hotmail.com","telefono":"974307165","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Miraflores"},
 {"fecha":"2026-08-09 18:58:20","nombre":"joseph cordova","email":"jozefcr91@gmail.com","telefono":"915151675","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
-{"fecha":"2026-08-09 19:36:41","nombre":"michael","email":"md.menda@gmail.com","telefono":"991047981","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"}
+{"fecha":"2026-08-09 19:36:41","nombre":"michael","email":"md.menda@gmail.com","telefono":"991047981","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"},
+{"fecha":"2026-08-10 20:56:00","nombre":"CECILIA","email":"c.salvatierrag@gmail.com","telefono":"941385822","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lince"},
+{"fecha":"2026-08-11 01:05:20","nombre":"Maria","email":"maalbecas@gmail.com","telefono":"945949685","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
+{"fecha":"2026-08-11 18:15:35","nombre":"Maria Fernanda","email":"maffer19_99@hotmail.com","telefono":"979444181","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lince"},
+{"fecha":"2026-08-11 18:17:42","nombre":"Maria Fernanda","email":"maffer19_99@hotmail.com","telefono":"979444181","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lince"},
+{"fecha":"2026-08-12 21:35:09","nombre":"Jeni","email":"martinezyeni886@gmail.com","telefono":"967773077","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Jesus Maria"},
+{"fecha":"2026-08-12 21:41:29","nombre":"Jeni","email":"martinezyeni886@gmail.com","telefono":"967773077","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"}
 ]
 }
 ]
