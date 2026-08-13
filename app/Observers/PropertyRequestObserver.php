@@ -5,10 +5,47 @@ namespace App\Observers;
 use App\Events\PropertyRequestCreated;
 use App\Models\PropertyListing;
 use App\Models\PropertyRequest;
+use App\Services\EmbeddingService;
 use Illuminate\Support\Facades\Cache;
 
 class PropertyRequestObserver
 {
+    private const EMBEDDING_FIELDS = [
+        'title',
+        'description',
+        'property_type',
+        'transaction_type',
+        'city',
+        'state',
+        'country',
+    ];
+
+    public function __construct(private EmbeddingService $embeddingService) {}
+
+    /**
+     * Handle the PropertyRequest "creating" event.
+     */
+    public function creating(PropertyRequest $propertyRequest): void
+    {
+        if ($propertyRequest->embedding !== null) {
+            return;
+        }
+
+        $embedding = $this->embeddingService->generate([
+            $propertyRequest->title,
+            $propertyRequest->description,
+            $propertyRequest->property_type,
+            $propertyRequest->transaction_type,
+            $propertyRequest->city,
+            $propertyRequest->state,
+            $propertyRequest->country,
+        ]);
+
+        if ($embedding !== null) {
+            $propertyRequest->embedding = $embedding;
+        }
+    }
+
     /**
      * Handle the PropertyRequest "created" event.
      */
@@ -19,6 +56,30 @@ class PropertyRequestObserver
         $this->clearAffectedListingCaches($propertyRequest);
 
         event(new PropertyRequestCreated($propertyRequest));
+    }
+
+    /**
+     * Handle the PropertyRequest "updating" event.
+     */
+    public function updating(PropertyRequest $propertyRequest): void
+    {
+        if (! $propertyRequest->isDirty(self::EMBEDDING_FIELDS)) {
+            return;
+        }
+
+        $embedding = $this->embeddingService->generate([
+            $propertyRequest->title,
+            $propertyRequest->description,
+            $propertyRequest->property_type,
+            $propertyRequest->transaction_type,
+            $propertyRequest->city,
+            $propertyRequest->state,
+            $propertyRequest->country,
+        ]);
+
+        if ($embedding !== null) {
+            $propertyRequest->embedding = $embedding;
+        }
     }
 
     /**

@@ -30,6 +30,18 @@ expect()->extend('toBeOne', function () {
     return $this->toBe(1);
 });
 
+beforeEach(function (): void {
+    config(['openai.api_key' => 'testing-key']);
+
+    Illuminate\Support\Facades\Http::fake([
+        'https://api.openai.com/v1/embeddings' => Illuminate\Support\Facades\Http::response([
+            'data' => [[
+                'embedding' => array_fill(0, 1536, 0.001),
+            ]],
+        ]),
+    ]);
+})->in('Feature');
+
 /*
 |--------------------------------------------------------------------------
 | Functions

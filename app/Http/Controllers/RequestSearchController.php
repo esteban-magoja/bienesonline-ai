@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\PropertyRequest;
+use App\Services\EmbeddingService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class RequestSearchController extends Controller
 {
+    public function __construct(private EmbeddingService $embeddingService) {}
+
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -61,11 +63,11 @@ class RequestSearchController extends Controller
             if (!empty($searchTerm)) {
                 try {
                     // Generar embedding para el término de búsqueda
-                    $searchEmbedding = $this->generateEmbedding($searchTerm);
+                    $searchEmbedding = $this->embeddingService->generate([$searchTerm]);
                     
-                    if ($searchEmbedding) {
+                    if ($searchEmbedding !== null) {
                         // Convertir array a string de PostgreSQL vector format
-                        $embeddingString = '[' . implode(',', $searchEmbedding) . ']';
+                        $embeddingString = '[' . implode(',', $searchEmbedding->toArray()) . ']';
                         
                         // Búsqueda por similitud usando pgvector
                         $requests = $query
@@ -135,36 +137,4 @@ class RequestSearchController extends Controller
         ]);
     }
     
-    /**
-     * Generate embedding using OpenAI API
-     */
-    private function generateEmbedding(string $text): ?array
-    {
-        try {
-            $apiKey = config('services.openai.api_key');
-            
-            if (empty($apiKey)) {
-                Log::warning('OpenAI API key not configured');
-                return null;
-            }
-            
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $apiKey,
-                'Content-Type' => 'application/json',
-            ])->timeout(30)->post('https://api.openai.com/v1/embeddings', [
-                'model' => 'text-embedding-3-small',
-                'input' => $text,
-            ]);
-            
-            if ($response->successful()) {
-                return $response->json('data.0.embedding');
-            }
-            
-            Log::error('OpenAI API error: ' . $response->body());
-            return null;
-        } catch (\Exception $e) {
-            Log::error('Exception generating embedding: ' . $e->getMessage());
-            return null;
-        }
-    }
 }

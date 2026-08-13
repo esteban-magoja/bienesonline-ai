@@ -7,7 +7,6 @@ use App\Services\PropertyMatchingService;
 use App\Http\Requests\StorePropertyRequestRequest;
 use App\Http\Requests\UpdatePropertyRequestRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 
 class PropertyRequestController extends Controller
@@ -60,15 +59,10 @@ class PropertyRequestController extends Controller
         
         $validated['user_id'] = auth()->id();
 
-        // Generar embedding usando el idioma del usuario
+        // El observer genera el embedding con el texto normalizado que se guarda.
         $userLocale = session('locale', 'es');
         $title = $validated['title'][$userLocale];
         $description = $validated['description'][$userLocale];
-        
-        $embedding = $this->generateEmbedding($title, $description);
-        if ($embedding) {
-            $validated['embedding'] = $embedding;
-        }
 
         // Convertir arrays a JSON para campos i18n
         $validated['title_i18n'] = json_encode($validated['title']);
@@ -147,17 +141,6 @@ class PropertyRequestController extends Controller
     {
         $validated = $request->validated();
 
-        $title = $validated['title'];
-        $description = $validated['description'];
-
-        // Regenerar embedding si cambió el contenido
-        if ($propertyRequest->title !== $title || $propertyRequest->description !== $description) {
-            $embedding = $this->generateEmbedding($title, $description);
-            if ($embedding) {
-                $validated['embedding'] = $embedding;
-            }
-        }
-
         $propertyRequest->update($validated);
 
         return redirect()
@@ -201,38 +184,6 @@ class PropertyRequestController extends Controller
             : __('messages.request_deactivated');
 
         return back()->with('success', $message);
-    }
-
-    /**
-     * Generate embedding using OpenAI API.
-     *
-     * @param string $title
-     * @param string $description
-     * @return array|null
-     */
-    protected function generateEmbedding(string $title, string $description): ?array
-    {
-        try {
-            $text = $title . ' ' . $description;
-            
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-                'Content-Type' => 'application/json',
-            ])->post('https://api.openai.com/v1/embeddings', [
-                'input' => $text,
-                'model' => 'text-embedding-ada-002',
-            ]);
-
-            if ($response->successful()) {
-                return $response->json('data.0.embedding');
-            }
-
-            \Log::error('Error generating embedding: ' . $response->body());
-            return null;
-        } catch (\Exception $e) {
-            \Log::error('Exception generating embedding: ' . $e->getMessage());
-            return null;
-        }
     }
 
     /**

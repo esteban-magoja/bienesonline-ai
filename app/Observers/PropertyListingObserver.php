@@ -4,13 +4,13 @@ namespace App\Observers;
 
 use App\Events\PropertyListingCreated;
 use App\Models\PropertyListing;
-use OpenAI;
-use Pgvector\Laravel\Vector;
+use App\Services\EmbeddingService;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class PropertyListingObserver
 {
+    public function __construct(private EmbeddingService $embeddingService) {}
+
     /**
      * Handle the PropertyListing "creating" event.
      */
@@ -69,26 +69,16 @@ class PropertyListingObserver
      */
     private function generateEmbedding(PropertyListing $propertyListing): void
     {
-        try {
-            $client = OpenAI::client(config('openai.api_key'));
-            $model = config('openai.embeddings_model');
+        $embedding = $this->embeddingService->generate([
+            $propertyListing->title,
+            $propertyListing->description,
+            $propertyListing->address,
+            $propertyListing->city,
+            $propertyListing->state,
+        ]);
 
-            $text = $propertyListing->title . ' ' .
-                    $propertyListing->description . ' ' .
-                    $propertyListing->address . ' ' .
-                    $propertyListing->city . ' ' .
-                    $propertyListing->state;
-
-            $response = $client->embeddings()->create([
-                'model' => $model,
-                'input' => $text,
-            ]);
-
-            $propertyListing->embedding = new Vector($response->embeddings[0]->embedding);
-        } catch (\Exception $e) {
-            Log::error('Error generating embedding for PropertyListing ID ' . $propertyListing->id . ': ' . $e->getMessage());
-            // Optionally, you might want to throw the exception or handle it differently
-            // For now, we'll just log and continue without setting the embedding
+        if ($embedding !== null) {
+            $propertyListing->embedding = $embedding;
         }
     }
 

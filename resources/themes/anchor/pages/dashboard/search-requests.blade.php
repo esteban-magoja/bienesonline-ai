@@ -3,7 +3,7 @@
 use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 use App\Models\PropertyRequest;
-use Illuminate\Support\Facades\Http;
+use App\Services\EmbeddingService;
 use Illuminate\Support\Facades\Log;
 
 middleware(['auth']);
@@ -63,10 +63,10 @@ new class extends Component {
                 ->where('user_id', '!=', auth()->id())
                 ->where('country', $this->selectedCountry);
             
-            $searchEmbedding = $this->generateEmbedding($this->searchTerm);
+            $searchEmbedding = app(EmbeddingService::class)->generate([$this->searchTerm]);
             
-            if ($searchEmbedding) {
-                $embeddingString = '[' . implode(',', $searchEmbedding) . ']';
+            if ($searchEmbedding !== null) {
+                $embeddingString = '[' . implode(',', $searchEmbedding->toArray()) . ']';
                 
                 $this->requests = $query
                     ->with('user:id,name,email,movil')
@@ -138,35 +138,6 @@ new class extends Component {
         $this->totalPages = 0;
     }
     
-    private function generateEmbedding(string $text): ?array
-    {
-        try {
-            $apiKey = config('services.openai.api_key');
-            
-            if (empty($apiKey)) {
-                Log::warning('OpenAI API key not configured');
-                return null;
-            }
-            
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $apiKey,
-                'Content-Type' => 'application/json',
-            ])->timeout(30)->post('https://api.openai.com/v1/embeddings', [
-                'model' => 'text-embedding-3-small',
-                'input' => $text,
-            ]);
-            
-            if ($response->successful()) {
-                return $response->json('data.0.embedding');
-            }
-            
-            Log::error('OpenAI API error: ' . $response->body());
-            return null;
-        } catch (\Exception $e) {
-            Log::error('Exception generating embedding: ' . $e->getMessage());
-            return null;
-        }
-    }
 };
 ?>
 

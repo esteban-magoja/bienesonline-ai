@@ -8,6 +8,7 @@ use App\Models\PropertyRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 uses(DatabaseTransactions::class);
 
@@ -30,6 +31,14 @@ function makeContactTestUser(string $suffix): User
 }
 
 beforeEach(function (): void {
+    Http::fake([
+        'https://api.openai.com/v1/embeddings' => Http::response([
+            'data' => [[
+                'embedding' => array_fill(0, 1536, 0.001),
+            ]],
+        ]),
+    ]);
+
     $suffix = uniqid('', true);
     $this->owner   = makeContactTestUser("owner-{$suffix}");
     $this->visitor = makeContactTestUser("visitor-{$suffix}");
@@ -150,5 +159,6 @@ it('auto-request stores correct details with null budget', function (): void {
         ->and($autoRequest->state)->toBe('Córdoba')
         ->and($autoRequest->city)->toBe('Villa Carlos Paz')
         ->and($autoRequest->max_budget)->toBeNull()
-        ->and($autoRequest->is_active)->toBeTrue();
+        ->and($autoRequest->is_active)->toBeTrue()
+        ->and($autoRequest->embedding)->not->toBeNull();
 });

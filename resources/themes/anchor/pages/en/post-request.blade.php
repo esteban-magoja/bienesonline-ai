@@ -158,12 +158,6 @@ new class extends Component {
             }
         }
 
-        // Generar embedding
-        $embedding = $this->generateEmbedding($validated['title'], $validated['description']);
-        if ($embedding) {
-            $validated['embedding'] = $embedding;
-        }
-
         $propertyRequest = PropertyRequest::create($validated);
 
         session()->flash('success', 'Tu solicitud ha sido creada exitosamente.');
@@ -171,29 +165,6 @@ new class extends Component {
         $this->redirectRoute('dashboard.requests.show', $propertyRequest);
     }
 
-    protected function generateEmbedding(string $title, string $description): ?array
-    {
-        try {
-            $text = $title . ' ' . $description;
-            
-            $response = \Illuminate\Support\Facades\Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-                'Content-Type' => 'application/json',
-            ])->post('https://api.openai.com/v1/embeddings', [
-                'input' => $text,
-                'model' => 'text-embedding-ada-002',
-            ]);
-
-            if ($response->successful()) {
-                return $response->json('data.0.embedding');
-            }
-
-            return null;
-        } catch (\Exception $e) {
-            \Log::error('Exception generating embedding: ' . $e->getMessage());
-            return null;
-        }
-    }
 };
 ?>
 

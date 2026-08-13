@@ -8,10 +8,68 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Pgvector\Laravel\Vector;
 
 uses(DatabaseTransactions::class);
 
 describe('PropertyRequestObserver', function () {
+    it('generates an embedding when a request is created', function () {
+        Http::fake([
+            'https://api.openai.com/v1/embeddings' => Http::response([
+                'data' => [[
+                    'embedding' => array_fill(0, 1536, 0.001),
+                ]],
+            ]),
+        ]);
+
+        $propertyRequest = PropertyRequest::create([
+            'user_id' => User::first()->id,
+            'title' => 'Test request title',
+            'description' => 'Test request description with enough content.',
+            'property_type' => 'house',
+            'transaction_type' => 'sale',
+            'country' => 'Argentina',
+            'currency' => 'USD',
+            'is_active' => true,
+        ]);
+
+        expect($propertyRequest->embedding)
+            ->toBeInstanceOf(Vector::class)
+            ->and($propertyRequest->embedding->toArray())->toHaveCount(1536);
+
+        Http::assertSentCount(1);
+    });
+
+    it('regenerates an embedding when request content is updated', function () {
+        Http::fake([
+            'https://api.openai.com/v1/embeddings' => Http::response([
+                'data' => [[
+                    'embedding' => array_fill(0, 1536, 0.001),
+                ]],
+            ]),
+        ]);
+
+        $propertyRequest = PropertyRequest::create([
+            'user_id' => User::first()->id,
+            'title' => 'Test request title',
+            'description' => 'Test request description with enough content.',
+            'property_type' => 'house',
+            'transaction_type' => 'sale',
+            'country' => 'Argentina',
+            'currency' => 'USD',
+            'is_active' => true,
+        ]);
+
+        $propertyRequest->update([
+            'title' => 'Updated request title',
+            'description' => 'Updated request description with enough content.',
+        ]);
+
+        expect($propertyRequest->fresh()->embedding)->toBeInstanceOf(Vector::class);
+        Http::assertSentCount(2);
+    });
+
     it('clears listing cache when a matching request is created', function () {
         $uniqueId = str_replace('.', '', uniqid('', true));
         $userId = DB::table('users')->insertGetId([
