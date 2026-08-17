@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-08-11 15:49:25","nombre":"valeria","email":"valdcamaraa09@gmail.com","telefono":"8298517927","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago de los Caballeros"},
-{"fecha":"2026-08-13 01:06:38","nombre":"Camila Lajara","email":"camilalajara22@gmail.com","telefono":"8099950370","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"La Altagracia","localidad_inmueble":"Punta Cana"}
+{"fecha":"2026-08-13 13:17:02","nombre":"Nazaret Novas ","email":"nazanovas603@gmail.com","telefono":"8099192239","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santo Domingo","localidad_inmueble":"Santo Domingo Este"}
 ]
 }
 ]

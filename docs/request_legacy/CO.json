@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-08-11 21:11:32","nombre":"leydy Garcia Cerquera","email":"garcialeydy888@gmail.com","telefono":"3013052353","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Engativá"}
+{"fecha":"2026-08-14 08:30:26","nombre":"Carlos ceballos","email":"carlosmario200929@gmail.com","telefono":"3116158256","tipo_inmueble":"Local","tipo_operacion":"Arriendo","provincia_inmueble":"Magdalena","localidad_inmueble":"Santa Marta"},
+{"fecha":"2026-08-16 23:12:33","nombre":"leidy garcia","email":"garcialeidy437@gmail.com","telefono":"3013052353","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Engativá"}
 ]
 }
 ]

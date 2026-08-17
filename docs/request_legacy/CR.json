@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-08-10 17:35:05","nombre":"Gisela De Leon","email":"gis25776@hotmail.com","telefono":"+50684495748","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Montes de Oca"},
-{"fecha":"2026-08-10 19:47:10","nombre":"Daniel García Vargas","email":"onslaught102@gmail.com","telefono":"88742294","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Hatillo"}
+{"fecha":"2026-08-13 19:32:14","nombre":"Ellis","email":"ellismayorga@gmail.com","telefono":"87523419","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"},
+{"fecha":"2026-08-14 00:01:47","nombre":"Johannes Neumann","email":"johannes.s.neumann@gmail.com","telefono":"87651354","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Heredia"}
 ]
 }
 ]

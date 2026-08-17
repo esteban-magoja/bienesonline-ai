@@ -3,13 +3,10 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-08-11 06:54:51","nombre":"Marleny Cuevas","email":"arananda11@gmail.com","telefono":"0412 3288733","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Aragua","localidad_inmueble":"Turmero"},
-{"fecha":"2026-08-11 11:00:21","nombre":"Marleny Cuevas","email":"arananda11@gmil.com","telefono":"0412-3288733","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Aragua","localidad_inmueble":"Turmero"},
-{"fecha":"2026-08-11 13:36:23","nombre":"melany diaz","email":"mrjd0714@gmail.com","telefono":"04246174877","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Zulia","localidad_inmueble":"Cabimas"},
-{"fecha":"2026-08-11 10:01:41","nombre":"gustavo briceño","email":"gustavobriceno416@gmail.com","telefono":"04243081624","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Aragua","localidad_inmueble":"Cagua"},
-{"fecha":"2026-08-11 13:44:58","nombre":"elias","email":"Alfndc@gmail.com","telefono":"7862237823","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-08-12 12:00:29","nombre":"alciravilla67@gmail.com","email":"alciravilla67@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Santa Rosalía"},
-{"fecha":"2026-08-12 12:29:00","nombre":"ASAEL MARQUEZ","email":"omm.marquezasael.bdc@gmail.com","telefono":"+584122926806","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"La California Norte"}
+{"fecha":"2026-08-14 20:41:40","nombre":"Emelys Fuentes","email":"fuentesemelys2@gmail.com","telefono":"04128695407","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sucre","localidad_inmueble":"CUMANA"},
+{"fecha":"2026-08-16 16:31:37","nombre":"fernando","email":"sealeva7@hotmail.com","telefono":"04142037050","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Higuerote"},
+{"fecha":"2026-08-13 14:45:08","nombre":"henry orozco","email":"willkins.gomez@gmail.com","telefono":"+16156486625","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
+{"fecha":"2026-08-16 23:12:14","nombre":"Antonio","email":"Antoniocont@gmail.com","telefono":"+15879992110","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Sector Caña Alta"}
 ]
 }
 ]

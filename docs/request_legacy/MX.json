@@ -3,13 +3,9 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-08-10 00:13:18","nombre":"Elías Edgar Hernández Velasco","email":"edhernandez1963@hotmail.com","telefono":"4427040790","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Queretaro Arteaga","localidad_inmueble":"El Pueblito"},
-{"fecha":"2026-08-11 11:29:52","nombre":"Johanna Hernandez","email":"jou121289@gmail.com","telefono":"5540593143","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-08-11 15:29:11","nombre":"Blanca zermeño","email":"ingenieriaicar.bzermeno@gmail.com","telefono":"5543653013","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
-{"fecha":"2026-08-12 00:01:39","nombre":"Leoncio Garcia Diaz","email":"elfonomada@yahoo.com.mx","telefono":"3312113383","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Tlajomulco de Zúñiga"},
-{"fecha":"2026-08-12 00:43:39","nombre":"CRISTIAN GALLEGOS","email":"cristian.gallegos@kwmexico.mx","telefono":"444308915","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"San Luis Potosi","localidad_inmueble":"San Luis Potosi"},
-{"fecha":"2026-08-12 13:20:12","nombre":"LAURA KAREN GUTI?RREZ L?PEZ","email":"comarcialquintana@gmail.com","telefono":"5548809592","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Mexico","localidad_inmueble":"Villa Nicolás Romero"},
-{"fecha":"2026-08-12 15:48:00","nombre":"Alberto Pérez","email":"acastilloperez@atomicmail.io","telefono":"2217063693","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Banderilla"}
+{"fecha":"2026-08-14 02:54:01","nombre":"Ana Cristina","email":"criztina_hc15@hotmail.com","telefono":"6672024008","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Nuevo Leon","localidad_inmueble":"García"},
+{"fecha":"2026-08-15 18:05:43","nombre":"Sofia","email":"sofia7664@gmail.com","telefono":"5647952053","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Tlalpan"},
+{"fecha":"2026-08-16 22:06:29","nombre":"Mónica Fernández","email":"monikfmejia@gmail.com","telefono":"7776570021","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Nuevo Leon","localidad_inmueble":"García"}
 ]
 }
 ]
