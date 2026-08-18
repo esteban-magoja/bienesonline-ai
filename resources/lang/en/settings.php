@@ -15,6 +15,7 @@ return [
         'title' => 'Profile',
         'my_account' => 'My Account',
         'my_account_description' => 'Manage your avatar, name, email, and more.',
+        'account_settings_description' => 'You can also complete your real estate company presence from these sections: use Public site to customize the information shown on your profile, Services to manage what you offer, and Team to add and manage the people in your company.',
         'update_profile' => 'Update Profile',
         'full_name' => 'Full Name',
         'email' => 'Email Address',

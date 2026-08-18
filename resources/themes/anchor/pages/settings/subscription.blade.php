@@ -27,6 +27,7 @@
             <x-app.settings-layout
                 title="{{ __('settings.subscription.title') }}"
                 description="{{ __('settings.subscription.plan_details') }}"
+                section="billing"
             >
                 @role('admin')
                     <x-app.alert id="no_subscriptions" :dismissable="false" type="info">

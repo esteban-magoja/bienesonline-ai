@@ -148,6 +148,28 @@ it('translates all mini site settings pages in Spanish', function () {
         ->assertDontSee('settings.public_profile.team_title');
 });
 
+it('separates configuration and billing navigation', function () {
+    $user = createMiniSiteUser();
+
+    $this->actingAs($user)
+        ->withSession(['locale' => 'es'])
+        ->get('/settings/public-profile')
+        ->assertSuccessful()
+        ->assertSee('Configuración')
+        ->assertSee('Sitio público')
+        ->assertSee('Facturación')
+        ->assertDontSee('Suscripción');
+
+    $this->actingAs($user)
+        ->withSession(['locale' => 'es'])
+        ->get('/settings/subscription')
+        ->assertSuccessful()
+        ->assertSee('Facturación')
+        ->assertSee('Suscripción')
+        ->assertSee('Facturas')
+        ->assertDontSee('Sitio público');
+});
+
 it('does not allow a visitor to access mini site settings', function () {
     $this->get('/settings/public-profile')->assertRedirect();
 });

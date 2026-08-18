@@ -15,6 +15,7 @@ return [
         'title' => 'Perfil',
         'my_account' => 'Mi cuenta',
         'my_account_description' => 'Administra tu avatar, nombre, correo electrónico y más.',
+        'account_settings_description' => 'Además, puedes completar la presencia de tu inmobiliaria desde estas secciones: en Sitio público personaliza la información visible en tu perfil; en Servicios administra los servicios que ofreces; y en Equipo agrega y gestiona las personas que forman parte de tu empresa.',
         'update_profile' => 'Actualizar Perfil',
         'full_name' => 'Nombre completo',
         'email' => 'Correo electrónico',

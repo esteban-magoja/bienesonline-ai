@@ -34,10 +34,8 @@
                 @endsubscriber --}}
 
 
-                <x-app.sidebar-link :hideUntilGroupHover="false" href="{{ route('settings.profile') }}" icon="phosphor-gear-duotone" active="false">{{ __('messages.settings') }}</x-app.sidebar-link>
-                @notsubscriber
-                <x-app.sidebar-link href="/settings/subscription" icon="phosphor-sparkle-duotone">{{ __('messages.membership') }}</x-app.sidebar-link>
-                @endnotsubscriber
+                <x-app.sidebar-link :hideUntilGroupHover="false" href="{{ route('settings.profile') }}" icon="phosphor-gear-duotone" active="false">{{ __('settings.menu.configuration') }}</x-app.sidebar-link>
+                <x-app.sidebar-link href="{{ route('settings.subscription') }}" icon="phosphor-credit-card-duotone">{{ __('settings.menu.billing') }}</x-app.sidebar-link>
                 @if(auth()->user()->isAdmin())
                 <x-app.sidebar-link :hideUntilGroupHover="false" :ajax="false" href="/admin" icon="phosphor-crown-duotone" active="false">{{ __('messages.view_admin') }}</x-app.sidebar-link>
                 @endif

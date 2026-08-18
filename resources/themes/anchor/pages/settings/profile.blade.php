@@ -304,6 +304,9 @@
 			}
 		"
 		class="relative w-full">
+			<p class="mb-6 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+				{{ __('settings.profile.account_settings_description') }}
+			</p>
 			<form wire:submit="save" class="w-full">
 				<div class="relative flex flex-col mt-5 lg:px-10">
 					<div class="relative flex-shrink-0 w-32 h-32 cursor-pointer group">

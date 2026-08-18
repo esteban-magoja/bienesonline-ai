@@ -13,6 +13,7 @@
             <x-app.settings-layout
                 title="{{ __('settings.invoices.title') }}"
                 description="{{ __('settings.invoices.invoice_history') }}"
+                section="billing"
             >
                 @empty($invoices)
                     <x-app.alert id="dashboard_alert">{{ __('settings.invoices.no_invoices') }}</x-app.alert>

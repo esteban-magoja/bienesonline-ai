@@ -1,34 +1,45 @@
-<x-card class="flex flex-col w-full max-w-4xl mx-auto lg:my-10">
-    <div class="flex flex-wrap items-center justify-between pb-3 mt-5 border-b lg:mt-0 sm:mt-8 border-zinc-200 dark:border-zinc-800 sm:flex-no-wrap">
-        <div class="relative p-2">
-            <div class="space-y-0.5">
-                <h2 class="text-xl font-semibold tracking-tight dark:text-zinc-100">{{ $title ?? '' }}</h2>
-                <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $description ?? '' }}</p>
+@props([
+    'title' => '',
+    'description' => '',
+    'section' => 'configuration',
+])
+
+@php
+    $navigation = $section === 'billing'
+        ? [
+            ['route' => 'settings.subscription', 'icon' => 'phosphor-credit-card-duotone', 'label' => __('settings.menu.subscription')],
+            ['route' => 'settings.invoices', 'icon' => 'phosphor-invoice-duotone', 'label' => __('settings.menu.invoices')],
+        ]
+        : [
+            ['route' => 'settings.profile', 'icon' => 'phosphor-user-circle-duotone', 'label' => __('settings.menu.profile')],
+            ['route' => 'settings.public-profile', 'icon' => 'phosphor-storefront-duotone', 'label' => __('settings.menu.public_profile')],
+            ['route' => 'settings.services', 'icon' => 'phosphor-list-checks-duotone', 'label' => __('settings.menu.services')],
+            ['route' => 'settings.team', 'icon' => 'phosphor-users-three-duotone', 'label' => __('settings.menu.team')],
+            ['route' => 'settings.security', 'icon' => 'phosphor-lock-duotone', 'label' => __('settings.menu.security')],
+        ];
+@endphp
+
+<x-app.container class="max-w-6xl space-y-6 lg:space-y-8">
+    <x-app.heading :title="$title" :description="$description" :border="false" />
+
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+        <aside class="w-full shrink-0 lg:w-56">
+            <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-2 dark:border-zinc-700 dark:bg-zinc-900">
+                <p class="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                    {{ $section === 'billing' ? __('settings.menu.billing') : __('settings.menu.configuration') }}
+                </p>
+                <nav class="flex gap-1 overflow-x-auto lg:flex-col">
+                    @foreach ($navigation as $item)
+                        <x-settings-sidebar-link :href="route($item['route'])" :icon="$item['icon']">
+                            {{ $item['label'] }}
+                        </x-settings-sidebar-link>
+                    @endforeach
+                </nav>
             </div>
-        </div>
-    </div>
-    <div class="flex flex-col pt-5 lg:flex-row lg:space-x-8">
-        <aside class="flex-shrink-0 pb-8 lg:pt-4 lg:pb-0 lg:w-48">
-            <nav class="flex items-start justify-start lg:flex-col lg:space-y-1">
-                <div class="px-2.5 pb-1.5 text-xs lg:block hidden font-semibold leading-6 text-zinc-500">{{ __('settings.menu.configuration') }}</div>
-                <div class="flex items-center w-auto space-x-2 lg:items-stretch lg:flex-col lg:w-full lg:space-y-1 lg:space-x-0">
-                    <x-settings-sidebar-link :href="route('settings.profile')" icon="phosphor-user-circle-duotone">{{ __('settings.menu.profile') }}</x-settings-sidebar-link>
-                    <x-settings-sidebar-link :href="route('settings.public-profile')" icon="phosphor-storefront-duotone">{{ __('settings.menu.public_profile') }}</x-settings-sidebar-link>
-                    <x-settings-sidebar-link :href="route('settings.services')" icon="phosphor-list-checks-duotone">{{ __('settings.menu.services') }}</x-settings-sidebar-link>
-                    <x-settings-sidebar-link :href="route('settings.team')" icon="phosphor-users-three-duotone">{{ __('settings.menu.team') }}</x-settings-sidebar-link>
-                    <x-settings-sidebar-link :href="route('settings.security')" icon="phosphor-lock-duotone">{{ __('settings.menu.security') }}</x-settings-sidebar-link>
-                    <!--<x-settings-sidebar-link :href="route('settings.api')" icon="phosphor-code-duotone">{{ __('settings.menu.api') }}</x-settings-sidebar-link>-->
-                </div>
-                <div class="px-2.5 pt-3.5 pb-1.5 text-xs lg:block hidden font-semibold leading-6 text-zinc-500">{{ __('settings.menu.billing') }}</div>
-                <div class="flex items-center w-full ml-2 space-x-2 lg:items-stretch lg:flex-col lg:ml-0 lg:space-y-1 lg:space-x-0">
-                    <x-settings-sidebar-link :href="route('settings.subscription')" icon="phosphor-credit-card-duotone">{{ __('settings.menu.subscription') }}</x-settings-sidebar-link>
-                    <x-settings-sidebar-link :href="route('settings.invoices')" icon="phosphor-invoice-duotone">{{ __('settings.menu.invoices') }}</x-settings-sidebar-link>
-                </div>
-            </nav>
         </aside>
 
-        <div class="py-3 lg:px-6 lg:w-full">
+        <div class="min-w-0 flex-1 rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-800 sm:p-6 lg:p-8">
             {{ $slot }}
         </div>
     </div>
-</x-card>
+</x-app.container>
