@@ -24,4 +24,6 @@ return [
     |
     */
     'embeddings_model' => env('EMBEDDINGS_MODEL', 'text-embedding-ada-002'),
+
+    'search_distance_threshold' => (float) env('SEARCH_DISTANCE_THRESHOLD', 0.5),
 ];

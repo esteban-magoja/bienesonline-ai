@@ -2,6 +2,8 @@
     if(isset($seo)){
         $seo = (is_array($seo)) ? ((object)$seo) : $seo;
     }
+
+    $robotsDirective = $seo->robots ?? 'index,follow';
 @endphp
 @if(isset($seo->title))
     <title>{{ $seo->title }}</title>
@@ -68,8 +70,8 @@
     <script type="application/ld+json">{!! json_encode($seo->structured_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
 @endif
 
-<meta name="robots" content="index,follow">
-<meta name="googlebot" content="index,follow">
+<meta name="robots" content="{{ $robotsDirective }}">
+<meta name="googlebot" content="{{ $robotsDirective }}">
 
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

@@ -101,6 +101,16 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
 
     // Property Search (pública)
     Route::get('/search-properties', [PropertySearchController::class, 'index'])->name('property.search');
+
+    // Semantic property search landing pages (public and SEO-indexable)
+    // Example: /es/colombia/busqueda/apartamento-sagrado-corazon-medellin
+    Route::get('/{country}/{searchPath}/{query}', [\App\Http\Controllers\SemanticPropertySearchController::class, 'index'])
+        ->where([
+            'country' => '[a-zA-Z\-]+',
+            'searchPath' => 'busqueda|search',
+            'query' => '[a-zA-Z0-9\-]+',
+        ])
+        ->name('property.semantic-search');
     
     // Property Detail (pública) - URLs SEO con estructura jerárquica
     // Estructura: /{locale}/{país}/{ciudad}/propiedad/{id}-{slug}

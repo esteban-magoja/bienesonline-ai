@@ -188,8 +188,10 @@
             @endif
 
             <!-- Property Grid -->
-            <div id="propertyResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div id="propertyResults" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 @forelse($properties as $listing)
+                    <x-property-search-card :property="$listing" :locale="app()->getLocale()" />
+                    @if(false)
                     <!-- Property Card -->
                     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                         <!-- Property Image -->
@@ -310,6 +312,7 @@
                             </a>
                         </div>
                     </div>
+                    @endif
                 @empty
                     @if($searchTerm || $selectedCountry)
                         <!-- No Results -->
@@ -335,6 +338,12 @@
                     @endif
                 @endforelse
             </div>
+
+            @if(method_exists($properties, 'hasPages') && $properties->hasPages())
+                <div class="mt-10">
+                    {{ $properties->links() }}
+                </div>
+            @endif
         </div>
     </section>
 

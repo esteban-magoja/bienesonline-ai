@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PropertyListing;
-use Pgvector\Laravel\Vector;
+use App\Services\SemanticPropertySearchService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PropertySearchController extends Controller
 {
-    public function index(Request $request, $locale)
+    public function __construct(private readonly SemanticPropertySearchService $searchService)
+    {
+    }
+
+    public function index(Request $request, string $locale): View
     {
         $startTime = microtime(true);
         
@@ -53,10 +59,13 @@ class PropertySearchController extends Controller
         $properties = collect();
 
         if ($hasValidSearch && empty($validationErrors)) {
-            $properties = $this->performSearch($searchTerm, $selectedCountry);
+            $properties = $this->searchService->search($searchTerm, $selectedCountry);
         }
 
         $searchTime = round((microtime(true) - $startTime) * 1000); // Convert to milliseconds
+        $totalResults = $properties instanceof LengthAwarePaginator
+            ? $properties->total()
+            : $properties->count();
 
         // SEO data
         $seo = (object) [
@@ -79,80 +88,12 @@ class PropertySearchController extends Controller
             'searchTerm' => $searchTerm,
             'selectedCountry' => $selectedCountry,
             'countries' => $countries,
-            'totalResults' => $properties->count(),
+            'totalResults' => $totalResults,
             'searchTime' => $searchTime,
             'validationErrors' => $validationErrors,
             'hasValidSearch' => $hasValidSearch,
             'isSearchRequest' => $isSearchRequest,
             'seo' => $seo,
         ]);
-    }
-
-    private function performSearch(string $searchTerm, string $selectedCountry)
-    {
-        try {
-            $query = PropertyListing::query()
-                ->with(['primaryImage', 'firstImage'])
-                ->where('is_active', true);
-
-            // Filter by country if selected
-            if (!empty($selectedCountry)) {
-                $query->where('country', $selectedCountry);
-            }
-
-            // If there's a search term, use embedding search
-            if (!empty($searchTerm)) {
-                \Log::info("Starting embedding search for: " . $searchTerm);
-                
-                $client = \OpenAI::client(config('openai.api_key'));
-                $model = config('openai.embeddings_model');
-
-                $response = $client->embeddings()->create([
-                    'model' => $model,
-                    'input' => $searchTerm,
-                ]);
-
-                $embedding = new Vector($response->embeddings[0]->embedding);
-                
-                \Log::info("Embedding created successfully");
-
-                $query = $query
-                    ->select('*')
-                    ->selectRaw('(1 - (embedding <=> ?)) * 100 as similarity', [$embedding])
-                    ->whereRaw('(embedding <=> ?) < 0.7', [$embedding]) // More permissive threshold
-                    ->orderByDesc('similarity');
-                    
-                \Log::info("Query built successfully");
-            } else {
-                $query = $query->orderByDesc('is_featured')->orderByDesc('created_at');
-            }
-
-            $results = $query->limit(20)->get();
-            \Log::info("Found " . $results->count() . " results");
-            
-            return $results;
-
-        } catch (\Exception $e) {
-            \Log::error('Property search error: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
-            
-            // Fallback to simple search if embedding search fails
-            if (!empty($searchTerm)) {
-                return PropertyListing::where('is_active', true)
-                    ->where(function($query) use ($searchTerm) {
-                        $query->where('title', 'like', '%'.$searchTerm.'%')
-                              ->orWhere('description', 'like', '%'.$searchTerm.'%')
-                              ->orWhere('city', 'like', '%'.$searchTerm.'%');
-                    })
-                    ->when(!empty($selectedCountry), function($query) use ($selectedCountry) {
-                        return $query->where('country', $selectedCountry);
-                    })
-                    ->with(['primaryImage', 'firstImage'])
-                    ->limit(20)
-                    ->get();
-            }
-            
-            return collect();
-        }
     }
 }

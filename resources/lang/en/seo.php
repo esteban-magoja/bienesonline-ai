@@ -24,6 +24,11 @@ return [
         'title' => 'Search Properties - BienesOnLine.ai',
         'description' => 'Find your ideal property with our AI-powered intelligent search. Thousands of properties for sale and rent.',
     ],
+
+    'semantic_search' => [
+        'title' => ':query in :country | BienesOnline',
+        'description' => 'Find property listings related to ":query" in :country. There are :count available results on BienesOnline.',
+    ],
     
     // Request Search Page
     'request_search' => [

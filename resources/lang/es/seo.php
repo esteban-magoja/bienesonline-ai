@@ -24,6 +24,11 @@ return [
         'title' => 'Buscar Propiedades - BienesOnLine.ai',
         'description' => 'Encuentra tu propiedad ideal con nuestra búsqueda inteligente potenciada por IA. Miles de propiedades en venta y alquiler.',
     ],
+
+    'semantic_search' => [
+        'title' => ':query en :country | BienesOnline',
+        'description' => 'Encuentra anuncios inmobiliarios relacionados con ":query" en :country. Hay :count resultados disponibles en BienesOnline.',
+    ],
     
     // Request Search Page
     'request_search' => [
