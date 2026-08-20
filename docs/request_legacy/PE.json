@@ -3,17 +3,16 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-08-13 16:26:23","nombre":"Gustavo Huamn Snchez","email":"gustavohs353@gmail.com","telefono":"981119605","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Martin De Porres"},
-{"fecha":"2026-08-14 09:25:28","nombre":"Gerardo Curi","email":"gerard.curi2@gmail.com","telefono":"920421685","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santiago De Surco"},
-{"fecha":"2026-08-14 09:25:51","nombre":"Gerardo Curi","email":"gerard.curi2@gmail.com","telefono":"920421685","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Surquillo"},
-{"fecha":"2026-08-14 11:11:58","nombre":"Astrid","email":"celina4833638oxa@gmail.com","telefono":"978909737","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-08-14 23:17:36","nombre":"graciela","email":"graciela.mayta@yahoo.es","telefono":"935772352","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-08-14 23:23:39","nombre":"Jennifer","email":"martinezyeni886@gmail.com","telefono":"967773077","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
-{"fecha":"2026-08-15 04:17:46","nombre":"Monica","email":"velasquezmonicah@gmail.com","telefono":"928 493 155","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Santiago De Surco"},
-{"fecha":"2026-08-15 08:53:37","nombre":"Mikela","email":"alvanromeromikelarossmy@gmail.com","telefono":"917923259","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Jesus Maria"},
-{"fecha":"2026-08-15 18:10:41","nombre":"Luis Ricardo","email":"luisflode@gmail.com","telefono":"979383657","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Chiclayo","localidad_inmueble":"Chiclayo"},
 {"fecha":"2026-08-16 21:02:18","nombre":"CECILIA","email":"c.salvatierrag@gmail.com","telefono":"941385822","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lince"},
-{"fecha":"2026-08-16 22:15:50","nombre":"Angela","email":"j@gmail.com","telefono":"961209909","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Magdalena del Mar"}
+{"fecha":"2026-08-16 22:15:50","nombre":"Angela","email":"j@gmail.com","telefono":"961209909","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Magdalena del Mar"},
+{"fecha":"2026-08-17 10:30:47","nombre":"Yoliber","email":"yolibertf@gmail.com","telefono":"992 710 144","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Miguel"},
+{"fecha":"2026-08-17 12:51:47","nombre":"Lorena Diaz","email":"lorenina2012@gmail.com","telefono":"997619927","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Jesus Maria"},
+{"fecha":"2026-08-18 19:51:38","nombre":"Johanna","email":"johannagamonet@gmail.com","telefono":"971-469-468","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Magdalena del Mar"},
+{"fecha":"2026-08-19 00:01:27","nombre":"Keira Hernández","email":"keiralhs0510@gmail.com","telefono":"913848715","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lima"},
+{"fecha":"2026-08-19 00:22:53","nombre":"Keira Hernández","email":"keiralhs0510@gmail.com","telefono":"913848715","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Lince"},
+{"fecha":"2026-08-19 08:54:16","nombre":"Marielizabeth","email":"marielizabethcruzadrianzen25@gmail.com","telefono":"930457223","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"Breña"},
+{"fecha":"2026-08-20 08:35:47","nombre":"Julio Vilca Blas","email":"vilcajulio320@gmail.com","telefono":"951237274","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"La Victoria"},
+{"fecha":"2026-08-20 08:41:26","nombre":"Julio Vilca Blas","email":"vilcajulio320@gmail.com","telefono":"951237274","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Lima","localidad_inmueble":"San Borja"}
 ]
 }
 ]

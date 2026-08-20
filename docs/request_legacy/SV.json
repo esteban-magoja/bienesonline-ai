@@ -1,9 +1,10 @@
 [
-{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"header","version":"5.2.3","comment":"Export to JSON plugin for phpMyAdmin"},
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-07-31 13:17:18","nombre":"Fernando Valencia","email":"fernando_valencia07@hotmail.com","telefono":"78583871","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Sonsonate","localidad_inmueble":"Juayúa"}
+{"fecha":"2026-08-19 07:52:06","nombre":"Marjorie Canjura","email":"marjorie.canjura@gmail.com","telefono":"77547665","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Ahuachapán","localidad_inmueble":"Apaneca"},
+{"fecha":"2026-08-19 17:00:13","nombre":"Leybis Obregon","email":"leymarher07@gmail.com","telefono":"50584573605","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San Salvador","localidad_inmueble":"APOPA"}
 ]
 }
 ]

@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_paraguay"},
 {"type":"table","name":"c","database":"admin_bienes_paraguay","data":
 [
-{"fecha":"2026-06-30 15:51:51","nombre":"EDUARDO PRIETO","email":"eiprietob@gmail.com","telefono":"981865772","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Itapúa","localidad_inmueble":"Encarnación"}
+{"fecha":"2026-08-18 09:22:39","nombre":"Antonella ","email":"antobottinoa@gmail.com","telefono":"0994314166","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Sajonia"}
 ]
 }
 ]

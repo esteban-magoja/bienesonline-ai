@@ -3,8 +3,11 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-08-14 08:30:26","nombre":"Carlos ceballos","email":"carlosmario200929@gmail.com","telefono":"3116158256","tipo_inmueble":"Local","tipo_operacion":"Arriendo","provincia_inmueble":"Magdalena","localidad_inmueble":"Santa Marta"},
-{"fecha":"2026-08-16 23:12:33","nombre":"leidy garcia","email":"garcialeidy437@gmail.com","telefono":"3013052353","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Engativá"}
+{"fecha":"2026-08-16 23:12:33","nombre":"leidy garcia","email":"garcialeidy437@gmail.com","telefono":"3013052353","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Engativá"},
+{"fecha":"2026-08-19 15:00:26","nombre":"nataly rios","email":"natalirios91@gmail.com","telefono":"3244340438","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Risaralda","localidad_inmueble":"Pereira"},
+{"fecha":"2026-08-19 21:01:16","nombre":"Karen Dayanna Peña","email":"karendayannapena@gmail.com","telefono":"3115932343","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Bogota D.C","localidad_inmueble":"Suba"},
+{"fecha":"2026-08-17 14:40:44","nombre":"JOHN SERNA","email":"JSERNA1002@GMAIL.COM","telefono":"3146241636","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
+{"fecha":"2026-08-20 04:27:47","nombre":"Na?ssa","email":"boulatali.pro@gmail.com","telefono":"+33756952122","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"San Andrés y Providencia","localidad_inmueble":"San Andres"}
 ]
 }
 ]

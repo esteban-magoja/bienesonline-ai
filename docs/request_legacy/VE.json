@@ -3,10 +3,10 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-08-14 20:41:40","nombre":"Emelys Fuentes","email":"fuentesemelys2@gmail.com","telefono":"04128695407","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sucre","localidad_inmueble":"CUMANA"},
 {"fecha":"2026-08-16 16:31:37","nombre":"fernando","email":"sealeva7@hotmail.com","telefono":"04142037050","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Higuerote"},
-{"fecha":"2026-08-13 14:45:08","nombre":"henry orozco","email":"willkins.gomez@gmail.com","telefono":"+16156486625","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Carabobo","localidad_inmueble":"Valencia"},
-{"fecha":"2026-08-16 23:12:14","nombre":"Antonio","email":"Antoniocont@gmail.com","telefono":"+15879992110","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Sector Caña Alta"}
+{"fecha":"2026-08-16 23:12:14","nombre":"Antonio","email":"Antoniocont@gmail.com","telefono":"+15879992110","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Sector Caña Alta"},
+{"fecha":"2026-08-18 23:25:27","nombre":"Edgar","email":"edgarjlinares@gmail.com","telefono":"04121224478","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Naguanagua"},
+{"fecha":"2026-08-19 07:26:48","nombre":"Carmen","email":"karolinabandres647@gmail.com","telefono":"04129271857","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"San Diego"}
 ]
 }
 ]

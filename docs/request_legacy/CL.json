@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_chile"},
 {"type":"table","name":"c","database":"admin_bienes_chile","data":
 [
-{"fecha":"2026-08-13 20:41:04","nombre":"Catalina","email":"catalinatcorvalan@gmail.com","telefono":"","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Valparaiso","localidad_inmueble":"Valparaíso"}
+{"fecha":"2026-08-18 14:16:29","nombre":"Carlos calderon","email":"andrescalde504@gmail.com","telefono":"959887289","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Santiago","localidad_inmueble":"Santiago"},
+{"fecha":"2026-08-18 18:01:42","nombre":"Denisse","email":"my.littlecotton@gmail.com","telefono":"966427162","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cachapoal","localidad_inmueble":"Rancagua"}
 ]
 }
 ]

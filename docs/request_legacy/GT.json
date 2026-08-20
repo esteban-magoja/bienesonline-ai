@@ -3,8 +3,6 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-08-15 13:23:50","nombre":"Johannes Brehme","email":"jotanga@web.de","telefono":"017693123778","tipo_inmueble":"Apartamento","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Zona 1"},
-{"fecha":"2026-08-14 05:36:38","nombre":"Lilia Patzan","email":"liliagmj@hotmail.com","telefono":"35969601","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"},
 {"fecha":"2026-08-17 07:49:58","nombre":"Nancy De Leon Samayoa","email":"nancyrebe23@gmail.com","telefono":"42456761","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"San Lucas Sacatepéquez"}
 ]
 }

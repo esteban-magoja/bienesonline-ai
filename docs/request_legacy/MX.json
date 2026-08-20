@@ -3,9 +3,13 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-08-14 02:54:01","nombre":"Ana Cristina","email":"criztina_hc15@hotmail.com","telefono":"6672024008","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Nuevo Leon","localidad_inmueble":"García"},
-{"fecha":"2026-08-15 18:05:43","nombre":"Sofia","email":"sofia7664@gmail.com","telefono":"5647952053","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Tlalpan"},
-{"fecha":"2026-08-16 22:06:29","nombre":"Mónica Fernández","email":"monikfmejia@gmail.com","telefono":"7776570021","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Nuevo Leon","localidad_inmueble":"García"}
+{"fecha":"2026-08-16 22:06:29","nombre":"Mónica Fernández","email":"monikfmejia@gmail.com","telefono":"7776570021","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Nuevo Leon","localidad_inmueble":"García"},
+{"fecha":"2026-08-17 13:55:39","nombre":"Elizabeth Gutierrez Montes","email":"elizathgm@gmail.com","telefono":"2961098395","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"José Cardel"},
+{"fecha":"2026-08-17 19:21:14","nombre":"Itzel","email":"itzeltc_cat@hotmail.com","telefono":"2215699875","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Coatepec"},
+{"fecha":"2026-08-18 00:46:02","nombre":"Erin D angel","email":"erindangel@gmail.com","telefono":"5519795365","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Tlalnepantla"},
+{"fecha":"2026-08-19 02:03:50","nombre":"Daniela Zamudio","email":"lazamudio.rivera@gmail.com","telefono":"2291472266","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Veracruz"},
+{"fecha":"2026-08-19 18:01:12","nombre":"Viviana","email":"igh191202@gmail.com","telefono":"5619064737","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Mexico","localidad_inmueble":"Ecatepec de Morelos"},
+{"fecha":"2026-08-19 22:49:35","nombre":"fanny castillejos","email":"castillejosfanny4@gmail.com","telefono":"2293647053","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veracruz","localidad_inmueble":"Veracruz"}
 ]
 }
 ]
