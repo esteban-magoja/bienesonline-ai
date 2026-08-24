@@ -3,10 +3,7 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-08-16 16:31:37","nombre":"fernando","email":"sealeva7@hotmail.com","telefono":"04142037050","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Higuerote"},
-{"fecha":"2026-08-16 23:12:14","nombre":"Antonio","email":"Antoniocont@gmail.com","telefono":"+15879992110","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Mérida","localidad_inmueble":"Sector Caña Alta"},
-{"fecha":"2026-08-18 23:25:27","nombre":"Edgar","email":"edgarjlinares@gmail.com","telefono":"04121224478","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"Naguanagua"},
-{"fecha":"2026-08-19 07:26:48","nombre":"Carmen","email":"karolinabandres647@gmail.com","telefono":"04129271857","tipo_inmueble":"Anexo","tipo_operacion":"Alquiler","provincia_inmueble":"Carabobo","localidad_inmueble":"San Diego"}
+{"fecha":"2026-08-23 00:56:46","nombre":"Miguel ","email":"mrueda72@gmail.com","telefono":"+541140788669","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"}
 ]
 }
 ]

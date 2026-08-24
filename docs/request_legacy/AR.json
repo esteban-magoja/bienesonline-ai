@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-08-02 19:56:35","nombre":"Eugenio ","email":"balcarce278@gmail.com","telefono":"1131750645","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Las Flores"},
-{"fecha":"2026-08-01 12:08:33","nombre":"Maria Laura Juarez","email":"marilajuarez2876@gmail.com","telefono":"3541289567","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Córdoba","localidad_inmueble":"Villa Carlos Paz"}
+{"fecha":"2026-08-21 20:12:44","nombre":"Nancy","email":"nancybeatrizgomez666@gmail.com","telefono":"3359605800","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Campana"}
 ]
 }
 ]

@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-08-17 19:04:37","nombre":"Jimena arias","email":"jimenaarias1219@gmail.com","telefono":"64393347","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Alajuelita"}
+{"fecha":"2026-08-20 20:37:06","nombre":"Jordan Rocha","email":"joyrocha25@gmail.com","telefono":"86537359","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"}
 ]
 }
 ]
