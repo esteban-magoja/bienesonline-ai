@@ -3,13 +3,9 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-08-16 21:04:15","nombre":"Noelia Romero","email":"noeolcina@gmail.com","telefono":"66223281","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ancón"},
-{"fecha":"2026-08-16 21:47:35","nombre":"Leylie ","email":"worshipdessings@gmail.com","telefono":"63345519","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Bella Vista"},
-{"fecha":"2026-08-18 11:07:27","nombre":"Maricarmen ","email":"maridesamudio@gmail.com","telefono":"62034983","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
-{"fecha":"2026-08-19 13:39:52","nombre":"Alejandra Ojo","email":"manuelalejandro.ojf@gmail.com","telefono":"6604-2275","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Las Mañanitas"},
-{"fecha":"2026-08-19 19:16:01","nombre":"Indira Ríos","email":"indirarico08@gmail.com","telefono":"6387-7314","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
-{"fecha":"2026-08-19 20:35:32","nombre":"Katherine Quintero","email":"katherine.michell.qg@gmail.com","telefono":" 6234-0376","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
-{"fecha":"2026-08-18 13:42:37","nombre":"Harry Duncan","email":"harryduncan2101@gmail.com","telefono":"6201-9703","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Las Cumbres"}
+{"fecha":"2026-08-27 16:18:40","nombre":"World investment realty","email":"administracion@wirpanama.com","telefono":"68366854","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
+{"fecha":"2026-08-27 18:49:07","nombre":"Alexa","email":"alexamariebuckets@gmail.com","telefono":"69929410","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
+{"fecha":"2026-08-28 17:43:02","nombre":"Jorge Luis","email":"jorgekontrol@gmail.com","telefono":"62346089","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"}
 ]
 }
 ]

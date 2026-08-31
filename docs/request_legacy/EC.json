@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-08-17 12:09:31","nombre":"esteban","email":"esteban8gonzalez@gmail.com","telefono":"0984112980","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
-{"fecha":"2026-08-19 02:01:00","nombre":"Yordy Armijod","email":"yordyarmijos2018@gmail.com","telefono":"0986775984","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Loja","localidad_inmueble":"Loja"}
+{"fecha":"2026-08-28 17:54:08","nombre":"camilo","email":"camo2028@gmail.com","telefono":"099929559","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Imbabura","localidad_inmueble":"Pimampiro"}
 ]
 }
 ]

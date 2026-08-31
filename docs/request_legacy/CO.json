@@ -3,10 +3,12 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-08-20 11:21:28","nombre":"Alba Lucía alzate","email":"albaalzate1973@gmail.com","telefono":"3116714403","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Candelaria"},
-{"fecha":"2026-08-20 15:27:58","nombre":"Liseth ","email":"josuhateamo06@gmail.com","telefono":"3225262155","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Santander","localidad_inmueble":"Piedecuesta"},
-{"fecha":"2026-08-20 16:11:44","nombre":"Salomé Patiño","email":"salpacampestre@gmail.com","telefono":"3209847647","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Quindío","localidad_inmueble":"Armenia"},
-{"fecha":"2026-08-22 14:45:13","nombre":"DIANA TERESA GUTIÉRREZ","email":"dianatere85@gmail.com","telefono":"3169072252","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Sucre","localidad_inmueble":"Tolú"}
+{"fecha":"2026-08-24 18:08:33","nombre":"MARIBEL QUIÑONES BETRAN","email":"maribelq70@hotmail.com","telefono":"3003057572","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Bogotá Dc"},
+{"fecha":"2026-08-25 18:09:38","nombre":"Camila ","email":"cadavid11@hotmail.com","telefono":"3244458133","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Envigado"},
+{"fecha":"2026-08-27 13:15:23","nombre":"Johana Rodríguez ","email":"joisjohana@hotmail.com","telefono":"+57 314 4361189","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
+{"fecha":"2026-08-27 19:37:40","nombre":"JOSE JOAQUIN SANCHEZ GARCIA","email":"joaquinsangar10@gmail.com","telefono":"3146187561","tipo_inmueble":"Local","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
+{"fecha":"2026-08-29 09:33:39","nombre":"Mariana","email":"marimontesmunoz22@gmail.com","telefono":"3011844414","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-08-29 17:20:20","nombre":"Nohora","email":"npineda2710@gmail.com","telefono":"3156796515","tipo_inmueble":"Local","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"}
 ]
 }
 ]

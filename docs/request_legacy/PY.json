@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_paraguay"},
 {"type":"table","name":"c","database":"admin_bienes_paraguay","data":
 [
-{"fecha":"2026-08-18 09:22:39","nombre":"Antonella ","email":"antobottinoa@gmail.com","telefono":"0994314166","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Sajonia"}
+{"fecha":"2026-08-30 22:05:15","nombre":"Judith","email":"judithbianconiua@gmail.com","telefono":"0981752099","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Jara"}
 ]
 }
 ]
