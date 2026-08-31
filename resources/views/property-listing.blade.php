@@ -53,10 +53,10 @@
                 <div class="max-w-7xl mx-auto">
                     <div class="mb-8">
                         <h2 class="text-2xl font-bold text-gray-900">
-                            {{ __('properties.country_hub.title', ['country' => $filters['country']]) }}
+                            {{ $countryHubContent['title'] }}
                         </h2>
                         <p class="mt-2 text-gray-500">
-                            {{ __('properties.country_hub.description', ['country' => $filters['country']]) }}
+                            {{ $countryHubContent['description'] }}
                         </p>
                     </div>
 
@@ -258,13 +258,20 @@
                     {{-- Properties Grid --}}
                     <div class="grid md:grid-cols-2 gap-6">
                         @foreach($properties as $property)
+                            @php
+                                $propertyTitle = $locale === 'es'
+                                    ? $property->title
+                                    : ($property->getTranslation('title', $locale) ?: $property->title);
+                                $propertyUrl = app(\App\Services\SeoService::class)->generatePropertyUrl($property, $locale);
+                            @endphp
                             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                                 {{-- Image --}}
                                 <div class="relative h-48 bg-gray-200">
                                     @php $displayImage = $property->primaryImage ?? $property->firstImage; @endphp
+                                    <a href="{{ $propertyUrl }}" aria-label="{{ $propertyTitle }}" class="block h-full">
                                     @if($displayImage)
-                                        <img src="{{ Storage::url($displayImage->image_path) }}" 
-                                             alt="{{ $property->title }}" 
+                                            <img src="{{ Storage::url($displayImage->image_path) }}"
+                                                 alt="{{ $propertyTitle }}"
                                              loading="lazy"
                                              class="w-full h-full object-cover">
                                     @else
@@ -274,6 +281,7 @@
                                             </svg>
                                         </div>
                                     @endif
+                                    </a>
                                     
                                     {{-- Featured Badge --}}
                                     @if($property->is_featured)
@@ -285,13 +293,21 @@
 
                                 {{-- Content --}}
                                 <div class="p-4">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-1">
-                                        {{ $property->title }}
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+                                        <a href="{{ $propertyUrl }}" title="{{ $propertyTitle }}" class="hover:text-blue-700">
+                                            {{ \Illuminate\Support\Str::limit($propertyTitle, 100) }}
+                                        </a>
                                     </h3>
                                     
                                     <p class="text-2xl font-bold text-blue-600 mb-3">
                                         {{ $property->currency }} {{ number_format($property->price, 0, ',', '.') }}
                                     </p>
+
+                                    <div class="mb-3 text-sm text-gray-600">
+                                        {{ \App\Models\PropertyType::getLabel($property->property_type, $locale) }}
+                                        -
+                                        {{ \App\Models\TransactionType::getLabel($property->transaction_type, $locale) }}
+                                    </div>
 
                                     <p class="text-sm text-gray-600 mb-3 flex items-center">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -328,16 +344,6 @@
                                         @endif
                                     </div>
 
-                                    @php
-                                        $countrySlug = Str::slug($property->country);
-                                        $citySlug = Str::slug($property->city);
-                                        $titleSlug = Str::slug($property->title);
-                                    @endphp
-                                    
-                                    <a href="/{{ $locale }}/{{ $countrySlug }}/{{ $citySlug }}/propiedad/{{ $property->id }}-{{ $titleSlug }}" 
-                                       class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-medium py-2 rounded-md transition duration-200">
-                                        {{ __('properties.view_details') }}
-                                    </a>
                                 </div>
                             </div>
                         @endforeach

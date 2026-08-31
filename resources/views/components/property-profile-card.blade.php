@@ -3,13 +3,16 @@
 @php
     $displayImage = $property->primaryImage ?? $property->firstImage;
     $propertyUrl = app(\App\Services\SeoService::class)->generatePropertyUrl($property, app()->getLocale());
+    $propertyTitle = app()->getLocale() === 'es'
+        ? $property->title
+        : ($property->getTranslation('title', app()->getLocale()) ?: $property->title);
     $propertyLocation = collect([$property->city, $property->state, $property->country])->filter()->join(', ');
 @endphp
 
 <a href="{{ $propertyUrl }}" class="group block overflow-hidden rounded-xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
     <div class="relative h-44 bg-gray-200">
         @if($displayImage)
-            <img src="{{ Storage::url($displayImage->image_path) }}" alt="{{ $property->title }}" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
+            <img src="{{ Storage::url($displayImage->image_path) }}" alt="{{ $propertyTitle }}" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
         @else
             <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                 <svg class="h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -24,7 +27,7 @@
     </div>
 
     <div class="p-4">
-        <h3 class="line-clamp-2 font-bold text-gray-900 group-hover:text-blue-700">{{ $property->title }}</h3>
+        <h3 class="line-clamp-2 font-bold text-gray-900 group-hover:text-blue-700" title="{{ $propertyTitle }}">{{ \Illuminate\Support\Str::limit($propertyTitle, 100) }}</h3>
 
         <div class="mt-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
             <p class="font-semibold text-blue-600">{{ $property->currency }} {{ number_format($property->price, 0, ',', '.') }}</p>

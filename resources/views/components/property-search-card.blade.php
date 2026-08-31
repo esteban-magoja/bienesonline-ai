@@ -2,13 +2,16 @@
     $displayImage = $property->primaryImage ?? $property->firstImage;
     $imageUrl = $displayImage?->image_url ?: ($displayImage?->image_path ? Storage::url($displayImage->image_path) : null);
     $propertyUrl = app(\App\Services\SeoService::class)->generatePropertyUrl($property, $locale);
-    $propertyTitle = $property->getTranslation('title', $locale) ?: $property->title;
+    $fullPropertyTitle = $locale === 'es'
+        ? $property->title
+        : ($property->getTranslation('title', $locale) ?: $property->title);
+    $propertyTitle = \Illuminate\Support\Str::limit($fullPropertyTitle, 100);
 @endphp
 
 <article class="flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
-    <a href="{{ $propertyUrl }}" aria-label="{{ $propertyTitle }}">
+    <a href="{{ $propertyUrl }}" aria-label="{{ $fullPropertyTitle }}">
         @if($imageUrl)
-            <img src="{{ $imageUrl }}" alt="{{ $propertyTitle }}" loading="lazy" class="h-48 w-full object-cover">
+            <img src="{{ $imageUrl }}" alt="{{ $fullPropertyTitle }}" loading="lazy" class="h-48 w-full object-cover">
         @else
             <div class="flex h-48 items-center justify-center bg-zinc-100 text-sm text-zinc-500">
                 {{ __('messages.no_image') }}
@@ -19,7 +22,7 @@
     <div class="flex flex-1 flex-col gap-3 p-5">
         <div>
             <h2 class="line-clamp-2 text-lg font-semibold text-zinc-900">
-                <a href="{{ $propertyUrl }}" class="hover:text-indigo-600">{{ $propertyTitle }}</a>
+                <a href="{{ $propertyUrl }}" title="{{ $fullPropertyTitle }}" class="hover:text-indigo-600">{{ $propertyTitle }}</a>
             </h2>
             <p class="mt-1 text-sm text-zinc-500">{{ $property->city }}, {{ $property->state }}</p>
         </div>
@@ -40,10 +43,14 @@
             @endif
         </div>
 
-        <div class="mt-auto flex items-center justify-between gap-3 pt-2">
-            <span class="text-xs font-medium uppercase tracking-wide text-zinc-500">
-                {{ \App\Models\PropertyType::getLabel($property->property_type, $locale) }}
-            </span>
+        <div class="mt-auto flex flex-wrap items-center justify-between gap-3 pt-2">
+            <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs font-medium uppercase tracking-wide text-zinc-500">
+                <span>
+                    {{ \App\Models\PropertyType::getLabel($property->property_type, $locale) }}
+                    -
+                    {{ \App\Models\TransactionType::getLabel($property->transaction_type, $locale) }}
+                </span>
+            </div>
             @if(isset($property->similarity))
                 <span class="text-xs font-semibold text-emerald-600">
                     {{ number_format($property->similarity, 0) }}% {{ __('properties.similarity') }}

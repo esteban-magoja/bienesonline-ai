@@ -239,7 +239,7 @@
                             
                             <!-- Title -->
                             <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-                                {{ $listing->getTranslation('title', app()->getLocale()) }}
+                                 {{ app()->getLocale() === 'es' ? $listing->title : ($listing->getTranslation('title', app()->getLocale()) ?: $listing->title) }}
                             </h3>
                             
                             <!-- Location -->

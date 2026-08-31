@@ -9,6 +9,7 @@ use App\Helpers\PropertySlugHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 use Nnjeim\World\Models\State;
 use Nnjeim\World\Models\City;
 
@@ -107,6 +108,15 @@ class PropertyListingController extends Controller
             $city
         );
 
+        $countryHubContent = $this->getListingHubContent(
+            $countryName,
+            $locale,
+            $transactionType,
+            $propertyType,
+            $state,
+            $city
+        );
+
         // Array de filtros para la vista (compatibilidad)
         $filters = [
             'country'          => $countryName,
@@ -123,8 +133,107 @@ class PropertyListingController extends Controller
             'seo',
             'filterOptions',
             'countryHubSections',
+            'countryHubContent',
             'locale'
         ));
+    }
+
+    /**
+     * Genera el contenido introductorio correspondiente al nivel actual del listado.
+     *
+     * La página de país funciona como hub general; las páginas filtradas describen
+     * la combinación de operación, tipo y ubicación que el usuario está viendo.
+     */
+    private function getListingHubContent(
+        string $countryName,
+        string $locale,
+        ?TransactionType $transactionType,
+        ?PropertyType $propertyType,
+        ?State $state,
+        ?City $city
+    ): array {
+        if (!$transactionType && !$propertyType && !$state && !$city) {
+            return [
+                'title' => __('properties.country_hub.title', ['country' => $countryName], $locale),
+                'description' => __('properties.country_hub.description', ['country' => $countryName], $locale),
+            ];
+        }
+
+        $propertyLabel = $propertyType
+            ? $this->getPropertyTypePluralLabel($propertyType, $locale)
+            : __('properties.country_hub.properties', [], $locale);
+        $transactionLabel = $transactionType
+            ? Str::lower(TransactionType::getLabel($transactionType->value, $locale))
+            : null;
+        $location = $this->getListingLocationLabel($countryName, $state, $city);
+
+        if ($propertyType && $transactionType) {
+            return [
+                'title' => __('properties.country_hub.context.type_and_transaction_title', [
+                    'property_type' => $propertyLabel,
+                    'transaction_type' => $transactionLabel,
+                    'location' => $location,
+                ], $locale),
+                'description' => __('properties.country_hub.context.type_and_transaction_description', [
+                    'property_type' => Str::lower($propertyLabel),
+                    'transaction_type' => $transactionLabel,
+                    'location' => $location,
+                ], $locale),
+            ];
+        }
+
+        if ($propertyType) {
+            return [
+                'title' => __('properties.country_hub.context.type_title', [
+                    'property_type' => $propertyLabel,
+                    'location' => $location,
+                ], $locale),
+                'description' => __('properties.country_hub.context.type_description', [
+                    'property_type' => Str::lower($propertyLabel),
+                    'location' => $location,
+                ], $locale),
+            ];
+        }
+
+        if ($transactionType) {
+            return [
+                'title' => __('properties.country_hub.context.transaction_title', [
+                    'properties' => $propertyLabel,
+                    'transaction_type' => $transactionLabel,
+                    'location' => $location,
+                ], $locale),
+                'description' => __('properties.country_hub.context.transaction_description', [
+                    'transaction_type' => $transactionLabel,
+                    'location' => $location,
+                ], $locale),
+            ];
+        }
+
+        return [
+            'title' => __('properties.country_hub.context.location_title', [
+                'properties' => $propertyLabel,
+                'location' => $location,
+            ], $locale),
+            'description' => __('properties.country_hub.context.location_description', [
+                'location' => $location,
+            ], $locale),
+        ];
+    }
+
+    private function getPropertyTypePluralLabel(PropertyType $propertyType, string $locale): string
+    {
+        if ($locale !== 'en') {
+            return $propertyType->label_plural ?: $propertyType->label;
+        }
+
+        return Str::plural(PropertyType::getLabel($propertyType->value, $locale));
+    }
+
+    private function getListingLocationLabel(string $countryName, ?State $state, ?City $city): string
+    {
+        return collect([$city?->name, $state?->name, $countryName])
+            ->filter()
+            ->join(', ');
     }
 
     /**

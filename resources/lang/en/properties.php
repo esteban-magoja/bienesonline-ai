@@ -232,6 +232,17 @@ return [
     'country_hub' => [
         'title' => 'Explore :country',
         'description' => 'Use this page as the entry point to the most relevant listing paths in :country.',
+        'properties' => 'Properties',
+        'context' => [
+            'type_and_transaction_title' => 'Explore :property_type for :transaction_type in :location',
+            'type_title' => 'Explore :property_type in :location',
+            'transaction_title' => 'Explore :properties for :transaction_type in :location',
+            'location_title' => 'Explore :properties in :location',
+            'type_and_transaction_description' => 'Explore :property_type for :transaction_type available in :location.',
+            'type_description' => 'Explore :property_type available in :location.',
+            'transaction_description' => 'Explore properties for :transaction_type available in :location.',
+            'location_description' => 'Explore the properties available in :location.',
+        ],
         'transaction_types' => 'By transaction type',
         'property_types' => 'By property type',
         'provinces' => 'By location',

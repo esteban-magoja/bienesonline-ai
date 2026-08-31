@@ -232,6 +232,17 @@ return [
     'country_hub' => [
         'title' => 'Explorar :country',
         'description' => 'Usá esta página como punto de entrada a los listados más relevantes de :country.',
+        'properties' => 'Propiedades',
+        'context' => [
+            'type_and_transaction_title' => 'Explorar :property_type en :transaction_type en :location',
+            'type_title' => 'Explorar :property_type en :location',
+            'transaction_title' => 'Explorar :properties en :transaction_type en :location',
+            'location_title' => 'Explorar :properties en :location',
+            'type_and_transaction_description' => 'Explorá anuncios de :property_type en :transaction_type disponibles en :location.',
+            'type_description' => 'Explorá anuncios de :property_type disponibles en :location.',
+            'transaction_description' => 'Explorá propiedades en :transaction_type disponibles en :location.',
+            'location_description' => 'Explorá las propiedades disponibles en :location.',
+        ],
         'transaction_types' => 'Por tipo de operación',
         'property_types' => 'Por tipo de inmueble',
         'provinces' => 'Por ubicación',
