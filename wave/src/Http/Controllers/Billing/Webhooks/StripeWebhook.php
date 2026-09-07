@@ -2,139 +2,283 @@
 
 namespace Wave\Http\Controllers\Billing\Webhooks;
 
+use App\Http\Controllers\Controller;
+use App\Models\BillingWebhookEvent;
+use App\Models\User;
+use App\Services\Billing\SubscriptionLifecycleService;
+use Carbon\Carbon;
+use Illuminate\Database\DatabaseManager;
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
+use Stripe\Subscription as StripeSubscription;
 use Stripe\Webhook;
 use UnexpectedValueException;
-use Stripe\Exception\SignatureVerificationException;
-use Carbon\Carbon;
-use Stripe\Stripe;
-use App\Models\User;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Stripe\Checkout\Session;
 use Wave\Plan;
 use Wave\Subscription;
+use Stripe\Exception\SignatureVerificationException;
+use Throwable;
 
 class StripeWebhook extends Controller
 {
-    public function handler(Request $request)
+    public function __construct(
+        private readonly SubscriptionLifecycleService $lifecycleService,
+        private readonly DatabaseManager $database,
+    ) {
+    }
+
+    public function handler(Request $request): JsonResponse
     {
         $payload = $request->getContent();
-
-        $sig_header = $request->server('HTTP_STRIPE_SIGNATURE');
-        $event = null;
 
         try {
             $event = Webhook::constructEvent(
                 $payload,
-                $sig_header,
-                config('wave.stripe.webhook_secret')
+                $request->header('Stripe-Signature'),
+                config('wave.stripe.webhook_secret'),
             );
-        } catch (UnexpectedValueException $e) {
-            // Invalid payload
-            http_response_code(400);
-            exit();
-        } catch (SignatureVerificationException $e) {
-            // Invalid signature
-            http_response_code(400);
-            exit();
+        } catch (UnexpectedValueException|SignatureVerificationException $exception) {
+            Log::warning('Rejected Stripe webhook.', [
+                'error' => $exception->getMessage(),
+            ]);
+
+            return response()->json(['message' => 'Invalid webhook.'], 400);
         }
 
-        if ($event->type == 'checkout.session.completed'
-            || $event->type == 'checkout.session.async_payment_succeeded') {
-            $this->fulfill_checkout($event->data->object->id, $event);
+        $eventPayload = json_decode($payload, true);
+        $eventId = (string) ($eventPayload['id'] ?? $event->id ?? '');
+
+        if (! is_array($eventPayload) || blank($eventId)) {
+            return response()->json(['message' => 'Invalid webhook payload.'], 400);
         }
 
-        // This event occurs when someone updates information in their customer portal.
-        // This could be cancelling a subscription or it could be changing their plan.
-        if ($event->type == 'customer.subscription.updated') {
-            $stripeSubscription = $event->data->object;
+        $webhookEvent = $this->recordEvent($eventId, $event->type, $eventPayload);
 
-            $subscription = Subscription::where('vendor_subscription_id', $stripeSubscription->id)->first();
-            if (isset($subscription)) {
-                // Interval should be 'year' or 'month'
-                $subscriptionCycle = $stripeSubscription->plan->interval;
-                $plan_price_column = ($subscriptionCycle == 'year') ? 'yearly_price_id' : 'monthly_price_id';
-                $updatedPlan = Plan::where($plan_price_column, $stripeSubscription->plan->id)->first();
-
-                // TODO: Test that this works
-                $subscription->user->switchPlans($updatedPlan);
-
-                $subscription->cycle = $subscriptionCycle;
-                $subscription->plan_id = $updatedPlan->id;
-
-                // this would be true if the user decides to cancel their subscription
-                if (is_null($stripeSubscription->cancel_at)) {
-                    $subscription->ends_at = null;
-                } else {
-                    $subscription->ends_at = Carbon::createFromTimestamp($stripeSubscription->cancel_at)->toDateTimeString();
-                }
-
-                $subscription->save();
-            }
+        if (! $this->claimEvent($webhookEvent)) {
+            return response()->json(['message' => 'Webhook already being processed.']);
         }
 
-        // Status docs here: https://docs.stripe.com/api/events/types#event_types-customer.subscription.deleted
-        if ($event->type == 'customer.subscription.deleted') {
-            $stripeSubscription = $event->data->object;
+        try {
+            $this->processEvent($event);
+            $webhookEvent->update([
+                'status' => 'processed',
+                'processed_at' => now(),
+                'error_message' => null,
+            ]);
+        } catch (Throwable $exception) {
+            $webhookEvent->update([
+                'status' => 'failed',
+                'error_message' => $exception->getMessage(),
+            ]);
 
-            $subscription = Subscription::where('vendor_subscription_id', $stripeSubscription->id)->first();
-            if (isset($subscription)) {
-                $subscription->cancel();
-            }
+            report($exception);
+
+            return response()->json(['message' => 'Webhook processing failed.'], 500);
         }
 
-        http_response_code(200);
+        return response()->json(['message' => 'Webhook received.']);
     }
 
-    public function fulfill_checkout($session_id, $event): void
+    private function processEvent(object $event): void
     {
-        $stripe = Stripe::setApiKey(config('wave.stripe.secret_key'));
+        $object = $event->data->object;
 
-        // Make this function safe to run multiple times,
-        // even concurrently, with the same session ID
-        $cacheKey = 'stripe_checkout_session_'.$session_id;
-        if (Cache::has($cacheKey)) {
-            return; // Session ID already processed, exit early
+        match ($event->type) {
+            'checkout.session.completed',
+            'checkout.session.async_payment_succeeded' => $this->fulfillCheckout($object->id),
+            'customer.subscription.created',
+            'customer.subscription.updated' => $this->syncStripeSubscription($object),
+            'customer.subscription.deleted' => $this->cancelStripeSubscription($object->id),
+            default => null,
+        };
+    }
+
+    private function fulfillCheckout(string $sessionId): void
+    {
+        Stripe::setApiKey(config('wave.stripe.secret_key'));
+
+        $checkoutSession = Session::retrieve($sessionId);
+
+        if (data_get($checkoutSession, 'payment_status') === 'unpaid'
+            || data_get($checkoutSession, 'status') !== 'complete') {
+            return;
         }
 
-        Cache::put($cacheKey, true, now()->addHours(24)); // Store session ID in cache for 24 hours
+        $subscriptionId = (string) data_get($checkoutSession, 'subscription', '');
+        $billableId = (int) data_get($checkoutSession, 'metadata.billable_id', 0);
+        $planId = (int) data_get($checkoutSession, 'metadata.plan_id', 0);
+        $cycle = (string) data_get($checkoutSession, 'metadata.billing_cycle', '');
 
-        // Retrieve the Checkout Session from the API with line_items expanded
-        $checkout_session = Session::retrieve($session_id);
+        if (blank($subscriptionId)
+            || $billableId < 1
+            || $planId < 1
+            || ! in_array($cycle, ['month', 'year'], true)) {
+            throw new UnexpectedValueException('Stripe checkout metadata is incomplete.');
+        }
 
-        // Check the Checkout Session's payment_status property
-        // to determine if fulfillment should be peformed
-        if ($checkout_session->payment_status != 'unpaid') {
+        $user = User::query()->findOrFail($billableId);
+        $plan = Plan::query()->findOrFail($planId);
 
-            $existingSubscription = Subscription::where('vendor_subscription_id', $checkout_session->subscription)->first();
-            if ($existingSubscription) {
-                // This is a failsafe to make sure this method doesn't get called multiple times, if existing subscription, return
-                return;
+        $stripeSubscription = StripeSubscription::retrieve($subscriptionId);
+        $stripeStatus = (string) ($stripeSubscription->status ?? '');
+
+        if (! in_array($stripeStatus, ['active', 'trialing'], true)) {
+            return;
+        }
+
+        $stripePriceId = data_get($stripeSubscription, 'items.data.0.price.id')
+            ?? data_get($checkoutSession, 'line_items.data.0.price.id');
+        $configuredPriceId = $plan->externalPriceId('stripe', $cycle);
+
+        if (filled($configuredPriceId) && $stripePriceId !== $configuredPriceId) {
+            throw new UnexpectedValueException('Stripe checkout price does not match the selected plan.');
+        }
+
+        $this->lifecycleService->createOrActivate([
+            'billable_type' => 'user',
+            'billable_id' => $user->getKey(),
+            'plan_id' => $plan->getKey(),
+            'vendor_slug' => 'stripe',
+            'vendor_customer_id' => data_get($checkoutSession, 'customer'),
+            'vendor_subscription_id' => $subscriptionId,
+            'vendor_product_id' => $stripePriceId,
+            'cycle' => $cycle,
+            'status' => Subscription::STATUS_ACTIVE,
+            'seats' => 1,
+        ]);
+    }
+
+    private function syncStripeSubscription(object $stripeSubscription): void
+    {
+        $subscription = Subscription::query()
+            ->where('vendor_slug', 'stripe')
+            ->where('vendor_subscription_id', $stripeSubscription->id)
+            ->first();
+
+        if (! $subscription) {
+            return;
+        }
+
+        $cycle = data_get($stripeSubscription, 'items.data.0.price.recurring.interval')
+            ?? data_get($stripeSubscription, 'plan.interval')
+            ?? $subscription->cycle;
+        $priceId = data_get($stripeSubscription, 'items.data.0.price.id')
+            ?? data_get($stripeSubscription, 'plan.id');
+        $plan = $this->planForStripePrice($priceId, $cycle) ?? $subscription->plan;
+        $cancelAt = data_get($stripeSubscription, 'cancel_at');
+        $attributes = [
+            'cycle' => in_array($cycle, ['month', 'year'], true) ? $cycle : $subscription->cycle,
+            'vendor_product_id' => $priceId ?: $subscription->vendor_product_id,
+            'ends_at' => $cancelAt ? Carbon::createFromTimestamp((int) $cancelAt) : null,
+        ];
+
+        if ($plan) {
+            $attributes['plan_id'] = $plan->getKey();
+        }
+
+        $subscription = $this->lifecycleService->synchronize($subscription, $attributes);
+        $status = (string) data_get($stripeSubscription, 'status', '');
+
+        if (in_array($status, ['canceled', 'unpaid', 'incomplete_expired'], true)) {
+            $this->lifecycleService->cancel($subscription);
+
+            return;
+        }
+
+        if ($status === 'paused') {
+            $this->lifecycleService->suspend($subscription);
+
+            return;
+        }
+
+        if (in_array($status, ['active', 'trialing'], true)) {
+            $this->lifecycleService->synchronize($subscription, [
+                'status' => Subscription::STATUS_ACTIVE,
+            ]);
+
+            return;
+        }
+
+        $this->lifecycleService->synchronize($subscription, ['status' => $status ?: Subscription::STATUS_PAST_DUE]);
+    }
+
+    private function cancelStripeSubscription(string $subscriptionId): void
+    {
+        $subscription = Subscription::query()
+            ->where('vendor_slug', 'stripe')
+            ->where('vendor_subscription_id', $subscriptionId)
+            ->first();
+
+        if ($subscription) {
+            $this->lifecycleService->cancel($subscription);
+        }
+    }
+
+    private function planForStripePrice(?string $priceId, string $cycle): ?Plan
+    {
+        if (blank($priceId)) {
+            return null;
+        }
+
+        return Plan::query()
+            ->whereHas('billingPrices', function ($query) use ($priceId, $cycle): void {
+                $query->where('provider', 'stripe')
+                    ->where('cycle', $cycle)
+                    ->where('external_id', $priceId)
+                    ->where('active', true);
+            })
+            ->orWhere(function ($query) use ($priceId, $cycle): void {
+                $query->where($cycle === 'year' ? 'yearly_price_id' : 'monthly_price_id', $priceId);
+            })
+            ->first();
+    }
+
+    private function recordEvent(string $eventId, string $eventType, array $payload): BillingWebhookEvent
+    {
+        try {
+            return BillingWebhookEvent::firstOrCreate(
+                [
+                    'provider' => 'stripe',
+                    'external_event_id' => $eventId,
+                ],
+                [
+                    'event_type' => $eventType,
+                    'resource_type' => 'stripe.event',
+                    'payload' => $payload,
+                    'status' => 'pending',
+                ],
+            );
+        } catch (UniqueConstraintViolationException) {
+            return BillingWebhookEvent::query()
+                ->where('provider', 'stripe')
+                ->where('external_event_id', $eventId)
+                ->firstOrFail();
+        }
+    }
+
+    private function claimEvent(BillingWebhookEvent $webhookEvent): bool
+    {
+        return $this->database->transaction(function () use ($webhookEvent): bool {
+            $event = BillingWebhookEvent::query()->lockForUpdate()->findOrFail($webhookEvent->getKey());
+
+            if ($event->status === 'processed') {
+                return false;
             }
 
-            $billable_id = $checkout_session->metadata->billable_id;
-            $billable_type = $checkout_session->metadata->billable_type;
-            $plan_id = $checkout_session->metadata->plan_id;
-            $billing_cycle = $checkout_session->metadata->billing_cycle;
+            if ($event->status === 'processing'
+                && $event->updated_at?->isAfter(now()->subMinutes(10))) {
+                return false;
+            }
 
-            $user = User::find($billable_id);
-
-            $plan = Plan::find($plan_id);
-            $user->syncRoles([]);
-            $user->assignRole($plan->role->name);
-
-            Subscription::create([
-                'billable_type' => $billable_type,
-                'billable_id' => $billable_id,
-                'plan_id' => $plan_id,
-                'vendor_slug' => 'stripe',
-                'vendor_customer_id' => $checkout_session->customer,
-                'vendor_subscription_id' => $checkout_session->subscription,
-                'cycle' => $billing_cycle,
-                'status' => 'active',
-                'seats' => 1,
+            $event->update([
+                'status' => 'processing',
+                'error_message' => null,
             ]);
-        }
+
+            return true;
+        }, attempts: 3);
     }
 }

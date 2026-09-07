@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Services\Billing\PayPalClient;
 use Lab404\Impersonate\Models\Impersonate;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -81,20 +82,20 @@ class User extends AuthUser implements FilamentUser, HasAvatar, JWTSubject
         return $this->hasMany(Subscription::class, 'billable_id')->where('billable_type', 'user');
     }
 
-    public function subscriber()
+    public function subscriber(): bool
     {
-        // Use cache if available, otherwise direct query
-        if (app()->bound('cache')) {
-            try {
-                return Cache::remember("user_subscriber_{$this->id}", 300, function () {
-                    return $this->subscriptions()->where('status', 'active')->exists();
-                });
-            } catch (Exception $e) {
-                // Fallback to direct query if cache fails
-            }
-        }
+        return $this->hasRole('premium')
+            || $this->subscriptions()->where('status', Subscription::STATUS_ACTIVE)->exists();
+    }
 
-        return $this->subscriptions()->where('status', 'active')->exists();
+    public function hasActiveSubscription(): bool
+    {
+        return $this->subscriptions()->where('status', Subscription::STATUS_ACTIVE)->exists();
+    }
+
+    public function hasPremiumAccess(): bool
+    {
+        return $this->isAdmin() || $this->subscriber();
     }
 
     public function subscribedToPlan($planSlug)
@@ -108,7 +109,7 @@ class User extends AuthUser implements FilamentUser, HasAvatar, JWTSubject
                         return false;
                     }
 
-                    return $this->subscriptions()->where('plan_id', $plan->id)->where('status', 'active')->exists();
+                    return $this->subscriptions()->where('plan_id', $plan->id)->where('status', Subscription::STATUS_ACTIVE)->exists();
                 });
             } catch (Exception $e) {
                 // Fallback to direct query if cache fails
@@ -120,79 +121,118 @@ class User extends AuthUser implements FilamentUser, HasAvatar, JWTSubject
             return false;
         }
 
-        return $this->subscriptions()->where('plan_id', $plan->id)->where('status', 'active')->exists();
+        return $this->subscriptions()->where('plan_id', $plan->id)->where('status', Subscription::STATUS_ACTIVE)->exists();
     }
 
-    public function plan()
+    public function plan(): ?Plan
     {
         $latest_subscription = $this->latestSubscription();
 
-        return Plan::find($latest_subscription->plan_id);
+        return $latest_subscription?->plan;
     }
 
-    public function planInterval()
+    public function planInterval(): ?string
     {
         $latest_subscription = $this->latestSubscription();
+
+        if (! $latest_subscription) {
+            return null;
+        }
 
         return ($latest_subscription->cycle == 'month') ? 'Monthly' : 'Yearly';
     }
 
     public function latestSubscription()
     {
-        return $this->subscriptions()->where('status', 'active')->orderByDesc('created_at')->first();
+        return $this->subscriptions()->where('status', Subscription::STATUS_ACTIVE)->orderByDesc('created_at')->first();
     }
 
     public function subscription(): HasOne
     {
-        return $this->hasOne(Subscription::class, 'billable_id')->where('status', 'active')->orderByDesc('created_at');
+        return $this->hasOne(Subscription::class, 'billable_id')
+            ->where('billable_type', 'user')
+            ->where('status', Subscription::STATUS_ACTIVE)
+            ->orderByDesc('created_at');
     }
 
-    public function switchPlans(Plan $plan)
+    public function grantPremiumRole(): void
     {
-        $this->syncRoles([]);
+        $this->assignRole('premium');
+        $this->clearUserCache();
+    }
+
+    public function revokePremiumRole(): void
+    {
+        $this->removeRole('premium');
+        $this->clearUserCache();
+    }
+
+    public function switchPlans(Plan $plan): void
+    {
         $this->assignRole($plan->role->name);
+        $this->clearUserCache();
     }
 
     public function invoices()
     {
         $user_invoices = [];
 
-        if (is_null($this->subscription)) {
+        if (! $this->subscriptions()->exists()) {
             return null;
         }
 
-        if (config('wave.billing_provider') == 'stripe') {
-            $stripe = new StripeClient(config('wave.stripe.secret_key'));
-            $subscriptions = $this->subscriptions()->get();
-            foreach ($subscriptions as $subscription) {
-                $invoices = $stripe->invoices->all(['customer' => $subscription->vendor_customer_id, 'limit' => 100]);
+        $paypal = app(PayPalClient::class);
+
+        foreach ($this->subscriptions()->get() as $subscription) {
+            if ($subscription->vendor_slug === 'stripe' && filled($subscription->vendor_customer_id)) {
+                $stripe = new StripeClient(config('wave.stripe.secret_key'));
+                $invoices = $stripe->invoices->all([
+                    'customer' => $subscription->vendor_customer_id,
+                    'limit' => 100,
+                ]);
 
                 foreach ($invoices as $invoice) {
-                    array_push($user_invoices, (object) [
+                    $user_invoices[] = (object) [
                         'id' => $invoice->id,
                         'created' => Carbon::parse($invoice->created)->isoFormat('MMMM Do YYYY, h:mm:ss a'),
                         'total' => number_format(($invoice->total / 100), 2, '.', ' '),
                         'download' => $invoice->invoice_pdf,
-                    ]);
+                        'provider' => 'stripe',
+                    ];
                 }
             }
-        } else {
-            $paddle_url = (config('wave.paddle.env') == 'sandbox') ? 'https://sandbox-api.paddle.com' : 'https://api.paddle.com';
-            $response = Http::withToken(config('wave.paddle.api_key'))->get($paddle_url.'/transactions', [
-                'subscription_id' => $this->subscription->vendor_subscription_id,
-            ]);
-            $responseJson = json_decode($response->body());
-            foreach ($responseJson->data as $invoice) {
-                array_push($user_invoices, (object) [
-                    'id' => $invoice->id,
-                    'created' => Carbon::parse($invoice->created_at)->isoFormat('MMMM Do YYYY, h:mm:ss a'),
-                    'total' => number_format(($invoice->details->totals->subtotal / 100), 2, '.', ' '),
-                    'download' => '/settings/invoices/'.$invoice->id,
-                ]);
+
+            if ($subscription->vendor_slug === 'paypal' && filled($subscription->vendor_subscription_id)) {
+                $transactions = $paypal->getSubscriptionTransactions(
+                    $subscription->vendor_subscription_id,
+                    now()->subYears(5)->toIso8601String(),
+                    now()->addDay()->toIso8601String(),
+                );
+
+                foreach ($transactions['transactions'] ?? $transactions['transaction_details'] ?? [] as $transaction) {
+                    $transactionInfo = $transaction['transaction_info'] ?? [];
+                    $amount = $transactionInfo['transaction_amount']['value'] ?? null;
+                    $created = $transactionInfo['transaction_initiation_date'] ?? null;
+
+                    if (blank($amount) || blank($created)) {
+                        continue;
+                    }
+
+                    $user_invoices[] = (object) [
+                        'id' => $transactionInfo['transaction_id'] ?? $transaction['transaction_id'] ?? Str::uuid()->toString(),
+                        'created' => Carbon::parse($created)->isoFormat('MMMM Do YYYY, h:mm:ss a'),
+                        'total' => number_format((float) $amount, 2, '.', ' '),
+                        'download' => null,
+                        'provider' => 'paypal',
+                    ];
+                }
             }
         }
 
-        return $user_invoices;
+        return collect($user_invoices)
+            ->sortByDesc(fn (object $invoice): string => $invoice->created)
+            ->values()
+            ->all();
     }
 
     public function canImpersonate(): bool
@@ -258,7 +298,7 @@ class User extends AuthUser implements FilamentUser, HasAvatar, JWTSubject
     /**
      * Clear user-related caches when data changes
      */
-    public function clearUserCache()
+    public function clearUserCache(): void
     {
         // Only clear cache if it's available
         if (app()->bound('cache')) {

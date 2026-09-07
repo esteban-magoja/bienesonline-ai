@@ -34,13 +34,13 @@
                         {{ __('settings.subscription.admin_notice') }}
                     </x-app.alert>
                 @else
-                    @subscriber
+                    @if(auth()->user()->hasActiveSubscription())
                         
                         <div class="relative w-full h-auto">                            
                             <x-app.alert id="no_subscriptions" :dismissable="false" type="success">
                                 <div class="flex items-center w-full">
                                     <x-phosphor-seal-check-duotone class="flex-shrink-0 mr-1.5 -ml-1.5 w-6 h-6" /> 
-                                    <span>{{ __('settings.subscription.currently_subscribed', ['plan' => auth()->user()->plan()->name, 'interval' => auth()->user()->planInterval()]) }}</span>
+                                    <span>{{ __('settings.subscription.currently_subscribed', ['plan' => auth()->user()->plan()?->name ?? 'Premium', 'interval' => auth()->user()->planInterval() ?? '']) }}</span>
                                 </div>
                             </x-app.alert>
                             <p class="my-4">{{ __('settings.subscription.manage_below') }}</p>
@@ -49,10 +49,15 @@
                             @endif
                             <livewire:billing.update />
                         </div>
-                    @endsubscriber
+                    @endif
 
-                    @notsubscriber
-                        <div class="mb-4">
+                     @if(!auth()->user()->hasActiveSubscription())
+                         @php
+                             $billingProviders = collect(config('wave.billing_providers', []))
+                                 ->map(fn (string $provider): string => config("wave.billing_provider_labels.{$provider}", ucfirst($provider)))
+                                 ->implode(' o ');
+                         @endphp
+                         <div class="mb-4">
                             <x-app.alert id="no_subscriptions" :dismissable="false" type="info">
                                 <div class="flex items-center space-x-1.5">
                                     <x-phosphor-shopping-bag-open-duotone class="flex-shrink-0 mr-1.5 -ml-1.5 w-6 h-6" />
@@ -61,11 +66,11 @@
                             </x-app.alert>
                         </div>
                         <livewire:billing.checkout />
-                        <p class="flex items-center mt-3 mb-4">
-                            <x-phosphor-shield-check-duotone class="w-4 h-4 mr-1" />
-                            <span class="mr-1">{{ __('settings.subscription.billing_managed_by') }} </span><strong>{{ ucfirst(config('wave.billing_provider')) }}</strong>.
-                        </p>
-                    @endnotsubscriber
+                         <p class="flex items-center mt-3 mb-4">
+                             <x-phosphor-shield-check-duotone class="w-4 h-4 mr-1" />
+                             <span class="mr-1">{{ __('settings.subscription.billing_managed_by') }} </span><strong>{{ $billingProviders }}</strong>.
+                         </p>
+                    @endif
                 @endrole
             </x-app.settings-layout>
         </div>

@@ -2,14 +2,19 @@
 
 namespace Wave\Http\Livewire\Billing;
 
+use App\Exceptions\PayPalException;
+use App\Models\BillingCheckoutAttempt;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Stripe\StripeClient;
+use App\Services\Billing\PayPalSubscriptionService;
+use App\Services\Billing\SubscriptionLifecycleService;
 use Wave\Actions\Billing\Paddle\AddSubscriptionIdFromTransaction;
 use Wave\Plan;
 use Wave\Subscription;
+use Throwable;
 
 class Checkout extends Component
 {
@@ -27,7 +32,7 @@ class Checkout extends Component
 
     public $userPlan = null;
 
-    public function mount()
+    public function mount(): void
     {
         $this->billing_provider = config('wave.billing_provider', 'stripe');
         $this->paddle_url = (config('wave.paddle.env') == 'sandbox') ? 'https://sandbox-api.paddle.com' : 'https://api.paddle.com';
@@ -40,11 +45,23 @@ class Checkout extends Component
         }
     }
 
-    public function redirectToStripeCheckout(Plan $plan)
+    public function redirectToStripeCheckout(Plan $plan): \Illuminate\Http\RedirectResponse
     {
+        abort_unless(in_array('stripe', config('wave.billing_providers', ['stripe']), true), 404);
+        abort_unless(! auth()->user()->hasActiveSubscription(), 403);
+        abort_unless($plan->active, 404);
+
+        $this->billing_cycle_selected = in_array($this->billing_cycle_selected, ['month', 'year'], true)
+            ? $this->billing_cycle_selected
+            : 'month';
+
         $stripe = new StripeClient(config('wave.stripe.secret_key'));
 
-        $price_id = $this->billing_cycle_selected == 'month' ? $plan->monthly_price_id : $plan->yearly_price_id ?? null;
+        $price_id = $plan->externalPriceId('stripe', $this->billing_cycle_selected);
+
+        if (blank($price_id)) {
+            throw new \InvalidArgumentException('The selected plan is not configured for Stripe.');
+        }
 
         $checkout_session = $stripe->checkout->sessions->create([
             'line_items' => [[
@@ -57,6 +74,14 @@ class Checkout extends Component
                 'plan_id' => $plan->id,
                 'billing_cycle' => $this->billing_cycle_selected,
             ],
+            'subscription_data' => [
+                'metadata' => [
+                    'billable_type' => 'user',
+                    'billable_id' => auth()->user()->id,
+                    'plan_id' => $plan->id,
+                    'billing_cycle' => $this->billing_cycle_selected,
+                ],
+            ],
             'allow_promotion_codes' => true,
             'mode' => 'subscription',
             'success_url' => url('subscription/welcome'),
@@ -66,17 +91,100 @@ class Checkout extends Component
         return redirect()->to($checkout_session->url);
     }
 
-    public function updateCycleBasedOnPlans()
+    /**
+     * @return array{attempt_id: int, custom_id: string, paypal_plan_id: string}
+     */
+    public function createPayPalAttempt(
+        PayPalSubscriptionService $subscriptionService,
+        int $planId,
+        ?string $cycle = null,
+    ): array {
+        abort_unless(in_array('paypal', config('wave.billing_providers', []), true), 404);
+        abort_unless(! auth()->user()->hasActiveSubscription(), 403);
+
+        $plan = Plan::query()->whereKey($planId)->where('active', true)->firstOrFail();
+        $attempt = $subscriptionService->createAttempt(
+            auth()->user(),
+            $plan,
+            $cycle ?? $this->billing_cycle_selected,
+        );
+
+        return [
+            'attempt_id' => $attempt->id,
+            'custom_id' => $attempt->metadata['custom_id'],
+            'paypal_plan_id' => $attempt->metadata['paypal_plan_id'],
+        ];
+    }
+
+    public function completePayPalSubscription(
+        PayPalSubscriptionService $subscriptionService,
+        int $attemptId,
+        string $subscriptionId,
+        ?string $payerId = null,
+    ): bool {
+        $attempt = BillingCheckoutAttempt::query()
+            ->whereKey($attemptId)
+            ->where('user_id', auth()->id())
+            ->where('provider', 'paypal')
+            ->firstOrFail();
+
+        try {
+            $subscription = $subscriptionService->completeCheckout($attempt, $subscriptionId, $payerId);
+        } catch (PayPalException $exception) {
+            Notification::make()
+                ->title($exception->getMessage())
+                ->danger()
+                ->send();
+
+            return false;
+        } catch (Throwable $exception) {
+            report($exception);
+
+            Notification::make()
+                ->title('No fue posible confirmar la suscripción de PayPal. Inténtalo nuevamente.')
+                ->danger()
+                ->send();
+
+            return false;
+        }
+
+        return $subscription !== null;
+    }
+
+    public function retryPayPalSubscription(
+        PayPalSubscriptionService $subscriptionService,
+        int $attemptId,
+        string $subscriptionId,
+        ?string $payerId = null,
+    ): bool {
+        $attempt = BillingCheckoutAttempt::query()
+            ->whereKey($attemptId)
+            ->where('user_id', auth()->id())
+            ->where('provider', 'paypal')
+            ->firstOrFail();
+
+        try {
+            return $subscriptionService->completeCheckout($attempt, $subscriptionId, $payerId) !== null;
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return false;
+        }
+    }
+
+    public function updateCycleBasedOnPlans(): void
     {
-        $plans = Plan::where('active', 1)->get();
+        $plans = Plan::query()->where('active', true)->with('billingPrices')->get();
         $hasMonthly = false;
         $hasYearly = false;
         foreach ($plans as $plan) {
-            if (! empty($plan->monthly_price_id)) {
-                $hasMonthly = true;
-            }
-            if (! empty($plan->yearly_price_id)) {
-                $hasYearly = true;
+            foreach (config('wave.billing_providers', ['stripe']) as $provider) {
+                if (! blank($plan->externalPriceId($provider, 'month'))) {
+                    $hasMonthly = true;
+                }
+                if (! blank($plan->externalPriceId($provider, 'year'))) {
+                    $hasYearly = true;
+                }
             }
         }
         if ($hasMonthly && $hasYearly) {
@@ -92,6 +200,8 @@ class Checkout extends Component
     #[On('savePaddleSubscription')]
     public function savePaddleSubscription($transactionId)
     {
+        abort_unless(auth()->user()->hasActiveSubscription(), 403);
+
         $subscription = app(AddSubscriptionIdFromTransaction::class)($transactionId);
         if (! is_null($subscription)) {
             return redirect()->to('/subscription/welcome');
@@ -107,6 +217,8 @@ class Checkout extends Component
     #[On('verifyPaddleTransaction')]
     public function verifyPaddleTransaction($transactionId)
     {
+        abort_unless(! auth()->user()->hasActiveSubscription(), 403);
+
 
         $transaction = null;
 
@@ -114,7 +226,7 @@ class Checkout extends Component
 
         if ($response->successful()) {
             $resBody = json_decode($response->body());
-            if (isset($resBody->data->status) && ($resBody->data->status == 'paid' || $resBody->data->status == 'completed' || $resBody->data->status == 'ready')) {
+            if (isset($resBody->data->status) && ($resBody->data->status == 'paid' || $resBody->data->status == 'completed')) {
                 $transaction = $resBody->data;
             }
         }
@@ -140,10 +252,7 @@ class Checkout extends Component
                 return;
             }
 
-            auth()->user()->syncRoles([]);
-            auth()->user()->assignRole($plan->role->name);
-
-            Subscription::create([
+            app(SubscriptionLifecycleService::class)->createOrActivate([
                 'billable_type' => 'user',
                 'billable_id' => auth()->user()->id,
                 'plan_id' => $plan->id,
@@ -152,7 +261,7 @@ class Checkout extends Component
                 'vendor_customer_id' => $transaction->customer_id,
                 'vendor_subscription_id' => $transaction->subscription_id,
                 'cycle' => $this->billing_cycle_selected,
-                'status' => 'active',
+                'status' => Subscription::STATUS_ACTIVE,
                 'seats' => 1,
             ]);
 
@@ -172,6 +281,8 @@ class Checkout extends Component
 
     public function switchPlan(Plan $plan)
     {
+        abort_unless(auth()->user()->hasActiveSubscription(), 403);
+
         $subscription = auth()->user()->subscription;
 
         $price_id = ($this->billing_cycle_selected == 'month') ? $plan->monthly_price_id : $plan->yearly_price_id ?? null;
@@ -202,7 +313,10 @@ class Checkout extends Component
     public function render()
     {
         return view('wave::livewire.billing.checkout', [
-            'plans' => Plan::where('active', 1)->get(),
+            'plans' => Plan::where('active', 1)->with(['role', 'billingPrices'])->get(),
+            'paypalEnabled' => in_array('paypal', config('wave.billing_providers', []), true)
+                && filled(config('wave.paypal.client_id'))
+                && filled(config('wave.paypal.client_secret')),
         ]);
     }
 }

@@ -147,7 +147,7 @@ new class extends Component {
             return;
         }
         
-        $this->canPublish = $user->hasRole('admin') || $user->hasRole('premium');
+        $this->canPublish = $user->hasPremiumAccess();
         
         $this->countries = CountrySetting::getEnabledCountries();
         $this->currencies = Currency::all();
@@ -212,7 +212,8 @@ new class extends Component {
             return;
         }
         
-        if (!$this->canPublish) {
+        if (!auth()->user()->hasPremiumAccess()) {
+            $this->canPublish = false;
             $this->redirect(route('settings.subscription'));
             return;
         }
@@ -258,7 +259,8 @@ new class extends Component {
 
     public function saveImages(): void
     {
-        if (!$this->canPublish) {
+        if (!auth()->user()->hasPremiumAccess()) {
+            $this->canPublish = false;
             $this->redirect(route('settings.subscription'));
             return;
         }
@@ -281,19 +283,6 @@ new class extends Component {
         $this->redirect(route('property-listings.matches-found', ['id' => $this->propertyListing->id]));
     }
 
-    public function grantPremiumRole(): void
-    {
-        $user = auth()->user();
-        
-        // Buscar el rol premium
-        $premiumRole = \Spatie\Permission\Models\Role::where('name', 'premium')->first();
-        
-        if ($premiumRole && !$user->hasRole('premium')) {
-            $user->assignRole('premium');
-            $this->canPublish = true;
-            session()->flash('success', '¡Rol premium otorgado exitosamente! Ahora puedes publicar anuncios.');
-        }
-    }
 };
 ?>
 

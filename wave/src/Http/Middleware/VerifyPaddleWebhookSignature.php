@@ -51,7 +51,7 @@ class VerifyPaddleWebhookSignature
 
         [$timestamp, $hashes] = $this->parseSignature($signature);
 
-        if ($this->maximumVariance > 0 && time() > $timestamp + $this->maximumVariance) {
+        if ($timestamp <= 0 || ($this->maximumVariance > 0 && abs(time() - $timestamp) > $this->maximumVariance)) {
             return true;
         }
 
@@ -61,7 +61,12 @@ class VerifyPaddleWebhookSignature
         foreach ($hashes as $hashAlgorithm => $possibleHashes) {
             $hash = match ($hashAlgorithm) {
                 'h1' => hash_hmac('sha256', "{$timestamp}:{$data}", $secret),
+                default => null,
             };
+
+            if ($hash === null) {
+                continue;
+            }
 
             foreach ($possibleHashes as $possibleHash) {
                 if (hash_equals($hash, $possibleHash)) {

@@ -12,16 +12,10 @@ class Stripe extends Controller
     {
 
         $latest_active_subscription = auth()->user()->latestSubscription();
-        // Set your secret key. Remember to switch to your live secret key in production.
-        // See your keys here: https://dashboard.stripe.com/apikeys
-        $stripe = new StripeClient(config('wave.stripe.secret_key'));
 
-        $stripe->billingPortal->configurations->create([
-            'business_profile' => [
-                'headline' => config('app.name'),
-            ],
-            'features' => ['invoice_history' => ['enabled' => true]],
-        ]);
+        abort_unless($latest_active_subscription?->vendor_slug === 'stripe', 404);
+        abort_unless(filled($latest_active_subscription->vendor_customer_id), 404);
+        $stripe = new StripeClient(config('wave.stripe.secret_key'));
 
         $billingPortal = $stripe->billingPortal->sessions->create([
             'customer' => $latest_active_subscription->vendor_customer_id,

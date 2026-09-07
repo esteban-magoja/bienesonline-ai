@@ -18,8 +18,10 @@ class PropertyMatchController extends Controller
      * Paginates at DB level to avoid loading all listings into memory.
      * Never selects the `embedding` column.
      */
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View
     {
+        abort_unless(auth()->user()->hasPremiumAccess(), 403);
+
         $userId = auth()->id();
 
         $allMatches = $this->buildMatchesBaseQuery($userId)
@@ -134,8 +136,10 @@ class PropertyMatchController extends Controller
     /**
      * Show full pgvector-powered matches for a specific listing.
      */
-    public function show(PropertyListing $listing)
+    public function show(PropertyListing $listing): \Illuminate\Contracts\View\View
     {
+        abort_unless(auth()->user()->hasPremiumAccess(), 403);
+
         if ($listing->user_id !== auth()->id()) {
             abort(403);
         }

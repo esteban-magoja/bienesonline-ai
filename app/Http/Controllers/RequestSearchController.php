@@ -4,16 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\PropertyRequest;
 use App\Services\EmbeddingService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 
 class RequestSearchController extends Controller
 {
-    public function __construct(private EmbeddingService $embeddingService) {}
+    public function __construct(private readonly EmbeddingService $embeddingService) {}
 
-    public function index(Request $request)
+    public function index(Request $request): View|RedirectResponse
     {
-        $user = auth()->user();
+        $canSearch = auth()->check() && auth()->user()->hasPremiumAccess();
+
+        if (! $canSearch && ($request->has('search') || $request->has('country'))) {
+            abort_unless(auth()->check(), 403);
+
+            return redirect()->route('settings.subscription');
+        }
         
         $startTime = microtime(true);
         
@@ -54,7 +62,7 @@ class RequestSearchController extends Controller
         $searchTime = 0;
         
         // Only search if validation passes
-        if ($isSearchRequest && empty($validationErrors)) {
+        if ($canSearch && $isSearchRequest && empty($validationErrors)) {
             $query = PropertyRequest::where('is_active', true)
                 ->where('user_id', '!=', auth()->id()) // Excluir solicitudes propias
                 ->where('country', $selectedCountry);
@@ -133,6 +141,7 @@ class RequestSearchController extends Controller
             'searchTime' => $searchTime,
             'validationErrors' => $validationErrors,
             'isSearchRequest' => $isSearchRequest,
+            'canSearch' => $canSearch,
             'seo' => $seo,
         ]);
     }

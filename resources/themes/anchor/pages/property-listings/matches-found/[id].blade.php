@@ -15,6 +15,8 @@ new class extends Component {
 
     public function mount($id)
     {
+        abort_unless(auth()->user()->hasPremiumAccess(), 403);
+
         $this->listing = PropertyListing::with('images')->findOrFail($id);
         
         if ($this->listing->user_id !== auth()->id()) {

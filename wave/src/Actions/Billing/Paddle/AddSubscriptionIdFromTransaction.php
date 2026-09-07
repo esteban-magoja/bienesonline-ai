@@ -41,7 +41,16 @@ class AddSubscriptionIdFromTransaction
 
             $subscription = json_decode(Http::withToken(config('wave.paddle.api_key'))->get($endpoint.'/subscriptions/'.$transaction->subscription_id))->data;
 
-            $latestSubscription = Subscription::where('vendor_transaction_id', $transaction->id)->where('status', 'active')->latest()->first();
+            $latestSubscription = Subscription::query()
+                ->where('vendor_slug', 'paddle')
+                ->where('vendor_transaction_id', $transaction->id)
+                ->where('status', Subscription::STATUS_ACTIVE)
+                ->latest()
+                ->first();
+
+            if (! $latestSubscription) {
+                return null;
+            }
             $latestSubscription->vendor_subscription_id = $subscription->id;
             $latestSubscription->save();
 

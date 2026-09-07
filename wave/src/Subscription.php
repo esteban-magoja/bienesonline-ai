@@ -3,11 +3,24 @@
 namespace Wave;
 
 use App\Models\User;
+use App\Services\Billing\SubscriptionLifecycleService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subscription extends Model
 {
+    public const STATUS_ACTIVE = 'active';
+
+    public const STATUS_PAST_DUE = 'past_due';
+
+    public const STATUS_SUSPENDED = 'suspended';
+
+    public const STATUS_CANCELED = 'canceled';
+
+    public const STATUS_EXPIRED = 'expired';
+
+    public const STATUS_LEGACY_CANCELED = 'cancelled';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +40,7 @@ class Subscription extends Model
         'seats',
         'trial_ends_at',
         'ends_at',
+        'cancelled_at',
         'last_payment_at',
         'next_payment_at',
         'cancel_url',
@@ -42,8 +56,10 @@ class Subscription extends Model
     {
         return [
             'cancelled_at' => 'datetime',
+            'ends_at' => 'datetime',
             'last_payment_at' => 'datetime',
             'next_payment_at' => 'datetime',
+            'trial_ends_at' => 'datetime',
         ];
     }
 
@@ -55,13 +71,24 @@ class Subscription extends Model
         return $this->belongsTo(config('wave.user_model', User::class), 'billable_id');
     }
 
-    public function cancel()
+    public function cancel(): void
     {
-        $this->status = 'cancelled';
-        $this->save();
+        app(SubscriptionLifecycleService::class)->cancel($this);
+    }
 
-        $this->user->syncRoles([]);
-        $this->user->assignRole(config('wave.default_user_role', 'registered'));
+    public function suspend(): void
+    {
+        app(SubscriptionLifecycleService::class)->suspend($this);
+    }
+
+    public function markPastDue(): void
+    {
+        app(SubscriptionLifecycleService::class)->markPastDue($this);
+    }
+
+    public function activate(): void
+    {
+        app(SubscriptionLifecycleService::class)->activate($this);
     }
 
     /**

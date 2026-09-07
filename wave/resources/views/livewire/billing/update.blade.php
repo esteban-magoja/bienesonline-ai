@@ -1,5 +1,5 @@
 <div class="relative w-full h-auto">
-    @if(config('wave.billing_provider') == 'paddle')
+    @if($provider == 'paddle')
         <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
         <script>
             Paddle.Initialize({
@@ -68,6 +68,28 @@
                 </x-filament::modal>
             @endif
             
+        </div>
+    @elseif($provider == 'paypal')
+        <div class="flex flex-col gap-4">
+            <p class="text-sm text-gray-600 dark:text-gray-300">
+                Tu suscripción se administra con PayPal. La próxima fecha de cobro es
+                {{ $subscription_ends_at ? \Carbon\Carbon::parse($subscription_ends_at)->format('F jS, Y') : 'la próxima renovación' }}.
+            </p>
+            <x-filament::modal width="lg" id="cancel-paypal-modal">
+                <x-slot name="trigger">
+                    <x-button color="danger">Cancel My Subscription</x-button>
+                </x-slot>
+                <div class="flex relative flex-col justify-center items-center">
+                    <div class="mt-3 mb-5 text-center">
+                        <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Cancel Subscription</h3>
+                        <p class="max-w-xs mt-2 text-sm text-gray-500">La cancelación de PayPal es inmediata y quitará el acceso Premium.</p>
+                    </div>
+                    <div class="flex relative items-center space-x-3 w-full">
+                        <x-button x-on:click="$dispatch('close-modal', { id: 'cancel-paypal-modal' })" color="secondary" class="w-1/2">No Thanks</x-button>
+                        <x-button wire:click="cancelPayPal" wire:loading.attr="disabled" color="danger" class="w-1/2">Cancel Subscription</x-button>
+                    </div>
+                </div>
+            </x-filament::modal>
         </div>
     @else
         <x-button :href="route('stripe.portal')" tag="a">Manage Subscription</x-button>

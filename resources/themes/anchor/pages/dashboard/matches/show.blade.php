@@ -173,7 +173,7 @@
                                     @endif
 
                                     <div class="flex gap-2">
-                                        @if(auth()->user()->hasRole('premium'))
+                                        @if(auth()->user()->hasPremiumAccess())
                                             @if($clientEmail)
                                                 <a href="mailto:{{ $clientEmail }}?subject={{ rawurlencode('Propiedad que coincide con tu búsqueda') }}&body={{ rawurlencode("Hola {$clientName},\n\nTengo una propiedad que podría interesarte:\n{$listingUrl}") }}"
                                                    class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
@@ -212,7 +212,7 @@
                                             </span>
                                         @endif
                                     </div>
-                                    @if(!auth()->user()->hasRole('premium'))
+                                    @if(!auth()->user()->hasPremiumAccess())
                                         <p class="text-sm text-amber-700 font-medium">
                                             <a href="/settings/subscription" class="underline hover:text-amber-900">Necesitas una suscripción para contactar al interesado</a>
                                         </p>

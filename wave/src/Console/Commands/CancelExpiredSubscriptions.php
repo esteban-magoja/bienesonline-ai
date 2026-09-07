@@ -4,6 +4,7 @@ namespace Wave\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use App\Services\Billing\SubscriptionLifecycleService;
 use Wave\Subscription;
 
 class CancelExpiredSubscriptions extends Command
@@ -17,20 +18,26 @@ class CancelExpiredSubscriptions extends Command
         parent::__construct();
     }
 
-    public function handle(): void
+    public function handle(SubscriptionLifecycleService $lifecycleService): int
     {
         $now = Carbon::now();
 
-        // Find subscriptions where ends_at is past the current date and status is active
-        $subscriptions = Subscription::where('status', 'active')
-            ->where('ends_at', '<', $now)
-            ->get();
+        $subscriptions = Subscription::query()
+            ->where('status', Subscription::STATUS_ACTIVE)
+            ->where(function ($query) use ($now): void {
+                $query->where('ends_at', '<', $now)
+                    ->orWhere('next_payment_at', '<', $now);
+            })
+            ->orderBy('id')
+            ->cursor();
 
         foreach ($subscriptions as $subscription) {
-            $subscription->cancel();
+            $lifecycleService->cancel($subscription);
             $this->info('Subscription ID '.$subscription->id.' has been cancelled.');
         }
 
         $this->info('Checked all subscriptions.');
+
+        return self::SUCCESS;
     }
 }

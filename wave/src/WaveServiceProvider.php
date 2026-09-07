@@ -165,17 +165,19 @@ class WaveServiceProvider extends ServiceProvider
 
         // @subscriber directives
         Blade::if('subscriber', function () {
-            return ! auth()->guest() && auth()->user()->subscriber();
+            return ! auth()->guest() && auth()->user()->hasPremiumAccess();
         });
 
         // @notsubscriber directives
         Blade::if('notsubscriber', function () {
-            return ! auth()->guest() && ! auth()->user()->subscriber();
+            return ! auth()->guest() && ! auth()->user()->hasPremiumAccess();
         });
 
         // Subscribed Directives
         Blade::if('subscribed', function ($plan) {
-            return ! auth()->guest() && auth()->user()->subscribedToPlan($plan);
+            return ! auth()->guest()
+                && auth()->user()->hasPremiumAccess()
+                && auth()->user()->subscribedToPlan($plan);
         });
 
         // home directives

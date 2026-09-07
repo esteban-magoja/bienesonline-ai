@@ -196,7 +196,7 @@ new class extends Component {
     {
         $listing = PropertyListing::where('user_id', auth()->id())->findOrFail($listingId);
 
-        if (!auth()->user()->hasRole('premium')) {
+        if (!auth()->user()->hasPremiumAccess()) {
             return;
         }
 
@@ -594,7 +594,7 @@ new class extends Component {
                                    class="text-sm font-medium text-indigo-600 hover:text-indigo-900 dark:text-indigo-400">
                                     {{ __('listings.edit') }}
                                 </a>
-                                @if(auth()->user()->hasRole('premium') && $listing->created_at->lt(now()->subDays(30)))
+                                @if(auth()->user()->hasPremiumAccess() && $listing->created_at->lt(now()->subDays(30)))
                                     <button wire:click="renewListing({{ $listing->id }})"
                                             wire:confirm="{{ __('listings.confirm_renew') }}"
                                             class="text-sm font-medium text-green-600 hover:text-green-800 dark:text-green-400">

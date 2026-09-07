@@ -10,6 +10,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Actions\EditAction;
@@ -81,6 +82,36 @@ class PlanResource extends Resource
                             ->maxLength(191),
                         TextInput::make('onetime_price')
                             ->maxLength(191),
+                        Repeater::make('billingPrices')
+                            ->relationship()
+                            ->label('Provider Prices')
+                            ->schema([
+                                Select::make('provider')
+                                    ->options(config('wave.billing_provider_labels', []))
+                                    ->required(),
+                                Select::make('cycle')
+                                    ->options([
+                                        'month' => 'Monthly',
+                                        'year' => 'Yearly',
+                                    ])
+                                    ->required(),
+                                TextInput::make('external_id')
+                                    ->label('External Price / Plan ID')
+                                    ->required()
+                                    ->maxLength(191),
+                                TextInput::make('amount')
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->maxLength(191),
+                                TextInput::make('currency')
+                                    ->default('USD')
+                                    ->required()
+                                    ->maxLength(3),
+                                Toggle::make('active')
+                                    ->default(true),
+                            ])
+                            ->columns(3)
+                            ->columnSpanFull(),
                     ])->columns(2),
                 Section::make('Plan Status')
                     ->description('Make the plan default or active/inactive')

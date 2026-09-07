@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 // Schedule::command('inspire')->hourly();
-Schedule::command('subscriptions:cancel-expired')->hourly();
+Schedule::command('subscriptions:cancel-expired')->hourly()->withoutOverlapping();

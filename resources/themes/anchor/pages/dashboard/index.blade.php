@@ -459,9 +459,9 @@
 
 		{{-- Aviso de suscripción obligatoria --}}
 		<div class="mt-6 max-w-3xl mx-auto rounded-xl border-l-4 p-5 shadow-sm
-			{{ auth()->user()->hasRole('premium') ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500' }}">
+			{{ auth()->user()->hasPremiumAccess() ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500' }}">
 			<div class="flex items-start gap-3">
-				@if(auth()->user()->hasRole('premium'))
+				@if(auth()->user()->hasPremiumAccess())
 					<svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
 					</svg>
@@ -471,11 +471,11 @@
 					</svg>
 				@endif
 				<div>
-					<p class="{{ auth()->user()->hasRole('premium') ? 'text-green-800' : 'text-amber-800' }} text-sm font-medium">
+				<p class="{{ auth()->user()->hasPremiumAccess() ? 'text-green-800' : 'text-amber-800' }} text-sm font-medium">
 						Atención: A partir de Agosto 2026 solo quedarán publicados y activos anuncios de usuarios que mantienen una suscripción activa en Bienesonline.
 					</p>
-					<p class="mt-2 text-sm {{ auth()->user()->hasRole('premium') ? 'text-green-700 font-semibold' : 'text-amber-700' }}">
-						@if(auth()->user()->hasRole('premium'))
+				<p class="mt-2 text-sm {{ auth()->user()->hasPremiumAccess() ? 'text-green-700 font-semibold' : 'text-amber-700' }}">
+						@if(auth()->user()->hasPremiumAccess())
 							🎉 Felicitaciones, usted ya tiene una suscripción activa.
 						@else
 							<a href="/settings/subscription" class="font-semibold underline hover:opacity-80">

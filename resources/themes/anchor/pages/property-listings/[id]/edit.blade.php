@@ -91,7 +91,7 @@ new class extends Component {
         $this->listing = PropertyListing::where('user_id', auth()->id())->findOrFail($id);
 
         $user = auth()->user();
-        $this->canEdit = $user->hasRole('admin') || $user->hasRole('premium');
+        $this->canEdit = $user->hasPremiumAccess();
 
         // Pre-fill all fields
         $this->title           = $this->listing->title;
@@ -178,7 +178,8 @@ new class extends Component {
 
     public function save(): void
     {
-        if (!$this->canEdit) {
+        if (!auth()->user()->hasPremiumAccess()) {
+            $this->canEdit = false;
             $this->redirect(route('settings.subscription'));
             return;
         }
@@ -199,17 +200,6 @@ new class extends Component {
         $this->redirect(route('property-listings.index'));
     }
 
-    public function grantPremiumRole(): void
-    {
-        $user = auth()->user();
-        $premiumRole = \Spatie\Permission\Models\Role::where('name', 'premium')->first();
-
-        if ($premiumRole && !$user->hasRole('premium')) {
-            $user->assignRole('premium');
-            $this->canEdit = true;
-            session()->flash('success', '¡Rol premium otorgado exitosamente! Ahora puedes editar anuncios.');
-        }
-    }
 };
 ?>
 

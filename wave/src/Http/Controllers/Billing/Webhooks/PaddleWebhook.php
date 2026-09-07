@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Services\Billing\SubscriptionLifecycleService;
 use Wave\Subscription;
 
 class PaddleWebhook extends Controller
 {
-    public $paddle_url;
+    public function __construct(
+        private readonly SubscriptionLifecycleService $lifecycleService,
+    ) {
+    }
 
     public function handler(Request $request): JsonResponse
     {
@@ -38,7 +42,13 @@ class PaddleWebhook extends Controller
             return;
         }
 
-        $subscription = Subscription::where('vendor_subscription_id', $subscriptionId)->where('status', 'active')->first();
-        $subscription->cancel();
+        $subscription = Subscription::query()
+            ->where('vendor_slug', 'paddle')
+            ->where('vendor_subscription_id', $subscriptionId)
+            ->first();
+
+        if ($subscription) {
+            $this->lifecycleService->cancel($subscription);
+        }
     }
 }

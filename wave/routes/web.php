@@ -5,6 +5,8 @@ use App\Models\User;
 use Wave\Page;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Billing\PayPalReturnController;
+use App\Http\Controllers\Billing\PayPalWebhookController;
 
 Route::impersonate();
 
@@ -29,11 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('changelog/read', '\Wave\Http\Controllers\ChangelogController@read')->name('changelog.read');
 
     /********** Checkout/Billing Routes ***********/
-    Route::post('cancel', '\Wave\Http\Controllers\SubscriptionController@cancel')->name('wave.cancel');
     Route::view('checkout/welcome', 'theme::welcome');
-
-    Route::post('subscribe', '\Wave\Http\Controllers\SubscriptionController@subscribe')->name('wave.subscribe');
-    Route::post('switch-plans', '\Wave\Http\Controllers\SubscriptionController@switchPlans')->name('wave.switch-plans');
 });
 
 Route::get('wave/theme/image/{theme_name}', '\Wave\Http\Controllers\ThemeImageController@show');
@@ -49,7 +47,13 @@ Route::get('reset', Reset::class);
 /***** Billing Routes *****/
 Route::post('webhook/paddle', '\Wave\Http\Controllers\Billing\Webhooks\PaddleWebhook@handler')->middleware('paddle-webhook-signature');
 Route::post('webhook/stripe', '\Wave\Http\Controllers\Billing\Webhooks\StripeWebhook@handler');
-Route::get('stripe/portal', '\Wave\Http\Controllers\Billing\Stripe@redirect_to_customer_portal')->name('stripe.portal');
+Route::post('webhook/paypal', [PayPalWebhookController::class, 'store']);
+Route::get('paypal/return/{attempt}', [PayPalReturnController::class, 'show'])
+    ->middleware('auth')
+    ->name('paypal.return');
+Route::get('stripe/portal', '\Wave\Http\Controllers\Billing\Stripe@redirect_to_customer_portal')
+    ->middleware('auth')
+    ->name('stripe.portal');
 Route::redirect('billing', 'settings/subscription')->name('billing');
 
 try {

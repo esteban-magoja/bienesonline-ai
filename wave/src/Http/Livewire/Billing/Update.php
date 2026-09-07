@@ -2,6 +2,7 @@
 
 namespace Wave\Http\Livewire\Billing;
 
+use App\Services\Billing\PayPalClient;
 use Exception;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Http;
@@ -23,13 +24,16 @@ class Update extends Component
 
     public $error_retrieving_data = false;
 
+    public $provider;
+
     public $subscription;
 
-    public function mount()
+    public function mount(): void
     {
         $this->subscription = auth()->user()->subscription;
+        $this->provider = $this->subscription?->vendor_slug ?? config('wave.billing_provider');
 
-        if (config('wave.billing_provider') == 'paddle' && auth()->user()->subscriber()) {
+        if ($this->provider == 'paddle' && auth()->user()->hasActiveSubscription()) {
             $subscription = $this->subscription;
 
             if (is_null($this->subscription->vendor_subscription_id)) {
@@ -64,16 +68,23 @@ class Update extends Component
                 $this->cancel_url = $paddle_subscription->management_urls->cancel;
                 $this->update_url = $paddle_subscription->management_urls->update_payment_method;
             }
-        } elseif (config('wave.billing_provider') == 'stripe') {
+        } elseif ($this->provider == 'stripe') {
             // Correctly fetch Stripe's `ends_at`
             $this->subscription_ends_at = $this->subscription?->ends_at;
+        } elseif ($this->provider == 'paypal') {
+            $this->subscription_ends_at = $this->subscription?->next_payment_at ?? $this->subscription?->ends_at;
         }
     }
 
-    public function cancel()
+    public function cancel(): void
     {
-
         $subscription = auth()->user()->latestSubscription();
+
+        abort_unless($subscription?->vendor_slug === 'paddle', 404);
+
+        $this->paddle_url ??= (config('wave.paddle.env') === 'sandbox')
+            ? 'https://sandbox-api.paddle.com'
+            : 'https://api.paddle.com';
         $response = Http::withToken(config('wave.paddle.api_key'))->post($this->paddle_url.'/subscriptions/'.$subscription->vendor_subscription_id.'/cancel', [
             'reason' => 'Customer requested cancellation',
         ]);
@@ -93,9 +104,32 @@ class Update extends Component
         }
     }
 
+    public function cancelPayPal(PayPalClient $paypalClient): void
+    {
+        $subscription = auth()->user()->latestSubscription();
+
+        abort_unless($subscription?->vendor_slug === 'paypal', 404);
+
+        $paypalClient->cancelSubscription(
+            $subscription->vendor_subscription_id,
+            'Customer requested cancellation',
+            'cancel-subscription-'.$subscription->getKey(),
+        );
+
+        $subscription->cancel();
+
+        $this->redirectRoute('settings.subscription');
+    }
+
     public function cancelImmediately()
     {
         $subscription = auth()->user()->subscription;
+
+        abort_unless($subscription?->vendor_slug === 'paddle', 404);
+
+        $this->paddle_url ??= (config('wave.paddle.env') === 'sandbox')
+            ? 'https://sandbox-api.paddle.com'
+            : 'https://api.paddle.com';
 
         $response = Http::withToken(config('wave.paddle.api_key'))->post($this->paddle_url.'/subscriptions/'.$subscription->vendor_subscription_id.'/cancel', [
             'effective_from' => 'immediately',

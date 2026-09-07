@@ -26,7 +26,7 @@
                     @php $features = explode(',', $plan->features); @endphp
                     <div 
                         {{--  Say that you have a monthly plan that doesn't have a yearly plan, in that case we will hide the place that doesn't have a price_id --}}
-                        x-show="(billing_cycle_selected == 'month' && '{{ $plan->monthly_price_id }}' != '') || (billing_cycle_selected == 'year' && '{{ $plan->yearly_price_id }}' != '')" 
+                        x-show="(billing_cycle_selected == 'month' && ('{{ $plan->externalPriceId('stripe', 'month') }}' != '' || '{{ $plan->externalPriceId('paypal', 'month') }}' != '')) || (billing_cycle_selected == 'year' && ('{{ $plan->externalPriceId('stripe', 'year') }}' != '' || '{{ $plan->externalPriceId('paypal', 'year') }}' != ''))"
                         class="w-full max-w-full px-0 mx-auto group">
                         <div class="flex flex-col mb-10 h-full bg-white dark:bg-neutral-800 rounded-xl ease-out duration-300 border-2 border-gray-200 dark:border-neutral-700 shadow-sm sm:mb-0 group-hover:border-{{ config('devdojo.billing.style.color') }}-500">
                             <div class="p-6 lg:p-8">
@@ -59,14 +59,29 @@
                                 </ul>
                             </div>
                             <div class="px-6 py-5 mt-auto bg-gray-50 dark:bg-neutral-700 rounded-b-xl">
-                                <div class="flex items-center justify-end w-full">
-                                    <div class="relative w-full md:w-auto">
-                                        @if(config('wave.billing_provider') == 'stripe')
-                                            <x-billing.button wire:click="redirectToStripeCheckout('{{ $plan->id }}')" wire:target="redirectToPaymentProvider" rounded="md" color="{{ config('devdojo.billing.style.color') }}">
-                                                Suscribirme a este Plan
-                                            </x-billing.button>
-                                        @else
-                                            @if($change)
+                                <div class="flex items-stretch justify-end w-full">
+                                    <div class="relative flex flex-col w-full gap-4 md:max-w-md md:mx-auto">
+                                        @if(!$change && in_array('stripe', config('wave.billing_providers', ['stripe']), true))
+                                            <div
+                                                x-show="billing_cycle_selected == 'month' ? '{{ $plan->externalPriceId('stripe', 'month') }}' != '' : '{{ $plan->externalPriceId('stripe', 'year') }}' != ''"
+                                                class="w-full"
+                                            >
+                                                <x-billing.button wire:click="redirectToStripeCheckout('{{ $plan->id }}')" wire:target="redirectToStripeCheckout" rounded="md" color="{{ config('devdojo.billing.style.color') }}">
+                                                    Suscribirme con Stripe
+                                                </x-billing.button>
+                                            </div>
+                                        @endif
+
+                                        @if(!$change && $paypalEnabled && ($plan->externalPriceId('paypal', 'month') || $plan->externalPriceId('paypal', 'year')))
+                                            <div
+                                                x-show="billing_cycle_selected == 'month' ? '{{ $plan->externalPriceId('paypal', 'month') }}' != '' : '{{ $plan->externalPriceId('paypal', 'year') }}' != ''"
+                                                class="w-full"
+                                            >
+                                                <div id="paypal-button-{{ $plan->id }}" wire:ignore></div>
+                                            </div>
+                                        @endif
+
+                                        @if($change)
 
                                                 <x-filament::modal width="lg" id="change-plan-modal">
                                                     <x-slot name="trigger">
@@ -106,16 +121,6 @@
                                                 </x-filament::modal>
 
                                                 
-                                            @else
-                                                <x-billing.button x-on:click="
-                                                        if(billing_cycle_selected == 'month'){ openCheckout('{{ $plan->monthly_price_id }}'); }
-                                                        if(billing_cycle_selected == 'year'){ openCheckout('{{ $plan->yearly_price_id }}'); }
-                                                    " 
-                                                    rounded="md" color="{{ config('devdojo.billing.style.color') }}"
-                                                >
-                                                    Subscribe to this Plan
-                                                </x-billing.button>
-                                            @endif
                                         @endif
                                     </div>
                                 </div>
@@ -133,7 +138,120 @@
             </div>
         </div>
     </div>
-    @if(config('wave.billing_provider') == 'paddle')
+    @if($paypalEnabled && !$change)
+        <script src="https://www.paypal.com/sdk/js?client-id={{ urlencode(config('wave.paypal.client_id')) }}&components=buttons&vault=true&intent=subscription&currency={{ urlencode(config('wave.paypal.currency', 'USD')) }}"></script>
+        @script
+            <script>
+                (() => {
+                    if (window.paypalSubscriptionButtonsInitialized) {
+                        return;
+                    }
+
+                    const renderButtons = () => {
+                        if (typeof window.paypal === 'undefined') {
+                            return false;
+                        }
+
+                        const planIds = @js($plans->pluck('id')->values());
+
+                        planIds.forEach((planId) => {
+                            const selector = `#paypal-button-${planId}`;
+                            const container = document.querySelector(selector);
+
+                            if (container && !container.dataset.rendered) {
+                                window.paypal.Buttons({
+                                    style: {
+                                        layout: 'vertical',
+                                        color: 'blue',
+                                        shape: 'rect',
+                                        label: 'subscribe',
+                                        height: 40,
+                                    },
+                                    createSubscription: async (data, actions) => {
+                                        const cycle = $wire.billing_cycle_selected || 'month';
+                                        const attempt = await $wire.createPayPalAttempt(planId, cycle);
+
+                                        window.paypalSubscriptionAttempts = window.paypalSubscriptionAttempts || {};
+                                        window.paypalSubscriptionAttempts[planId] = attempt;
+
+                                        return actions.subscription.create({
+                                            plan_id: attempt.paypal_plan_id,
+                                            custom_id: attempt.custom_id,
+                                        });
+                                    },
+                                    onApprove: async (data) => {
+                                        const attempt = window.paypalSubscriptionAttempts?.[planId];
+                                        const welcomeUrl = @js(route('subscription.welcome', absolute: false));
+                                        const settingsUrl = @js(route('settings.subscription', absolute: false));
+
+                                        if (!attempt) {
+                                            throw new Error('PayPal checkout attempt is missing.');
+                                        }
+
+                                        try {
+                                            const completed = await $wire.completePayPalSubscription(
+                                                attempt.attempt_id,
+                                                data.subscriptionID,
+                                                data.payerID || null,
+                                            );
+
+                                            if (completed) {
+                                                window.location.href = welcomeUrl;
+
+                                                return;
+                                            }
+
+                                            for (let retry = 0; retry < 15; retry++) {
+                                                await new Promise((resolve) => window.setTimeout(resolve, 1000));
+
+                                                const activated = await $wire.retryPayPalSubscription(
+                                                    attempt.attempt_id,
+                                                    data.subscriptionID,
+                                                    data.payerID || null,
+                                                );
+
+                                                if (activated) {
+                                                    window.location.href = welcomeUrl;
+
+                                                    return;
+                                                }
+                                            }
+
+                                            window.location.href = settingsUrl;
+                                        } catch (error) {
+                                            console.error('PayPal subscription confirmation error', error);
+                                            window.location.href = settingsUrl;
+                                        }
+                                    },
+                                    onCancel: () => {
+                                        window.dispatchEvent(new CustomEvent('loader-hide'));
+                                    },
+                                    onError: (error) => {
+                                        console.error('PayPal subscription error', error);
+                                        window.dispatchEvent(new CustomEvent('loader-hide'));
+                                    },
+                                }).render(selector).then(() => {
+                                    container.dataset.rendered = 'true';
+                                });
+                            }
+                        });
+
+                        window.paypalSubscriptionButtonsInitialized = true;
+
+                        return true;
+                    };
+
+                    if (!renderButtons()) {
+                        const interval = window.setInterval(() => {
+                            if (renderButtons()) {
+                                window.clearInterval(interval);
+                            }
+                        }, 200);
+                    }
+                })();
+            </script>
+        @endscript
+    @elseif(config('wave.billing_provider') == 'paddle')
         <script>
             window.paddle_public_key = '{{ config("wave.paddle.public_key") }}';
 

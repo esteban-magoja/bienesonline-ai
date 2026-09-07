@@ -17,7 +17,7 @@ class Subscribed
     {
         $user = auth()->user();
         
-        if (Auth::check() && ($user->subscriber() || $user->isAdmin())) {
+        if (Auth::check() && $user->hasPremiumAccess()) {
             return $next($request);
         }
 
