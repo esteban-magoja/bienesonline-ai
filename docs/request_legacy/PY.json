@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_paraguay"},
 {"type":"table","name":"c","database":"admin_bienes_paraguay","data":
 [
-{"fecha":"2026-08-30 22:05:15","nombre":"Judith","email":"judithbianconiua@gmail.com","telefono":"0981752099","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Jara"}
+{"fecha":"2026-09-07 12:31:55","nombre":"daniel","email":"aledanrod10231@gmail.com","telefono":"0991810836","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"San Roque"},
+{"fecha":"2026-09-07 12:39:01","nombre":"Daniel ","email":"aledanrod10231@gmail.com","telefono":"0991810836","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Jara"}
 ]
 }
 ]

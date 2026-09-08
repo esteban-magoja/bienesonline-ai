@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-08-23 00:56:46","nombre":"Miguel ","email":"mrueda72@gmail.com","telefono":"+541140788669","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Porlamar"}
+{"fecha":"2026-09-02 15:06:07","nombre":"Yennief ","email":"Yrojas.rahlosruices@gmail.com","telefono":"04249348888","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
+{"fecha":"2026-09-04 11:40:37","nombre":"Dori","email":"yaniracarrero704@gmail.com","telefono":"+584140548872","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Barinas","localidad_inmueble":"Barinas"}
 ]
 }
 ]

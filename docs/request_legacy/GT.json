@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-08-17 07:49:58","nombre":"Nancy De Leon Samayoa","email":"nancyrebe23@gmail.com","telefono":"42456761","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"San Lucas Sacatepéquez"}
+{"fecha":"2026-09-02 16:39:13","nombre":"Maynor Perez","email":"esesrochaa@hotmail.com","telefono":"47084885","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"}
 ]
 }
 ]

@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-08-25 17:30:21","nombre":"OTILIA SOLANO","email":"otilia.solano@grupolealcr.com","telefono":"70757053","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Alajuela","localidad_inmueble":"Alajuela"}
+{"fecha":"2026-09-04 21:00:45","nombre":"Jaime Perez","email":"zetazoom88@gmail.com","telefono":"60297887","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Belén"},
+{"fecha":"2026-09-05 13:49:05","nombre":"Johanna ","email":"johannarojasmarin05@gmail.com","telefono":"","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Cartago","localidad_inmueble":"Dulce Nombre"}
 ]
 }
 ]

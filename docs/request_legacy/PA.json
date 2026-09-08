@@ -3,9 +3,13 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-08-27 16:18:40","nombre":"World investment realty","email":"administracion@wirpanama.com","telefono":"68366854","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
-{"fecha":"2026-08-27 18:49:07","nombre":"Alexa","email":"alexamariebuckets@gmail.com","telefono":"69929410","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
-{"fecha":"2026-08-28 17:43:02","nombre":"Jorge Luis","email":"jorgekontrol@gmail.com","telefono":"62346089","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"}
+{"fecha":"2026-09-03 08:31:23","nombre":"Monserrat","email":"malvarez0954@gmail.com","telefono":"64615174","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-09-04 14:28:05","nombre":"jacky parra","email":"asesoresinmobiliarios911@gmail.com","telefono":"60263893","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-09-04 21:12:01","nombre":"Miriam Vega ","email":"micre2912@gmail.com","telefono":"62417990","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-09-03 08:31:23","nombre":"Monserrat","email":"malvarez0954@gmail.com","telefono":"64615174","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
+{"fecha":"2026-09-04 14:28:05","nombre":"jacky parra","email":"asesoresinmobiliarios911@gmail.com","telefono":"60263893","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
+{"fecha":"2026-09-04 21:12:01","nombre":"Miriam Vega ","email":"micre2912@gmail.com","telefono":"62417990","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
+{"fecha":"2026-09-05 12:05:02","nombre":"Damaris","email":"damarisar@hotmail.com","telefono":"64002157","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Bella Vista"}
 ]
 }
 ]
