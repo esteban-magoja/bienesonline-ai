@@ -1,5 +1,5 @@
-# Raxta - Robots.txt
-# https://raxta.com
+# BienesOnline - Robots.txt
+# https://bienesonline.ai
 
 User-agent: *
 Allow: /
@@ -16,14 +16,7 @@ Disallow: /livewire/
 # Allow search bots to index public property pages
 Allow: /es/
 Allow: /en/
-Allow: /es/property/
-Allow: /en/property/
-Allow: /es/search-properties
-Allow: /en/search-properties
-Allow: /es/search-requests
-Allow: /en/search-requests
-Allow: /es/pricing
-Allow: /en/pricing
+
 
 # Sitemap
-Sitemap: https://raxta.com/sitemap.xml
+Sitemap: https://bienesonline.ai/sitemap.xml

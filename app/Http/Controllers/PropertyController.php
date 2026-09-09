@@ -2,48 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Models\PropertyListing;
 use App\Models\PropertyMessage;
 use App\Mail\PropertyMessageReceived;
+use App\Services\RelatedPropertyService;
 use App\Services\SeoService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class PropertyController extends Controller
 {
-    protected $seoService;
-
-    public function __construct(SeoService $seoService)
-    {
-        $this->seoService = $seoService;
-    }
+    public function __construct(
+        protected SeoService $seoService,
+        protected RelatedPropertyService $relatedPropertyService,
+    ) {}
 
     /**
      * Display the specified property listing.
      * Nueva estructura: /{locale}/{country}/{city}/propiedad/{id}-{slug}
      */
-    public function show($locale, $country, $city, $id, $slug = null)
+    public function show(
+        Request $request,
+        string $locale,
+        string $country,
+        string $city,
+        int $id,
+        ?string $slug = null
+    ): View|RedirectResponse
     {
+        App::setLocale($locale);
+
         $property = PropertyListing::with(['user', 'images'])
             ->where('is_active', true)
             ->findOrFail($id);
 
-        // Get related properties (same city or same property type)
-        $relatedProperties = PropertyListing::with(['primaryImage', 'firstImage'])
-            ->where('is_active', true)
-            ->where('id', '!=', $property->id)
-            ->where(function($query) use ($property) {
-                $query->where('city', $property->city)
-                      ->orWhere('property_type', $property->property_type);
-            })
-            ->where('country', $property->country)
-            ->inRandomOrder()
-            ->limit(4)
-            ->get();
+        $canonicalUrl = $this->seoService->generatePropertyUrl($property, $locale);
+        $requestedPath = trim($request->path(), '/');
+        $canonicalPath = trim((string) parse_url($canonicalUrl, PHP_URL_PATH), '/');
+
+        if ($requestedPath !== $canonicalPath) {
+            return redirect()->to($canonicalUrl, 301);
+        }
+
+        $relatedProperties = $this->relatedPropertyService->findRelatedProperties($property);
 
         // Generate SEO data using SeoService
-        $locale = app()->getLocale();
         $seo = $this->seoService->generatePropertySeo($property, $locale);
         
         // Add hreflang tags
@@ -104,4 +111,3 @@ class PropertyController extends Controller
         return back()->with('success', __('messages.property.message_sent'));
     }
 }
-

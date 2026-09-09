@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\PropertySlugHelper;
 use App\Models\PropertyListing;
 use App\Models\PropertyRequest;
 use App\Models\PropertyType;
@@ -20,6 +21,7 @@ class SeoService
         // Usar el título directo de la propiedad
         $title = $property->title;
         $transactionType = TransactionType::getLabel($property->transaction_type, $locale);
+        $canonical = $this->generatePropertyUrl($property, $locale);
         
         return (object) [
             'title' => $title . ' - ' . $transactionType . ' ' . __('properties.in', [], $locale) . ' ' . $property->city,
@@ -30,7 +32,279 @@ class SeoService
             'image_h' => 630,
             'locale' => $locale,
             'alternate_locales' => $this->getAlternateLocales($locale),
-            'canonical' => $this->generatePropertyUrl($property, $locale),
+            'canonical' => $canonical,
+            'structured_data' => $this->generatePropertyStructuredData(
+                $property,
+                $locale,
+                $canonical
+            ),
+        ];
+    }
+
+    /**
+     * Generate structured data for a property listing.
+     *
+     * Regional property and transaction values are normalized through their
+     * configured English equivalents before selecting Schema.org types.
+     */
+    private function generatePropertyStructuredData(
+        PropertyListing $property,
+        string $locale,
+        string $canonical
+    ): array {
+        $countryCode = PropertySlugHelper::getCountryCode((string) $property->country) ?? 'INTL';
+        $propertyType = strtolower(
+            PropertyType::getValueEn((string) $property->property_type, $countryCode)
+                ?? (string) $property->property_type
+        );
+        $transactionType = strtolower(
+            TransactionType::getValueEn((string) $property->transaction_type, $countryCode)
+                ?? (string) $property->transaction_type
+        );
+        $imageUrls = $this->getPropertyImageUrls($property);
+        $propertyId = $canonical . '#property';
+        $offerId = $canonical . '#offer';
+
+        $propertyData = [
+            '@type' => $this->getSchemaPropertyType($propertyType),
+            '@id' => $propertyId,
+            'name' => $property->title,
+            'address' => $this->getPropertyAddress($property, $countryCode),
+        ];
+
+        if ($property->latitude !== null && $property->longitude !== null) {
+            $propertyData['geo'] = [
+                '@type' => 'GeoCoordinates',
+                'latitude' => (float) $property->latitude,
+                'longitude' => (float) $property->longitude,
+            ];
+        }
+
+        if ($property->bedrooms !== null) {
+            $propertyData['numberOfBedrooms'] = (int) $property->bedrooms;
+        }
+
+        if ($property->bathrooms !== null) {
+            $propertyData['numberOfBathroomsTotal'] = (int) $property->bathrooms;
+        }
+
+        if ($property->parking_spaces !== null) {
+            $propertyData['numberOfParkingSpaces'] = (int) $property->parking_spaces;
+        }
+
+        if ($property->area !== null) {
+            $propertyData['floorSize'] = [
+                '@type' => 'QuantitativeValue',
+                'value' => (float) $property->area,
+                'unitCode' => 'MTK',
+            ];
+        }
+
+        if ($property->lotsize !== null) {
+            $propertyData['lotSize'] = [
+                '@type' => 'QuantitativeValue',
+                'value' => (float) $property->lotsize,
+                'unitCode' => 'MTK',
+            ];
+        }
+
+        $offer = [
+            '@type' => 'Offer',
+            '@id' => $offerId,
+            'url' => $canonical,
+            'itemOffered' => ['@id' => $propertyId],
+            'availability' => 'https://schema.org/InStock',
+        ];
+
+        if ($property->price !== null) {
+            $offer['price'] = (float) $property->price;
+        }
+
+        if (filled($property->currency)) {
+            $offer['priceCurrency'] = strtoupper((string) $property->currency);
+        }
+
+        $graph = [
+            [
+                '@type' => 'RealEstateListing',
+                '@id' => $canonical . '#listing',
+                'url' => $canonical,
+                'name' => $property->title,
+                'description' => $this->generatePropertyMetaDescription($property, $locale),
+                'inLanguage' => $locale,
+                'image' => $imageUrls,
+                'about' => ['@id' => $propertyId],
+                'offers' => ['@id' => $offerId],
+            ],
+            $propertyData,
+            $offer,
+            $this->generateBreadcrumbStructuredData($property, $locale, $canonical),
+        ];
+
+        $businessFunction = $this->getBusinessFunction($transactionType);
+
+        if ($businessFunction !== null) {
+            $graph[2]['businessFunction'] = $businessFunction;
+        }
+
+        $seller = $this->generateSellerStructuredData($property, $locale);
+
+        if ($seller !== null) {
+            $graph[2]['seller'] = $seller;
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@graph' => $graph,
+        ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getPropertyImageUrls(PropertyListing $property): array
+    {
+        $images = $property->images
+            ->pluck('image_url')
+            ->filter()
+            ->map(fn (string $imageUrl): string => $this->toAbsoluteUrl($imageUrl))
+            ->unique()
+            ->values()
+            ->all();
+
+        if (empty($images)) {
+            $images[] = asset('images/default-property.jpg');
+        }
+
+        return $images;
+    }
+
+    private function toAbsoluteUrl(string $url): string
+    {
+        if (Str::startsWith($url, ['http://', 'https://'])) {
+            return $url;
+        }
+
+        return url('/' . ltrim($url, '/'));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getPropertyAddress(PropertyListing $property, string $countryCode): array
+    {
+        $address = [
+            '@type' => 'PostalAddress',
+            'addressLocality' => $property->city,
+            'addressRegion' => $property->state,
+            'addressCountry' => $countryCode === 'INTL' ? $property->country : $countryCode,
+        ];
+
+        if (filled($property->address)) {
+            $address['streetAddress'] = $property->address;
+        }
+
+        if (filled($property->postal_code)) {
+            $address['postalCode'] = $property->postal_code;
+        }
+
+        return array_filter($address, fn (mixed $value): bool => filled($value));
+    }
+
+    private function getSchemaPropertyType(string $propertyType): string
+    {
+        return match ($propertyType) {
+            'apartment' => 'Apartment',
+            'house' => 'SingleFamilyResidence',
+            'office' => 'OfficeBuilding',
+            'parking' => 'ParkingFacility',
+            default => 'Place',
+        };
+    }
+
+    private function getBusinessFunction(string $transactionType): ?string
+    {
+        return match ($transactionType) {
+            'sale' => 'https://schema.org/Sell',
+            'rent', 'temporary_rent' => 'https://schema.org/LeaseOut',
+            default => null,
+        };
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function generateSellerStructuredData(
+        PropertyListing $property,
+        string $locale
+    ): ?array {
+        if (!$property->relationLoaded('user') || !$property->user) {
+            return null;
+        }
+
+        $seller = [
+            '@type' => 'Person',
+            'name' => $property->user->name,
+        ];
+
+        if (filled($property->user->username)) {
+            $routeName = $locale === 'en' ? 'user.profile.en' : 'user.profile.es';
+            $seller['url'] = route($routeName, [
+                'locale' => $locale,
+                'username' => $property->user->username,
+            ]);
+        }
+
+        if (filled($property->user->agency)) {
+            $seller['worksFor'] = [
+                '@type' => 'Organization',
+                'name' => $property->user->agency,
+            ];
+        }
+
+        return $seller;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function generateBreadcrumbStructuredData(
+        PropertyListing $property,
+        string $locale,
+        string $canonical
+    ): array {
+        $countryUrl = url("/{$locale}/" . Str::slug($property->country));
+        $cityUrl = url("/{$locale}/" . Str::slug($property->country) . '/' . Str::slug($property->city));
+
+        return [
+            '@type' => 'BreadcrumbList',
+            '@id' => $canonical . '#breadcrumb',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => __('messages.home', [], $locale),
+                    'item' => url("/{$locale}"),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => $property->country,
+                    'item' => $countryUrl,
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => $property->city,
+                    'item' => $cityUrl,
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 4,
+                    'name' => $property->title,
+                    'item' => $canonical,
+                ],
+            ],
         ];
     }
 

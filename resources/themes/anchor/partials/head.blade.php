@@ -22,7 +22,7 @@
 {{-- Social Share Open Graph Meta Tags --}}
 @if(isset($seo->title) && isset($seo->description) && isset($seo->image))
     <meta property="og:title" content="{{ $seo->title }}">
-    <meta property="og:url" content="{{ Request::url() }}">
+    <meta property="og:url" content="{{ $seo->canonical ?? Request::url() }}">
     <meta property="og:image" content="{{ $seo->image }}">
     <meta property="og:type" content="@if(isset($seo->type)){{ $seo->type }}@else{{ 'article' }}@endif">
     <meta property="og:description" content="{{ $seo->description }}">

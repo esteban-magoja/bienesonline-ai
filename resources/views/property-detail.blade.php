@@ -657,10 +657,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         @foreach($relatedProperties as $related)
                             @php
-                                $relatedCountrySlug = Str::slug($related->country);
-                                $relatedCitySlug = Str::slug($related->city);
-                                $relatedTitleSlug = Str::slug($related->title);
-                                $relatedUrl = "/{$locale}/{$relatedCountrySlug}/{$relatedCitySlug}/propiedad/{$related->id}-{$relatedTitleSlug}";
+                                $relatedUrl = app(\App\Services\SeoService::class)
+                                    ->generatePropertyUrl($related, $locale);
                             @endphp
                             <a href="{{ $relatedUrl }}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                                 <!-- Property Image -->
