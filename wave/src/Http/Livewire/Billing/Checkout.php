@@ -45,7 +45,7 @@ class Checkout extends Component
         }
     }
 
-    public function redirectToStripeCheckout(Plan $plan): \Illuminate\Http\RedirectResponse
+    public function redirectToStripeCheckout(Plan $plan)
     {
         abort_unless(in_array('stripe', config('wave.billing_providers', ['stripe']), true), 404);
         abort_unless(! auth()->user()->hasActiveSubscription(), 403);
