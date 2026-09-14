@@ -3,8 +3,11 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-09-04 21:00:45","nombre":"Jaime Perez","email":"zetazoom88@gmail.com","telefono":"60297887","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Belén"},
-{"fecha":"2026-09-05 13:49:05","nombre":"Johanna ","email":"johannarojasmarin05@gmail.com","telefono":"","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Cartago","localidad_inmueble":"Dulce Nombre"}
+{"fecha":"2026-09-09 20:56:43","nombre":"Craig Simpson","email":"craigsimpsonfore@gmail.com","telefono":"5195798004","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Heredia","localidad_inmueble":"Belén"},
+{"fecha":"2026-09-10 19:47:30","nombre":"Deri","email":"drbth.prdm@gmail.com","telefono":"70247753","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Moravia"},
+{"fecha":"2026-09-11 13:30:16","nombre":"Dilan Zamora","email":"dilanzamora002@gmail.com","telefono":"72087967","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Heredia","localidad_inmueble":"Heredia"},
+{"fecha":"2026-09-11 15:22:21","nombre":"Juan Carlos Valerio Venegas","email":"valeriojc@hotmail.com","telefono":"8385-5559","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"San Francisco De Dos Ríos"},
+{"fecha":"2026-09-11 15:26:15","nombre":"Juan Carlos Valerio Venegas","email":"valeriojc@hotmail.com","telefono":"8385-5559","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Curridabat"}
 ]
 }
 ]

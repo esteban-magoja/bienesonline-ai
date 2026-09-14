@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-09-05 17:11:05","nombre":"francisco","email":"juanperz@yahoo.com","telefono":"+52333131719","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Jalisco","localidad_inmueble":"Guadalajara"}
+{"fecha":"2026-09-09 20:55:45","nombre":"Rita","email":"ritavazquezl@hotmail.com","telefono":"961 659 8306","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"México","localidad_inmueble":"Naucalpan De Juárez"}
 ]
 }
 ]

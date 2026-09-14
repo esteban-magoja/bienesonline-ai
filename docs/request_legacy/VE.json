@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-09-02 15:06:07","nombre":"Yennief ","email":"Yrojas.rahlosruices@gmail.com","telefono":"04249348888","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"},
-{"fecha":"2026-09-04 11:40:37","nombre":"Dori","email":"yaniracarrero704@gmail.com","telefono":"+584140548872","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Barinas","localidad_inmueble":"Barinas"}
+{"fecha":"2026-09-08 01:09:03","nombre":"Kheydi","email":"kheydiofficial@gmail.com","telefono":"04127576339","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Baruta"},
+{"fecha":"2026-09-08 09:32:21","nombre":"Fernando carabaño","email":"carabano49@gmail.com","telefono":"04144171694","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Nueva Esparta","localidad_inmueble":"Margarita sureste"},
+{"fecha":"2026-09-12 21:32:18","nombre":"LISBETH ORFILA","email":"lisbet291@gmail.com","telefono":"0424-2122608","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"}
 ]
 }
 ]

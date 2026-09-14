@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-08-21 20:12:44","nombre":"Nancy","email":"nancybeatrizgomez666@gmail.com","telefono":"3359605800","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Campana"}
+{"fecha":"2026-09-12 12:42:32","nombre":"Matías ","email":"matias.scocchia22@gmail.com","telefono":"2214955882","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Quilmes"},
+{"fecha":"2026-09-13 13:33:41","nombre":"bautista dellazuana","email":"tacuabedellazuana@hotmail.es","telefono":"3455448343","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Córdoba","localidad_inmueble":"Colón"}
 ]
 }
 ]

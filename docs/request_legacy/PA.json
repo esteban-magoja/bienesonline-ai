@@ -3,13 +3,11 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-09-03 08:31:23","nombre":"Monserrat","email":"malvarez0954@gmail.com","telefono":"64615174","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-09-04 14:28:05","nombre":"jacky parra","email":"asesoresinmobiliarios911@gmail.com","telefono":"60263893","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-09-04 21:12:01","nombre":"Miriam Vega ","email":"micre2912@gmail.com","telefono":"62417990","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-09-03 08:31:23","nombre":"Monserrat","email":"malvarez0954@gmail.com","telefono":"64615174","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
-{"fecha":"2026-09-04 14:28:05","nombre":"jacky parra","email":"asesoresinmobiliarios911@gmail.com","telefono":"60263893","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
-{"fecha":"2026-09-04 21:12:01","nombre":"Miriam Vega ","email":"micre2912@gmail.com","telefono":"62417990","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Panamá"},
-{"fecha":"2026-09-05 12:05:02","nombre":"Damaris","email":"damarisar@hotmail.com","telefono":"64002157","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Bella Vista"}
+{"fecha":"2026-09-07 22:01:22","nombre":"Eva","email":"eva_rvicente@yahoo.com","telefono":"+34678996080","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ancón"},
+{"fecha":"2026-09-09 10:34:33","nombre":"Christine","email":"gemrealtyco@gmail.com","telefono":"63893500","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-09-10 11:48:43","nombre":"Yeimy Rodriguez","email":"yeimy.lineth09@gmail.com","telefono":"68253870","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Las Mañanitas"},
+{"fecha":"2026-09-10 14:32:04","nombre":"Marc NARCISSE","email":"narcisse.marc@orange.fr","telefono":"+33680458949","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"Arraiján"},
+{"fecha":"2026-09-10 16:43:19","nombre":"Patricia Tamariz","email":"Pattydtamariz@outlook.com","telefono":"64952360","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"}
 ]
 }
 ]

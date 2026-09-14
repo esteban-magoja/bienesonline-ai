@@ -3,16 +3,15 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-08-31 17:53:59","nombre":"JOSE MANUEL","email":"arquitectura@colframe.com.co","telefono":"3168222153","tipo_inmueble":"Bodega","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-08-31 22:16:10","nombre":"José zapata","email":"ventanasyperfiles@hotmail.com","telefono":"3013244602","tipo_inmueble":"Bodega","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-09-03 19:05:47","nombre":"Valeria ","email":"valeriagutierrezj19@gmail.com","telefono":"3042531222","tipo_inmueble":"Finca","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Copacabana"},
-{"fecha":"2026-09-01 11:33:09","nombre":"Luz García ","email":"luzmagarcia1008@gmail.com","telefono":"3204248966","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Villeta"},
-{"fecha":"2026-09-02 14:11:09","nombre":"Irma del Carmen","email":"imj.angel32311@hotmail.com","telefono":"3184004254","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
-{"fecha":"2026-09-04 12:44:35","nombre":"Kasey","email":"kaseymichellgarcia@gmail.com","telefono":"3054478170","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Sonsón"},
-{"fecha":"2026-09-05 23:55:27","nombre":"Mayerly Sanchez","email":"mayesanchez16@gmail.com","telefono":"3154222610","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Bogotá Dc"},
-{"fecha":"2026-09-06 17:28:47","nombre":"JOHANNA SOLER","email":"johannasolermine@gmail.com","telefono":"3192241979","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Meta","localidad_inmueble":"Villavicencio"},
-{"fecha":"2026-09-07 01:21:26","nombre":"Vilma Avila ","email":"vilmaeavilag@gmail.com","telefono":"372608889","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Cajicá"},
-{"fecha":"2026-09-07 10:10:40","nombre":"Beatriz","email":"bviveros@hotmail.com","telefono":"3004971871","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Floridablanca"}
+{"fecha":"2026-09-07 10:20:46","nombre":"Beatriz","email":"bviveros@hotmail.com","telefono":"3004971871","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Floridablanca"},
+{"fecha":"2026-09-08 10:51:28","nombre":"Valeria CANDELA","email":"valeria.candela205@gmail.com","telefono":"3006654371","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Jamundí"},
+{"fecha":"2026-09-08 21:59:19","nombre":"plutarco","email":"plutarco.torres@hotmail.com","telefono":"3205411587","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Atlántico","localidad_inmueble":"Puerto Colombia"},
+{"fecha":"2026-09-09 13:11:54","nombre":"beatriz castañeda","email":"beatrizeugenia.castaneda@gmail.com","telefono":"3007131002","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Caldas","localidad_inmueble":"Manizales"},
+{"fecha":"2026-09-10 14:41:28","nombre":"Alba Lucia","email":"albarestrepogarcia@gmail.com","telefono":"3104474390","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-09-10 20:23:23","nombre":"SOFIA SEPULVEDA","email":"adrianasofia06hotmail.com@gmail.com","telefono":"3124360215","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santander","localidad_inmueble":"Girón"},
+{"fecha":"2026-09-11 16:02:24","nombre":"Alba Lucia","email":"albarestrepogarcia@gmail.com","telefono":"3104474390","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-09-12 10:04:54","nombre":"maria","email":"angeefore@hotmail.com","telefono":"3165008666","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Fusagasugá"},
+{"fecha":"2026-09-12 18:26:59","nombre":"Soma","email":"somu.rm1@gmail.com","telefono":"3017247422","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Atlántico","localidad_inmueble":"Barranquilla"}
 ]
 }
 ]
