@@ -345,7 +345,7 @@ new class extends Component {
 
         $this->matchCounts = [];
         foreach ($this->propertyListings as $listing) {
-            $fullCache = Cache::get("matches_listing_{$listing->id}");
+            $fullCache = Cache::get("matches_listing_all_{$listing->id}");
             if ($fullCache !== null) {
                 $this->matchCounts[$listing->id] = $fullCache->count();
                 continue;

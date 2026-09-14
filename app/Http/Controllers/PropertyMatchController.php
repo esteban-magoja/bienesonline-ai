@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\PropertyListing;
+use App\Models\PropertyRequest;
 use App\Services\PropertyMatchingService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginatorInstance;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class PropertyMatchController extends Controller
 {
+    private const MATCHES_PER_PAGE = 10;
+
     public function __construct(protected PropertyMatchingService $matchingService) { }
 
     /**
@@ -20,8 +26,6 @@ class PropertyMatchController extends Controller
      */
     public function index(): \Illuminate\Contracts\View\View
     {
-        abort_unless(auth()->user()->hasPremiumAccess(), 403);
-
         $userId = auth()->id();
 
         $allMatches = $this->buildMatchesBaseQuery($userId)
@@ -136,40 +140,62 @@ class PropertyMatchController extends Controller
     /**
      * Show full pgvector-powered matches for a specific listing.
      */
-    public function show(PropertyListing $listing): \Illuminate\Contracts\View\View
+    public function show(Request $request, PropertyListing $listing): \Illuminate\Contracts\View\View
     {
-        abort_unless(auth()->user()->hasPremiumAccess(), 403);
-
         if ($listing->user_id !== auth()->id()) {
             abort(403);
         }
 
-        $matches = Cache::remember("matches_listing_{$listing->id}", 3600, function () use ($listing) {
-            return $this->matchingService->findMatchesForListing($listing, 20)
+        $allMatches = Cache::remember("matches_listing_all_{$listing->id}", 3600, function () use ($listing) {
+            return $this->matchingService->getAllMatchesForListing($listing)
                 ->each(fn ($r) => $r->makeHidden('embedding'));
         });
 
-        $totalMatches = Cache::remember("matches_listing_count_{$listing->id}", 3600, function () use ($listing) {
-            return $this->matchingService->countMatchesForListing($listing);
-        });
-
         $recentThreshold = now()->subDays(7);
-
-        // Sort: intelligent matches (exact/semantic) first, then flexible.
-        // Within each group: recent matches (last 7 days) before older ones, then by score.
-        $sortedMatches = $matches
-            ->sortByDesc(fn ($r) => [
-                in_array($r->match_level, ['exact', 'semantic']) ? 1 : 0,
-                $r->created_at >= $recentThreshold ? 1 : 0,
-                $r->match_score,
-            ])
-            ->values();
+        $sort = $this->resolveSort($request);
+        $matches = $this->paginateMatches($this->sortMatches($allMatches, $sort), $request);
 
         return view('theme::pages.dashboard.matches.show', [
             'listing'          => $listing,
-            'matches'          => $sortedMatches,
-            'totalMatches'     => $totalMatches,
+            'matches'          => $matches,
+            'sort'             => $sort,
             'recentThreshold'  => $recentThreshold,
         ]);
+    }
+
+    private function resolveSort(Request $request): string
+    {
+        $sort = $request->query('sort', 'newest');
+
+        return in_array($sort, ['newest', 'score'], true) ? $sort : 'newest';
+    }
+
+    private function sortMatches(Collection $matches, string $sort): Collection
+    {
+        return $matches
+            ->sortByDesc(function (PropertyRequest $match) use ($sort): array {
+                $createdAt = $match->created_at?->timestamp ?? 0;
+
+                return $sort === 'score'
+                    ? [(int) $match->match_score, $createdAt, (int) $match->id]
+                    : [$createdAt, (int) $match->id];
+            })
+            ->values();
+    }
+
+    private function paginateMatches(Collection $matches, Request $request): LengthAwarePaginator
+    {
+        $page = max($request->integer('page', 1), 1);
+
+        return new LengthAwarePaginatorInstance(
+            $matches->forPage($page, self::MATCHES_PER_PAGE)->values(),
+            $matches->count(),
+            self::MATCHES_PER_PAGE,
+            $page,
+            [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ],
+        );
     }
 }

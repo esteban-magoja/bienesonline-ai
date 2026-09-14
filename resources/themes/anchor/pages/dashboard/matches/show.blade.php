@@ -5,14 +5,27 @@
             :title="__('dashboard.matches_section.for_listing') . ': ' . $listing->title"
             description="{{ __('dashboard.matches_section.description') }}"
             :border="false"
-        >
-            <x-slot name="actions">
-                <a href="{{ route('dashboard.matches.index') }}" 
-                   class="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors">
-                    {{ __('dashboard.request_form.back') }}
+        />
+
+        <div class="my-5 flex flex-wrap items-center justify-between gap-3 py-1 sm:my-6">
+            <div class="flex w-full flex-wrap items-center justify-center gap-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 sm:w-auto">
+                <span class="px-2 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    {{ __('dashboard.matches_section.sort_by') }}
+                </span>
+                <a href="{{ route('dashboard.matches.show', ['listing' => $listing, 'sort' => 'newest']) }}"
+                   class="rounded-md px-3 py-1.5 text-sm font-medium transition-colors {{ $sort === 'newest' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-white/70 dark:hover:bg-gray-700/70' }}">
+                    {{ __('dashboard.matches_section.sort_newest') }}
                 </a>
-            </x-slot>
-        </x-app.heading>
+                <a href="{{ route('dashboard.matches.show', ['listing' => $listing, 'sort' => 'score']) }}"
+                   class="rounded-md px-3 py-1.5 text-sm font-medium transition-colors {{ $sort === 'score' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-white/70 dark:hover:bg-gray-700/70' }}">
+                    {{ __('dashboard.matches_section.sort_score') }}
+                </a>
+            </div>
+            <a href="{{ route('dashboard.matches.index') }}"
+               class="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                {{ __('dashboard.request_form.back') }}
+            </a>
+        </div>
 
         <!-- Listing Info -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
@@ -69,16 +82,32 @@
 
         <!-- Matches Section -->
         <div>
-            <h3 class="text-xl font-bold text-gray-900 mb-4">
-                {{ __('dashboard.matches_section.matching_requests') }}
-                @if($matches->isNotEmpty())
-                    @if(($totalMatches ?? 0) > $matches->count())
-                        ({{ __('dashboard.matches_section.top_of_total', ['top' => $matches->count(), 'total' => $totalMatches]) }})
-                    @else
-                        ({{ $matches->count() }})
+            @php
+                $sortLabel = $sort === 'score'
+                    ? __('dashboard.matches_section.sort_score')
+                    : __('dashboard.matches_section.sort_newest');
+                $alternateSort = $sort === 'score' ? 'newest' : 'score';
+                $alternateSortLabel = $alternateSort === 'score'
+                    ? __('dashboard.matches_section.sort_score')
+                    : __('dashboard.matches_section.sort_newest');
+            @endphp
+            <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <h3 class="text-xl font-bold text-gray-900">
+                    {{ __('dashboard.matches_section.matching_requests') }}
+                    @if($matches->total() > 0)
+                        ({{ __('dashboard.matches_section.total_matches_count', ['count' => $matches->total()]) }})
                     @endif
-                @endif
-            </h3>
+                </h3>
+                <div class="flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span>
+                        {{ __('dashboard.matches_section.current_sort', ['sort' => $sortLabel]) }}
+                    </span>
+                    <a href="{{ route('dashboard.matches.show', ['listing' => $listing, 'sort' => $alternateSort]) }}"
+                       class="font-medium text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300">
+                        {{ __('dashboard.matches_section.change_sort_to', ['sort' => $alternateSortLabel]) }}
+                    </a>
+                </div>
+            </div>
 
             @if($matches->isEmpty())
                 <div class="bg-white rounded-lg shadow p-8 text-center">
@@ -226,6 +255,12 @@
                         </div>
                     @endforeach
                 </div>
+
+                @if($matches->hasPages())
+                    <div class="mt-6">
+                        {{ $matches->links() }}
+                    </div>
+                @endif
             @endif
         </div>
 

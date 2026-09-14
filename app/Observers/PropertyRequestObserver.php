@@ -123,6 +123,7 @@ class PropertyRequestObserver
         $affectedListings->each(function (int $userId, int $listingId) use (&$clearedUserIds): void {
             Cache::forget("matches_listing_count_{$listingId}");
             Cache::forget("matches_listing_{$listingId}");
+            Cache::forget("matches_listing_all_{$listingId}");
             Cache::forget("matches_index_{$userId}");
 
             if (! in_array($userId, $clearedUserIds, true)) {

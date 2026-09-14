@@ -44,20 +44,24 @@ test('dashboard_matches_inbound cache is cleared when listing is deleted', funct
     $userId = createTestUser();
     $listing = PropertyListing::factory()->create(['user_id' => $userId]);
     Cache::put("dashboard_matches_inbound_{$userId}", 99, 21600);
+    Cache::put("matches_listing_all_{$listing->id}", collect([1]), 3600);
 
     $listing->delete();
 
-    expect(Cache::has("dashboard_matches_inbound_{$userId}"))->toBeFalse();
+    expect(Cache::has("dashboard_matches_inbound_{$userId}"))->toBeFalse()
+        ->and(Cache::has("matches_listing_all_{$listing->id}"))->toBeFalse();
 });
 
 test('dashboard_matches_inbound cache is cleared when listing is_active changes', function (): void {
     $userId = createTestUser();
     $listing = PropertyListing::factory()->create(['user_id' => $userId, 'is_active' => true]);
     Cache::put("dashboard_matches_inbound_{$userId}", 99, 21600);
+    Cache::put("matches_listing_all_{$listing->id}", collect([1]), 3600);
 
     $listing->update(['is_active' => false]);
 
-    expect(Cache::has("dashboard_matches_inbound_{$userId}"))->toBeFalse();
+    expect(Cache::has("dashboard_matches_inbound_{$userId}"))->toBeFalse()
+        ->and(Cache::has("matches_listing_all_{$listing->id}"))->toBeFalse();
 });
 
 test('dashboard_matches_outbound cache is cleared when request is created', function (): void {
@@ -115,5 +119,3 @@ test('dashboard_matches_outbound cache is cleared when request is deleted', func
 
     expect(Cache::has("dashboard_matches_outbound_{$userId}"))->toBeFalse();
 });
-
-

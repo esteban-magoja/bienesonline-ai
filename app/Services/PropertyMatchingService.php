@@ -118,7 +118,15 @@ class PropertyMatchingService
      */
     public function findMatchesForListing(PropertyListing $listing, int $limit = 20): Collection
     {
-        return $this->getAllScoredMatchesForListing($listing)->take($limit);
+        return $this->getAllMatchesForListing($listing)->take($limit);
+    }
+
+    /**
+     * Get all scored matches for a listing.
+     */
+    public function getAllMatchesForListing(PropertyListing $listing): Collection
+    {
+        return $this->getAllScoredMatchesForListing($listing);
     }
 
     /**

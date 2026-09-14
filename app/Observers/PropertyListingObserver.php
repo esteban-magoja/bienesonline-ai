@@ -52,6 +52,7 @@ class PropertyListingObserver
     {
         Cache::forget("matches_listing_count_{$propertyListing->id}");
         Cache::forget("matches_listing_{$propertyListing->id}");
+        Cache::forget("matches_listing_all_{$propertyListing->id}");
         Cache::forget("matches_summary_{$propertyListing->user_id}");
 
         if ($propertyListing->wasChanged('is_active')) {
@@ -89,6 +90,7 @@ class PropertyListingObserver
     {
         Cache::forget("matches_listing_count_{$propertyListing->id}");
         Cache::forget("matches_listing_{$propertyListing->id}");
+        Cache::forget("matches_listing_all_{$propertyListing->id}");
         Cache::forget("dashboard_listings_{$propertyListing->user_id}");
         Cache::forget("dashboard_matches_inbound_{$propertyListing->user_id}");
         Cache::forget("matches_summary_{$propertyListing->user_id}");
