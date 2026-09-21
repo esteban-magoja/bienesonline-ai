@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-09-09 11:19:23","nombre":"Glenny Segura","email":"glenny.segura@gmail.com","telefono":"829-285-3446","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Nacional","localidad_inmueble":"Santo Domingo"}
+{"fecha":"2026-09-17 16:29:36","nombre":"Rebecca Saldivar ","email":"Shannellsaldivar.56@hotmail.com","telefono":"8493981647","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"},
+{"fecha":"2026-09-19 13:18:34","nombre":"JUANA MARIA Rodriguez","email":"restituyorodriguezj@gmail.com","telefono":"8098551922","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santo Domingo Este","localidad_inmueble":"Santo Domingo Este"}
 ]
 }
 ]

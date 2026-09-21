@@ -3,11 +3,11 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-09-07 22:01:22","nombre":"Eva","email":"eva_rvicente@yahoo.com","telefono":"+34678996080","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ancón"},
-{"fecha":"2026-09-09 10:34:33","nombre":"Christine","email":"gemrealtyco@gmail.com","telefono":"63893500","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-09-10 11:48:43","nombre":"Yeimy Rodriguez","email":"yeimy.lineth09@gmail.com","telefono":"68253870","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Las Mañanitas"},
-{"fecha":"2026-09-10 14:32:04","nombre":"Marc NARCISSE","email":"narcisse.marc@orange.fr","telefono":"+33680458949","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"Arraiján"},
-{"fecha":"2026-09-10 16:43:19","nombre":"Patricia Tamariz","email":"Pattydtamariz@outlook.com","telefono":"64952360","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"}
+{"fecha":"2026-09-18 17:02:18","nombre":"Hector ","email":"hectorjrangel2@gmail.com","telefono":"67750240","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"San Francisco"},
+{"fecha":"2026-09-18 20:33:46","nombre":"Widney Marciaga ","email":"widney.marciaga@gmail.com","telefono":"64484234","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-09-19 05:34:47","nombre":"ruben","email":"rubenfridman1826@hotmail.com","telefono":"541166815141","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-09-19 08:55:54","nombre":"Rodolfo Ford ","email":"Rodolfollerena341@gmail.com","telefono":"69456022","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"La Chorrera"},
+{"fecha":"2026-09-20 12:47:19","nombre":"Roberto Sanclemente ","email":"Sanclemente.2772@gmail.com","telefono":"62932287","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Chiriquí","localidad_inmueble":"David"}
 ]
 }
 ]

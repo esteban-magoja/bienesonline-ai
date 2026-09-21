@@ -3,15 +3,14 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-09-07 10:20:46","nombre":"Beatriz","email":"bviveros@hotmail.com","telefono":"3004971871","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Floridablanca"},
-{"fecha":"2026-09-08 10:51:28","nombre":"Valeria CANDELA","email":"valeria.candela205@gmail.com","telefono":"3006654371","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Jamundí"},
-{"fecha":"2026-09-08 21:59:19","nombre":"plutarco","email":"plutarco.torres@hotmail.com","telefono":"3205411587","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Atlántico","localidad_inmueble":"Puerto Colombia"},
-{"fecha":"2026-09-09 13:11:54","nombre":"beatriz castañeda","email":"beatrizeugenia.castaneda@gmail.com","telefono":"3007131002","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Caldas","localidad_inmueble":"Manizales"},
-{"fecha":"2026-09-10 14:41:28","nombre":"Alba Lucia","email":"albarestrepogarcia@gmail.com","telefono":"3104474390","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-09-10 20:23:23","nombre":"SOFIA SEPULVEDA","email":"adrianasofia06hotmail.com@gmail.com","telefono":"3124360215","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santander","localidad_inmueble":"Girón"},
-{"fecha":"2026-09-11 16:02:24","nombre":"Alba Lucia","email":"albarestrepogarcia@gmail.com","telefono":"3104474390","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-09-12 10:04:54","nombre":"maria","email":"angeefore@hotmail.com","telefono":"3165008666","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Fusagasugá"},
-{"fecha":"2026-09-12 18:26:59","nombre":"Soma","email":"somu.rm1@gmail.com","telefono":"3017247422","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Atlántico","localidad_inmueble":"Barranquilla"}
+{"fecha":"2026-09-14 16:48:53","nombre":"JUAN MANUEL VARGAS GALAN","email":"jvargas@cinecolombia.com","telefono":"3102653020","tipo_inmueble":"Bodega","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
+{"fecha":"2026-09-14 18:45:37","nombre":"Adriana","email":"adrimolo2021@gmail.com","telefono":"3194446143","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Quindío","localidad_inmueble":"Armenia"},
+{"fecha":"2026-09-15 14:45:44","nombre":"Edith","email":"maguita8709@gmail.com","telefono":"3163813753","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Yumbo"},
+{"fecha":"2026-09-16 09:15:21","nombre":"Sandra vera","email":"tout_06@hotmail.com","telefono":"3204726639","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Bogotá Dc"},
+{"fecha":"2026-09-16 21:33:28","nombre":"Claudia Buitrago","email":"claudiabuitragosa07@gmail.com","telefono":"3150024441","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
+{"fecha":"2026-09-17 13:32:03","nombre":"Greissy ","email":"greissy.escobar@gmail.com","telefono":"3182607121","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
+{"fecha":"2026-09-18 14:50:05","nombre":"ALBA LUCIA RESTREPO GARCIA","email":"albarestrepogarcia@gmail.com","telefono":"3104474390","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-09-20 19:06:51","nombre":"Manuel","email":"vallefotografia@gmail.com","telefono":"3142385095","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Bogotá Dc"}
 ]
 }
 ]

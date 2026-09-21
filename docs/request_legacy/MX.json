@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-09-09 20:55:45","nombre":"Rita","email":"ritavazquezl@hotmail.com","telefono":"961 659 8306","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"México","localidad_inmueble":"Naucalpan De Juárez"}
+{"fecha":"2026-09-18 22:00:18","nombre":"Nadege Jeudi ","email":"nadegesaintil97@gmail.com","telefono":"9625001028","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Nuevo León","localidad_inmueble":"Ciudad Apodaca"},
+{"fecha":"2026-09-20 15:19:30","nombre":"Alejandra Ceballos","email":"alejandraceballosm84@gmail.com","telefono":"6442823232","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Sonora","localidad_inmueble":"Hermosillo"}
 ]
 }
 ]
