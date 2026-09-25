@@ -11,8 +11,8 @@ return [
     */
 
     // Home
-    'home_title' => 'BienesOnLine.ai - Intelligent Real Estate Platform',
-    'home_description' => 'Connect properties with buyers and agents intelligently using AI. Search, publish and find your ideal property.',
+    'home_title' => 'Smart Real Estate Portal and Search Engine | BienesOnLine.ai',
+    'home_description' => 'Search for properties across multiple countries. Post your listing, connect with agents and buyers, and discover intelligent matches powered by AI.',
     'home_keywords' => 'real estate, properties, houses, apartments, rental, sale, argentina',
     
     // Property search

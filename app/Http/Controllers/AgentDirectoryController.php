@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\PropertySlugHelper;
+use App\Helpers\SeoLocaleHelper;
 use App\Models\PropertyListing;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -69,6 +70,39 @@ class AgentDirectoryController extends Controller
         $description = $locationLabel
             ? __('properties.agents_directory.description_with_location', ['location' => $locationLabel])
             : __('properties.agents_directory.description');
+        $countryCode = $resolvedCountry
+            ? PropertySlugHelper::getCountryCode($resolvedCountry)
+            : null;
+        $alternateUrls = [
+            'es' => route($resolvedCountry ? 'agents.directory.es.location' : 'agents.directory.es', array_filter([
+                'locale' => 'es',
+                'country' => $resolvedCountry ? PropertySlugHelper::normalize($resolvedCountry) : null,
+                'state' => $resolvedState ? PropertySlugHelper::normalize($resolvedState) : null,
+                'city' => $resolvedCity ? PropertySlugHelper::normalize($resolvedCity) : null,
+            ])),
+            'en' => route($resolvedCountry ? 'agents.directory.en.location' : 'agents.directory.en', array_filter([
+                'locale' => 'en',
+                'country' => $resolvedCountry ? PropertySlugHelper::normalize($resolvedCountry) : null,
+                'state' => $resolvedState ? PropertySlugHelper::normalize($resolvedState) : null,
+                'city' => $resolvedCity ? PropertySlugHelper::normalize($resolvedCity) : null,
+            ])),
+        ];
+        $hreflangTags = [];
+
+        foreach ($alternateUrls as $alternateLocale => $alternateUrl) {
+            $hreflangTags[] = [
+                'rel' => 'alternate',
+                'hreflang' => SeoLocaleHelper::getLanguageTag($alternateLocale, $countryCode),
+                'href' => $alternateUrl,
+            ];
+        }
+
+        $hreflangTags[] = [
+            'rel' => 'alternate',
+            'hreflang' => 'x-default',
+            'href' => $alternateUrls['es'],
+        ];
+        $alternateLocale = $locale === 'es' ? 'en' : 'es';
 
         $seo = [
             'title' => $title,
@@ -82,20 +116,12 @@ class AgentDirectoryController extends Controller
             'og_title' => $title,
             'og_description' => $description,
             'og_type' => 'website',
-            'hreflang' => [
-                'es' => route($resolvedCountry ? 'agents.directory.es.location' : 'agents.directory.es', array_filter([
-                    'locale' => 'es',
-                    'country' => $resolvedCountry ? PropertySlugHelper::normalize($resolvedCountry) : null,
-                    'state' => $resolvedState ? PropertySlugHelper::normalize($resolvedState) : null,
-                    'city' => $resolvedCity ? PropertySlugHelper::normalize($resolvedCity) : null,
-                ])),
-                'en' => route($resolvedCountry ? 'agents.directory.en.location' : 'agents.directory.en', array_filter([
-                    'locale' => 'en',
-                    'country' => $resolvedCountry ? PropertySlugHelper::normalize($resolvedCountry) : null,
-                    'state' => $resolvedState ? PropertySlugHelper::normalize($resolvedState) : null,
-                    'city' => $resolvedCity ? PropertySlugHelper::normalize($resolvedCity) : null,
-                ])),
+            'html_lang' => SeoLocaleHelper::getLanguageTag($locale, $countryCode),
+            'og_locale' => SeoLocaleHelper::getOpenGraphLocale($locale, $countryCode),
+            'og_alternate_locales' => [
+                SeoLocaleHelper::getOpenGraphLocale($alternateLocale, $countryCode),
             ],
+            'hreflang_tags' => $hreflangTags,
         ];
 
         $breadcrumbs = $this->buildBreadcrumbs(

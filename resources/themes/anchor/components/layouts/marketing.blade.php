@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ data_get($seo ?? null, 'html_lang', app()->getLocale()) }}">
 <head>
     @include('theme::partials.head', ['seo' => ($seo ?? null) ])
 </head>

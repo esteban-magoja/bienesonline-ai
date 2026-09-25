@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helpers\PropertySlugHelper;
+use App\Helpers\SeoLocaleHelper;
 use App\Models\PropertyListing;
 use App\Models\PropertyRequest;
 use App\Models\PropertyType;
@@ -360,15 +361,16 @@ class SeoService
     /**
      * Generate hreflang tags for property
      */
-    public function generateHreflangTags(PropertyListing $property): array
+    public function generateHreflangTags(PropertyListing $property, ?string $countryCode = null): array
     {
         $tags = [];
         $supported = config('locales.supported', ['es', 'en']);
+        $countryCode ??= PropertySlugHelper::getCountryCode((string) $property->country);
         
         foreach ($supported as $locale) {
             $tags[] = [
                 'rel' => 'alternate',
-                'hreflang' => $locale,
+                'hreflang' => SeoLocaleHelper::getLanguageTag($locale, $countryCode),
                 'href' => $this->generatePropertyUrl($property, $locale),
             ];
         }
@@ -420,20 +422,17 @@ class SeoService
     /**
      * Generate Open Graph locale tags
      */
-    public function generateOgLocaleTags(string $locale): array
+    public function generateOgLocaleTags(string $locale, ?string $countryCode = null): array
     {
-        $localeMap = [
-            'es' => 'es_ES',
-            'en' => 'en_US',
-        ];
-        
-        $ogLocale = $localeMap[$locale] ?? 'es_ES';
+        $ogLocale = SeoLocaleHelper::getOpenGraphLocale($locale, $countryCode);
         $supported = config('locales.supported', ['es', 'en']);
-        
-        $alternates = array_filter(
-            array_map(fn($l) => $localeMap[$l] ?? null, $supported),
-            fn($l) => $l !== $ogLocale
-        );
+        $alternates = [];
+
+        foreach ($supported as $supportedLocale) {
+            if ($supportedLocale !== $locale) {
+                $alternates[] = SeoLocaleHelper::getOpenGraphLocale($supportedLocale, $countryCode);
+            }
+        }
         
         return [
             'locale' => $ogLocale,

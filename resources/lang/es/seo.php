@@ -11,8 +11,8 @@ return [
     */
 
     // Home / Inicio
-    'home_title' => 'BienesOnLine.ai - Plataforma Inmobiliaria Inteligente',
-    'home_description' => 'Conectamos propiedades con compradores y agentes de forma inteligente usando IA. Busca, publica y encuentra tu propiedad ideal.',
+    'home_title' => 'Portal y buscador inmobiliario inteligente | BienesOnLine.ai',
+    'home_description' => 'Busca propiedades inmuebles en varios países. Publica tu anuncio, conecta con agentes y compradores y encuentra coincidencias inteligentes con IA.',
     'home_keywords' => 'inmobiliaria, propiedades, casas, departamentos, alquiler, venta, argentina',
     
     // Búsqueda de propiedades

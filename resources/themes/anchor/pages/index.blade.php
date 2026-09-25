@@ -3,14 +3,7 @@
     name('home');
 ?>
 
-<x-layouts.marketing
-    :seo="[
-        'title'         => setting('site.title', 'Raxta - Plataforma Inmobiliaria Inteligente'),
-        'description'   => setting('site.description', 'BienesOnline evoluciona: la misma red que conocés, ahora potenciada con IA para conectar propiedades con agentes y compradores. Donde antes buscabas inmuebles… ahora encontrás matches inteligentes.'),
-        'image'         => url('/og_image.png'),
-        'type'          => 'website'
-    ]"
->
+<x-layouts.marketing :seo="$seo">
         
         <x-marketing.sections.hero :countries="$availableCountries" />
         

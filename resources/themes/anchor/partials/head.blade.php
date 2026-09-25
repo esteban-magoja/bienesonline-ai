@@ -37,21 +37,21 @@
         <meta property="og:image:height" content="{{ $seo->image_h }}">
     @endif
     
-    {{-- OG Locale Tags --}}
-    @if(isset($seo->og_locale))
-        <meta property="og:locale" content="{{ $seo->og_locale }}">
-        @if(isset($seo->og_alternate_locales))
-            @foreach($seo->og_alternate_locales as $altLocale)
-                <meta property="og:locale:alternate" content="{{ $altLocale }}">
-            @endforeach
-        @endif
-    @endif
-
     {{-- Twitter Card Meta Tags --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $seo->title }}">
     <meta name="twitter:description" content="{{ $seo->description }}">
     <meta name="twitter:image" content="{{ $seo->image }}">
+@endif
+
+{{-- OG Locale Tags --}}
+@if(isset($seo->og_locale))
+    <meta property="og:locale" content="{{ $seo->og_locale }}">
+    @if(isset($seo->og_alternate_locales))
+        @foreach($seo->og_alternate_locales as $altLocale)
+            <meta property="og:locale:alternate" content="{{ $altLocale }}">
+        @endforeach
+    @endif
 @endif
 
 {{-- Hreflang Tags for SEO --}}

@@ -11,7 +11,7 @@
 @foreach($url['alternates'] as $lang => $href)
         <xhtml:link rel="alternate" hreflang="{{ $lang }}" href="{{ $href }}" />
 @endforeach
-        <xhtml:link rel="alternate" hreflang="x-default" href="{{ $url['alternates']['es'] }}" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="{{ $url['x_default'] ?? $url['alternates']['es'] }}" />
     </url>
 @endforeach
 </urlset>

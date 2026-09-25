@@ -87,12 +87,18 @@ Route::get('/', function () {
 Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
     
     // Home route
-    Route::get('/', function () {
+    Route::get('/', function (string $locale) {
         $seo = [
-            'title' => setting('site.title', 'Raxta - Plataforma Inmobiliaria Inteligente'),
-            'description' => setting('site.description', 'Conectamos propiedades con compradores y agentes de forma inteligente.'),
+            'title' => __('seo.home_title'),
+            'description' => __('seo.home_description'),
             'image' => url('/og_image.png'),
-            'type' => 'website'
+            'type' => 'website',
+            'canonical' => route('home', ['locale' => $locale]),
+            'hreflang_tags' => [
+                ['rel' => 'alternate', 'hreflang' => 'es', 'href' => route('home', ['locale' => 'es'])],
+                ['rel' => 'alternate', 'hreflang' => 'en', 'href' => route('home', ['locale' => 'en'])],
+                ['rel' => 'alternate', 'hreflang' => 'x-default', 'href' => route('home', ['locale' => 'es'])],
+            ],
         ];
         $availableCountries = \App\Helpers\PropertySlugHelper::getAvailableCountries();
 

@@ -6,6 +6,7 @@ use App\Models\PropertyListing;
 use App\Models\PropertyType;
 use App\Models\TransactionType;
 use App\Helpers\PropertySlugHelper;
+use App\Helpers\SeoLocaleHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -77,6 +78,15 @@ class PropertyListingController extends Controller
         // Paginación
         $properties = $query->with(['user', 'primaryImage', 'firstImage'])->paginate(20)->withQueryString();
 
+        $countryHubContent = $this->getListingHubContent(
+            $countryName,
+            $locale,
+            $transactionType,
+            $propertyType,
+            $state,
+            $city
+        );
+
         // Generar breadcrumbs con tipos del país
         $breadcrumbs = PropertySlugHelper::generateBreadcrumbs(
             $locale,
@@ -91,7 +101,7 @@ class PropertyListingController extends Controller
         // Generar metadata SEO
         $seo = $this->generateSeoMetadata(
             $countryName, $countryCode, $transactionType, $propertyType, $state, $city,
-            $properties->total(), $locale
+            $properties->total(), $locale, $countryHubContent['description']
         );
 
         // Opciones de filtros para el sidebar
@@ -101,15 +111,6 @@ class PropertyListingController extends Controller
         $countryHubSections = $this->getListingNavigationSections(
             $countryName,
             $countryCode,
-            $locale,
-            $transactionType,
-            $propertyType,
-            $state,
-            $city
-        );
-
-        $countryHubContent = $this->getListingHubContent(
-            $countryName,
             $locale,
             $transactionType,
             $propertyType,
@@ -170,7 +171,7 @@ class PropertyListingController extends Controller
         if ($propertyType && $transactionType) {
             return [
                 'title' => __('properties.country_hub.context.type_and_transaction_title', [
-                    'property_type' => $propertyLabel,
+                    'property_type' => Str::lower($propertyLabel),
                     'transaction_type' => $transactionLabel,
                     'location' => $location,
                 ], $locale),
@@ -185,7 +186,7 @@ class PropertyListingController extends Controller
         if ($propertyType) {
             return [
                 'title' => __('properties.country_hub.context.type_title', [
-                    'property_type' => $propertyLabel,
+                    'property_type' => Str::lower($propertyLabel),
                     'location' => $location,
                 ], $locale),
                 'description' => __('properties.country_hub.context.type_description', [
@@ -198,7 +199,7 @@ class PropertyListingController extends Controller
         if ($transactionType) {
             return [
                 'title' => __('properties.country_hub.context.transaction_title', [
-                    'properties' => $propertyLabel,
+                    'properties' => Str::lower($propertyLabel),
                     'transaction_type' => $transactionLabel,
                     'location' => $location,
                 ], $locale),
@@ -211,7 +212,7 @@ class PropertyListingController extends Controller
 
         return [
             'title' => __('properties.country_hub.context.location_title', [
-                'properties' => $propertyLabel,
+                'properties' => Str::lower($propertyLabel),
                 'location' => $location,
             ], $locale),
             'description' => __('properties.country_hub.context.location_description', [
@@ -224,6 +225,13 @@ class PropertyListingController extends Controller
     {
         if ($locale !== 'en') {
             return $propertyType->label_plural ?: $propertyType->label;
+        }
+
+        $translationKey = 'properties.types_plural.' . $propertyType->value_en;
+        $translatedPlural = __($translationKey, [], $locale);
+
+        if ($translatedPlural !== $translationKey) {
+            return $translatedPlural;
         }
 
         return Str::plural(PropertyType::getLabel($propertyType->value, $locale));
@@ -343,23 +351,22 @@ class PropertyListingController extends Controller
         ?State $state,
         ?City $city,
         int $total,
-        string $locale
+        string $locale,
+        string $contextDescription
     ): array {
         $parts = [];
 
-        // Tipo de propiedad: usar label_plural si existe
         if ($propertyType) {
-            $parts[] = $propertyType->label_plural ?: $propertyType->label;
+            $parts[] = $this->getPropertyTypePluralLabel($propertyType, $locale);
         } else {
             $parts[] = __('properties.properties', [], $locale);
         }
 
-        // Tipo de operación: usar label
         if ($transactionType) {
-            $parts[] = __('properties.for', [], $locale) . ' ' . strtolower($transactionType->label);
+            $transactionLabel = Str::lower(TransactionType::getLabel($transactionType->value, $locale));
+            $parts[] = __('properties.transaction_preposition', [], $locale) . ' ' . $transactionLabel;
         }
 
-        // Ubicación
         if ($city) {
             $parts[] = __('properties.in', [], $locale) . ' ' . $city->name;
         } elseif ($state) {
@@ -369,7 +376,23 @@ class PropertyListingController extends Controller
         }
 
         $title = implode(' ', $parts);
-        $description = trans_choice('properties.results.found', $total, ['count' => $total], $locale) . ' ' . $title;
+        $hasListingFilters = $transactionType || $propertyType || $state || $city;
+        $description = $hasListingFilters
+            ? $contextDescription
+            : __('properties.country_hub.seo_description', ['country' => $countryName], $locale);
+        $countDescription = trans_choice(
+            'properties.country_hub.seo_results',
+            $total,
+            ['count' => $total],
+            $locale
+        );
+        $descriptionLimit = max(0, 160 - mb_strlen($countDescription) - 1);
+        $description = $descriptionLimit > 0
+            ? trim(Str::limit($description, $descriptionLimit, '', preserveWords: true))
+            : '';
+        $description = $description !== ''
+            ? $description . ' ' . $countDescription
+            : $countDescription;
 
         $alternateUrls = $this->generateAlternateUrls(
             $countryName, $transactionType, $propertyType, $state, $city
@@ -377,17 +400,28 @@ class PropertyListingController extends Controller
 
         $hreflangTags = [];
         foreach ($alternateUrls as $lang => $url) {
-            $hreflangTags[] = ['rel' => 'alternate', 'hreflang' => $lang, 'href' => $url];
+            $hreflangTags[] = [
+                'rel' => 'alternate',
+                'hreflang' => SeoLocaleHelper::getLanguageTag($lang, $countryCode),
+                'href' => $url,
+            ];
         }
         $hreflangTags[] = ['rel' => 'alternate', 'hreflang' => 'x-default', 'href' => $alternateUrls['es']];
 
+        $alternateLocale = $locale === 'es' ? 'en' : 'es';
+
         return [
             'title'         => $title,
-            'description'   => substr($description, 0, 160),
+            'description'   => $description,
             'image'         => url('/og_image.png'),
             'type'          => 'website',
             'canonical'     => url()->current(),
             'hreflang_tags' => $hreflangTags,
+            'html_lang'     => SeoLocaleHelper::getLanguageTag($locale, $countryCode),
+            'og_locale'     => SeoLocaleHelper::getOpenGraphLocale($locale, $countryCode),
+            'og_alternate_locales' => [
+                SeoLocaleHelper::getOpenGraphLocale($alternateLocale, $countryCode),
+            ],
         ];
     }
 

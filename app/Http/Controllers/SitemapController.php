@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\PropertySlugHelper;
+use App\Helpers\SeoLocaleHelper;
 use App\Models\PropertyListing;
 use App\Models\PropertyType;
 use App\Models\TransactionType;
@@ -149,14 +150,17 @@ class SitemapController extends Controller
                     $locEs = $seoService->generatePropertyUrl($property, 'es');
                     $locEn = $seoService->generatePropertyUrl($property, 'en');
                     $loc   = $locale === 'es' ? $locEs : $locEn;
+                    $countryCode = PropertySlugHelper::getCountryCode((string) $property->country);
+                    $hreflangEs = SeoLocaleHelper::getLanguageTag('es', $countryCode);
+                    $hreflangEn = SeoLocaleHelper::getLanguageTag('en', $countryCode);
 
                     echo "    <url>\n";
                     echo '        <loc>' . e($loc) . "</loc>\n";
                     echo '        <lastmod>' . $property->updated_at->toW3cString() . "</lastmod>\n";
                     echo "        <changefreq>weekly</changefreq>\n";
                     echo '        <priority>' . ($property->is_featured ? '0.9' : '0.7') . "</priority>\n";
-                    echo '        <xhtml:link rel="alternate" hreflang="es" href="' . e($locEs) . '" />' . "\n";
-                    echo '        <xhtml:link rel="alternate" hreflang="en" href="' . e($locEn) . '" />' . "\n";
+                    echo '        <xhtml:link rel="alternate" hreflang="' . e($hreflangEs) . '" href="' . e($locEs) . '" />' . "\n";
+                    echo '        <xhtml:link rel="alternate" hreflang="' . e($hreflangEn) . '" href="' . e($locEn) . '" />' . "\n";
                     echo '        <xhtml:link rel="alternate" hreflang="x-default" href="' . e($locEs) . '" />' . "\n";
 
                     $imageUrl = $this->normalizeSitemapImageUrl($property->primaryImage?->image_url);
@@ -310,7 +314,7 @@ class SitemapController extends Controller
             $this->addListingUrl($urls, $seen,
                 "/{$locale}/{$countrySlug}",
                 "/{$altLocale}/{$countrySlug}",
-                $lastmod, 'daily', '0.8'
+                $lastmod, 'daily', '0.8', $countryCode
             );
 
             if (!$transSlug) continue;
@@ -319,7 +323,7 @@ class SitemapController extends Controller
             $this->addListingUrl($urls, $seen,
                 "/{$locale}/{$countrySlug}/{$transSlug}",
                 "/{$altLocale}/{$countrySlug}/{$altTransSlug}",
-                $lastmod, 'daily', '0.7'
+                $lastmod, 'daily', '0.7', $countryCode
             );
 
             if (!$typeSlug) continue;
@@ -328,7 +332,7 @@ class SitemapController extends Controller
             $this->addListingUrl($urls, $seen,
                 "/{$locale}/{$countrySlug}/{$transSlug}/{$typeSlug}",
                 "/{$altLocale}/{$countrySlug}/{$altTransSlug}/{$altTypeSlug}",
-                $lastmod, 'weekly', '0.6'
+                $lastmod, 'weekly', '0.6', $countryCode
             );
         }
 
@@ -374,7 +378,7 @@ class SitemapController extends Controller
             $this->addListingUrl($urls, $seen,
                 "/{$locale}/{$countrySlug}/{$transSlug}/{$typeSlug}/{$citySlug}",
                 "/{$altLocale}/{$countrySlug}/{$altTransSlug}/{$altTypeSlug}/{$citySlug}",
-                $lastmod, 'weekly', '0.5'
+                $lastmod, 'weekly', '0.5', $countryCode
             );
         }
 
@@ -428,6 +432,7 @@ class SitemapController extends Controller
             if (!$countrySlug) {
                 continue;
             }
+            $countryCode = PropertySlugHelper::getCountryCode($country->country);
 
             $lastmod = $country->last_updated
                 ? \Carbon\Carbon::parse($country->last_updated)->toW3cString()
@@ -440,7 +445,8 @@ class SitemapController extends Controller
                 "/{$altLocale}/{$countrySlug}/{$altSegment}",
                 $lastmod,
                 'weekly',
-                '0.6'
+                '0.6',
+                $countryCode
             );
         }
 
@@ -463,6 +469,7 @@ class SitemapController extends Controller
             if (!$countrySlug || !$stateSlug) {
                 continue;
             }
+            $countryCode = PropertySlugHelper::getCountryCode($state->country);
 
             $lastmod = $state->last_updated
                 ? \Carbon\Carbon::parse($state->last_updated)->toW3cString()
@@ -475,7 +482,8 @@ class SitemapController extends Controller
                 "/{$altLocale}/{$countrySlug}/{$altSegment}/{$stateSlug}",
                 $lastmod,
                 'weekly',
-                '0.5'
+                '0.5',
+                $countryCode
             );
         }
 
@@ -501,6 +509,7 @@ class SitemapController extends Controller
             if (!$countrySlug || !$stateSlug || !$citySlug) {
                 continue;
             }
+            $countryCode = PropertySlugHelper::getCountryCode($city->country);
 
             $lastmod = $city->last_updated
                 ? \Carbon\Carbon::parse($city->last_updated)->toW3cString()
@@ -513,7 +522,8 @@ class SitemapController extends Controller
                 "/{$altLocale}/{$countrySlug}/{$altSegment}/{$stateSlug}/{$citySlug}",
                 $lastmod,
                 'weekly',
-                '0.4'
+                '0.4',
+                $countryCode
             );
         }
 
@@ -530,13 +540,15 @@ class SitemapController extends Controller
         string $altPath,
         string $lastmod,
         string $changefreq,
-        string $priority
+        string $priority,
+        ?string $countryCode = null
     ): void {
         if (isset($seen[$path])) return;
         $seen[$path] = true;
 
         $altLocaleKey = str_starts_with($path, '/es/') ? 'en' : 'es';
         $curLocaleKey = $altLocaleKey === 'es' ? 'en' : 'es';
+        $xDefault = $curLocaleKey === 'es' ? url($path) : url($altPath);
 
         $urls[] = [
             'loc'        => url($path),
@@ -544,9 +556,10 @@ class SitemapController extends Controller
             'changefreq' => $changefreq,
             'priority'   => $priority,
             'alternates' => [
-                $curLocaleKey => url($path),
-                $altLocaleKey => url($altPath),
+                SeoLocaleHelper::getLanguageTag($curLocaleKey, $countryCode) => url($path),
+                SeoLocaleHelper::getLanguageTag($altLocaleKey, $countryCode) => url($altPath),
             ],
+            'x_default' => $xDefault,
         ];
     }
 

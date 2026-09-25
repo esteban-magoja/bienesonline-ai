@@ -2,10 +2,34 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AgentDirectoryController;
+use App\Models\CountrySetting;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 uses(DatabaseTransactions::class);
+
+beforeEach(function (): void {
+    View::addNamespace('theme', resource_path('themes/anchor'));
+
+    foreach ([
+        ['iso2' => 'AR', 'name' => 'Argentina', 'phone_code' => '54', 'iso3' => 'ARG'],
+        ['iso2' => 'EC', 'name' => 'Ecuador', 'phone_code' => '593', 'iso3' => 'ECU'],
+    ] as $country) {
+        if (! DB::table('countries')->where('iso2', $country['iso2'])->exists()) {
+            DB::table('countries')->insert($country + [
+                'status' => 1,
+                'region' => 'Americas',
+                'subregion' => 'South America',
+            ]);
+        }
+
+        CountrySetting::enable($country['iso2']);
+        Cache::forget('country_code_' . strtolower($country['name']));
+    }
+});
 
 function createAgent(array $overrides = []): int
 {
@@ -105,6 +129,24 @@ it('supports pagination in the english directory', function () {
     $this->get('/en/agents')
         ->assertSuccessful()
         ->assertSee('?page=2');
+});
+
+it('uses country-specific locale tags for localized agent directories', function () {
+    $agentId = createAgent([
+        'agency' => 'Inmobiliaria SEO',
+        'username' => 'inmobiliaria-seo',
+    ]);
+    createListing($agentId);
+
+    $view = app(AgentDirectoryController::class)->index('es', 'argentina');
+    $seo = $view->getData()['seo'];
+    $head = view('theme::partials.head', ['seo' => $seo])->render();
+
+    expect($seo['html_lang'])->toBe('es-AR')
+        ->and($head)->toContain('<link rel="alternate" hreflang="es-AR" href="' . url('/es/argentina/inmobiliarias') . '">')
+        ->and($head)->toContain('<link rel="alternate" hreflang="en-AR" href="' . url('/en/argentina/agents') . '">')
+        ->and($head)->toContain('<meta property="og:locale" content="es_AR">')
+        ->and($head)->toContain('<meta property="og:locale:alternate" content="en_AR">');
 });
 
 it('uses the localized directory URL in marketing navigation', function () {

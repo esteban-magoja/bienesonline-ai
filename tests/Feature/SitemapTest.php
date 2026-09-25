@@ -1,9 +1,27 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 uses(DatabaseTransactions::class);
+
+beforeEach(function (): void {
+    foreach ([
+        ['iso2' => 'AR', 'name' => 'Argentina', 'phone_code' => '54', 'iso3' => 'ARG'],
+        ['iso2' => 'EC', 'name' => 'Ecuador', 'phone_code' => '593', 'iso3' => 'ECU'],
+    ] as $country) {
+        if (! DB::table('countries')->where('iso2', $country['iso2'])->exists()) {
+            DB::table('countries')->insert($country + [
+                'status' => 1,
+                'region' => 'Americas',
+                'subregion' => 'South America',
+            ]);
+        }
+
+        Cache::forget('country_code_' . strtolower($country['name']));
+    }
+});
 
 it('splits property sitemap indexes conservatively to stay below Google size limits', function () {
     $baselineActive = DB::table('property_listings')->where('is_active', true)->count();
@@ -51,11 +69,45 @@ it('emits absolute image URLs in property sitemaps when stored image URLs are re
 
     $response->assertSuccessful();
     $response->assertStreamed();
-    expect($response->streamedContent())->toContain(
+    $xml = $response->streamedContent();
+
+    expect($xml)->toContain(
         '<image:loc>' . url('/storage/property_images/test-relative-image.jpg') . '</image:loc>'
-    );
+    )->toContain('hreflang="es-AR"')
+        ->toContain('hreflang="en-AR"');
 
     expect($listingId)->toBeInt();
+});
+
+it('uses country-specific hreflang values for listing sitemap URLs', function () {
+    $timestamp = now();
+    $userId = createSitemapTestUser($timestamp);
+
+    DB::table('property_listings')->insert([
+        'user_id' => $userId,
+        'title' => 'Argentina sitemap listing',
+        'description' => 'Listing created to test country-specific sitemap alternates.',
+        'property_type' => 'house',
+        'transaction_type' => 'sale',
+        'price' => 100000,
+        'area' => 120,
+        'city' => 'Córdoba',
+        'state' => 'Córdoba',
+        'country' => 'Argentina',
+        'currency' => 'USD',
+        'is_active' => true,
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ]);
+
+    Cache::forget('sitemap_listings_es');
+    $response = $this->get('/sitemap-listings-es.xml');
+    Cache::forget('sitemap_listings_es');
+
+    $response->assertSuccessful()
+        ->assertSee('hreflang="es-AR"', false)
+        ->assertSee('hreflang="en-AR"', false)
+        ->assertSee('href="' . url('/es/argentina') . '"', false);
 });
 
 it('includes user profile pages in profiles sitemap', function () {
@@ -152,13 +204,17 @@ it('generates agents directory sitemap with country state and city pages', funct
         'updated_at' => $timestamp,
     ]);
 
+    Cache::forget('sitemap_agents_es');
     $response = $this->get('/sitemap-agents-es.xml');
+    Cache::forget('sitemap_agents_es');
 
     $response->assertSuccessful();
     $response->assertSee('/es/inmobiliarias', false);
     $response->assertSee('/es/ecuador/inmobiliarias', false);
     $response->assertSee('/es/ecuador/inmobiliarias/azuay', false);
     $response->assertSee('/es/ecuador/inmobiliarias/azuay/cuenca', false);
+    $response->assertSee('hreflang="es-EC"', false);
+    $response->assertSee('hreflang="en-EC"', false);
 });
 
 it('includes agent directory sitemaps in sitemap index', function () {

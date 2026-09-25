@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PropertySlugHelper;
+use App\Helpers\SeoLocaleHelper;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,15 +54,17 @@ class PropertyController extends Controller
 
         // Generate SEO data using SeoService
         $seo = $this->seoService->generatePropertySeo($property, $locale);
+        $countryCode = PropertySlugHelper::getCountryCode((string) $property->country);
         
         // Add hreflang tags
-        $hreflangTags = $this->seoService->generateHreflangTags($property);
+        $hreflangTags = $this->seoService->generateHreflangTags($property, $countryCode);
         $seo->hreflang_tags = $hreflangTags;
         
         // Add OG locale tags
-        $ogLocale = $this->seoService->generateOgLocaleTags($locale);
+        $ogLocale = $this->seoService->generateOgLocaleTags($locale, $countryCode);
         $seo->og_locale = $ogLocale['locale'];
         $seo->og_alternate_locales = $ogLocale['alternate_locales'];
+        $seo->html_lang = SeoLocaleHelper::getLanguageTag($locale, $countryCode);
 
         return view('property-detail', compact('property', 'relatedProperties', 'seo'));
     }
