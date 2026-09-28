@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-09-15 15:50:07","nombre":"Hector Lares","email":"laresh79@gmail.com","telefono":"04122508391","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Federal","localidad_inmueble":"Caracas"}
+{"fecha":"2026-09-24 01:11:30","nombre":"Luis Dario","email":"dariourbina1985@gmail.com","telefono":"0412-7730164","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Monagas","localidad_inmueble":"Maturín"},
+{"fecha":"2026-09-27 19:15:57","nombre":"Ana Deleon ","email":"anayolderodriguez@gmail.com","telefono":"9453187597","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Guatire"}
 ]
 }
 ]

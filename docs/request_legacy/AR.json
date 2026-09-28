@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-09-12 12:42:32","nombre":"Matías ","email":"matias.scocchia22@gmail.com","telefono":"2214955882","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Quilmes"},
-{"fecha":"2026-09-13 13:33:41","nombre":"bautista dellazuana","email":"tacuabedellazuana@hotmail.es","telefono":"3455448343","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Córdoba","localidad_inmueble":"Colón"}
+{"fecha":"2026-09-22 12:25:47","nombre":"Vanesa ","email":"vanemarovelli34@outlook.com","telefono":"3404640105","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Palermo"},
+{"fecha":"2026-09-23 11:05:50","nombre":"ROSARIO","email":"rochiarias@gmail.com","telefono":"+543814622387","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Tucuman","localidad_inmueble":"San Miguel De Tucuman"},
+{"fecha":"2026-09-24 16:13:23","nombre":"Mariela Cecila","email":"marielascarfo@yahoo.com","telefono":"1168888496","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Nuñez"}
 ]
 }
 ]

@@ -3,11 +3,9 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-09-18 17:02:18","nombre":"Hector ","email":"hectorjrangel2@gmail.com","telefono":"67750240","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"San Francisco"},
-{"fecha":"2026-09-18 20:33:46","nombre":"Widney Marciaga ","email":"widney.marciaga@gmail.com","telefono":"64484234","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-09-19 05:34:47","nombre":"ruben","email":"rubenfridman1826@hotmail.com","telefono":"541166815141","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-09-19 08:55:54","nombre":"Rodolfo Ford ","email":"Rodolfollerena341@gmail.com","telefono":"69456022","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"La Chorrera"},
-{"fecha":"2026-09-20 12:47:19","nombre":"Roberto Sanclemente ","email":"Sanclemente.2772@gmail.com","telefono":"62932287","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Chiriquí","localidad_inmueble":"David"}
+{"fecha":"2026-09-22 23:03:48","nombre":"aurora scagliati","email":"aurorascagliati@inmueblesitalvenpty.com","telefono":"66773669","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-09-24 17:23:33","nombre":"Jaime Sabal","email":"panahome.panama@gmail.com","telefono":"63863461","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-09-22 08:12:46","nombre":"Zuseth","email":"zucalo26@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Veraguas","localidad_inmueble":"Santiago"}
 ]
 }
 ]

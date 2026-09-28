@@ -3,14 +3,17 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-09-14 16:48:53","nombre":"JUAN MANUEL VARGAS GALAN","email":"jvargas@cinecolombia.com","telefono":"3102653020","tipo_inmueble":"Bodega","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
-{"fecha":"2026-09-14 18:45:37","nombre":"Adriana","email":"adrimolo2021@gmail.com","telefono":"3194446143","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Quindío","localidad_inmueble":"Armenia"},
-{"fecha":"2026-09-15 14:45:44","nombre":"Edith","email":"maguita8709@gmail.com","telefono":"3163813753","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Yumbo"},
-{"fecha":"2026-09-16 09:15:21","nombre":"Sandra vera","email":"tout_06@hotmail.com","telefono":"3204726639","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Bogotá Dc"},
-{"fecha":"2026-09-16 21:33:28","nombre":"Claudia Buitrago","email":"claudiabuitragosa07@gmail.com","telefono":"3150024441","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
-{"fecha":"2026-09-17 13:32:03","nombre":"Greissy ","email":"greissy.escobar@gmail.com","telefono":"3182607121","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
-{"fecha":"2026-09-18 14:50:05","nombre":"ALBA LUCIA RESTREPO GARCIA","email":"albarestrepogarcia@gmail.com","telefono":"3104474390","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-09-20 19:06:51","nombre":"Manuel","email":"vallefotografia@gmail.com","telefono":"3142385095","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Bogotá Dc"}
+{"fecha":"2026-09-21 14:18:39","nombre":"ALBA LUCIA RESTREPO GARCIA","email":"albarestrepogarcia@gmail.com","telefono":"3104474390","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-09-21 16:37:26","nombre":"silvia ortega","email":"sijuliorteguerrero@gmail.com","telefono":"3184880588","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Santander","localidad_inmueble":"Girón"},
+{"fecha":"2026-09-22 15:45:14","nombre":"Yocelyn sefair nader","email":"ysefair@gmail.com","telefono":"3165296462","tipo_inmueble":"Bodega","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Bogotá Dc"},
+{"fecha":"2026-09-22 18:35:45","nombre":"Gloria rios","email":"gpatriciarios445@gmail.com","telefono":"3057976016","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-09-23 03:29:43","nombre":"Veronica","email":"violetafer540@gmail.com","telefono":"3133090531","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Risaralda","localidad_inmueble":"Pereira"},
+{"fecha":"2026-09-23 11:17:19","nombre":"MILTON MORA","email":"miltonmora@gmail.com","telefono":"3023066779\/ 602","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Jamundí"},
+{"fecha":"2026-09-24 12:03:34","nombre":"Stéphanie ","email":"Stephanierhinn80@gmail.com","telefono":"+51940308474","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Granada"},
+{"fecha":"2026-09-25 00:25:26","nombre":"Angie","email":"salomechara87@gmail.com","telefono":"3118819908","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Yumbo"},
+{"fecha":"2026-09-25 12:11:28","nombre":"Jorge botero","email":"jorgemariot123@gmail.com","telefono":"3016857577","tipo_inmueble":"Local","tipo_operacion":"Arriendo","provincia_inmueble":"Magdalena","localidad_inmueble":"Santa Marta"},
+{"fecha":"2026-09-25 18:54:00","nombre":"berenice pulido","email":"berenicepulido45@gmil.com","telefono":"311458965","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Magdalena","localidad_inmueble":"Santa Marta"},
+{"fecha":"2026-09-28 07:24:50","nombre":"Paula Andrea marin","email":"andreamarin16@hotmail.com","telefono":"3226849470","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Quindío","localidad_inmueble":"Circasia"}
 ]
 }
 ]

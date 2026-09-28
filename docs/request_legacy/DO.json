@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-09-17 16:29:36","nombre":"Rebecca Saldivar ","email":"Shannellsaldivar.56@hotmail.com","telefono":"8493981647","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"},
-{"fecha":"2026-09-19 13:18:34","nombre":"JUANA MARIA Rodriguez","email":"restituyorodriguezj@gmail.com","telefono":"8098551922","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santo Domingo Este","localidad_inmueble":"Santo Domingo Este"}
+{"fecha":"2026-09-26 13:54:45","nombre":"Noelia massiel suarez ","email":"amdersonj.hilario@gmail.com","telefono":"8096974626","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"},
+{"fecha":"2026-09-26 22:04:57","nombre":"Walkiria Yanire Restituyo ","email":"walkirestituyo@gmail.com","telefono":"8099126401","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"}
 ]
 }
 ]
