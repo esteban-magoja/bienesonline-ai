@@ -33,7 +33,7 @@ class CountrySetting extends Model
         });
 
         if (empty($enabledCodes)) {
-            return collect();
+            return new \Illuminate\Database\Eloquent\Collection();
         }
 
         // Mantener el orden de display_order usando orderByRaw

@@ -28,6 +28,7 @@
                     <x-app.sidebar-link href="/property-listings/create" icon="phosphor-buildings" :active="Request::is('property-listings/create')">{{ __('listings.publish_listing') }}</x-app.sidebar-link>
                     <x-app.sidebar-link href="/property-listings" icon="phosphor-buildings" :active="Request::is('property-listings')">{{ __('listings.my_listings') }}</x-app.sidebar-link>
                     {{-- <x-app.sidebar-link href="{{ route('dashboard.messages.index') }}" icon="phosphor-envelope" :active="Request::is('dashboard/messages') || Request::is('dashboard/messages/*')">{{ __('dashboard.menu.messages') }}</x-app.sidebar-link> --}}
+                    <x-app.sidebar-link href="{{ route('dashboard.imports.index') }}" icon="phosphor-cloud-arrow-down" :active="Request::is('dashboard/imports') || Request::is('dashboard/imports/*')">{{ __('import.section_title') }}</x-app.sidebar-link>
                     <x-app.sidebar-link href="{{ route('dashboard.contacts.index') }}" icon="phosphor-address-book" :active="Request::is('dashboard/contacts') || Request::is('dashboard/contacts/*')">Mis Contactos</x-app.sidebar-link>
                     <x-app.sidebar-link href="{{ route('dashboard.matches.index') }}" icon="phosphor-equals" :active="Request::is('dashboard/matches')">{{ __('dashboard.menu.matches') }}</x-app.sidebar-link>
                     <x-app.sidebar-link href="{{ route('dashboard.requests.index') }}" icon="phosphor-user-list" :active="Request::is('dashboard/requests')">{{ __('dashboard.menu.requests') }}</x-app.sidebar-link>

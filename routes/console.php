@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 // Schedule::command('inspire')->hourly();
 Schedule::command('subscriptions:cancel-expired')->hourly()->withoutOverlapping();
+Schedule::command('imports:sync')->hourly()->withoutOverlapping();

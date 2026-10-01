@@ -15,6 +15,7 @@ class PropertyImage extends Model
         'property_listing_id',
         'image_path',
         'image_url',
+        'source_url',
         'alt_text',
         'is_primary',
         'sort_order'

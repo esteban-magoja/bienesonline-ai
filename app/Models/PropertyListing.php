@@ -61,6 +61,9 @@ class PropertyListing extends Model
         // import fields
         'external_id',
         'source',
+        'import_source_id',
+        'import_data',
+        'import_missing_count',
         'youtube_url',
     ];
 
@@ -80,7 +83,8 @@ class PropertyListing extends Model
         'title_i18n' => 'array',
         'description_i18n' => 'array',
         'features_i18n' => 'array',
-        'location_details_i18n' => 'array'
+        'location_details_i18n' => 'array',
+        'import_data' => 'array',
     ];
 
     /**

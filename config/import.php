@@ -59,4 +59,34 @@ return [
      * Recomendado: 15-25.
      */
     'chunk_size' => env('IMPORT_CHUNK_SIZE', 20),
+
+    /*
+     * ---------------------------------------------------------------
+     * Fuentes externas (sistema "Importar anuncios", independiente del legacy)
+     * ---------------------------------------------------------------
+     * Cada driver implementa App\Services\Import\Contracts\ImportDriver.
+     */
+    'drivers' => [
+        \App\Services\Import\Sources\WasiTrovitDriver::class,
+    ],
+
+    // Conexiones máximas por usuario
+    'max_sources_per_user' => env('IMPORT_MAX_SOURCES_PER_USER', 5),
+
+    // Frecuencia de sincronización por defecto (horas) y fallos seguidos antes de pausar la fuente
+    'sync_interval_hours' => env('IMPORT_SYNC_INTERVAL_HOURS', 24),
+    'max_consecutive_failures' => env('IMPORT_MAX_CONSECUTIVE_FAILURES', 5),
+
+    // Corridas consecutivas sin aparecer en el feed antes de desactivar un anuncio
+    'missing_tolerance' => env('IMPORT_MISSING_TOLERANCE', 2),
+
+    // Máximo de anuncios aceptados por feed
+    'max_listings_per_feed' => env('IMPORT_MAX_LISTINGS_PER_FEED', 2000),
+
+    // Descarga de feeds
+    'feed_timeout' => env('IMPORT_FEED_TIMEOUT', 30),
+    'feed_attempts' => env('IMPORT_FEED_ATTEMPTS', 3),
+    'feed_retry_delay_ms' => env('IMPORT_FEED_RETRY_DELAY_MS', 1500),
+    'feed_max_bytes' => env('IMPORT_FEED_MAX_BYTES', 20 * 1024 * 1024),
+    'block_private_hosts' => env('IMPORT_BLOCK_PRIVATE_HOSTS', true),
 ];

@@ -2,16 +2,72 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## ⚠️ REGLA CRÍTICA: Dependencias Composer
+## ⚠️ REGLA CRÍTICA: Evitar nuevas librerías PHP (Composer / vendor)
 
-**NUNCA agregar, eliminar ni actualizar paquetes de Composer sin autorización explícita del propietario del proyecto.**
+**Política del proyecto: evitar agregar librerías PHP nuevas a `vendor/`. NUNCA agregar, eliminar ni actualizar paquetes de Composer sin autorización explícita del propietario del proyecto.**
 
 - ❌ No ejecutar `composer require`, `composer remove`, ni `composer update`
 - ❌ No modificar `composer.json` ni `composer.lock`
-- ✅ Si una funcionalidad requiere un paquete nuevo, informar al propietario y esperar su autorización
-- ✅ Resolver problemas usando librerías ya instaladas o funciones nativas de PHP (GD, etc.)
+- ❌ No proponer como primera opción una solución que dependa de un paquete nuevo
+- ✅ Resolver problemas con librerías ya instaladas o funciones nativas de PHP (GD, `Http::` de Laravel, etc.). Ejemplo: la foto de perfil se procesa solo con GD tras revertir `intervention/image`
+- ✅ Si una funcionalidad realmente requiere un paquete nuevo, informar al propietario, explicar la alternativa sin paquete y esperar autorización
 
-**Motivo**: El servidor de producción tiene restricciones de acceso a Composer. Agregar/quitar paquetes rompe el autoloader del servidor y puede dejar el sitio caído.
+**Motivo**: hemos tenido problemas al ejecutar Composer en producción (hosting cPanel con restricciones). El deploy por FTP **excluye `vendor/`**, así que cualquier cambio de dependencias exige correr Composer a mano en el servidor, y eso ya rompió el autoloader y dejó el sitio caído.
+
+**Estado**: problema **pendiente de solución** (no hay todavía un mecanismo confiable para actualizar `vendor/` en producción). Hasta resolverlo, la regla es estricta.
+
+## ⚠️ REGLA CRÍTICA: Deploy automático a producción
+
+- `.github/workflows/deploy.yml`: **cada push a `main` sube el proyecto a producción por FTP** (`laravel-app/`), excluyendo `.git*`, `node_modules/`, `vendor/`, `storage/` y `public/.htaccess`.
+- **No hacer `git push` sin pedido explícito del propietario.** Commitear solo cuando se pida.
+- El deploy no ejecuta comandos post-deploy: migraciones y `php -d memory_limit=-1 artisan optimize` se corren a mano en el servidor.
+- **Los assets compilados (`public/build/`) están versionados**: después de cambiar CSS/JS/Tailwind hay que correr `npm run build` y commitear `public/build` (commits "assets").
+
+---
+
+## Contexto Rápido del Proyecto
+
+**bienesonline.ai** es un portal inmobiliario multi-país (hispanohablante + inglés) construido sobre Wave (SaaS starter de DevDojo). Reemplaza a los sitios legacy por país (`argentina.bienesonline.com`, `bienesonline.ec`, etc.), desde los cuales se importan anuncios y solicitudes. El diferencial es el **matching con IA** entre anuncios (`PropertyListing`) y solicitudes de búsqueda (`PropertyRequest`), con notificaciones por email/WhatsApp. El acceso a datos de contacto de solicitantes y a la búsqueda de solicitudes es **premium** (suscripción Stripe/PayPal).
+
+### Stack y entorno
+- PHP 8.4, Laravel 12, Wave, Folio, Livewire 3 + Volt, Filament v4 (admin en `/admin`), Tailwind 4, Alpine
+- **PostgreSQL + pgvector** (embeddings de anuncios y solicitudes). Comparaciones de strings con `LOWER()`
+- Embeddings: OpenAI (`config/openai.php`, modelo `text-embedding-ada-002` por defecto) vía `App\Services\EmbeddingService`
+- Colas: `QUEUE_CONNECTION=database`; en producción se procesan con cron + `flock` (ver sección Importación)
+- Sesión cookie: `wave_session`. Auth: DevDojo Auth (`/auth/login`, login en dos pasos email → password)
+- Locales: `es` (default) y `en`. Traducciones en **`resources/lang/`** (`app()->langPath()` apunta ahí; la carpeta `lang/` raíz es de paquetes/Wave y no se usa para textos propios)
+- Commits frecuentes "json request": actualizan `docs/request_legacy/{ISO2}.json` (exportes legacy de solicitudes para `import:legacy-requests`). No son cambios de código
+
+### Mapa de rutas (`routes/web.php` + Folio en `resources/themes/anchor/pages/`)
+| Área | URL | Handler |
+|---|---|---|
+| Home | `/{locale}` | closure → `theme::pages.index` |
+| Listados SEO | `/{locale}/{país}/{operación?}/{tipo?}/{estado?}/{ciudad?}` | `PropertyListingController` (ruta catch-all, **debe ir al final** del grupo) |
+| Ficha | `/{locale}/{país}/{ciudad}/propiedad/{id}-{slug}` | `PropertyController@show` |
+| Búsqueda IA | `/{locale}/search-properties` | `PropertySearchController` |
+| Búsquedas indexables | `/{locale}/{país}/busqueda\|search/{query}` | `SemanticPropertySearchController` |
+| Búsqueda de solicitudes (premium) | `/{locale}/search-requests` | `RequestSearchController` |
+| Directorio inmobiliarias | `/{locale}/inmobiliarias`, `/{locale}/{país}/inmobiliarias/{estado?}/{ciudad?}` (en: `agents`) | `AgentDirectoryController` |
+| Perfil público / mini-sitio | `/es/inmobiliaria/{username}`, `/en/realtor/{username}` | `UserProfileController` |
+| Dashboard | `/dashboard`, `/dashboard/{requests,matches,contacts,messages,import}` | controladores + páginas Folio |
+| Publicar/editar anuncio | `/property-listings/create`, `/property-listings/{id}/edit` | páginas Folio/Volt |
+| Billing | `/settings/subscription`, `POST /webhook/paypal`, `/paypal/return/{attempt}` | Wave + `app/Http/Controllers/Billing` (rutas en `wave/routes/web.php`) |
+| Sitemaps | `/sitemap*.xml` | `SitemapController` |
+| Verificar teléfono | `/verify-phone/{token}` | `PhoneVerificationController` |
+
+**Nota**: `wave/` fue modificado localmente (billing PayPal, `hasPremiumAccess()`, checkout). No es un vendor intocable, pero cambiarlo con cuidado.
+
+### Usuarios de prueba (BD local)
+- **Dashboard**: `usertest@test.mail` / `test1234` (ID 8, "Casas2 Inmobiliaria", ~49 anuncios activos)
+- **i18n**: `i18n@test.local` / `testing123` (ID 7) — ver `TESTING_USER.md`
+- Para entrar como usuario en tests usar `actingAs()`; no simular el login Livewire con curl. Referencia: `tests/Feature/TestUserLoginTest.php`
+
+### Estado de los tests
+La BD de tests (`bienesonline_test`, pgsql) **no tiene los datos que varios tests asumen** (usuario de prueba, anuncios reales). Por eso ~85 tests fallan localmente por entorno (`RouteTest`, `TestUserLoginTest`, `AgentDirectoryTest`, etc.). Al validar un cambio, correr el test específico con `--filter` y distinguir fallos de entorno de fallos reales.
+
+### Problemas conocidos / pendientes
+- **Composer en producción** (ver regla crítica arriba) — pendiente.
+- **`CountrySetting::getEnabledCountries()`** devuelve `collect()` (Support Collection) cuando no hay países habilitados, pero declara `Eloquent\Collection` → `TypeError`.
 
 ---
 
@@ -96,9 +152,8 @@ Wave is a Laravel-based SaaS framework that provides essential features for buil
   - `/dashboard/matches` → Resumen de todos los matches por anuncio
   - `/dashboard/matches/listing/{id}` → Matches de un anuncio específico
   - Muestra solicitudes compatibles con anuncios del usuario
-  - Vista: `property-detail.blade.php`
-  - SEO dinámico (title, description, Open Graph)
-  - Propiedades relacionadas (mismo tipo o ciudad)
+  - Ordenamiento por coincidencia o fecha (default: más nuevo primero)
+  - Datos de contacto del solicitante (email/WhatsApp) solo con `hasPremiumAccess()`
 
 #### Vistas y Características
 
@@ -180,8 +235,9 @@ Wave is a Laravel-based SaaS framework that provides essential features for buil
   - Total de anuncios publicados
   - Total de solicitudes activas
   - Total de matches encontrados
+  - Contactos recibidos (y no vistos)
 - Enlaces directos a cada sección
-- Integración con PropertyMatchingService para conteo en tiempo real
+- Conteos con queries SQL agregadas y cacheadas (NO usa PropertyMatchingService en tiempo real). Ver "Performance — Dashboard"
 
 #### SEO Optimización
 Cada propiedad genera automáticamente:
@@ -274,7 +330,7 @@ Ejemplo: Casa en venta • Córdoba, Argentina • USD 250,000 • 3 hab., 2 ba�
 
 #### Models & Database
 - User model extends Wave User with subscription capabilities
-- Subscription management with Stripe/Paddle integration
+- Subscription management with Stripe + PayPal integration (Paddle no se usa)
 - Role-based permissions using Spatie Laravel Permission
 
 #### Theme System
@@ -288,7 +344,7 @@ Ejemplo: Casa en venta • Córdoba, Argentina • USD 250,000 • 3 hab., 2 ba�
 - Located in `app/Filament/`
 
 ### Billing Integration
-- Supports both Stripe and Paddle
+- En uso: Stripe y PayPal (ver "Suscripciones y Acceso Premium")
 - Configured via `config/wave.php` and environment variables
 - Webhook handling for subscription events
 
@@ -303,7 +359,7 @@ Ejemplo: Casa en venta • Córdoba, Argentina • USD 250,000 • 3 hab., 2 ba�
 - `WAVE_DOCS` - Show/hide documentation
 - `WAVE_DEMO` - Enable demo mode
 - `WAVE_BAR` - Show development bar
-- `BILLING_PROVIDER` - Set to 'stripe' or 'paddle'
+- `BILLING_PROVIDER` - Proveedor principal (`stripe`); `BILLING_PROVIDERS=stripe,paypal` define los disponibles en checkout
 
 ### Important Config Files
 - `config/wave.php` - Main Wave configuration
@@ -374,18 +430,13 @@ resources/lang/
 ```
 
 ### Documentación i18n
-- **`I18N_INDEX.md`**: Índice principal del proyecto i18n
-- **`I18N_IMPLEMENTATION_PLAN.md`**: Plan detallado de 12 días
-- **`I18N_DAILY_CHECKLIST.md`**: Checklist diario
-- **`I18N_TROUBLESHOOTING.md`**: ⭐ **Solución a problemas comunes**
-- **`I18N_HYBRID_STRATEGY.md`**: Estrategia de rutas (público con locale, dashboard con sesión)
+- **`docs/i18n/I18N_INDEX.md`**: Índice principal del proyecto i18n
+- **`docs/i18n/I18N_TROUBLESHOOTING.md`**: ⭐ **Solución a problemas comunes**
+- **`docs/i18n/EMAILS_I18N_GUIDE.md`**: Emails traducidos
+- **`docs/archive/I18N_HYBRID_STRATEGY.md`**: Estrategia de rutas (público con locale, dashboard con sesión)
+- Planes/checklists del proyecto i18n original (ya terminado): `docs/archive/`
 
-### Scripts de Gestión
-```bash
-./START_I18N.sh           # Iniciar día de trabajo
-./FINISH_I18N_DAY.sh      # Finalizar día (commit + tracking)
-./VIEW_I18N_STATUS.sh     # Ver estado del proyecto
-```
+Los scripts `START_I18N.sh`, `FINISH_I18N_DAY.sh`, `VIEW_I18N_STATUS.sh` son del proyecto i18n original y ya no forman parte del flujo habitual.
 
 ### Problema Común: Traducciones No Se Cargan
 **Síntoma**: Ver `messages.home` o `properties.contact_advertiser` en lugar del texto traducido.
@@ -404,18 +455,16 @@ php artisan optimize:clear
 php artisan serve
 ```
 
-**Ver más**: `I18N_TROUBLESHOOTING.md`
+**Ver más**: `docs/i18n/I18N_TROUBLESHOOTING.md`
 
----
-- Compatible with automated testing environments and CI/CD pipelines
 ---
 
 ## Sistema de Listados Públicos con URLs SEO (Febrero 2026)
 
 ### 📚 Documentación
-- **Completa**: `SISTEMA_LISTADOS_PUBLICOS.md` (11KB) - Todos los detalles
-- **Quick Start**: `LISTADOS_QUICK_START.md` (3.3KB) - Referencia rápida
-- **Resumen Sesión**: `RESUMEN_SESION_05FEB2026.txt` - Resumen ejecutivo
+- **Completa**: `docs/propiedades/SISTEMA_LISTADOS_PUBLICOS.md` - Todos los detalles
+- **Quick Start**: `docs/propiedades/LISTADOS_QUICK_START.md` - Referencia rápida
+- **Resumen Sesión**: `docs/archive/RESUMEN_SESION_05FEB2026.txt` - Resumen ejecutivo
 
 ### 🎯 URLs Implementadas
 ```
@@ -823,7 +872,7 @@ Todos usan `CountrySetting::getEnabledCountries()` en lugar de `Country::all()`:
 - `resources/themes/anchor/pages/property-listings/create.blade.php`
 - `resources/themes/anchor/pages/property-listings/[id]/edit.blade.php`
 
-**Nota**: `ImportListingsJob` y `PropertyMatchingService` siguen usando `Country::where('name', ...)` porque trabajan con datos existentes — NO filtrar ahí.
+**Nota**: `ProcessImportChunkJob` y `PropertyMatchingService` siguen usando `Country::where('name', ...)` porque trabajan con datos existentes — NO filtrar ahí.
 
 ### Gestión en el Panel Admin
 En `/admin/country-types` hay una sección **"Países Habilitados"** al inicio de la página con:
@@ -888,10 +937,12 @@ Permite a los usuarios importar sus anuncios del proyecto viejo con un botón en
 ### Flujo
 1. Usuario selecciona país de origen y clickea "Importar mis anuncios"
 2. Controller llama `GET {LEGACY_URL}/app/export-listings.php?email={email}`
-3. Se despacha `ImportListingsJob` a la cola (background)
-4. El job crea cada `PropertyListing` → Observer genera embedding automáticamente
-5. Descarga imágenes con `Http::get()` → `Storage::disk('public')`
+3. Se crea un `ImportJob` y cada anuncio se guarda como fila en `import_listing_items` (modelo `ImportListingItem`, evita payloads gigantes en la cola)
+4. Se despacha `ProcessImportChunkJob` (lotes de `IMPORT_CHUNK_SIZE`, default 20); **cada chunk despacha el siguiente** hasta vaciar los items pendientes
+5. Cada item crea un `PropertyListing` → Observer genera embedding automáticamente; imágenes con `Http::get()` → `Storage::disk('public')`
 6. Dashboard muestra barra de progreso con polling cada 2 segundos
+
+**Nota**: `ImportListingsJob` es el job anterior (monolítico) y ya no se despacha desde ningún lado; la lógica vigente está en `ProcessImportChunkJob`.
 
 ### Configuración (.env)
 ```bash
@@ -921,7 +972,9 @@ LEGACY_URL_EC=https://www.bienesonline.ec
 ### Archivos del Sistema
 - `config/import.php` — Mapa país→URL con `array_filter` (auto-detecta países configurados)
 - `app/Models/ImportJob.php` — Tracking de progreso (pending/processing/completed/failed)
-- `app/Jobs/ImportListingsJob.php` — Job async: crea listings + descarga imágenes
+- `app/Jobs/ProcessImportChunkJob.php` — Job async por chunks: crea listings + descarga imágenes (vigente)
+- `app/Models/ImportListingItem.php` — Items pendientes/hechos/fallidos de cada importación
+- `app/Jobs/ImportListingsJob.php` — versión anterior, sin uso
 - `app/Http/Controllers/ImportController.php` — trigger / status / latest
 - `resources/lang/es/import.php` + `en/import.php` — Traducciones
 - Migraciones: `external_id` + `source` en `property_listings`, tabla `import_jobs`
@@ -945,7 +998,7 @@ php artisan import:legacy-requests docs/request_legacy/CL.json --only-embeddings
 - `--only-embeddings` — Solo genera embeddings para registros ya importados sin embedding
 - `--chunk=50` — Registros por lote al generar embeddings
 
-**Conversión provincia → región para Chile**: Al importar solicitudes de Chile (`CL.json`), el campo `provincia_inmueble` se convierte automáticamente a la Región correspondiente antes de guardarse en `state`. El mapa completo está en `chileProvinceToRegion()`. El mismo mapeo existe en `ImportListingsJob` para la importación de anuncios.
+**Conversión provincia → región para Chile**: Al importar solicitudes de Chile (`CL.json`), el campo `provincia_inmueble` se convierte automáticamente a la Región correspondiente antes de guardarse en `state`. El mapa completo está en `chileProvinceToRegion()`. El mismo mapeo existe en `ProcessImportChunkJob` para la importación de anuncios.
 
 **Tipo no reconocido en Chile**: `"Agricola"` no está en los tipos configurados para CL — se aplica fallback al primer tipo disponible (Casa). No es un error bloqueante.
 
@@ -1003,6 +1056,8 @@ exit
    - `property_listings(user_id, is_active)` — composite para `WHERE user_id=X AND is_active=true`
    - `property_requests(user_id, is_active)` — ídem
    - `import_jobs(user_id, created_at)` — para `latest()->first()` por usuario
+
+5. **`/dashboard` lo sirve únicamente la página Folio** (Septiembre 2026): existía además un closure `/dashboard` en `routes/web.php` que tenía prioridad sobre Folio y ejecutaba `findMatchesForListing()` (pgvector + scoring de todas las solicitudes) para 3 anuncios en cada visita, con resultados que la vista no usaba. Se eliminó (de ~51 queries con 3 búsquedas vectoriales a ~11 queries sin pgvector, con cache caliente). **No volver a registrar `/dashboard` en `routes/web.php`**; verificar con `php artisan route:list --path=dashboard` que apunte a `resources/themes/anchor/pages/dashboard/index.blade.php`.
 
 **Nota**: La lentitud con Impersonate era el mismo problema — al acceder al dashboard de un usuario diferente, todas sus cache keys están frías. Los índices resuelven la primera carga en frío.
 
@@ -1079,14 +1134,15 @@ Sin este filtro, se cuentan solicitudes de otras ciudades que luego el score des
 
 ### Objetivo
 Enviar mensajes de WhatsApp a los usuarios usando la Meta Cloud API (WhatsApp Business Platform).
-- Mensaje de bienvenida automático al registrarse
+- Verificación del móvil por WhatsApp al registrarse (link a `/verify-phone/{token}`)
+- Avisos de matches a dueños de anuncios cuando se crea una solicitud (`NotifyMatchingListings`)
 - Opt-in obligatorio en el formulario de registro
 - Toggle en perfil para activar/desactivar notificaciones
 - Canal de notificaciones Laravel reutilizable para mensajes futuros
 
 ### Arquitectura
 ```
-Registro → event(Registered) → UserRegistered listener (queued) → WelcomeWhatsAppNotification → WhatsAppChannel → WhatsAppService → Meta Cloud API
+Registro → event(Registered) → UserRegistered listener (queued) → PhoneVerificationNotification → WhatsAppChannel → WhatsAppService → Meta Cloud API
 ```
 
 ### Archivos del Sistema
@@ -1098,8 +1154,10 @@ Registro → event(Registered) → UserRegistered listener (queued) → WelcomeW
   - Llama a `toWhatsApp()` en la notificación
   - Retorna array `['template', 'language', 'params']` o string de texto libre
 - **app/Notifications/WelcomeWhatsAppNotification.php** — Notificación de bienvenida (ShouldQueue)
-- **app/Listeners/UserRegistered.php** — Escucha `Registered`, envía bienvenida si `whatsapp_opt_in && movil`
-- **app/Providers/AppServiceProvider.php** — Registra `Event::listen(Registered::class, UserRegistered::class)`
+- **app/Listeners/UserRegistered.php** — Escucha `Registered` (auto-discovery); si `whatsapp_opt_in && movil` genera `movil_verification_token` y envía `PhoneVerificationNotification`
+- **app/Http/Controllers/PhoneVerificationController.php** — `/verify-phone/{token}` marca `movil_verified_at` (vista `phone-verified`)
+- **app/Notifications/WelcomeWhatsAppNotification.php** — bienvenida original, hoy sin uso
+- **app/Models/WhatsAppMessageLog.php** — log de cada mensaje enviado/fallido (relación a listing/request)
 
 ### Migración
 - **`2026_03_16_194920_add_whatsapp_opt_in_to_users_table.php`**
@@ -1216,6 +1274,114 @@ Esto **no es una duplicación** — son dos páginas reales con contenido en dis
 - **Auto-discovery de eventos**: Laravel descubre automáticamente los listeners en `app/Listeners/` por el type-hint de `handle()`. **No** registrar el mismo listener también en `AppServiceProvider` con `Event::listen()` — causaría ejecución doble. Ver `php artisan event:list` para verificar.
 - **Archivo de verificación**: El archivo `.txt` en `public/` debe tener como contenido exactamente la clave (sin salto de línea al final). Generarlo con: `php -r "echo bin2hex(random_bytes(16));"`
 - **Respuestas 200 y 202** son ambas consideradas éxito por IndexNow
+
+---
+
+## Suscripciones y Acceso Premium (Mayo–Septiembre 2026)
+
+### Qué es premium
+`Wave\User::hasPremiumAccess()` = `isAdmin() || subscriber()`; `subscriber()` = rol `premium` **o** suscripción con estado activo. Usar siempre `hasPremiumAccess()` (o las directivas Blade `@subscriber` / `@notsubscriber`, que lo usan) para gatear funcionalidades.
+
+**Gateado hoy:**
+- Datos de contacto (email/WhatsApp) de solicitantes en `/dashboard/matches/listing/{id}`
+- Búsqueda de solicitudes `/{locale}/search-requests` (sin premium redirige a `settings.subscription`)
+
+### Proveedores de pago
+- **Stripe** (proveedor principal de Wave) y **PayPal** (agregado en Sep 2026). `.env`: `BILLING_PROVIDER=stripe`, `BILLING_PROVIDERS=stripe,paypal`, `PAYPAL_MODE`, `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID`, `PAYPAL_CURRENCY`
+- Checkout: `wave/src/Http/Livewire/Billing/Checkout.php` (modificado para PayPal)
+- `app/Services/Billing/`:
+  - `PayPalClient` — API REST de PayPal (crear/cancelar/suspender suscripción, verificar firma de webhook)
+  - `PayPalSubscriptionService` — crea `BillingCheckoutAttempt`, completa checkout, procesa webhooks
+  - `SubscriptionLifecycleService` — crear/activar/sincronizar/cancelar suscripciones en forma atómica (común a proveedores)
+  - `PremiumRoleService` — sincroniza **solo** el rol `premium` con el estado de la suscripción (no toca el rol admin)
+- Webhook: `POST /webhook/paypal` (sin CSRF) → guarda `BillingWebhookEvent` → `ProcessPayPalWebhook` (queued, unique por evento)
+- Retorno: `/paypal/return/{attempt}` → `PayPalReturnController`
+- Modelos: `BillingPlanPrice` (precios por plan/ciclo/proveedor), `BillingCheckoutAttempt` (con idempotency key), `BillingWebhookEvent`
+- Stripe: cupones de descuento habilitados; datos de pago visibles en el admin de usuario (Filament)
+- Tests: `BillingPayPalClientTest`, `BillingSubscriptionLifecycleTest`, `Unit/BillingStripeCheckoutTest`
+- Guía local con túnel Cloudflare: **`PAYPAL_SANDBOX_LOCAL.md`**
+
+---
+
+## Búsquedas
+
+- **Búsqueda de propiedades** (`PropertySearchController`, `/{locale}/search-properties`): semántica con pgvector, país obligatorio, mín. 5 caracteres.
+- **Búsquedas indexables** (`SemanticPropertySearchController` + `SemanticPropertySearchService`): landing pages SEO `/{locale}/{país}/busqueda/{query}` (en: `/search/`), p. ej. `/es/colombia/busqueda/apartamento-sagrado-corazon-medellin`. Paginadas, con JSON-LD. Umbral de distancia coseno: `config('openai.search_distance_threshold')` (default 0.7). Test: `SemanticPropertySearchTest`.
+- **Búsqueda de solicitudes** (`RequestSearchController`, `/{locale}/search-requests`, premium): busca `PropertyRequest` activas con embeddings, muestra similitud y datos de contacto.
+- `EmbeddingService::generate(array $parts): ?Vector` es el punto único para generar embeddings; reutilizarlo en lugar de llamar a OpenAI directamente.
+
+---
+
+## Directorio de Inmobiliarias (Julio 2026)
+
+- `AgentDirectoryController` — `/{locale}/inmobiliarias` y `/{locale}/{país}/inmobiliarias/{estado?}/{ciudad?}` (en: `/agents`)
+- Lista usuarios con `agency` no vacía y al menos un anuncio activo en la ubicación, ordenados por cantidad de anuncios (18 por página)
+- Los segmentos de ubicación se resuelven con/sin acentos (`resolveLocationSegment`); segmento inválido → 404
+- Sitemap: `/sitemap-agents-{locale}.xml`. Enlazado desde home y encabezado
+- Test: `AgentDirectoryTest`
+
+## Perfil Público como Mini-Sitio (Agosto 2026)
+
+Extiende `/es/inmobiliaria/{username}` / `/en/realtor/{username}` a un mini-sitio. Diseño completo: **`docs/public-profile-mini-site.md`**.
+- Tablas/modelos: `user_profile_settings` (`UserProfileSetting`: headline, portada, web, redes, horarios, visibilidad de email/teléfono/dirección), `user_profile_services` (`UserProfileService`), `user_profile_members` (`UserProfileMember`, miembros del equipo que **no** son `users`), `user_profile_leads` (formulario de contacto pospuesto, fuera del MVP)
+- Contenido editable en es/en; anuncios destacados (`is_featured`), zonas de servicio derivadas de anuncios activos, JSON-LD
+- Edición en `/settings/profile` (separada de Facturación). País/provincia/localidad con selects encadenados
+- Tests: `PublicProfileMiniSiteTest`, `UserProfileTest`
+
+## Contactos y Mensajes (Dashboard)
+
+- **Contactos** (`PropertyContactController`, modelo `PropertyContact`): se registran al hacer click en WhatsApp/Teléfono en una ficha (`POST /property-contacts`, requiere login). Además **crea automáticamente una `PropertyRequest`** para el visitante basada en el anuncio (sin duplicar). El dueño los ve en `/dashboard/contacts` y puede agregar notas.
+- **Mensajes** (`PropertyMessageController`, modelo `PropertyMessage`): formulario de contacto de la ficha (`property.message`) → `/dashboard/messages` (leído/no leído, borrar). Email: `PropertyMessageReceivedMail`.
+
+## Notificaciones de Matches hacia Anunciantes
+
+`PropertyRequestCreated` (disparado por `PropertyRequestObserver` y por `import:legacy-requests`) → `NotifyMatchingListings` (queued):
+- Busca anuncios con score ≥ `matching.min_score_to_notify` (70) y envía **un** WhatsApp por dueño (agrupa por `user_id`), solo si tiene `movil` y `whatsapp_opt_in`
+- Solo envía entre 10:00 y 24:00; throttle por usuario de 60 min (1 día si la solicitud viene de importación legacy) con `Cache::add()` atómico
+- Test: `NotifyMatchingListingsTest`
+
+(La dirección inversa — anuncio nuevo → solicitantes — es `NotifyMatchingRequests`, ver "Sistema de Notificaciones Automáticas".)
+
+## SEO de Fichas y Anuncios Relacionados (Septiembre 2026)
+
+- `SeoService::generatePropertySeo()` genera title/description/OG + **JSON-LD** (inmueble, vendedor, breadcrumbs); también hay JSON-LD en perfiles y búsquedas indexables
+- `RelatedPropertyService::findRelatedProperties($property, 4)` — candidatos por etapas: primero mismo país + tipo regional + operación, luego fallbacks más amplios dentro del país. Test: `RelatedPropertiesTest`
+- Analytics: **Google Tag Manager** (`GTM-W55CSJ8X`) en los layouts `marketing`, `app` y `empty` (reemplazó a GA)
+- Página 404 propia: `resources/views/errors/404.blade.php`
+
+## Importación de Anuncios desde Fuentes Externas (Septiembre 2026)
+
+Sistema **independiente del legacy** (que desaparecerá): el usuario **premium** conecta una fuente (hoy **Wasi**, feed XML Trovit) en `/dashboard/imports` y sus anuncios se importan y **se mantienen sincronizados**. Documentación completa (arquitectura, reglas, deploy, cron): **`docs/importacion-fuentes-externas.md`**.
+
+- **Una clase por fuente**: `App\Services\Import\Contracts\ImportDriver` (campos del formulario + `fetch()` que devuelve anuncios normalizados). Drivers registrados en `config/import.php` → `drivers`. Agregar una fuente = 1 clase + registro + textos + test; el pipeline/UI no cambian.
+- **Pipeline**: `ImportSourceRunner::start()` → `FetchSourceFeedJob` → `ProcessSourceImportChunkJob` (encadenado) → `ListingImporter` (merge de 3 vías: no pisa campos editados por el usuario) → `ImportSourceRunner::complete()` (desactiva anuncios ausentes tras `IMPORT_MISSING_TOLERANCE`=2 corridas).
+- **Sync automático**: `imports:sync` (hourly en `routes/console.php`); requiere el cron de `schedule:run` en producción. Reutiliza `import_jobs` / `import_listing_items`; no modificar la lógica del import legacy.
+- **Normalización compartida**: `ImportTypeResolver` (tipos/operación vía `value_en`), `ImportLocationResolver` (estados oficiales de `states`, provincias Chile→región con `ChileRegions`), `ImportCurrencyNormalizer` (UF→CLF).
+- **Cola en producción**: cron cada minuto con `flock -n ... queue:work --stop-when-empty --tries=1` (`ea-php84 -d memory_limit=256M`). La importación encadena sus jobs y cada job define su `$timeout`; **no usar `queue:listen`** para probarla (timeout de 60 s mata los chunks) — usar `queue:work --tries=1 --timeout=600 --memory=512`.
+- Tests: `tests/Feature/Import/WasiImportTest.php`.
+
+## Comandos Artisan Propios
+
+| Comando | Uso |
+|---|---|
+| `import:legacy-requests {archivo}` | Importa solicitudes legacy desde `docs/request_legacy/{ISO2}.json` (ver sección Importación) |
+| `listings:export-legacy-ids {path?} --locale=es --chunk=500` | Exporta a CSV los anuncios con ID legacy al final de la descripción + su URL nueva (para redirecciones desde los sitios viejos) |
+| `imports:sync {--source=ID}` | Encola la sincronización de fuentes externas cuyo intervalo venció (o una concreta) |
+| `app:create-user`, `app:create-role` | Utilidades de usuarios/roles |
+
+## Otros Jobs
+
+- `DeleteListingImages` — borra archivos de imágenes en background al eliminar un anuncio (el borrado de anuncios se aceleró con índices en tablas hijas, migración `2026_06_23_195852`)
+
+## Índice de Documentación Adicional
+
+- Raíz: `PAYPAL_SANDBOX_LOCAL.md`, `DEPLOYMENT_CHECKLIST.md`, `QUEUE_SETUP_PRODUCCION.md`, `NOTIFICACIONES_AUTOMATICAS.md`, `MATCHES_AFTER_PUBLISH.md`, `ANALISIS_SISTEMA_MATCHING.md`, `SISTEMA_TIPOS_REGIONALES.md`, `TESTING_USER.md`
+- `docs/propiedades/` — listados, solicitudes, mensajes
+- `docs/i18n/` — i18n
+- `docs/public-profile-mini-site.md` — mini-sitio de perfiles
+- `docs/importacion-fuentes-externas.md` — importación desde fuentes externas (Wasi) y cómo agregar nuevas
+- `docs/legacy-export-endpoint.php`, `docs/user-slug-map.php`, `docs/migracion.html` — piezas para los sitios legacy
+- `docs/archive/` — histórico; consultar solo si hace falta
 
 ---
 

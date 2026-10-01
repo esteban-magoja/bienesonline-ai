@@ -32,6 +32,7 @@ class ImportController extends Controller
 
         // Evitar doble importación si ya hay un job en curso
         $running = ImportJob::where('user_id', $user->id)
+            ->whereNull('import_source_id')
             ->whereIn('status', ['pending', 'processing'])
             ->first();
 
@@ -119,6 +120,7 @@ class ImportController extends Controller
     public function latest(Request $request)
     {
         $job = ImportJob::where('user_id', $request->user()->id)
+            ->whereNull('import_source_id')
             ->latest()
             ->first();
 

@@ -24,6 +24,7 @@ use App\Http\Controllers\RequestSearchController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\ImportSourceController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -211,24 +212,9 @@ Route::get('/auth/verify', \App\Livewire\Auth\VerifyEmail::class)
 // ============================================================================
 Route::middleware('auth')->group(function () {
     
-    // Dashboard principal
-    Route::get('/dashboard', function () {
-        $userListings = \App\Models\PropertyListing::where('user_id', auth()->id())->active()->count();
-        $userRequests = \App\Models\PropertyRequest::where('user_id', auth()->id())->active()->count();
-        $unreadMessages = \App\Models\PropertyMessage::whereHas('propertyListing', function($query) {
-            $query->where('user_id', auth()->id());
-        })->where('is_read', false)->count();
-        
-        $matchingService = app(\App\Services\PropertyMatchingService::class);
-        $recentListings = \App\Models\PropertyListing::where('user_id', auth()->id())->active()->take(3)->get();
-        $totalMatches = 0;
-        foreach ($recentListings as $listing) {
-            $totalMatches += $matchingService->findMatchesForListing($listing, 5)->count();
-        }
-        
-        return view('theme::pages.dashboard.index', compact('userListings', 'userRequests', 'unreadMessages', 'totalMatches'));
-    })->name('dashboard');
-    
+    // Dashboard principal: lo sirve la página Folio resources/themes/anchor/pages/dashboard/index.blade.php
+    // (stats con queries agregadas y cacheadas). No registrar aquí una ruta /dashboard: tendría prioridad sobre Folio.
+
     // Terms acceptance
     Route::post('/dashboard/terms/accept', [TermsController::class, 'accept'])->name('terms.accept');
 
@@ -274,6 +260,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [ImportController::class, 'trigger'])->name('trigger');
         Route::get('/status/{jobId}', [ImportController::class, 'status'])->name('status');
         Route::get('/latest', [ImportController::class, 'latest'])->name('latest');
+    });
+
+    // Importar anuncios desde fuentes externas (Wasi, etc.) — independiente del import legacy
+    Route::prefix('dashboard/imports')->name('dashboard.imports.')->group(function () {
+        Route::get('/', [ImportSourceController::class, 'index'])->name('index');
+        Route::post('/', [ImportSourceController::class, 'store'])->name('store');
+        Route::post('/{source}/sync', [ImportSourceController::class, 'sync'])->name('sync');
+        Route::patch('/{source}/toggle', [ImportSourceController::class, 'toggle'])->name('toggle');
+        Route::delete('/{source}', [ImportSourceController::class, 'destroy'])->name('destroy');
     });
 });
 

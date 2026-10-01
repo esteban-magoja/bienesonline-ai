@@ -95,7 +95,7 @@
 
 	// Último import job: caché corto (60s) porque el progreso se actualiza vía AJAX
 	$latestImport = Cache::remember("dashboard_import_{$userId}", 60, fn () =>
-		ImportJob::where('user_id', $userId)->latest()->first()
+		ImportJob::where('user_id', $userId)->whereNull('import_source_id')->latest()->first()
 	);
 
 	// Ocultar recuadro de importación si se completó hace más de 2 días
