@@ -3,9 +3,9 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-09-22 12:25:47","nombre":"Vanesa ","email":"vanemarovelli34@outlook.com","telefono":"3404640105","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Palermo"},
-{"fecha":"2026-09-23 11:05:50","nombre":"ROSARIO","email":"rochiarias@gmail.com","telefono":"+543814622387","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Tucuman","localidad_inmueble":"San Miguel De Tucuman"},
-{"fecha":"2026-09-24 16:13:23","nombre":"Mariela Cecila","email":"marielascarfo@yahoo.com","telefono":"1168888496","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Nuñez"}
+{"fecha":"2026-09-28 18:20:22","nombre":"Ludmila Villalba","email":"ludmiladeaguirre@gmail.com","telefono":"1156168770","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Buenos Aires","localidad_inmueble":"San Miguel"},
+{"fecha":"2026-09-30 19:33:34","nombre":"gonzalo prados","email":"gonza.prados@gmail.com","telefono":"3415704602","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Santa Fe","localidad_inmueble":"Rosario"},
+{"fecha":"2026-10-02 14:03:38","nombre":"Robertino Grasso","email":"robertinogra16@hotmail.com","telefono":"3415522284","tipo_inmueble":"Campo","tipo_operacion":"Venta","provincia_inmueble":"Santa Fe","localidad_inmueble":"Armstrong"}
 ]
 }
 ]

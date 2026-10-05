@@ -3,7 +3,9 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-09-02 16:39:13","nombre":"Maynor Perez","email":"esesrochaa@hotmail.com","telefono":"47084885","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"}
+{"fecha":"2026-10-01 10:40:52","nombre":"Gabriela de Espinoza ","email":"ga.corzo28@gmail.com","telefono":"41499556","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Fraijanes"},
+{"fecha":"2026-10-01 11:20:14","nombre":"Dr Elmer Fuentes Orozco","email":"elmer.orozco@gmail.com","telefono":"40040955","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Fraijanes"},
+{"fecha":"2026-09-28 21:47:45","nombre":"Jennifer","email":"jenncperry@hotmail.com","telefono":"17023001817","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Sacatepéquez","localidad_inmueble":"Antigua Guatemala"}
 ]
 }
 ]

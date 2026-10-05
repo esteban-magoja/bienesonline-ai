@@ -3,9 +3,7 @@
 {"type":"database","name":"admin_bienes_honduras"},
 {"type":"table","name":"c","database":"admin_bienes_honduras","data":
 [
-{"fecha":"2026-09-24 18:48:49","nombre":"Gloria Rodriguez ","email":"globerorodriguez@gmail.com","telefono":"7863724177","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Francisco Morazán","localidad_inmueble":"Santa Lucía"},
-{"fecha":"2026-09-26 10:00:47","nombre":"Estrella Rodriguez ","email":"melylanza.1290@gmail.com","telefono":"99762229","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Intibucá","localidad_inmueble":"La Esperanza"},
-{"fecha":"2026-09-23 01:57:57","nombre":"CRISTHIAN RODRIGUEZ","email":"cjrm010481@gmail.com","telefono":"95323707","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cortés","localidad_inmueble":"San Pedro Sula"}
+{"fecha":"2026-09-30 21:37:00","nombre":"Reina","email":"galindorosibel71@gmail.com","telefono":"88623145","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Francisco Morazán","localidad_inmueble":"Tegucigalpa"}
 ]
 }
 ]

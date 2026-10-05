@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-09-14 15:09:52","nombre":"Adriana Moreno ","email":"mariumariu_83@hotmail.com","telefono":"0967636599","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Guayas","localidad_inmueble":"Guayaquil"}
+{"fecha":"2026-09-29 19:37:54","nombre":"Alvaro Muñoz","email":"alvaro.elsurtidor@gmail.com","telefono":"0999665017","tipo_inmueble":"Hotel","tipo_operacion":"Venta","provincia_inmueble":"Pichincha","localidad_inmueble":"San Miguel De Los Bancos"},
+{"fecha":"2026-10-04 16:20:05","nombre":"mauricio","email":"mauferro14@gmail.com","telefono":"+56992801876","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Imbabura","localidad_inmueble":"Pimampiro"}
 ]
 }
 ]
