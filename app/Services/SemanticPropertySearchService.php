@@ -7,6 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginatorInstance;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Pgvector\Laravel\Vector;
 
@@ -16,10 +17,12 @@ class SemanticPropertySearchService
 
     private const RESULT_CACHE_MINUTES = 10;
 
-    private const RESULT_CACHE_LIMIT = 500;
+    private const RESULT_CACHE_LIMIT = 200;
 
-    public function __construct(private readonly EmbeddingService $embeddingService)
-    {
+    public function __construct(
+        private readonly EmbeddingService $embeddingService,
+        private readonly SearchTermTypeResolver $typeResolver,
+    ) {
     }
 
     /**
@@ -28,16 +31,17 @@ class SemanticPropertySearchService
     public function search(string $searchTerm, string $country, int $perPage = 20): LengthAwarePaginator
     {
         $searchTerm = $this->normalizeSearchTerm($searchTerm);
+        $types = $this->typeResolver->resolve($searchTerm);
         $embedding = $this->getEmbedding($searchTerm);
 
         if ($embedding === null) {
-            return $this->textSearch($searchTerm, $country, $perPage);
+            return $this->textSearch($searchTerm, $country, $types, $perPage);
         }
 
         $matches = Cache::remember(
             $this->resultCacheKey($searchTerm, $country),
             now()->addMinutes(self::RESULT_CACHE_MINUTES),
-            fn (): array => $this->findSemanticMatches($embedding, $country),
+            fn (): array => $this->findSemanticMatches($embedding, $country, $types),
         );
 
         return $this->paginateMatches($matches, $country, $perPage);
@@ -61,16 +65,23 @@ class SemanticPropertySearchService
     }
 
     /**
+     * Anuncios con similitud mínima absoluta y, además, a menos de
+     * `search_relative_margin` del mejor resultado. Si el texto menciona un tipo
+     * de inmueble u operación, solo se consideran anuncios de ese tipo/operación.
+     *
+     * @param  array{property_types: list<string>, transaction_types: list<string>}  $types
      * @return array<int, array{id: int, similarity: float}>
      */
-    private function findSemanticMatches(Vector $embedding, string $country): array
+    private function findSemanticMatches(Vector $embedding, string $country, array $types): array
     {
-        $threshold = (float) config('openai.search_distance_threshold', 0.7);
+        $threshold = (float) config('openai.search_distance_threshold', 0.5);
+        $margin = (float) config('openai.search_relative_margin', 0.10);
 
-        return PropertyListing::query()
+        $matches = PropertyListing::query()
             ->active()
             ->where('country', $country)
             ->whereNotNull('embedding')
+            ->tap(fn (Builder $query) => $this->applyTypeFilters($query, $types))
             ->select('id')
             ->selectRaw('1 - (embedding <=> ?) as similarity', [$embedding])
             ->whereRaw('(embedding <=> ?) <= ?', [$embedding, $threshold])
@@ -80,8 +91,28 @@ class SemanticPropertySearchService
             ->map(fn (PropertyListing $listing): array => [
                 'id' => (int) $listing->id,
                 'similarity' => (float) $listing->similarity,
-            ])
+            ]);
+
+        $minimumSimilarity = ($matches->first()['similarity'] ?? 0) - $margin;
+
+        return $matches
+            ->filter(fn (array $match): bool => $match['similarity'] >= $minimumSimilarity)
+            ->values()
             ->all();
+    }
+
+    /**
+     * @param  array{property_types: list<string>, transaction_types: list<string>}  $types
+     */
+    private function applyTypeFilters(Builder $query, array $types): void
+    {
+        if ($types['property_types'] !== []) {
+            $query->whereIn(DB::raw('LOWER(property_type)'), $types['property_types']);
+        }
+
+        if ($types['transaction_types'] !== []) {
+            $query->whereIn(DB::raw('LOWER(transaction_type)'), $types['transaction_types']);
+        }
     }
 
     /**
@@ -132,7 +163,10 @@ class SemanticPropertySearchService
         );
     }
 
-    private function textSearch(string $searchTerm, string $country, int $perPage): LengthAwarePaginator
+    /**
+     * @param  array{property_types: list<string>, transaction_types: list<string>}  $types
+     */
+    private function textSearch(string $searchTerm, string $country, array $types, int $perPage): LengthAwarePaginator
     {
         $terms = Str::of($searchTerm)
             ->explode(' ')
@@ -142,6 +176,7 @@ class SemanticPropertySearchService
         $query = PropertyListing::query()
             ->active()
             ->where('country', $country)
+            ->tap(fn (Builder $query) => $this->applyTypeFilters($query, $types))
             ->with(['primaryImage', 'firstImage'])
             ->when($terms->isNotEmpty(), function (Builder $query) use ($terms): void {
                 $query->where(function (Builder $query) use ($terms): void {
@@ -174,6 +209,6 @@ class SemanticPropertySearchService
 
     private function resultCacheKey(string $searchTerm, string $country): string
     {
-        return 'semantic-property-search:results:v2:' . sha1($country . '|' . $searchTerm);
+        return 'semantic-property-search:results:v3:' . sha1($country . '|' . $searchTerm);
     }
 }

@@ -25,5 +25,9 @@ return [
     */
     'embeddings_model' => env('EMBEDDINGS_MODEL', 'text-embedding-ada-002'),
 
+    // Distancia coseno máxima (0.5 = similitud mínima del 50 %)
     'search_distance_threshold' => (float) env('SEARCH_DISTANCE_THRESHOLD', 0.5),
+
+    // Solo se muestran resultados a menos de este margen de similitud del mejor resultado
+    'search_relative_margin' => (float) env('SEARCH_RELATIVE_MARGIN', 0.10),
 ];
