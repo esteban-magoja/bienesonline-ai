@@ -61,6 +61,23 @@
                     </nav>
                 @endif
             @endif
+
+            @if($relatedSearches->isNotEmpty())
+                <div class="mt-12 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
+                    <h2 class="text-lg font-semibold text-zinc-900">
+                        {{ __('properties.search_results.other_searches') }}
+                    </h2>
+                    <ul class="mt-4 flex flex-wrap gap-3">
+                        @foreach($relatedSearches as $relatedSearch)
+                            <li>
+                                <a href="{{ $relatedSearch['url'] }}" class="inline-flex rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm text-zinc-700 hover:border-indigo-300 hover:text-indigo-600">
+                                    {{ $relatedSearch['label'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
     </section>
 </x-layouts.marketing>

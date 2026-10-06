@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\PropertySlugHelper;
+use App\Models\SearchQuery;
 use App\Services\SemanticPropertySearchService;
 use App\Services\SeoService;
 use Illuminate\Http\RedirectResponse;
@@ -52,6 +53,9 @@ class SemanticPropertySearchController extends Controller
         }
 
         $properties = $this->searchService->search($searchTerm, $countryName);
+
+        SearchQuery::record($countryName, $searchTerm, $properties->total());
+
         $canonicalUrl = route('property.semantic-search', [
             'locale' => $locale,
             'country' => PropertySlugHelper::normalize($countryName),
@@ -109,6 +113,16 @@ class SemanticPropertySearchController extends Controller
             'properties' => $properties,
             'country' => $countryName,
             'searchTerm' => $searchTerm,
+            'relatedSearches' => SearchQuery::related($countryName, $canonicalQuery)
+                ->map(fn (array $search): array => [
+                    'label' => Str::ucfirst($search['query']),
+                    'url' => route('property.semantic-search', [
+                        'locale' => $locale,
+                        'country' => PropertySlugHelper::normalize($countryName),
+                        'searchPath' => $expectedSearchPath,
+                        'query' => $search['slug'],
+                    ]),
+                ]),
             'seo' => $seo,
             'breadcrumbs' => [
                 ['label' => __('messages.home'), 'url' => route('home', ['locale' => $locale])],

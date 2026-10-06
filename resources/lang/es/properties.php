@@ -171,6 +171,7 @@ return [
         'properties_found' => 'propiedades encontradas',
         'in_country' => 'en :country',
         'for_term' => 'para ":term"',
+        'other_searches' => 'Otras búsquedas',
         'no_properties_found' => 'No se encontraron propiedades',
         'try_different_search' => 'Intenta con otros términos de búsqueda o cambia el país seleccionado.',
         'relevance' => 'Relevancia',

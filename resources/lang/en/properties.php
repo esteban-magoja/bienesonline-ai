@@ -192,6 +192,7 @@ return [
         'properties_found' => 'properties found',
         'in_country' => 'in :country',
         'for_term' => 'for ":term"',
+        'other_searches' => 'Other searches',
         'no_properties_found' => 'No properties found',
         'try_different_search' => 'Try different search terms or change the selected country.',
         'relevance' => 'Relevance',

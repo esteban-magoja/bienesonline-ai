@@ -68,7 +68,7 @@ it('renders an indexable semantic search landing page filtered by country', func
 });
 
 it('returns noindex for a semantic search with no results', function () {
-    $response = $this->get('/es/espana/busqueda/apartamento-inexistente');
+    $response = $this->get('/es/chile/busqueda/apartamento-inexistente');
 
     $response->assertSuccessful()
         ->assertSee('<meta name="robots" content="noindex,follow">', false)

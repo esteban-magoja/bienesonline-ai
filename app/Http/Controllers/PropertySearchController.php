@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PropertyListing;
+use App\Models\SearchQuery;
 use App\Services\SemanticPropertySearchService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
@@ -66,6 +67,10 @@ class PropertySearchController extends Controller
         $totalResults = $properties instanceof LengthAwarePaginator
             ? $properties->total()
             : $properties->count();
+
+        if ($hasValidSearch) {
+            SearchQuery::record($selectedCountry, $searchTerm, $totalResults);
+        }
 
         // SEO data
         $seo = (object) [
