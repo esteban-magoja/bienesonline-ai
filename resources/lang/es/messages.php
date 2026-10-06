@@ -64,8 +64,11 @@ return [
     'validation' => [
         'required_field' => 'Este campo es requerido',
         'country_required' => 'Debes seleccionar un país.',
+        'country_invalid' => 'Selecciona un país de la lista.',
         'search_term_required' => 'Debes escribir un término de búsqueda.',
         'search_term_min' => 'El término de búsqueda debe tener al menos :min caracteres.',
+        'search_term_max' => 'El término de búsqueda no puede superar los :max caracteres.',
+        'search_term_invalid' => 'Escribe una búsqueda válida, por ejemplo: casa en venta en Córdoba.',
         'invalid_email' => 'Email inválido',
         'invalid_phone' => 'Teléfono inválido',
         'min_length' => 'Mínimo :min caracteres',

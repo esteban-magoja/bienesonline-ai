@@ -93,5 +93,10 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        // Buscador /search-properties: frena bots (cada búsqueda llama a OpenAI)
+        RateLimiter::for('property-search', function (Request $request) {
+            return Limit::perMinute(20)->by($request->ip());
+        });
+
     }
 }

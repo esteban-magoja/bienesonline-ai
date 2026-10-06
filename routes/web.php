@@ -107,7 +107,9 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
     })->name('home');
 
     // Property Search (pública)
-    Route::get('/search-properties', [PropertySearchController::class, 'index'])->name('property.search');
+    Route::get('/search-properties', [PropertySearchController::class, 'index'])
+        ->middleware('throttle:property-search')
+        ->name('property.search');
 
     // Semantic property search landing pages (public and SEO-indexable)
     // Example: /es/colombia/busqueda/apartamento-sagrado-corazon-medellin

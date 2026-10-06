@@ -64,8 +64,11 @@ return [
     'validation' => [
         'required_field' => 'This field is required',
         'country_required' => 'You must select a country.',
+        'country_invalid' => 'Select a country from the list.',
         'search_term_required' => 'You must enter a search term.',
         'search_term_min' => 'The search term must be at least :min characters.',
+        'search_term_max' => 'The search term may not be longer than :max characters.',
+        'search_term_invalid' => 'Enter a valid search, for example: house for sale in Córdoba.',
         'invalid_email' => 'Invalid email',
         'invalid_phone' => 'Invalid phone',
         'min_length' => 'Minimum :min characters',

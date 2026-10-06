@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use App\Filament\Resources\SearchQueries\Pages\EditSearchQuery;
 use App\Filament\Resources\SearchQueries\Pages\ListSearchQueries;
+use App\Models\PropertyListing;
 use App\Models\SearchQuery;
 use App\Models\User;
 use App\Services\SemanticPropertySearchService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
 
@@ -56,6 +58,69 @@ it('guarda la búsqueda al visitar la página indexable si no existe', function 
         ->and($search->slug)->toBe('casas-en-venta-en-quilpue-test')
         ->and($search->results_count)->toBe(7)
         ->and($search->active)->toBeFalse();
+});
+
+describe('validación del buscador', function (): void {
+    beforeEach(function (): void {
+        $user = User::factory()->create(['avatar' => 'demo/default.png']);
+
+        // Sin eventos: el observer generaría el embedding llamando a OpenAI
+        PropertyListing::withoutEvents(fn () => PropertyListing::factory()->create([
+            'user_id' => $user->id,
+            'country' => 'Testlandia',
+            'is_active' => true,
+        ]));
+    });
+
+    it('rechaza un país que no está en la lista', function (): void {
+        $this->get('/es/search-properties?country=' . urlencode('compra seguidores baratos') . '&search=casa en venta en el centro');
+
+        expect(SearchQuery::where('slug', 'casa-en-venta-en-el-centro')->exists())->toBeFalse();
+    });
+
+    it('rechaza países enviados como array', function (): void {
+        $this->get('/es/search-properties?country[]=Testlandia&search=casa en venta en el centro');
+
+        expect(SearchQuery::where('slug', 'casa-en-venta-en-el-centro')->exists())->toBeFalse();
+    });
+
+    it('rechaza textos que no son búsquedas inmobiliarias', function (string $search): void {
+        $this->get('/es/search-properties?' . http_build_query(['country' => 'Testlandia', 'search' => $search]));
+
+        expect(SearchQuery::where('country', 'Testlandia')->exists())->toBeFalse();
+    })->with([
+        'url' => 'mejores casas https://spam.example.com',
+        'dominio' => 'visita casasbaratas.ru ahora',
+        'email' => 'escribime a spam@example.com',
+        'html' => '<script>alert(1)</script> casa',
+        'sql' => "casa'; DROP TABLE users; --",
+        'caracteres repetidos' => 'casaaaaa en venta ya',
+        'casi todo números' => '12345678901234 casa',
+        'muy largo' => str_repeat('casa linda ', 10),
+        'demasiadas palabras' => 'uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece',
+        'una sola palabra real' => 'casa 12 34 56',
+    ]);
+
+    it('acepta búsquedas inmobiliarias normales', function (string $search): void {
+        $this->get('/es/search-properties?' . http_build_query(['country' => 'Testlandia', 'search' => $search]));
+
+        expect(SearchQuery::where('country', 'Testlandia')->exists())->toBeTrue();
+    })->with([
+        'simple' => 'casa en venta en Córdoba',
+        'con números' => 'departamento 3D 2B en Santiago',
+        'con precio' => 'casa hasta 150000000 pesos en Viña',
+        'con signos' => 'Casa c/ piscina, cerca del mar (Reñaca)',
+    ]);
+});
+
+it('limita el buscador a 20 pedidos por minuto por IP', function (): void {
+    RateLimiter::clear(md5('property-search' . '127.0.0.1'));
+
+    foreach (range(1, 20) as $attempt) {
+        expect($this->get('/es/search-properties')->status())->not->toBe(429);
+    }
+
+    $this->get('/es/search-properties')->assertTooManyRequests();
 });
 
 describe('otras búsquedas', function (): void {
