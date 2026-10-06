@@ -23,7 +23,7 @@ beforeEach(function (): void {
         ->andReturn(new LengthAwarePaginator(collect(), 7, 20));
 });
 
-it('guarda una búsqueda de 10 o más caracteres con país, slug, resultados e inactiva', function (): void {
+it('guarda una búsqueda de 25 o más caracteres con país, slug, resultados e inactiva', function (): void {
     $this->get('/es/search-properties?country=Argentina&search=Casa  con Piscina en Córdoba')
         ->assertSuccessful();
 
@@ -35,17 +35,18 @@ it('guarda una búsqueda de 10 o más caracteres con país, slug, resultados e i
         ->and($search->active)->toBeFalse();
 });
 
-it('no guarda búsquedas de menos de 10 caracteres', function (): void {
-    $this->get('/es/search-properties?country=Argentina&search=casa+lago')->assertSuccessful();
+it('no guarda búsquedas de menos de 25 caracteres, aunque sí las realiza', function (): void {
+    // 24 caracteres contando espacios
+    $this->get('/es/search-properties?country=Argentina&search=casa en venta en Córdoba')->assertSuccessful();
 
-    expect(SearchQuery::where('country', 'Argentina')->where('slug', 'casa-lago')->exists())->toBeFalse();
+    expect(SearchQuery::where('country', 'Argentina')->where('slug', 'casa-en-venta-en-cordoba')->exists())->toBeFalse();
 });
 
 it('no guarda búsquedas repetidas en el mismo país', function (): void {
-    $this->get('/es/search-properties?country=Argentina&search=departamento en palermo');
-    $this->get('/es/search-properties?country=Argentina&search=Departamento  en Palermo');
+    $this->get('/es/search-properties?country=Argentina&search=departamento en venta en palermo');
+    $this->get('/es/search-properties?country=Argentina&search=Departamento  en Venta en Palermo');
 
-    expect(SearchQuery::where('slug', 'departamento-en-palermo')->where('country', 'Argentina')->count())->toBe(1);
+    expect(SearchQuery::where('slug', 'departamento-en-venta-en-palermo')->where('country', 'Argentina')->count())->toBe(1);
 });
 
 it('guarda la búsqueda al visitar la página indexable si no existe', function (): void {
@@ -106,7 +107,7 @@ describe('validación del buscador', function (): void {
 
         expect(SearchQuery::where('country', 'Testlandia')->exists())->toBeTrue();
     })->with([
-        'simple' => 'casa en venta en Córdoba',
+        'simple' => 'casa en venta en Córdoba centro',
         'con números' => 'departamento 3D 2B en Santiago',
         'con precio' => 'casa hasta 150000000 pesos en Viña',
         'con signos' => 'Casa c/ piscina, cerca del mar (Reñaca)',

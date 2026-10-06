@@ -14,7 +14,7 @@ class SearchQuery extends Model
     /** @use HasFactory<\Database\Factories\SearchQueryFactory> */
     use HasFactory;
 
-    public const MIN_LENGTH = 10;
+    public const MIN_LENGTH = 25;
 
     /**
      * Palabras que no aportan para comparar búsquedas similares.
