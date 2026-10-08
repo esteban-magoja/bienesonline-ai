@@ -24,6 +24,15 @@ return [
         'footer' => 'Thank you for using our platform.',
     ],
 
+    'property_match_ad' => [
+        'subject' => 'New requests match your published listings',
+        'greeting' => 'Hello :name!',
+        'intro' => 'There are new search requests that match listings you have published.',
+        'details' => 'Go to your dashboard to see who is looking for properties like yours.',
+        'view_matches' => 'View matches',
+        'footer' => 'We send you at most one notice per day with new matches.',
+    ],
+
     'message_received' => [
         'subject' => 'New message about your property',
         'greeting' => 'Hello :name!',

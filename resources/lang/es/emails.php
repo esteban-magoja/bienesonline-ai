@@ -24,6 +24,15 @@ return [
         'footer' => 'Gracias por usar nuestra plataforma.',
     ],
 
+    'property_match_ad' => [
+        'subject' => 'Nuevas solicitudes coinciden con tus anuncios publicados',
+        'greeting' => '¡Hola :name!',
+        'intro' => 'Hay nuevas solicitudes de búsqueda que coinciden con anuncios que tienes publicados.',
+        'details' => 'Ingresa a tu panel para ver qué personas están buscando propiedades como las tuyas.',
+        'view_matches' => 'Ver coincidencias',
+        'footer' => 'Te enviamos como máximo un aviso por día con las nuevas coincidencias.',
+    ],
+
     'message_received' => [
         'subject' => 'Nuevo mensaje sobre tu propiedad',
         'greeting' => '¡Hola :name!',

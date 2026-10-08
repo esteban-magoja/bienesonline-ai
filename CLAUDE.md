@@ -1340,6 +1340,8 @@ Extiende `/es/inmobiliaria/{username}` / `/en/realtor/{username}` a un mini-siti
 - Solo envía entre 10:00 y 24:00; throttle por usuario de 60 min (1 día si la solicitud viene de importación legacy) con `Cache::add()` atómico
 - Test: `NotifyMatchingListingsTest`
 
+**Email** (`NotifyMatchingListingsByEmail`, listener separado, queued): mismo matching/umbral, envía `PropertyMatchAdEmailNotification` (link a `/dashboard/matches`) solo a dueños con `email_verified_at`, sin requerir premium ni ventana horaria. Máximo **1 email por usuario y día** (`Cache::add()` + respaldo en `email_message_logs`). Log en admin: **"Logs Email"** (`EmailMessageLogResource`). Test: `NotifyMatchingListingsByEmailTest`
+
 (La dirección inversa — anuncio nuevo → solicitantes — es `NotifyMatchingRequests`, ver "Sistema de Notificaciones Automáticas".)
 
 ## SEO de Fichas y Anuncios Relacionados (Septiembre 2026)
