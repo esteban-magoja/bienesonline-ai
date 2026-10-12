@@ -137,15 +137,15 @@ it('uses the definitive premium prices', function (): void {
 
 it('creates one reusable PayPal checkout attempt for a plan and cycle', function (): void {
     $user = billingUser();
-    BillingPlanPrice::query()->create([
-        'plan_id' => $this->plan->id,
-        'provider' => 'paypal',
-        'cycle' => 'month',
-        'external_id' => 'P-PREMIUM-MONTHLY',
-        'amount' => '10.00',
-        'currency' => 'USD',
-        'active' => true,
-    ]);
+    BillingPlanPrice::query()->updateOrCreate(
+        ['plan_id' => $this->plan->id, 'provider' => 'paypal', 'cycle' => 'month'],
+        [
+            'external_id' => 'P-PREMIUM-MONTHLY',
+            'amount' => '10.00',
+            'currency' => 'USD',
+            'active' => true,
+        ],
+    );
 
     $service = app(PayPalSubscriptionService::class);
     $firstAttempt = $service->createAttempt($user, $this->plan, 'month');
@@ -158,15 +158,15 @@ it('creates one reusable PayPal checkout attempt for a plan and cycle', function
 
 it('activates a PayPal subscription only when the remote subscription matches the attempt', function (): void {
     $user = billingUser();
-    BillingPlanPrice::query()->create([
-        'plan_id' => $this->plan->id,
-        'provider' => 'paypal',
-        'cycle' => 'month',
-        'external_id' => 'P-PREMIUM-MONTHLY-VALID',
-        'amount' => '10.00',
-        'currency' => 'USD',
-        'active' => true,
-    ]);
+    BillingPlanPrice::query()->updateOrCreate(
+        ['plan_id' => $this->plan->id, 'provider' => 'paypal', 'cycle' => 'month'],
+        [
+            'external_id' => 'P-PREMIUM-MONTHLY-VALID',
+            'amount' => '10.00',
+            'currency' => 'USD',
+            'active' => true,
+        ],
+    );
     $attempt = app(PayPalSubscriptionService::class)->createAttempt($user, $this->plan, 'month');
     $remoteSubscription = [
         'id' => 'I-VALID',
@@ -199,15 +199,15 @@ it('activates a PayPal subscription only when the remote subscription matches th
 
 it('rejects an expired or mismatched PayPal checkout attempt', function (): void {
     $user = billingUser();
-    BillingPlanPrice::query()->create([
-        'plan_id' => $this->plan->id,
-        'provider' => 'paypal',
-        'cycle' => 'month',
-        'external_id' => 'P-PREMIUM-MONTHLY-EXPIRED',
-        'amount' => '10.00',
-        'currency' => 'USD',
-        'active' => true,
-    ]);
+    BillingPlanPrice::query()->updateOrCreate(
+        ['plan_id' => $this->plan->id, 'provider' => 'paypal', 'cycle' => 'month'],
+        [
+            'external_id' => 'P-PREMIUM-MONTHLY-EXPIRED',
+            'amount' => '10.00',
+            'currency' => 'USD',
+            'active' => true,
+        ],
+    );
     $attempt = app(PayPalSubscriptionService::class)->createAttempt($user, $this->plan, 'month');
     $attempt->update(['expires_at' => now()->subMinute()]);
     $client = \Mockery::mock(PayPalClient::class);
@@ -243,15 +243,15 @@ it('rejects an expired or mismatched PayPal checkout attempt', function (): void
 
 it('activates a PayPal subscription from an out of order activation webhook', function (): void {
     $user = billingUser();
-    BillingPlanPrice::query()->create([
-        'plan_id' => $this->plan->id,
-        'provider' => 'paypal',
-        'cycle' => 'month',
-        'external_id' => 'P-PREMIUM-MONTHLY-WEBHOOK',
-        'amount' => '10.00',
-        'currency' => 'USD',
-        'active' => true,
-    ]);
+    BillingPlanPrice::query()->updateOrCreate(
+        ['plan_id' => $this->plan->id, 'provider' => 'paypal', 'cycle' => 'month'],
+        [
+            'external_id' => 'P-PREMIUM-MONTHLY-WEBHOOK',
+            'amount' => '10.00',
+            'currency' => 'USD',
+            'active' => true,
+        ],
+    );
     $attempt = app(PayPalSubscriptionService::class)->createAttempt($user, $this->plan, 'month');
     $payload = [
         'resource' => [
@@ -281,15 +281,15 @@ it('activates a PayPal subscription from an out of order activation webhook', fu
 
 it('accepts a sandbox buyer with a different email address', function (): void {
     $user = billingUser();
-    BillingPlanPrice::query()->create([
-        'plan_id' => $this->plan->id,
-        'provider' => 'paypal',
-        'cycle' => 'month',
-        'external_id' => 'P-PREMIUM-MONTHLY-EMAIL',
-        'amount' => '10.00',
-        'currency' => 'USD',
-        'active' => true,
-    ]);
+    BillingPlanPrice::query()->updateOrCreate(
+        ['plan_id' => $this->plan->id, 'provider' => 'paypal', 'cycle' => 'month'],
+        [
+            'external_id' => 'P-PREMIUM-MONTHLY-EMAIL',
+            'amount' => '10.00',
+            'currency' => 'USD',
+            'active' => true,
+        ],
+    );
     $attempt = app(PayPalSubscriptionService::class)->createAttempt($user, $this->plan, 'month');
 
     app(PayPalSubscriptionService::class)->processWebhook(
@@ -314,15 +314,15 @@ it('accepts a sandbox buyer with a different email address', function (): void {
 
 it('retries a pending PayPal checkout after the remote subscription becomes active', function (): void {
     $user = billingUser();
-    BillingPlanPrice::query()->create([
-        'plan_id' => $this->plan->id,
-        'provider' => 'paypal',
-        'cycle' => 'month',
-        'external_id' => 'P-PREMIUM-MONTHLY-RETRY',
-        'amount' => '10.00',
-        'currency' => 'USD',
-        'active' => true,
-    ]);
+    BillingPlanPrice::query()->updateOrCreate(
+        ['plan_id' => $this->plan->id, 'provider' => 'paypal', 'cycle' => 'month'],
+        [
+            'external_id' => 'P-PREMIUM-MONTHLY-RETRY',
+            'amount' => '10.00',
+            'currency' => 'USD',
+            'active' => true,
+        ],
+    );
     $attempt = app(PayPalSubscriptionService::class)->createAttempt($user, $this->plan, 'month');
     $client = \Mockery::mock(PayPalClient::class);
     $client->expects('getSubscription')->twice()->with('I-RETRY')->andReturn(

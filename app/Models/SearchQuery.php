@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -15,6 +16,9 @@ class SearchQuery extends Model
     use HasFactory;
 
     public const MIN_LENGTH = 25;
+
+    /** Máximo de saltos al seguir redirecciones encadenadas (evita ciclos) */
+    private const MAX_REDIRECT_HOPS = 5;
 
     /**
      * Palabras que no aportan para comparar búsquedas similares.
@@ -32,6 +36,7 @@ class SearchQuery extends Model
         'slug',
         'results_count',
         'active',
+        'redirect_to_id',
     ];
 
     protected function casts(): array
@@ -40,6 +45,39 @@ class SearchQuery extends Model
             'results_count' => 'integer',
             'active' => 'boolean',
         ];
+    }
+
+    /**
+     * Búsqueda principal a la que redirige esta variante.
+     *
+     * @return BelongsTo<self, $this>
+     */
+    public function redirectTarget(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'redirect_to_id');
+    }
+
+    /**
+     * Slug final al que debe redirigir (301) la búsqueda indexable de ese país + slug,
+     * siguiendo redirecciones encadenadas. Null si no redirige.
+     */
+    public static function redirectSlugFor(string $country, string $slug): ?string
+    {
+        $search = static::query()->where('country', $country)->where('slug', $slug)->first(['id', 'slug', 'redirect_to_id']);
+        $visited = [];
+
+        while ($search?->redirect_to_id && count($visited) < self::MAX_REDIRECT_HOPS) {
+            $visited[] = $search->id;
+            $target = static::query()->find($search->redirect_to_id, ['id', 'slug', 'redirect_to_id']);
+
+            if (! $target || in_array($target->id, $visited, true)) {
+                break;
+            }
+
+            $search = $target;
+        }
+
+        return $search && $search->slug !== $slug ? $search->slug : null;
     }
 
     /**
@@ -71,7 +109,8 @@ class SearchQuery extends Model
     /**
      * Búsquedas activas del mismo país ordenadas por palabras del slug en común
      * (ignorando stopwords y la "s" final) y luego por cantidad de anuncios,
-     * así siempre se completan los lugares disponibles. Cacheado 1 hora.
+     * así siempre se completan los lugares disponibles. Excluye las variantes que
+     * redirigen a otra búsqueda. Cacheado 1 hora.
      *
      * @return Collection<int, array{query: string, slug: string}>
      */
@@ -90,6 +129,7 @@ class SearchQuery extends Model
                 return static::query()
                     ->where('country', $country)
                     ->where('active', true)
+                    ->whereNull('redirect_to_id')
                     ->where('slug', '!=', $slug)
                     ->orderByRaw(
                         "(SELECT COUNT(*) FROM unnest(string_to_array(slug, '-')) AS word WHERE regexp_replace(word, 's$', '') = ANY(?::text[])) DESC",

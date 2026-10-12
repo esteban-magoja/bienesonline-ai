@@ -13,16 +13,17 @@ use Nnjeim\World\Models\State;
 uses(DatabaseTransactions::class);
 
 it('uses localized type and transaction labels in contextual listing metadata', function () {
-    DB::table('transaction_types')->insert([
-        'country_code' => 'CL',
-        'value' => 'venta',
-        'label' => 'Venta',
-        'value_en' => 'sale',
-        'order' => 1,
-        'is_active' => true,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+    DB::table('transaction_types')->updateOrInsert(
+        ['country_code' => 'CL', 'value' => 'venta'],
+        [
+            'label' => 'Venta',
+            'value_en' => 'sale',
+            'order' => 1,
+            'is_active' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+    );
 
     $cachedTypes = new ReflectionProperty(TransactionType::class, 'allTypesCache');
     $cachedTypes->setAccessible(true);

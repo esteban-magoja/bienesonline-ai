@@ -171,6 +171,68 @@ describe('otras búsquedas', function (): void {
     });
 });
 
+describe('redirección de búsquedas unificadas', function (): void {
+    beforeEach(function (): void {
+        $this->principal = SearchQuery::factory()->active()->create([
+            'country' => 'Chile',
+            'query' => 'casa en venta quilpue test',
+            'slug' => 'casa-en-venta-quilpue-test',
+        ]);
+        $this->variante = SearchQuery::factory()->active()->create([
+            'country' => 'Chile',
+            'query' => 'venta casa quilpue test',
+            'slug' => 'venta-casa-quilpue-test',
+            'redirect_to_id' => $this->principal->id,
+        ]);
+    });
+
+    it('redirige con 301 la URL de la variante a la búsqueda principal', function (): void {
+        $this->get('/es/chile/busqueda/venta-casa-quilpue-test')
+            ->assertMovedPermanently()
+            ->assertRedirect('/es/chile/busqueda/casa-en-venta-quilpue-test');
+
+        $this->get('/en/chile/search/venta-casa-quilpue-test')
+            ->assertRedirect('/en/chile/search/casa-en-venta-quilpue-test');
+    });
+
+    it('mantiene la página al redirigir', function (): void {
+        $this->get('/es/chile/busqueda/venta-casa-quilpue-test?page=3')
+            ->assertRedirect('/es/chile/busqueda/casa-en-venta-quilpue-test?page=3');
+    });
+
+    it('sigue redirecciones encadenadas hasta la búsqueda final', function (): void {
+        SearchQuery::factory()->create([
+            'country' => 'Chile',
+            'slug' => 'casa-venta-quilpue-test',
+            'redirect_to_id' => $this->variante->id,
+        ]);
+
+        $this->get('/es/chile/busqueda/casa-venta-quilpue-test')
+            ->assertRedirect('/es/chile/busqueda/casa-en-venta-quilpue-test');
+    });
+
+    it('no redirige la búsqueda principal ni la misma búsqueda en otro país', function (): void {
+        SearchQuery::factory()->create(['country' => 'Argentina', 'slug' => 'venta-casa-quilpue-test']);
+
+        $this->get('/es/chile/busqueda/casa-en-venta-quilpue-test')->assertSuccessful();
+        $this->get('/es/argentina/busqueda/venta-casa-quilpue-test')->assertSuccessful();
+    });
+
+    it('no afecta al buscador ni duplica la variante al volver a buscarla', function (): void {
+        $this->get('/es/search-properties?country=Chile&search=Venta casa quilpue test')->assertSuccessful();
+
+        expect(SearchQuery::where('country', 'Chile')->where('slug', 'venta-casa-quilpue-test')->count())->toBe(1);
+    });
+
+    it('excluye las variantes de otras búsquedas', function (): void {
+        Cache::flush();
+
+        expect(SearchQuery::related('Chile', 'departamento-quilpue-test')->pluck('slug'))
+            ->toContain('casa-en-venta-quilpue-test')
+            ->not->toContain('venta-casa-quilpue-test');
+    });
+});
+
 describe('panel admin', function (): void {
     beforeEach(function (): void {
         $admin = User::factory()->create(['avatar' => 'demo/default.png']);
@@ -207,6 +269,41 @@ describe('panel admin', function (): void {
         expect($search->fresh())
             ->slug->toBe('casa-quinta-con-pileta')
             ->active->toBeTrue();
+    });
+
+    it('configura la redirección de una variante a otra búsqueda del mismo país', function (): void {
+        $principal = SearchQuery::factory()->create();
+        $variante = SearchQuery::factory()->create();
+
+        Livewire::test(EditSearchQuery::class, ['record' => $variante->getKey()])
+            ->fillForm(['redirect_to_id' => $principal->id])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        expect($variante->fresh()->redirect_to_id)->toBe($principal->id);
+    });
+
+    it('rechaza redirigir a sí misma, a otro país o a una búsqueda que ya redirige', function (string $case): void {
+        $variante = SearchQuery::factory()->create();
+
+        $targetId = match ($case) {
+            'a sí misma' => $variante->id,
+            'otro país' => SearchQuery::factory()->create(['country' => 'Chile'])->id,
+            'que redirige' => SearchQuery::factory()->create(['redirect_to_id' => SearchQuery::factory()->create()->id])->id,
+        };
+
+        Livewire::test(EditSearchQuery::class, ['record' => $variante->getKey()])
+            ->fillForm(['redirect_to_id' => $targetId])
+            ->call('save')
+            ->assertHasFormErrors(['redirect_to_id']);
+    })->with(['a sí misma', 'otro país', 'que redirige']);
+
+    it('normaliza el slug a minúsculas sin acentos', function (): void {
+        $search = SearchQuery::factory()->create();
+
+        Livewire::test(EditSearchQuery::class, ['record' => $search->getKey()])
+            ->set('data.slug', 'Casa-en-venta-córdoba')
+            ->assertSet('data.slug', 'casa-en-venta-cordoba');
     });
 
     it('borra una búsqueda', function (): void {

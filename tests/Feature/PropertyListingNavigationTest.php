@@ -6,6 +6,15 @@ use Illuminate\Support\Facades\DB;
 uses(DatabaseTransactions::class);
 
 it('completes the listing navigation from property type to locality', function () {
+    deactivateExistingListings();
+
+    // Solo se enlazan localidades que existen en la tabla cities: asegurar Tanti junto a Villa Carlos Paz
+    $carlosPaz = DB::table('cities')->where('country_code', 'AR')->where('name', 'Villa Carlos Paz')->first();
+    DB::table('cities')->updateOrInsert(
+        ['state_id' => $carlosPaz->state_id, 'name' => 'Tanti'],
+        ['country_id' => $carlosPaz->country_id, 'country_code' => 'AR'],
+    );
+
     $userId = DB::table('users')->insertGetId([
         'name' => 'Usuario navegación',
         'email' => 'listing-navigation-' . uniqid() . '@example.com',

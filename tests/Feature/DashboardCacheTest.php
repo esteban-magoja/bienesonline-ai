@@ -5,7 +5,10 @@ declare(strict_types=1);
 use App\Models\User;
 use App\Models\PropertyListing;
 use App\Models\PropertyRequest;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
+
+uses(DatabaseTransactions::class);
 
 beforeEach(function (): void {
     $this->user = User::find(1);

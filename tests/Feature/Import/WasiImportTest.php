@@ -200,9 +200,9 @@ describe('ImportLocationResolver and currency', function () {
 describe('ImportTypeResolver', function () {
     it('maps regional types through value_en', function () {
         Cache::flush();
-        PropertyType::create(['country_code' => 'AR', 'value' => 'terreno', 'label' => 'Terreno', 'value_en' => 'land', 'order' => 1, 'is_active' => true]);
-        PropertyType::create(['country_code' => 'AR', 'value' => 'departamento', 'label' => 'Departamento', 'value_en' => 'apartment', 'order' => 2, 'is_active' => true]);
-        TransactionType::create(['country_code' => 'AR', 'value' => 'alquiler', 'label' => 'Alquiler', 'value_en' => 'rent', 'order' => 1, 'is_active' => true]);
+        PropertyType::updateOrCreate(['country_code' => 'AR', 'value' => 'terreno'], ['label' => 'Terreno', 'value_en' => 'land', 'order' => 1, 'is_active' => true]);
+        PropertyType::updateOrCreate(['country_code' => 'AR', 'value' => 'departamento'], ['label' => 'Departamento', 'value_en' => 'apartment', 'order' => 2, 'is_active' => true]);
+        TransactionType::updateOrCreate(['country_code' => 'AR', 'value' => 'alquiler'], ['label' => 'Alquiler', 'value_en' => 'rent', 'order' => 1, 'is_active' => true]);
 
         $resolver = app(\App\Services\Import\ImportTypeResolver::class);
 
@@ -263,7 +263,7 @@ describe('import and sync pipeline', function () {
         $runner->start($source, 'initial');
 
         // El usuario edita el título de un anuncio a mano
-        $listing = PropertyListing::where('external_id', '10322736')->first();
+        $listing = PropertyListing::where('import_source_id', $source->id)->where('external_id', '10322736')->first();
         $listing->update(['title' => 'Mi título personalizado']);
 
         // La fuente cambia el título y el precio del mismo anuncio
@@ -289,15 +289,15 @@ describe('import and sync pipeline', function () {
         // Un anuncio desaparece del feed
         fakeWasi(wasiFeed(removeIds: ['10306217']));
         $runner->start($source->refresh(), 'sync');
-        expect(PropertyListing::where('external_id', '10306217')->first())
+        expect(PropertyListing::where('import_source_id', $source->id)->where('external_id', '10306217')->first())
             ->is_active->toBeTrue()
             ->import_missing_count->toBe(1);
 
         $job = $runner->start($source->refresh(), 'sync')->refresh();
-        $missing = PropertyListing::where('external_id', '10306217')->first();
+        $missing = PropertyListing::where('import_source_id', $source->id)->where('external_id', '10306217')->first();
         expect($missing->is_active)->toBeFalse()
             ->and($job->deactivated_listings)->toBe(1)
-            ->and(PropertyListing::where('external_id', '10322736')->first()->is_active)->toBeTrue();
+            ->and(PropertyListing::where('import_source_id', $source->id)->where('external_id', '10322736')->first()->is_active)->toBeTrue();
 
         // Vuelve a aparecer
         fakeWasi(wasiFixture());
@@ -312,11 +312,11 @@ describe('import and sync pipeline', function () {
         fakeWasi(wasiFixture());
         $runner->start($source, 'initial');
 
-        PropertyListing::where('external_id', '10306217')->first()->update(['is_active' => false]);
+        PropertyListing::where('import_source_id', $source->id)->where('external_id', '10306217')->first()->update(['is_active' => false]);
 
         $runner->start($source->refresh(), 'sync');
 
-        expect(PropertyListing::where('external_id', '10306217')->first()->is_active)->toBeFalse();
+        expect(PropertyListing::where('import_source_id', $source->id)->where('external_id', '10306217')->first()->is_active)->toBeFalse();
     });
 
     it('removes images that disappeared from the feed', function () {
@@ -329,7 +329,7 @@ describe('import and sync pipeline', function () {
         fakeWasi(wasiFeed(['gr109468620260826073139.jpeg' => 'gr_nueva.jpeg']));
         $runner->start($source->refresh(), 'sync');
 
-        $listing = PropertyListing::where('external_id', '10322736')->first();
+        $listing = PropertyListing::where('import_source_id', $source->id)->where('external_id', '10322736')->first();
         $urls = $listing->images()->pluck('source_url')->all();
 
         expect($urls)->toHaveCount(6)
@@ -400,7 +400,8 @@ describe('dashboard section', function () {
     });
 
     it('rejects an unreachable feed without saving the source', function () {
-        Country::forceCreate(['name' => 'Argentina', 'iso2' => 'AR', 'iso3' => 'ARG', 'phone_code' => '54', 'region' => 'Americas', 'subregion' => 'South America', 'status' => 1]);
+        Country::query()->where('iso2', 'AR')->exists()
+            || Country::forceCreate(['name' => 'Argentina', 'iso2' => 'AR', 'iso3' => 'ARG', 'phone_code' => '54', 'region' => 'Americas', 'subregion' => 'South America', 'status' => 1]);
         CountrySetting::enable('AR', 1);
         fakeWasi('<html>nope</html>', 404);
 
@@ -408,7 +409,7 @@ describe('dashboard section', function () {
             'driver' => 'wasi', 'country' => 'Argentina', 'feed_url' => WASI_FEED_URL,
         ])->assertSessionHasErrors('feed_url');
 
-        expect(ImportSource::count())->toBe(0);
+        expect(ImportSource::where('user_id', $this->user->id)->count())->toBe(0);
     });
 
     it('validates the driver', function () {
@@ -434,17 +435,20 @@ describe('dashboard section', function () {
 
         $this->delete(route('dashboard.imports.destroy', $source))->assertRedirect();
 
-        expect(ImportSource::count())->toBe(0)
+        expect(ImportSource::where('user_id', $this->user->id)->count())->toBe(0)
             ->and(PropertyListing::where('user_id', $this->user->id)->where('source', 'wasi')->count())->toBe(3)
             ->and(PropertyListing::where('user_id', $this->user->id)->whereNotNull('import_source_id')->count())->toBe(0);
     });
 
     it('shows the subscription notice to non-premium users and blocks their actions', function () {
-        $this->actingAs(User::factory()->create());
+        $nonPremiumUser = User::factory()->create();
+        $this->actingAs($nonPremiumUser);
+        $source = makeSource();
 
         $this->post(route('dashboard.imports.store'), ['driver' => 'wasi'])->assertRedirect(route('dashboard.imports.index'));
-        $this->post(route('dashboard.imports.sync', makeSource()))->assertRedirect(route('dashboard.imports.index'));
-        expect(ImportSource::count())->toBe(1);
+        $this->post(route('dashboard.imports.sync', $source))->assertRedirect(route('dashboard.imports.index'));
+        expect(ImportSource::where('user_id', $nonPremiumUser->id)->count())->toBe(0)
+            ->and($source->importJobs()->count())->toBe(0);
     });
 
     it('stops syncing sources of users who lost premium', function () {

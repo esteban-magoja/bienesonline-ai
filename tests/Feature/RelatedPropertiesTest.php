@@ -9,6 +9,7 @@ uses(DatabaseTransactions::class);
 
 beforeEach(function (): void {
     config(['matching.enabled' => false]);
+    deactivateExistingListings();
 
     $userId = DB::table('users')->insertGetId([
         'name' => 'Propietario de relacionados',

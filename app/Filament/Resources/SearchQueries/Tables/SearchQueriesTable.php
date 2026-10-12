@@ -15,6 +15,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class SearchQueriesTable
@@ -39,6 +40,13 @@ class SearchQueriesTable
                     ->label('Anuncios')
                     ->numeric()
                     ->sortable(),
+                // No usar 'redirectTarget.query': Filament toma Model::query() como relación
+                TextColumn::make('redirect_to_id')
+                    ->label('Redirige a')
+                    ->formatStateUsing(fn (SearchQuery $record): ?string => $record->redirectTarget?->query)
+                    ->placeholder('—')
+                    ->wrap()
+                    ->toggleable(),
                 TextColumn::make('slug')
                     ->label('Slug')
                     ->searchable()
@@ -54,6 +62,12 @@ class SearchQueriesTable
                     ->placeholder('Todas')
                     ->trueLabel('Activas')
                     ->falseLabel('Inactivas'),
+                TernaryFilter::make('redirect_to_id')
+                    ->label('Redirección')
+                    ->placeholder('Todas')
+                    ->trueLabel('Redirigen a otra')
+                    ->falseLabel('Principales')
+                    ->nullable(),
                 SelectFilter::make('country')
                     ->label('País')
                     ->options(fn (): array => SearchQuery::query()
@@ -62,6 +76,7 @@ class SearchQueriesTable
                         ->pluck('country', 'country')
                         ->all()),
             ])
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('redirectTarget:id,query'))
             ->defaultSort('created_at', 'desc')
             ->recordActions([
                 Action::make('view')

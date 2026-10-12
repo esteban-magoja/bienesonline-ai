@@ -53,7 +53,12 @@ beforeEach(function (): void {
 |
 */
 
-function something()
+/**
+ * Los tests corren sobre la BD de desarrollo: desactiva los anuncios existentes para que
+ * no se mezclen con los del test. Usar solo en tests con DatabaseTransactions (se revierte).
+ * Es un update masivo: no dispara observers.
+ */
+function deactivateExistingListings(): void
 {
-    // ..
+    App\Models\PropertyListing::query()->where('is_active', true)->update(['is_active' => false]);
 }

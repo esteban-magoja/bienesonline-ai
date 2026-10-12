@@ -52,6 +52,19 @@ class SemanticPropertySearchController extends Controller
             ], 301);
         }
 
+        $page = (int) $request->integer('page', 1);
+
+        // Variante unificada desde el admin: 301 a la búsqueda principal
+        if ($redirectSlug = SearchQuery::redirectSlugFor($countryName, $canonicalQuery)) {
+            return redirect()->route('property.semantic-search', array_filter([
+                'locale' => $locale,
+                'country' => PropertySlugHelper::normalize($countryName),
+                'searchPath' => $expectedSearchPath,
+                'query' => $redirectSlug,
+                'page' => $page > 1 ? $page : null,
+            ]), 301);
+        }
+
         $properties = $this->searchService->search($searchTerm, $countryName);
 
         SearchQuery::record($countryName, $searchTerm, $properties->total());
@@ -62,7 +75,6 @@ class SemanticPropertySearchController extends Controller
             'searchPath' => $expectedSearchPath,
             'query' => $canonicalQuery,
         ]);
-        $page = (int) $request->integer('page', 1);
 
         if ($page > 1) {
             $canonicalUrl .= '?page=' . $page;

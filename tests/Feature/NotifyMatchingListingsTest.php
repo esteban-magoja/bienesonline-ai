@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Notification;
 
 uses(DatabaseTransactions::class);
 
+beforeEach(fn () => deactivateExistingListings());
+
 // Limpiar cache entre tests para evitar que los locks de throttle persistan entre casos.
 afterEach(fn () => Cache::flush());
 
