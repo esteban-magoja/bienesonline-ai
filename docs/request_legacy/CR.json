@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-09-15 14:30:04","nombre":"Alexander Mauricio Lopez Molina","email":"a.lopez@citymax-cr.com","telefono":"87181510","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Goicoechea"}
+{"fecha":"2026-10-06 15:56:58","nombre":"Julio Aguirre","email":"jaguirre@heredia.go.cr","telefono":"89471899","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Heredia","localidad_inmueble":"San Rafael"}
 ]
 }
 ]

@@ -3,11 +3,11 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-10-04 12:46:01","nombre":"6319058760","email":"rishiparasram8@gmail.com","telefono":"6319058760","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Coclé","localidad_inmueble":"Penonomé"},
-{"fecha":"2026-10-03 11:12:48","nombre":"Pierre Sicard","email":"lemapou@yahoo.com","telefono":"507-63343743","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Bella Vista"},
-{"fecha":"2026-10-03 13:04:12","nombre":"Zahira Camargo ","email":"zahiracc29@gmail.com","telefono":"64946874","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"San Miguelito"},
-{"fecha":"2026-10-05 00:09:11","nombre":"erika","email":"erikaluoting0910@gmail.com","telefono":"65544005","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-09-30 16:31:35","nombre":"joao paulo","email":"joao.fiore@ambev.com.br","telefono":"67872148","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"}
+{"fecha":"2026-10-05 15:51:27","nombre":"Giselle Robles","email":"gisellerobles05@outlook.com","telefono":"6997-9526","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-06 16:12:31","nombre":"Juan Arias","email":"juanbarias27@gmail.com","telefono":"6653 5076","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-06 23:10:49","nombre":"jacky parra","email":"asesoresinmobiliarios911@gmail.com","telefono":"60263893","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-09 13:35:29","nombre":"Grecia","email":"grecia@gmail.com","telefono":"69793736","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-08 15:25:15","nombre":"edgar torres ","email":"edantonio2727@gmail.com","telefono":"69317997","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Chiriquí","localidad_inmueble":"David"}
 ]
 }
 ]

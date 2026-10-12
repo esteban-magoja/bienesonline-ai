@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-09-26 13:54:45","nombre":"Noelia massiel suarez ","email":"amdersonj.hilario@gmail.com","telefono":"8096974626","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"},
-{"fecha":"2026-09-26 22:04:57","nombre":"Walkiria Yanire Restituyo ","email":"walkirestituyo@gmail.com","telefono":"8099126401","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"}
+{"fecha":"2026-10-07 13:23:39","nombre":"Emely Rufino ","email":"emelyrufino@hotmail.com","telefono":"8297767037","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"}
 ]
 }
 ]

@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-09-06 21:47:47","nombre":"Catalina Del Valle","email":"cdelvallerodriguez2409@gmail.com","telefono":"944981910","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Lima"}
+{"fecha":"2026-10-08 17:45:59","nombre":"Pablo César Castillo Ladines","email":"pablocesarcastilloladines@gmail.com","telefono":"970141510","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Piura","localidad_inmueble":"Piura"}
 ]
 }
 ]

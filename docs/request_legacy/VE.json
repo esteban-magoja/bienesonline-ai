@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-09-24 01:11:30","nombre":"Luis Dario","email":"dariourbina1985@gmail.com","telefono":"0412-7730164","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Monagas","localidad_inmueble":"Maturín"},
-{"fecha":"2026-09-27 19:15:57","nombre":"Ana Deleon ","email":"anayolderodriguez@gmail.com","telefono":"9453187597","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Guatire"}
+{"fecha":"2026-10-08 22:09:43","nombre":"Anny","email":"mili_ramirezg@hotmail.com","telefono":"04247723750","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Distrito Capital","localidad_inmueble":"Caracas"},
+{"fecha":"2026-10-10 21:43:33","nombre":"CARLOS ANDRES ESCOBAR","email":"ccescobar64@gmail.com","telefono":"04242613799","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Capital","localidad_inmueble":"Caracas"}
 ]
 }
 ]

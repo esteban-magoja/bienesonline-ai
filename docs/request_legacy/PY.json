@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_paraguay"},
 {"type":"table","name":"c","database":"admin_bienes_paraguay","data":
 [
-{"fecha":"2026-09-28 08:07:13","nombre":"Deivide Silverio","email":"deividev@hotmail.com","telefono":"+5543999145030","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Sajonia"}
+{"fecha":"2026-10-06 15:44:15","nombre":"Maria Victoria Piccardo","email":"marivipiccardo2@gmail.com","telefono":"0981452771","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Jara"},
+{"fecha":"2026-10-06 22:50:49","nombre":"Elena gonzalez","email":"eleenag07@gmail.com","telefono":"0986544439","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Asunción"}
 ]
 }
 ]
