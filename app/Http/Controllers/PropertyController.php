@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Models\PropertyListing;
 use App\Models\PropertyMessage;
+use App\Models\SearchQuery;
+use Illuminate\Support\Str;
 use App\Mail\PropertyMessageReceived;
 use App\Services\RelatedPropertyService;
 use App\Services\SeoService;
@@ -52,6 +54,13 @@ class PropertyController extends Controller
 
         $relatedProperties = $this->relatedPropertyService->findRelatedProperties($property);
 
+        // "Otras búsquedas": búsquedas indexables del país parecidas al título y la ubicación del anuncio
+        $relatedSearches = SearchQuery::relatedLinks(
+            (string) $property->country,
+            Str::slug("{$property->title} {$property->city} {$property->state}"),
+            $locale,
+        );
+
         // Generate SEO data using SeoService
         $seo = $this->seoService->generatePropertySeo($property, $locale);
         $countryCode = PropertySlugHelper::getCountryCode((string) $property->country);
@@ -66,7 +75,7 @@ class PropertyController extends Controller
         $seo->og_alternate_locales = $ogLocale['alternate_locales'];
         $seo->html_lang = SeoLocaleHelper::getLanguageTag($locale, $countryCode);
 
-        return view('property-detail', compact('property', 'relatedProperties', 'seo'));
+        return view('property-detail', compact('property', 'relatedProperties', 'relatedSearches', 'seo'));
     }
 
     /**

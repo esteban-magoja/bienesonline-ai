@@ -8,6 +8,7 @@ use App\Models\PropertyListing;
 use App\Models\SearchQuery;
 use App\Models\User;
 use App\Services\SemanticPropertySearchService;
+use App\Services\SeoService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
@@ -164,6 +165,31 @@ describe('otras búsquedas', function (): void {
         ]);
 
         $this->get('/es/chile/busqueda/casas-en-venta-en-vina-test')
+            ->assertSuccessful()
+            ->assertSee(__('properties.search_results.other_searches'))
+            ->assertSee('Casas en venta en quilpue test')
+            ->assertSee('/es/chile/busqueda/casas-en-venta-en-quilpue-test', false);
+    });
+
+    it('muestra el cuadro con links en la ficha del anuncio', function (): void {
+        Cache::flush();
+
+        SearchQuery::factory()->active()->create([
+            'country' => 'Chile',
+            'query' => 'casas en venta en quilpue test',
+            'slug' => 'casas-en-venta-en-quilpue-test',
+        ]);
+
+        $property = PropertyListing::factory()->create([
+            'user_id' => User::factory()->create()->id,
+            'title' => 'Casa en venta test',
+            'city' => 'Quilpue',
+            'state' => 'Valparaíso',
+            'country' => 'Chile',
+            'is_active' => true,
+        ]);
+
+        $this->get(app(SeoService::class)->generatePropertyUrl($property, 'es'))
             ->assertSuccessful()
             ->assertSee(__('properties.search_results.other_searches'))
             ->assertSee('Casas en venta en quilpue test')

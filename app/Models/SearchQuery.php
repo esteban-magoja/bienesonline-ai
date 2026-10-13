@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\PropertySlugHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -142,5 +143,25 @@ class SearchQuery extends Model
                     ->map(fn (self $search): array => ['query' => $search->query, 'slug' => $search->slug]);
             },
         );
+    }
+
+    /**
+     * Enlaces de "Otras búsquedas" (texto + URL indexable en el locale dado)
+     * para las búsquedas relacionadas con el slug.
+     *
+     * @return Collection<int, array{label: string, url: string}>
+     */
+    public static function relatedLinks(string $country, string $slug, string $locale, int $limit = 5): Collection
+    {
+        return static::related($country, $slug, $limit)
+            ->map(fn (array $search): array => [
+                'label' => Str::ucfirst($search['query']),
+                'url' => route('property.semantic-search', [
+                    'locale' => $locale,
+                    'country' => PropertySlugHelper::normalize($country),
+                    'searchPath' => $locale === 'en' ? 'search' : 'busqueda',
+                    'query' => $search['slug'],
+                ]),
+            ]);
     }
 }

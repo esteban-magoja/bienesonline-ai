@@ -125,16 +125,7 @@ class SemanticPropertySearchController extends Controller
             'properties' => $properties,
             'country' => $countryName,
             'searchTerm' => $searchTerm,
-            'relatedSearches' => SearchQuery::related($countryName, $canonicalQuery)
-                ->map(fn (array $search): array => [
-                    'label' => Str::ucfirst($search['query']),
-                    'url' => route('property.semantic-search', [
-                        'locale' => $locale,
-                        'country' => PropertySlugHelper::normalize($countryName),
-                        'searchPath' => $expectedSearchPath,
-                        'query' => $search['slug'],
-                    ]),
-                ]),
+            'relatedSearches' => SearchQuery::relatedLinks($countryName, $canonicalQuery, $locale),
             'seo' => $seo,
             'breadcrumbs' => [
                 ['label' => __('messages.home'), 'url' => route('home', ['locale' => $locale])],
