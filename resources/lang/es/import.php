@@ -72,5 +72,15 @@ return [
             'feed_url'      => 'URL del feed',
             'feed_url_help' => 'Es la URL de tu XML de Trovit en Wasi, por ejemplo https://tusitio.com/xml-trovit.htm',
         ],
+        'code49' => [
+            'description'   => 'Importa tus anuncios desde el feed XML de Code49 (formato Trovit).',
+            'feed_url'      => 'URL del feed',
+            'feed_url_help' => 'Es la URL del XML que Code49 exporta para Bienesonline, por ejemplo https://tusitio.com/exportacao/bienesonline.xml',
+        ],
+        'trovit' => [
+            'description'   => 'Importa tus anuncios desde cualquier feed XML en formato Trovit.',
+            'feed_url'      => 'URL del feed',
+            'feed_url_help' => 'Es la URL del XML en formato Trovit que exporta tu sitio o CRM, por ejemplo https://tusitio.com/trovit.xml',
+        ],
     ],
 ];

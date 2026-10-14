@@ -72,5 +72,15 @@ return [
             'feed_url'      => 'Feed URL',
             'feed_url_help' => 'The URL of your Trovit XML in Wasi, e.g. https://yoursite.com/xml-trovit.htm',
         ],
+        'code49' => [
+            'description'   => 'Import your listings from the Code49 XML feed (Trovit format).',
+            'feed_url'      => 'Feed URL',
+            'feed_url_help' => 'The URL of the XML that Code49 exports for Bienesonline, e.g. https://yoursite.com/exportacao/bienesonline.xml',
+        ],
+        'trovit' => [
+            'description'   => 'Import your listings from any XML feed in Trovit format.',
+            'feed_url'      => 'Feed URL',
+            'feed_url_help' => 'The URL of the Trovit-format XML exported by your website or CRM, e.g. https://yoursite.com/trovit.xml',
+        ],
     ],
 ];

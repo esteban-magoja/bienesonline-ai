@@ -19,15 +19,16 @@ class ImportTypeResolver
         'piso' => 'apartment', 'penthouse' => 'apartment', 'apartaestudio' => 'apartment', 'ph' => 'apartment',
         'lote' => 'land', 'terreno' => 'land', 'land' => 'land', 'campo' => 'land',
         'finca' => 'land', 'parcela' => 'land', 'chacra' => 'land',
+        'terreno para construcción' => 'land', 'terreno para construccion' => 'land',
     ];
 
     /** Tipo regional preferido cuando varios comparten value_en (ej. campo/terreno → land). */
     private const PREFERRED = ['land' => 'terreno', 'apartment' => 'departamento', 'house' => 'casa'];
 
     private const TRANSACTION_SYNONYMS = [
-        'sale' => 'sale', 'for sale' => 'sale', 'venta' => 'sale', 'vender' => 'sale',
+        'sale' => 'sale', 'for sale' => 'sale', 'land for sale' => 'sale', 'venta' => 'sale', 'vender' => 'sale',
         'rent' => 'rent', 'for rent' => 'rent', 'alquiler' => 'rent', 'arriendo' => 'rent',
-        'arrendar' => 'rent', 'renta' => 'rent',
+        'arrendar' => 'rent', 'renta' => 'rent', 'land for rent' => 'rent',
         'temporary rent' => 'temporary_rent', 'alquiler temporal' => 'temporary_rent',
     ];
 
@@ -71,6 +72,11 @@ class ImportTypeResolver
     {
         $normalized = mb_strtolower(trim($raw));
         $valueEn = self::TRANSACTION_SYNONYMS[$normalized] ?? null;
+
+        // Variantes Trovit con el tipo de inmueble delante: "Office For Rent", "Parking For Sale"
+        if ($valueEn === null && preg_match('/\bfor (sale|rent)$/', $normalized, $match)) {
+            $valueEn = $match[1];
+        }
 
         if ($valueEn === null) {
             return null;

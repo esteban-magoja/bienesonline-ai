@@ -1354,14 +1354,14 @@ Extiende `/es/inmobiliaria/{username}` / `/en/realtor/{username}` a un mini-siti
 
 ## Importación de Anuncios desde Fuentes Externas (Septiembre 2026)
 
-Sistema **independiente del legacy** (que desaparecerá): el usuario **premium** conecta una fuente (hoy **Wasi**, feed XML Trovit) en `/dashboard/imports` y sus anuncios se importan y **se mantienen sincronizados**. Documentación completa (arquitectura, reglas, deploy, cron): **`docs/importacion-fuentes-externas.md`**.
+Sistema **independiente del legacy** (que desaparecerá): el usuario **premium** conecta una fuente (hoy **Wasi**, **Code49** y **Trovit** genérico, feeds XML Trovit con base común `TrovitFeedDriver`) en `/dashboard/imports` y sus anuncios se importan y **se mantienen sincronizados**. Documentación completa (arquitectura, reglas, deploy, cron): **`docs/importacion-fuentes-externas.md`**.
 
 - **Una clase por fuente**: `App\Services\Import\Contracts\ImportDriver` (campos del formulario + `fetch()` que devuelve anuncios normalizados). Drivers registrados en `config/import.php` → `drivers`. Agregar una fuente = 1 clase + registro + textos + test; el pipeline/UI no cambian.
 - **Pipeline**: `ImportSourceRunner::start()` → `FetchSourceFeedJob` → `ProcessSourceImportChunkJob` (encadenado) → `ListingImporter` (merge de 3 vías: no pisa campos editados por el usuario) → `ImportSourceRunner::complete()` (desactiva anuncios ausentes tras `IMPORT_MISSING_TOLERANCE`=2 corridas).
 - **Sync automático**: `imports:sync` (hourly en `routes/console.php`); requiere el cron de `schedule:run` en producción. Reutiliza `import_jobs` / `import_listing_items`; no modificar la lógica del import legacy.
 - **Normalización compartida**: `ImportTypeResolver` (tipos/operación vía `value_en`), `ImportLocationResolver` (estados oficiales de `states`, provincias Chile→región con `ChileRegions`), `ImportCurrencyNormalizer` (UF→CLF).
 - **Cola en producción**: cron cada minuto con `flock -n ... queue:work --stop-when-empty --tries=1` (`ea-php84 -d memory_limit=256M`). La importación encadena sus jobs y cada job define su `$timeout`; **no usar `queue:listen`** para probarla (timeout de 60 s mata los chunks) — usar `queue:work --tries=1 --timeout=600 --memory=512`.
-- Tests: `tests/Feature/Import/WasiImportTest.php`.
+- Tests: `tests/Feature/Import/WasiImportTest.php`, `tests/Feature/Import/Code49ImportTest.php`, `tests/Feature/Import/TrovitImportTest.php`.
 
 ## Comandos Artisan Propios
 

@@ -68,6 +68,8 @@ return [
      */
     'drivers' => [
         \App\Services\Import\Sources\WasiTrovitDriver::class,
+        \App\Services\Import\Sources\Code49Driver::class,
+        \App\Services\Import\Sources\TrovitDriver::class,
     ],
 
     // Conexiones máximas por usuario

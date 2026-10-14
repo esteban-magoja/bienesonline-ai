@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<trovit>
+<ad>
+<id><![CDATA[7005]]></id>
+<url><![CDATA[https://www.example-code49.test/1/inmuebles/venta-casa-3-quartos]]></url>
+<title><![CDATA[Luminosa casa de dos pisos semi renovada La Florida]]></title>
+<type><![CDATA[For Sale]]></type>
+<content><![CDATA[Luminosa casa de dos pisos semi renovada, ubicada en cómodo barrio residencial.
+UF 3.980
+La propiedad cuenta con 161,5 m2 de terreno.
+
+Más informaciones en www.example-code49.test]]></content>
+<mobile_url><![CDATA[https://www.example-code49.test/1/inmuebles/venta-casa-3-quartos]]></mobile_url>
+<price  currency="CLF"><![CDATA[3795.00]]></price>
+<property_type><![CDATA[Casa]]></property_type>
+<address><![CDATA[Manutara]]></address>
+<floor_number><![CDATA[0]]></floor_number>
+<neighborhood ><![CDATA[]]></neighborhood >
+<city_area><![CDATA[]]></city_area>
+<city><![CDATA[Santiago]]></city>
+<region><![CDATA[Región Metropolitana de Santiago]]></region>
+<postcode><![CDATA[]]></postcode>
+<latitude><![CDATA[]]></latitude>
+<longitude><![CDATA[]]></longitude>
+<orientation/>
+<agency><![CDATA[Andes Group]]></agency>
+<floor_area><![CDATA[75.00]]></floor_area>
+<plot_area><![CDATA[161.50]]></plot_area>
+<rooms><![CDATA[3]]></rooms>
+<bathrooms><![CDATA[2]]></bathrooms>
+<condition/>
+<year><![CDATA[]]></year>
+<pictures>
+<picture_url><![CDATA[https://images.example-code49.test/admin/imovel/7005-1.jpg]]></picture_url>
+<picture_title><![CDATA[]]></picture_title>
+<picture_url><![CDATA[https://images.example-code49.test/admin/imovel/7005-2.jpg]]></picture_url>
+<picture_title><![CDATA[]]></picture_title>
+<picture_url><![CDATA[https://images.example-code49.test/admin/imovel/7005-3.jpg]]></picture_url>
+<picture_title><![CDATA[]]></picture_title>
+</pictures>
+<date><![CDATA[13/10/2026]]></date>
+<expiration_date><![CDATA[13/11/2026]]></expiration_date>
+<parking><![CDATA[0]]></parking>
+<is_furnished><![CDATA[1]]></is_furnished>
+</ad>
+<ad>
+<id><![CDATA[17]]></id>
+<url><![CDATA[https://www.example-code49.test/1/inmuebles/venta-edificio]]></url>
+<title><![CDATA[EDIFICIO + TERRENO EN VENTA , SECTOR ESTORIL, LAS CONDES]]></title>
+<type><![CDATA[For Sale]]></type>
+<content><![CDATA[Edificio con terreno en sector Estoril.]]></content>
+<mobile_url><![CDATA[https://www.example-code49.test/1/inmuebles/venta-edificio]]></mobile_url>
+<price  currency="CLF"><![CDATA[370000.00]]></price>
+<property_type><![CDATA[Piso Comercial]]></property_type>
+<address><![CDATA[Las Condes]]></address>
+<floor_number><![CDATA[0]]></floor_number>
+<neighborhood ><![CDATA[Lo Fontecilla]]></neighborhood >
+<city_area><![CDATA[Las Condes]]></city_area>
+<city><![CDATA[Las Condes]]></city>
+<region><![CDATA[Región Metropolitana de Santiago]]></region>
+<postcode><![CDATA[]]></postcode>
+<latitude><![CDATA[]]></latitude>
+<longitude><![CDATA[]]></longitude>
+<orientation/>
+<agency><![CDATA[Andes Group]]></agency>
+<floor_area><![CDATA[1703.00]]></floor_area>
+<plot_area><![CDATA[1700.00]]></plot_area>
+<rooms><![CDATA[0]]></rooms>
+<bathrooms><![CDATA[10]]></bathrooms>
+<condition/>
+<year><![CDATA[]]></year>
+<pictures>
+<picture_url><![CDATA[https://images.example-code49.test/admin/imovel/17-1.jpg]]></picture_url>
+<picture_title><![CDATA[]]></picture_title>
+</pictures>
+<date><![CDATA[13/10/2026]]></date>
+<expiration_date><![CDATA[13/11/2026]]></expiration_date>
+<parking><![CDATA[0]]></parking>
+<is_furnished><![CDATA[1]]></is_furnished>
+</ad>
+<ad>
+<id><![CDATA[15]]></id>
+<url><![CDATA[https://www.example-code49.test/1/inmuebles/venta-parcela]]></url>
+<title><![CDATA[Parcela con orilla de río y acceso al lago Llanquihue, Río Pescado]]></title>
+<type><![CDATA[Land For Sale]]></type>
+<content><![CDATA[Parcela con orilla de río.]]></content>
+<mobile_url><![CDATA[https://www.example-code49.test/1/inmuebles/venta-parcela]]></mobile_url>
+<price  currency="CLP"><![CDATA[125000000.00]]></price>
+<property_type><![CDATA[]]></property_type>
+<address><![CDATA[]]></address>
+<floor_number><![CDATA[0]]></floor_number>
+<neighborhood ><![CDATA[]]></neighborhood >
+<city_area><![CDATA[]]></city_area>
+<city><![CDATA[Puerto Varas]]></city>
+<region><![CDATA[Los Lagos]]></region>
+<postcode><![CDATA[]]></postcode>
+<latitude><![CDATA[]]></latitude>
+<longitude><![CDATA[]]></longitude>
+<orientation/>
+<agency><![CDATA[Andes Group]]></agency>
+<floor_area><![CDATA[]]></floor_area>
+<plot_area><![CDATA[5300.00]]></plot_area>
+<rooms><![CDATA[0]]></rooms>
+<bathrooms><![CDATA[0]]></bathrooms>
+<condition/>
+<year><![CDATA[]]></year>
+<pictures>
+<picture_url><![CDATA[https://images.example-code49.test/admin/imovel/15-1.jpg]]></picture_url>
+<picture_title><![CDATA[]]></picture_title>
+<picture_url><![CDATA[https://images.example-code49.test/admin/imovel/15-2.jpg]]></picture_url>
+<picture_title><![CDATA[]]></picture_title>
+</pictures>
+<date><![CDATA[13/10/2026]]></date>
+<expiration_date><![CDATA[13/11/2026]]></expiration_date>
+<parking><![CDATA[0]]></parking>
+<is_furnished><![CDATA[1]]></is_furnished>
+</ad>
+</trovit>

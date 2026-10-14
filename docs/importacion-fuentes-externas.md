@@ -1,8 +1,8 @@
-# Importación de anuncios desde fuentes externas (Wasi y futuras)
+# Importación de anuncios desde fuentes externas (Wasi, Code49, Trovit y futuras)
 
 Sistema **independiente** de la importación legacy de Bienesonline (`ImportController` / `ProcessImportChunkJob`, que desaparecerá en unas semanas). Permite que un usuario **premium** conecte una fuente externa, importe sus anuncios y los mantenga **sincronizados automáticamente**.
 
-Fuente disponible hoy: **Wasi** (feed XML formato Trovit). Se agregarán más, cada una con sus propios datos de configuración y su propio formato (XML, JSON, etc.).
+Fuentes disponibles hoy: **Wasi**, **Code49** y **Trovit** genérico (todas feed XML formato Trovit, con pequeñas variaciones). "Trovit" sirve para cualquier sitio o CRM que exporte ese formato y no tenga fuente propia. Se agregarán más, cada una con sus propios datos de configuración y su propio formato (XML, JSON, etc.).
 
 ## Uso (usuario)
 
@@ -20,7 +20,10 @@ Límites: 5 fuentes por usuario (`IMPORT_MAX_SOURCES_PER_USER`), 2000 anuncios p
 app/Services/Import/
   Contracts/ImportDriver.php      ← contrato que implementa cada fuente
   ImportSourceRegistry.php        ← lista de drivers (config/import.php → 'drivers')
+  Sources/TrovitFeedDriver.php    ← base común para feeds Trovit (parseo + normalización)
   Sources/WasiTrovitDriver.php    ← fuente Wasi
+  Sources/Code49Driver.php        ← fuente Code49
+  Sources/TrovitDriver.php        ← feed Trovit genérico
   FeedFetcher.php                 ← descarga segura (SSRF, reintentos, cache-buster)
   ImportTypeResolver.php          ← tipo de inmueble / operación → valores regionales
   ImportLocationResolver.php      ← estado/región → nombre oficial (tabla states)
@@ -75,6 +78,19 @@ La UI hace polling a `GET /dashboard/import/status/{jobId}` (ruta existente del 
 | Área / lote | se redondean a entero (las columnas son `integer`; los feeds traen decimales). |
 | Descripción | decodifica entidades HTML, quita etiquetas y conserva saltos de línea (`\n`, `<br>`, `</p>`, `</li>`). **Los feeds de Wasi vienen sin saltos de línea**: es del feed, no de la importación. |
 
+## Diferencias entre fuentes Trovit
+
+| | Wasi | Code49 / Trovit genérico |
+|---|---|---|
+| URL típica | `https://sitio.com/xml-trovit.htm` | `https://sitio.com/exportacao/bienesonline.xml` (Code49) |
+| Imágenes | `<pictures><picture><picture_url>` | Code49: `<pictures><picture_url>` (sin `<picture>`); Trovit acepta ambas |
+| Dirección | `neighborhood` + `city_area` | `address` (calle) + `neighborhood` + `city_area`, sin repetir partes ni la ciudad |
+| Descripción | sin saltos de línea | Code49: con saltos de línea |
+
+`TrovitFeedDriver` acepta ambas estructuras de imágenes. Si `type` es `Land For Sale` y `property_type` viene vacío (pasa en Code49), se toma como terreno. Las operaciones con prefijo (`Office For Rent`, `Parking For Sale`) se reconocen por el sufijo `for sale` / `for rent`.
+
+El driver Trovit genérico no se probó con un feed real (no había uno disponible): sus tests usan los fixtures de Wasi y Code49.
+
 ## Seguridad
 
 La URL la da el usuario → `FeedFetcher`: solo http/https, bloquea hosts que resuelven a IPs privadas/reservadas (valida también cada redirect, máx. 3), timeout, tamaño máximo (20 MB), `User-Agent` propio. Agrega `?v=<aleatorio>` en cada descarga y reintenta hasta 3 veces si la respuesta no es un XML válido (los feeds de Wasi fallan a veces por caché). Todas las rutas de `dashboard/imports` exigen auth y validan que la fuente pertenezca al usuario.
@@ -105,7 +121,7 @@ Cambios mínimos en código existente: el import legacy y el recuadro del dashbo
 
 ## Cómo agregar una fuente nueva
 
-1. Crear `app/Services/Import/Sources/MiFuenteDriver.php` implementando `ImportDriver`: `key()`, `label()`, `description()`, `fields()` (tipos `country` / `url` / `text`), `rules()`, `suggestName()` y `fetch(array $config)`, que devuelve la lista de anuncios normalizados (mismas claves que `WasiTrovitDriver::normalizeAd`, con `images` como lista de URLs; la primera es la principal).
+1. Si es un feed Trovit, extender `TrovitFeedDriver` (solo `key()`, `label()`, `description()` y `feedUrlPlaceholder()`; `address()`/`images()` si difieren). Si no, crear `app/Services/Import/Sources/MiFuenteDriver.php` implementando `ImportDriver`: `key()`, `label()`, `description()`, `fields()` (tipos `country` / `url` / `text`), `rules()`, `suggestName()` y `fetch(array $config)`, que devuelve la lista de anuncios normalizados (mismas claves que `TrovitFeedDriver::normalizeAd`, con `images` como lista de URLs; la primera es la principal).
 2. Reutilizar `FeedFetcher`, `ImportTypeResolver`, `ImportLocationResolver` e `ImportCurrencyNormalizer`.
 3. Registrarla en `config/import.php` → `drivers`.
 4. Textos en `resources/lang/{es,en}/import.php` → `drivers.{key}`.
@@ -151,6 +167,11 @@ php artisan queue:failed                  # jobs fallidos
 - Imágenes: ocupan disco (`storage/app/public/property_images`); en cada sync solo se descargan las nuevas.
 
 ## Tests
+
+`tests/Feature/Import/Code49ImportTest.php` (fixture `tests/Fixtures/code49-trovit.xml`, recortado del feed de andes-group.cl): normalización, dirección, `Land For Sale` sin tipo y pipeline completo.
+
+`tests/Feature/Import/TrovitImportTest.php`: driver genérico sobre los fixtures de Wasi y Code49, operaciones con prefijo y pipeline.
+
 
 `tests/Feature/Import/WasiImportTest.php` (31 tests, fixture `tests/Fixtures/wasi-trovit.xml`): driver y normalización, FeedFetcher/SSRF, resolvers, pipeline (alta, sin duplicados, merge con ediciones del usuario, desactivación/reactivación, imágenes, feed roto, fallos consecutivos), comando `imports:sync`, acceso premium y permisos.
 ```bash
