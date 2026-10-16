@@ -18,6 +18,7 @@ class ImportSearchConsoleQueries extends Command
                             {--min-position=8 : ...y una posición media desde este valor}
                             {--max-position=25 : ...hasta este valor}
                             {--groups=30 : Cantidad de grupos de búsquedas casi iguales a mostrar}
+                            {--redirect-duplicates : En cada grupo de casi iguales, redirige (301) las demás a la de más clics}
                             {--dry-run : Muestra el informe sin modificar la base}';
 
     protected $description = 'Importa métricas de Search Console y activa las búsquedas indexables que traen visitas (nunca desactiva)';
@@ -40,7 +41,9 @@ class ImportSearchConsoleQueries extends Command
         ['entries' => $entries, 'ignoredUrls' => $ignoredUrls, 'unknownCountries' => $unknownCountries] = $this->readEntries($paths);
 
         if ($entries === []) {
-            $this->error('El archivo no tiene URLs de búsquedas indexables (/busqueda/ o /search/).');
+            $this->error($unknownCountries !== []
+                ? 'Países no habilitados o desconocidos (ignorados): ' . implode(', ', $unknownCountries) . '. Habilitarlos en /admin/country-types.'
+                : 'El archivo no tiene URLs de búsquedas indexables (/busqueda/ o /search/).');
 
             return self::FAILURE;
         }
@@ -50,9 +53,15 @@ class ImportSearchConsoleQueries extends Command
         $records = $this->loadRecords(array_keys($entries));
 
         $classified = $this->classify($entries, $records);
+        $groups = $this->nearDuplicateGroups($entries, $classified);
+        $redirectDuplicates = (bool) $this->option('redirect-duplicates');
+        $variants = $redirectDuplicates
+            ? $groups->flatMap(fn (Collection $group): Collection => $group->slice(1))->values()
+            : collect();
+        $classified = $this->excludeVariants($classified, $variants);
 
-        $this->printSummary($entries, $classified, $redirected, $ignoredUrls, $unknownCountries);
-        $this->printNearDuplicateGroups($entries, $classified);
+        $this->printSummary($entries, $classified, $variants, $redirected, $ignoredUrls, $unknownCountries);
+        $this->printNearDuplicateGroups($groups, $redirectDuplicates);
 
         if ($this->option('dry-run')) {
             $this->newLine();
@@ -61,14 +70,15 @@ class ImportSearchConsoleQueries extends Command
             return self::SUCCESS;
         }
 
-        $this->apply($entries, $records, $classified);
+        $redirectedVariants = $this->apply($entries, $records, $classified, $redirectDuplicates ? $groups : collect());
 
         $this->newLine();
         $this->info(sprintf(
-            'Listo: %d activadas, %d creadas activas, %d con métricas actualizadas.',
+            'Listo: %d activadas, %d creadas activas, %d con métricas actualizadas, %d variantes redirigidas a su principal.',
             count($classified['activate']),
             count($classified['create']),
             count($entries) - count($classified['create']) - count($classified['skip']),
+            $redirectedVariants,
         ));
 
         return self::SUCCESS;
@@ -249,11 +259,11 @@ class ImportSearchConsoleQueries extends Command
     /**
      * @param  array<string, array{country: string, slug: string, clicks: int, impressions: int, position_sum: float}>  $entries
      * @param  array<string, SearchQuery>  $records
-     * @return array{active: list<string>, activate: list<string>, create: list<string>, metrics: list<string>, skip: list<string>}
+     * @return array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}
      */
     private function classify(array $entries, array $records): array
     {
-        $classified = ['active' => [], 'activate' => [], 'create' => [], 'metrics' => [], 'skip' => []];
+        $classified = ['active' => [], 'activate' => [], 'create' => [], 'createVariant' => [], 'metrics' => [], 'skip' => []];
 
         foreach ($entries as $key => $entry) {
             $record = $records[$key] ?? null;
@@ -271,11 +281,33 @@ class ImportSearchConsoleQueries extends Command
     }
 
     /**
+     * Las variantes que van a redirigir no se activan: las existentes solo actualizan métricas
+     * y las que no estaban guardadas se crean inactivas (para que su URL responda 301).
+     *
+     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  Collection<int, array{key: string, status: string}>  $variants
+     * @return array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}
+     */
+    private function excludeVariants(array $classified, Collection $variants): array
+    {
+        $variantKeys = $variants->pluck('key')->all();
+
+        foreach (['activate' => 'metrics', 'create' => 'createVariant'] as $from => $to) {
+            $moved = array_values(array_intersect($classified[$from], $variantKeys));
+            $classified[$from] = array_values(array_diff($classified[$from], $moved));
+            $classified[$to] = [...$classified[$to], ...$moved];
+        }
+
+        return $classified;
+    }
+
+    /**
      * @param  array<string, array{country: string, slug: string, clicks: int, impressions: int, position_sum: float}>  $entries
-     * @param  array{active: list<string>, activate: list<string>, create: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  Collection<int, array{key: string, country: string, clicks: int, status: string}>  $variants
      * @param  list<string>  $unknownCountries
      */
-    private function printSummary(array $entries, array $classified, int $redirected, int $ignoredUrls, array $unknownCountries): void
+    private function printSummary(array $entries, array $classified, Collection $variants, int $redirected, int $ignoredUrls, array $unknownCountries): void
     {
         $clicks = fn (array $keys): int => array_sum(array_map(fn (string $key): int => $entries[$key]['clicks'], $keys));
 
@@ -293,6 +325,7 @@ class ImportSearchConsoleQueries extends Command
             ['A crear activas (no estaban guardadas)', count($classified['create']), $clicks($classified['create'])],
             ['No califican, existen (solo métricas)', count($classified['metrics']), $clicks($classified['metrics'])],
             ['No califican, no existen (se ignoran)', count($classified['skip']), $clicks($classified['skip'])],
+            ...($variants->isNotEmpty() ? [['Casi iguales que pasan a redirigir (301), no se activan', $variants->count(), $variants->sum('clicks')]] : []),
         ]);
 
         $this->line(sprintf('Búsquedas distintas en el archivo: %d (versiones es/en sumadas).', count($entries)));
@@ -315,27 +348,33 @@ class ImportSearchConsoleQueries extends Command
             $added = collect([...$classified['activate'], ...$classified['create']])
                 ->filter(fn (string $key): bool => str_starts_with($key, "{$country}|"))
                 ->count();
-            $created = collect($classified['create'])->filter(fn (string $key): bool => str_starts_with($key, "{$country}|"))->count();
+            $created = collect([...$classified['create'], ...$classified['createVariant']])
+                ->filter(fn (string $key): bool => str_starts_with($key, "{$country}|"))
+                ->count();
+            $activeVariants = $variants->where('country', $country)->where('status', 'activa')->count();
+            $indexable = $active + $added - $activeVariants;
 
             $this->line(sprintf(
-                '%s: activas %d → %d de %d guardadas. Con noindex quedarían %d inactivas.',
+                '%s: activas %d → %d de %d guardadas. Con noindex quedarían %d sin indexar (inactivas o redirigidas).',
                 $country,
                 $active,
-                $active + $added,
+                $indexable,
                 $total + $created,
-                $total + $created - $active - $added,
+                $total + $created - $indexable,
             ));
         }
     }
 
     /**
      * Grupos de búsquedas que quedarían activas con las mismas palabras (en cualquier orden,
-     * sin stopwords ni plurales): candidatas a unificar con "Redirigir a" en el admin.
+     * sin stopwords ni plurales). Cada grupo viene ordenado: primero la principal (más clics,
+     * luego más impresiones, ya activa antes que nueva, slug más corto).
      *
      * @param  array<string, array{country: string, slug: string, clicks: int, impressions: int, position_sum: float}>  $entries
-     * @param  array{active: list<string>, activate: list<string>, create: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @return Collection<int, Collection<int, array{key: string, country: string, slug: string, clicks: int, impressions: int, status: string, rank: int}>>
      */
-    private function printNearDuplicateGroups(array $entries, array $classified): void
+    private function nearDuplicateGroups(array $entries, array $classified): Collection
     {
         $candidates = collect();
 
@@ -344,24 +383,51 @@ class ImportSearchConsoleQueries extends Command
                 ->where('country', $country)
                 ->where('active', true)
                 ->whereNull('redirect_to_id')
-                ->get(['id', 'country', 'slug'])
+                ->get(['id', 'country', 'slug', 'gsc_clicks', 'gsc_impressions'])
                 ->each(function (SearchQuery $search) use ($candidates, $entries): void {
                     $key = "{$search->country}|{$search->slug}";
-                    $candidates->put($key, ['slug' => $search->slug, 'country' => $search->country, 'clicks' => $entries[$key]['clicks'] ?? 0, 'status' => 'activa']);
+                    $candidates->put($key, [
+                        'key' => $key,
+                        'country' => $search->country,
+                        'slug' => $search->slug,
+                        'clicks' => $entries[$key]['clicks'] ?? $search->gsc_clicks ?? 0,
+                        'impressions' => $entries[$key]['impressions'] ?? $search->gsc_impressions ?? 0,
+                        'status' => 'activa',
+                        'rank' => 0,
+                    ]);
                 });
         }
 
-        foreach (['activate' => 'a activar', 'create' => 'a crear'] as $group => $status) {
+        foreach (['activate' => ['a activar', 1], 'create' => ['a crear', 2]] as $group => [$status, $rank]) {
             foreach ($classified[$group] as $key) {
-                $candidates->put($key, ['slug' => $entries[$key]['slug'], 'country' => $entries[$key]['country'], 'clicks' => $entries[$key]['clicks'], 'status' => $status]);
+                $candidates->put($key, [
+                    'key' => $key,
+                    'country' => $entries[$key]['country'],
+                    'slug' => $entries[$key]['slug'],
+                    'clicks' => $entries[$key]['clicks'],
+                    'impressions' => $entries[$key]['impressions'],
+                    'status' => $status,
+                    'rank' => $rank,
+                ]);
             }
         }
 
-        $groups = $candidates
+        return $candidates
             ->groupBy(fn (array $search): string => $search['country'] . '|' . SearchQuery::normalizedWords($search['slug'])->sort()->implode(' '))
             ->filter(fn (Collection $group): bool => $group->count() > 1)
-            ->sortByDesc(fn (Collection $group): int => $group->sum('clicks'));
+            ->map(fn (Collection $group): Collection => $group
+                ->sort(fn (array $a, array $b): int => [$b['clicks'], $b['impressions'], $a['rank'], strlen($a['slug'])]
+                    <=> [$a['clicks'], $a['impressions'], $b['rank'], strlen($b['slug'])])
+                ->values())
+            ->sortByDesc(fn (Collection $group): int => $group->sum('clicks'))
+            ->values();
+    }
 
+    /**
+     * @param  Collection<int, Collection<int, array{key: string, country: string, slug: string, clicks: int, impressions: int, status: string, rank: int}>>  $groups
+     */
+    private function printNearDuplicateGroups(Collection $groups, bool $redirectDuplicates): void
+    {
         $this->newLine();
 
         if ($groups->isEmpty()) {
@@ -372,7 +438,9 @@ class ImportSearchConsoleQueries extends Command
 
         $limit = max(0, (int) $this->option('groups'));
         $this->info(sprintf(
-            'Búsquedas casi iguales entre las que quedarían activas: %d grupos (se muestran %d). Revisar y unificar con "Redirigir a" en el admin:',
+            $redirectDuplicates
+                ? 'Búsquedas casi iguales: %d grupos (se muestran %d). Las marcadas con → redirigirán (301) a la principal (●):'
+                : 'Búsquedas casi iguales entre las que quedarían activas: %d grupos (se muestran %d). Unificar con --redirect-duplicates o con "Redirigir a" en el admin:',
             $groups->count(),
             min($limit, $groups->count()),
         ));
@@ -380,20 +448,22 @@ class ImportSearchConsoleQueries extends Command
         $rows = [];
 
         foreach ($groups->take($limit) as $group) {
-            foreach ($group->sortByDesc('clicks')->values() as $index => $search) {
-                $rows[] = [$index === 0 ? '●' : '', $search['slug'], $search['clicks'], $search['status']];
+            foreach ($group as $index => $search) {
+                $rows[] = [$index === 0 ? '●' : ($redirectDuplicates ? '→' : ''), $search['slug'], $search['clicks'], $search['impressions'], $search['status']];
             }
         }
 
-        $this->table(['', 'Slug', 'Clics', 'Estado'], $rows);
+        $this->table(['', 'Slug', 'Clics', 'Impresiones', 'Estado'], $rows);
     }
 
     /**
      * @param  array<string, array{country: string, slug: string, clicks: int, impressions: int, position_sum: float}>  $entries
      * @param  array<string, SearchQuery>  $records
-     * @param  array{active: list<string>, activate: list<string>, create: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  Collection<int, Collection<int, array{key: string, country: string, slug: string}>>  $groupsToRedirect
+     * @return int Variantes redirigidas
      */
-    private function apply(array $entries, array $records, array $classified): void
+    private function apply(array $entries, array $records, array $classified, Collection $groupsToRedirect): int
     {
         $importedAt = now();
         $metrics = fn (array $entry): array => [
@@ -403,7 +473,7 @@ class ImportSearchConsoleQueries extends Command
             'gsc_imported_at' => $importedAt,
         ];
 
-        DB::transaction(function () use ($entries, $records, $classified, $metrics): void {
+        return DB::transaction(function () use ($entries, $records, $classified, $metrics, $groupsToRedirect): int {
             foreach ([...$classified['active'], ...$classified['metrics']] as $key) {
                 $records[$key]->update($metrics($entries[$key]));
             }
@@ -412,18 +482,45 @@ class ImportSearchConsoleQueries extends Command
                 $records[$key]->update(['active' => true, ...$metrics($entries[$key])]);
             }
 
-            foreach ($classified['create'] as $key) {
-                $entry = $entries[$key];
+            foreach (['create' => true, 'createVariant' => false] as $group => $active) {
+                foreach ($classified[$group] as $key) {
+                    $entry = $entries[$key];
 
-                SearchQuery::create([
-                    'country' => $entry['country'],
-                    'slug' => Str::limit($entry['slug'], 255, ''),
-                    'query' => Str::limit(str_replace('-', ' ', $entry['slug']), 255, ''),
-                    'results_count' => 0,
-                    'active' => true,
-                    ...$metrics($entry),
-                ]);
+                    SearchQuery::create([
+                        'country' => $entry['country'],
+                        'slug' => Str::limit($entry['slug'], 255, ''),
+                        'query' => Str::limit(str_replace('-', ' ', $entry['slug']), 255, ''),
+                        'results_count' => 0,
+                        'active' => $active,
+                        ...$metrics($entry),
+                    ]);
+                }
             }
+
+            $redirected = 0;
+
+            foreach ($groupsToRedirect as $group) {
+                $principal = $this->findSearch($group->first());
+
+                foreach ($group->slice(1) as $variant) {
+                    $search = $this->findSearch($variant);
+
+                    if ($principal && $search && $search->id !== $principal->id) {
+                        $search->update(['redirect_to_id' => $principal->id]);
+                        $redirected++;
+                    }
+                }
+            }
+
+            return $redirected;
         });
+    }
+
+    /**
+     * @param  array{country: string, slug: string}  $search
+     */
+    private function findSearch(array $search): ?SearchQuery
+    {
+        return SearchQuery::where('country', $search['country'])->where('slug', $search['slug'])->first();
     }
 }

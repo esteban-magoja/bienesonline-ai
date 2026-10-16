@@ -139,6 +139,54 @@ it('no desactiva búsquedas activas ni modifica nada en modo prueba', function (
     expect($active->fresh())->active->toBeTrue()->gsc_clicks->toBe(0);
 });
 
+it('redirige las búsquedas casi iguales a la de más clics con --redirect-duplicates', function (): void {
+    $manual = SearchQuery::factory()->active()->create(['country' => 'Chile', 'slug' => 'gsc-test-casas-en-venta-en-quilpue']);
+    $inactive = SearchQuery::factory()->create(['country' => 'Chile', 'slug' => 'gsc-test-casa-venta-quilpue']);
+
+    $file = gscCsv([
+        ['/es/chile/busqueda/gsc-test-venta-de-casas-quilpue', 9, 90, '5'],
+        ['/es/chile/busqueda/gsc-test-casa-venta-quilpue', 2, 20, '6'],
+        ['/es/chile/busqueda/gsc-test-casas-venta-en-quilpue', 1, 5, '7'],
+        ['/es/chile/busqueda/gsc-test-terreno-quilpue', 1, 5, '7'],
+    ]);
+
+    $this->artisan('search-queries:import-gsc', ['files' => [$file], '--redirect-duplicates' => true, '--dry-run' => true])
+        ->expectsOutputToContain('redirigirán (301)')
+        ->assertSuccessful();
+
+    expect(SearchQuery::where('slug', 'gsc-test-venta-de-casas-quilpue')->exists())->toBeFalse()
+        ->and($manual->fresh()->redirect_to_id)->toBeNull();
+
+    $this->artisan('search-queries:import-gsc', ['files' => [$file], '--redirect-duplicates' => true])->assertSuccessful();
+
+    $principal = SearchQuery::where('country', 'Chile')->where('slug', 'gsc-test-venta-de-casas-quilpue')->sole();
+    $newVariant = SearchQuery::where('country', 'Chile')->where('slug', 'gsc-test-casas-venta-en-quilpue')->sole();
+
+    expect($principal)->active->toBeTrue()->redirect_to_id->toBeNull()
+        ->and($manual->fresh()->redirect_to_id)->toBe($principal->id)
+        ->and($inactive->fresh())->active->toBeFalse()->redirect_to_id->toBe($principal->id)->gsc_clicks->toBe(2)
+        ->and($newVariant)->active->toBeFalse()->redirect_to_id->toBe($principal->id)
+        ->and(SearchQuery::where('slug', 'gsc-test-terreno-quilpue')->value('redirect_to_id'))->toBeNull();
+
+    $this->mock(SemanticPropertySearchService::class)->shouldNotReceive('search');
+    $this->get('/es/chile/busqueda/gsc-test-casa-venta-quilpue')
+        ->assertRedirect('/es/chile/busqueda/gsc-test-venta-de-casas-quilpue')
+        ->assertStatus(301);
+});
+
+it('sin --redirect-duplicates activa todas las casi iguales y no redirige', function (): void {
+    $file = gscCsv([
+        ['/es/chile/busqueda/gsc-test-depto-en-renaca', 4, 40, '5'],
+        ['/es/chile/busqueda/gsc-test-deptos-renaca', 1, 10, '8'],
+    ]);
+
+    $this->artisan('search-queries:import-gsc', ['files' => [$file]])
+        ->expectsOutputToContain('Unificar con --redirect-duplicates')
+        ->assertSuccessful();
+
+    expect(SearchQuery::whereIn('slug', ['gsc-test-depto-en-renaca', 'gsc-test-deptos-renaca'])->where('active', true)->whereNull('redirect_to_id')->count())->toBe(2);
+});
+
 it('ignora URLs que no son búsquedas y países no habilitados', function (): void {
     $file = gscCsv([
         ['/es/chile/busqueda/gsc-test-valida', 2, 10, '5'],
