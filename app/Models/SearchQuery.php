@@ -38,6 +38,10 @@ class SearchQuery extends Model
         'results_count',
         'active',
         'redirect_to_id',
+        'gsc_clicks',
+        'gsc_impressions',
+        'gsc_position',
+        'gsc_imported_at',
     ];
 
     protected function casts(): array
@@ -45,6 +49,10 @@ class SearchQuery extends Model
         return [
             'results_count' => 'integer',
             'active' => 'boolean',
+            'gsc_clicks' => 'integer',
+            'gsc_impressions' => 'integer',
+            'gsc_position' => 'float',
+            'gsc_imported_at' => 'datetime',
         ];
     }
 
@@ -96,10 +104,17 @@ class SearchQuery extends Model
         }
 
         try {
-            return static::firstOrCreate(
+            $search = static::firstOrCreate(
                 ['country' => $country, 'slug' => Str::limit($slug, 255, '')],
                 ['query' => Str::limit($query, 255, ''), 'results_count' => $resultsCount],
             );
+
+            // Las creadas por import-gsc nacen sin cantidad de anuncios: se completa al visitarlas
+            if (! $search->wasRecentlyCreated && $search->results_count !== $resultsCount) {
+                $search->update(['results_count' => $resultsCount]);
+            }
+
+            return $search;
         } catch (\Throwable $e) {
             Log::warning('No se pudo registrar la búsqueda', ['error' => $e->getMessage()]);
 
@@ -121,11 +136,7 @@ class SearchQuery extends Model
             'related_searches_' . md5("{$country}|{$slug}|{$limit}"),
             3600,
             function () use ($country, $slug, $limit): Collection {
-                $words = collect(explode('-', $slug))
-                    ->reject(fn (string $word): bool => $word === '' || in_array($word, self::STOPWORDS, true))
-                    ->map(fn (string $word): string => preg_replace('/s$/', '', $word))
-                    ->unique()
-                    ->values();
+                $words = static::normalizedWords($slug);
 
                 return static::query()
                     ->where('country', $country)
@@ -143,6 +154,21 @@ class SearchQuery extends Model
                     ->map(fn (self $search): array => ['query' => $search->query, 'slug' => $search->slug]);
             },
         );
+    }
+
+    /**
+     * Palabras significativas del slug: sin stopwords, sin la "s" final y sin repetir.
+     * Dos búsquedas con las mismas palabras (en cualquier orden) son casi iguales.
+     *
+     * @return Collection<int, string>
+     */
+    public static function normalizedWords(string $slug): Collection
+    {
+        return collect(explode('-', $slug))
+            ->reject(fn (string $word): bool => $word === '' || in_array($word, self::STOPWORDS, true))
+            ->map(fn (string $word): string => preg_replace('/s$/', '', $word))
+            ->unique()
+            ->values();
     }
 
     /**

@@ -40,6 +40,24 @@ class SearchQueriesTable
                     ->label('Anuncios')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('gsc_clicks')
+                    ->label('Clics GSC')
+                    ->numeric()
+                    ->placeholder('—')
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderByRaw("gsc_clicks {$direction} NULLS LAST"))
+                    ->toggleable(),
+                TextColumn::make('gsc_impressions')
+                    ->label('Impresiones GSC')
+                    ->numeric()
+                    ->placeholder('—')
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderByRaw("gsc_impressions {$direction} NULLS LAST"))
+                    ->toggleable(),
+                TextColumn::make('gsc_position')
+                    ->label('Posición GSC')
+                    ->numeric(decimalPlaces: 1)
+                    ->placeholder('—')
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderByRaw("gsc_position {$direction} NULLS LAST"))
+                    ->toggleable(),
                 // No usar 'redirectTarget.query': Filament toma Model::query() como relación
                 TextColumn::make('redirect_to_id')
                     ->label('Redirige a')

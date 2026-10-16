@@ -67,7 +67,7 @@ class SemanticPropertySearchController extends Controller
 
         $properties = $this->searchService->search($searchTerm, $countryName);
 
-        SearchQuery::record($countryName, $searchTerm, $properties->total());
+        $savedSearch = SearchQuery::record($countryName, $searchTerm, $properties->total());
 
         $canonicalUrl = route('property.semantic-search', [
             'locale' => $locale,
@@ -102,7 +102,9 @@ class SemanticPropertySearchController extends Controller
             'country' => $countryName,
             'count' => number_format($properties->total()),
         ]);
-        $robots = $properties->total() > 0 ? 'index,follow' : 'noindex,follow';
+        $isIndexable = $properties->total() > 0
+            && (! config('search.noindex_inactive') || $savedSearch?->active);
+        $robots = $isIndexable ? 'index,follow' : 'noindex,follow';
 
         $seo = [
             'title' => $title,
