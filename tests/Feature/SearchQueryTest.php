@@ -24,7 +24,7 @@ beforeEach(function (): void {
         ->andReturn(new LengthAwarePaginator(collect(), 7, 20));
 });
 
-it('guarda una búsqueda de 25 o más caracteres con país, slug, resultados e inactiva', function (): void {
+it('guarda una búsqueda de 15 o más caracteres con país, slug, resultados e inactiva', function (): void {
     $this->get('/es/search-properties?country=Argentina&search=Casa  con Piscina en Córdoba')
         ->assertSuccessful();
 
@@ -36,11 +36,11 @@ it('guarda una búsqueda de 25 o más caracteres con país, slug, resultados e i
         ->and($search->active)->toBeFalse();
 });
 
-it('no guarda búsquedas de menos de 25 caracteres, aunque sí las realiza', function (): void {
-    // 24 caracteres contando espacios
-    $this->get('/es/search-properties?country=Argentina&search=casa en venta en Córdoba')->assertSuccessful();
+it('no guarda búsquedas de menos de 15 caracteres, aunque sí las realiza', function (): void {
+    // 14 caracteres contando espacios
+    $this->get('/es/search-properties?country=Argentina&search=casas en Merlo')->assertSuccessful();
 
-    expect(SearchQuery::where('country', 'Argentina')->where('slug', 'casa-en-venta-en-cordoba')->exists())->toBeFalse();
+    expect(SearchQuery::where('country', 'Argentina')->where('slug', 'casas-en-merlo')->exists())->toBeFalse();
 });
 
 it('no guarda búsquedas repetidas en el mismo país', function (): void {

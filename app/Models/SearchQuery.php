@@ -16,7 +16,7 @@ class SearchQuery extends Model
     /** @use HasFactory<\Database\Factories\SearchQueryFactory> */
     use HasFactory;
 
-    public const MIN_LENGTH = 25;
+    public const MIN_LENGTH = 15;
 
     /** Máximo de saltos al seguir redirecciones encadenadas (evita ciclos) */
     private const MAX_REDIRECT_HOPS = 5;
