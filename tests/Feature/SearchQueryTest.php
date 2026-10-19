@@ -50,16 +50,25 @@ it('no guarda búsquedas repetidas en el mismo país', function (): void {
     expect(SearchQuery::where('slug', 'departamento-en-venta-en-palermo')->where('country', 'Argentina')->count())->toBe(1);
 });
 
-it('guarda la búsqueda al visitar la página indexable si no existe', function (): void {
-    $this->get('/es/chile/busqueda/casas-en-venta-en-quilpue-test');
-    $this->get('/es/chile/busqueda/casas-en-venta-en-quilpue-test');
+it('no guarda la búsqueda al visitar la página indexable si no existe', function (): void {
+    $this->get('/es/chile/busqueda/casas-en-venta-en-quilpue-test')->assertSuccessful();
 
-    $search = SearchQuery::where('country', 'Chile')->where('slug', 'casas-en-venta-en-quilpue-test')->sole();
+    expect(SearchQuery::where('country', 'Chile')->where('slug', 'casas-en-venta-en-quilpue-test')->exists())->toBeFalse();
+});
 
-    expect($search->query)->toBe('casas en venta en quilpue test')
-        ->and($search->slug)->toBe('casas-en-venta-en-quilpue-test')
-        ->and($search->results_count)->toBe(7)
-        ->and($search->active)->toBeFalse();
+it('actualiza la cantidad de anuncios al visitar la página indexable de una búsqueda guardada', function (): void {
+    $search = SearchQuery::factory()->create([
+        'country' => 'Chile',
+        'slug' => 'casas-en-venta-en-quilpue-test',
+        'results_count' => 0,
+        'active' => false,
+    ]);
+
+    $this->get('/es/chile/busqueda/casas-en-venta-en-quilpue-test')->assertSuccessful();
+
+    expect($search->fresh()->results_count)->toBe(7)
+        ->and($search->fresh()->active)->toBeFalse()
+        ->and(SearchQuery::where('country', 'Chile')->where('slug', 'casas-en-venta-en-quilpue-test')->count())->toBe(1);
 });
 
 describe('validación del buscador', function (): void {

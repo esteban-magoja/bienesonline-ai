@@ -123,6 +123,38 @@ class SearchQuery extends Model
     }
 
     /**
+     * Busca una búsqueda ya guardada (sin crearla) y actualiza su cantidad de anuncios.
+     * La usan las páginas indexables: el tráfico que llega ahí (Google, links legacy, bots)
+     * no debe generar búsquedas nuevas; solo el buscador las registra.
+     */
+    public static function findAndRefresh(string $country, string $searchTerm, int $resultsCount): ?self
+    {
+        $slug = Str::slug(Str::of($searchTerm)->squish()->lower()->toString());
+
+        if ($country === '' || $slug === '') {
+            return null;
+        }
+
+        try {
+            $search = static::query()
+                ->where('country', $country)
+                ->where('slug', Str::limit($slug, 255, ''))
+                ->first();
+
+            // Las creadas por import-gsc nacen sin cantidad de anuncios: se completa al visitarlas
+            if ($search && $search->results_count !== $resultsCount) {
+                $search->update(['results_count' => $resultsCount]);
+            }
+
+            return $search;
+        } catch (\Throwable $e) {
+            Log::warning('No se pudo actualizar la búsqueda', ['error' => $e->getMessage()]);
+
+            return null;
+        }
+    }
+
+    /**
      * Búsquedas activas del mismo país ordenadas por palabras del slug en común
      * (ignorando stopwords y la "s" final) y luego por cantidad de anuncios,
      * así siempre se completan los lugares disponibles. Excluye las variantes que

@@ -67,7 +67,7 @@ class SemanticPropertySearchController extends Controller
 
         $properties = $this->searchService->search($searchTerm, $countryName);
 
-        $savedSearch = SearchQuery::record($countryName, $searchTerm, $properties->total());
+        $savedSearch = SearchQuery::findAndRefresh($countryName, $searchTerm, $properties->total());
 
         $canonicalUrl = route('property.semantic-search', [
             'locale' => $locale,
