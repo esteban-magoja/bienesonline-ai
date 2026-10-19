@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-08-19 17:26:11","nombre":"Maria Eugenia Fernández","email":"eugeniafer10@gmail.com","telefono":"","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Maldonado","localidad_inmueble":"Maldonado"}
+{"fecha":"2026-10-14 08:18:09","nombre":"Antonio","email":"tonigomezlopez7@gmail.com","telefono":"644400222","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Maldonado","localidad_inmueble":"Maldonado"}
 ]
 }
 ]

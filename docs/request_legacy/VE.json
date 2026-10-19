@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-10-08 22:09:43","nombre":"Anny","email":"mili_ramirezg@hotmail.com","telefono":"04247723750","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Distrito Capital","localidad_inmueble":"Caracas"},
-{"fecha":"2026-10-10 21:43:33","nombre":"CARLOS ANDRES ESCOBAR","email":"ccescobar64@gmail.com","telefono":"04242613799","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Capital","localidad_inmueble":"Caracas"}
+{"fecha":"2026-10-13 16:37:45","nombre":"Ylsa Martinez","email":"ylsa.reinorealestate@gmail.com","telefono":"0422-1410956","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Capital","localidad_inmueble":"El Paraíso"},
+{"fecha":"2026-10-14 20:29:53","nombre":"Jesús Alonzo","email":"jamauricio2530@gmail.com","telefono":"04148064092","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Monagas","localidad_inmueble":"Maturín"},
+{"fecha":"2026-10-18 22:30:03","nombre":"Kheydi ","email":"kheydiofficial@gmail.com","telefono":"04127576339","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Baruta"}
 ]
 }
 ]

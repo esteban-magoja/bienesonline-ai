@@ -3,7 +3,9 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-10-05 20:56:52","nombre":"Daiana ","email":"daygauna1993@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Merlo"}
+{"fecha":"2026-10-13 17:54:52","nombre":"Leonela ","email":"sleonela488@gmail.com","telefono":"3455454619","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Entre Rios","localidad_inmueble":"Parana"},
+{"fecha":"2026-10-14 12:18:20","nombre":"Rocio Tosolini ","email":"rocioo.tosoo@gmail.com","telefono":"3562415786","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Córdoba","localidad_inmueble":"San Francisco"},
+{"fecha":"2026-10-16 13:52:22","nombre":"Lara Ritou","email":"paltenghimoni@gmail.com","telefono":"3444468946","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Entre Rios","localidad_inmueble":"Parana"}
 
 ]
 }

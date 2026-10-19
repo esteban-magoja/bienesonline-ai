@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-10-07 13:23:39","nombre":"Emely Rufino ","email":"emelyrufino@hotmail.com","telefono":"8297767037","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"}
+{"fecha":"2026-10-16 16:37:06","nombre":"Caury de los Santos","email":"Caury1725@gmail.com","telefono":"829 795 3262","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Nacional","localidad_inmueble":"Santo Domingo"}
 ]
 }
 ]

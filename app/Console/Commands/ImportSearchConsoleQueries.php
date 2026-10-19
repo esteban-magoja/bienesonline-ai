@@ -77,7 +77,7 @@ class ImportSearchConsoleQueries extends Command
             'Listo: %d activadas, %d creadas activas, %d con métricas actualizadas, %d variantes redirigidas a su principal.',
             count($classified['activate']),
             count($classified['create']),
-            count($entries) - count($classified['create']) - count($classified['skip']),
+            count($classified['active']) + count($classified['metrics']) + count($classified['activateVariant']),
             $redirectedVariants,
         ));
 
@@ -259,11 +259,11 @@ class ImportSearchConsoleQueries extends Command
     /**
      * @param  array<string, array{country: string, slug: string, clicks: int, impressions: int, position_sum: float}>  $entries
      * @param  array<string, SearchQuery>  $records
-     * @return array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}
+     * @return array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, activateVariant: list<string>, metrics: list<string>, skip: list<string>}
      */
     private function classify(array $entries, array $records): array
     {
-        $classified = ['active' => [], 'activate' => [], 'create' => [], 'createVariant' => [], 'metrics' => [], 'skip' => []];
+        $classified = ['active' => [], 'activate' => [], 'create' => [], 'createVariant' => [], 'activateVariant' => [], 'metrics' => [], 'skip' => []];
 
         foreach ($entries as $key => $entry) {
             $record = $records[$key] ?? null;
@@ -284,15 +284,15 @@ class ImportSearchConsoleQueries extends Command
      * Las variantes que van a redirigir no se activan: las existentes solo actualizan métricas
      * y las que no estaban guardadas se crean inactivas (para que su URL responda 301).
      *
-     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, activateVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
      * @param  Collection<int, array{key: string, status: string}>  $variants
-     * @return array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}
+     * @return array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, activateVariant: list<string>, metrics: list<string>, skip: list<string>}
      */
     private function excludeVariants(array $classified, Collection $variants): array
     {
         $variantKeys = $variants->pluck('key')->all();
 
-        foreach (['activate' => 'metrics', 'create' => 'createVariant'] as $from => $to) {
+        foreach (['activate' => 'activateVariant', 'create' => 'createVariant'] as $from => $to) {
             $moved = array_values(array_intersect($classified[$from], $variantKeys));
             $classified[$from] = array_values(array_diff($classified[$from], $moved));
             $classified[$to] = [...$classified[$to], ...$moved];
@@ -303,7 +303,7 @@ class ImportSearchConsoleQueries extends Command
 
     /**
      * @param  array<string, array{country: string, slug: string, clicks: int, impressions: int, position_sum: float}>  $entries
-     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, activateVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
      * @param  Collection<int, array{key: string, country: string, clicks: int, status: string}>  $variants
      * @param  list<string>  $unknownCountries
      */
@@ -371,7 +371,7 @@ class ImportSearchConsoleQueries extends Command
      * luego más impresiones, ya activa antes que nueva, slug más corto).
      *
      * @param  array<string, array{country: string, slug: string, clicks: int, impressions: int, position_sum: float}>  $entries
-     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, activateVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
      * @return Collection<int, Collection<int, array{key: string, country: string, slug: string, clicks: int, impressions: int, status: string, rank: int}>>
      */
     private function nearDuplicateGroups(array $entries, array $classified): Collection
@@ -459,7 +459,7 @@ class ImportSearchConsoleQueries extends Command
     /**
      * @param  array<string, array{country: string, slug: string, clicks: int, impressions: int, position_sum: float}>  $entries
      * @param  array<string, SearchQuery>  $records
-     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
+     * @param  array{active: list<string>, activate: list<string>, create: list<string>, createVariant: list<string>, activateVariant: list<string>, metrics: list<string>, skip: list<string>}  $classified
      * @param  Collection<int, Collection<int, array{key: string, country: string, slug: string}>>  $groupsToRedirect
      * @return int Variantes redirigidas
      */
@@ -474,7 +474,7 @@ class ImportSearchConsoleQueries extends Command
         ];
 
         return DB::transaction(function () use ($entries, $records, $classified, $metrics, $groupsToRedirect): int {
-            foreach ([...$classified['active'], ...$classified['metrics']] as $key) {
+            foreach ([...$classified['active'], ...$classified['metrics'], ...$classified['activateVariant']] as $key) {
                 $records[$key]->update($metrics($entries[$key]));
             }
 

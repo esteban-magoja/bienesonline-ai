@@ -3,11 +3,12 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-10-05 15:51:27","nombre":"Giselle Robles","email":"gisellerobles05@outlook.com","telefono":"6997-9526","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-06 16:12:31","nombre":"Juan Arias","email":"juanbarias27@gmail.com","telefono":"6653 5076","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-06 23:10:49","nombre":"jacky parra","email":"asesoresinmobiliarios911@gmail.com","telefono":"60263893","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-09 13:35:29","nombre":"Grecia","email":"grecia@gmail.com","telefono":"69793736","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-08 15:25:15","nombre":"edgar torres ","email":"edantonio2727@gmail.com","telefono":"69317997","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Chiriquí","localidad_inmueble":"David"}
+{"fecha":"2026-10-12 17:18:57","nombre":"Dalia Victoria de Ronco","email":"daliaderonco0212@gmail.com","telefono":"66135636","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-13 23:31:20","nombre":"Marjorie ","email":"marjorierosario10@gmail.com","telefono":"66275919","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"Chame"},
+{"fecha":"2026-10-14 14:59:30","nombre":"Horley Elias Abrego","email":"horleyeliasabrego@gmail.com","telefono":"61945929","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Bella Vista"},
+{"fecha":"2026-10-16 05:24:33","nombre":"Mateo","email":"mhincapieb@gmail.com","telefono":"66761364","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"Capira"},
+{"fecha":"2026-10-15 23:57:38","nombre":"Yemile Suárez","email":"yemile.suarez@engelvoelkers.com","telefono":"69803731","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"Chame"},
+{"fecha":"2026-10-18 15:42:49","nombre":"Yenluismar escalona ","email":"anayisa0208@gmail.com","telefono":"69776497","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"San Miguelito"}
 ]
 }
 ]

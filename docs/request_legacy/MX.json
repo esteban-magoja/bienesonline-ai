@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-09-18 22:00:18","nombre":"Nadege Jeudi ","email":"nadegesaintil97@gmail.com","telefono":"9625001028","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Nuevo León","localidad_inmueble":"Ciudad Apodaca"},
-{"fecha":"2026-09-20 15:19:30","nombre":"Alejandra Ceballos","email":"alejandraceballosm84@gmail.com","telefono":"6442823232","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Sonora","localidad_inmueble":"Hermosillo"}
+{"fecha":"2026-10-15 00:41:51","nombre":"Beatriz Elizondo ","email":"beatriz@livitsi.mx","telefono":"8188684574","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Nuevo León","localidad_inmueble":"Garcia"},
+{"fecha":"2026-10-17 16:38:42","nombre":"Eunice Marquez","email":"S-aurora-2@hotmail.com","telefono":"8711893877","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Coahuila de Zaragoza","localidad_inmueble":"Monclova"},
+{"fecha":"2026-10-18 08:22:44","nombre":"Ana María ","email":"anamapilo5359@gmail.com","telefono":"6623498314","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Sonora","localidad_inmueble":"Hermosillo"}
 ]
 }
 ]
