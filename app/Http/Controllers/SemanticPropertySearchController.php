@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\PropertySlugHelper;
+use App\Helpers\SeoLocaleHelper;
 use App\Models\SearchQuery;
 use App\Services\SemanticPropertySearchService;
 use App\Services\SeoService;
@@ -106,6 +107,8 @@ class SemanticPropertySearchController extends Controller
             && (! config('search.noindex_inactive') || $savedSearch?->active);
         $robots = $isIndexable ? 'index,follow' : 'noindex,follow';
 
+        $countryCode = PropertySlugHelper::getCountryCode($countryName);
+
         $seo = [
             'title' => $title,
             'description' => Str::limit($description, 160),
@@ -114,12 +117,13 @@ class SemanticPropertySearchController extends Controller
             'canonical' => $canonicalUrl,
             'robots' => $robots,
             'hreflang_tags' => [
-                ['rel' => 'alternate', 'hreflang' => $locale, 'href' => $canonicalUrl],
-                ['rel' => 'alternate', 'hreflang' => $alternateLocale, 'href' => $alternateUrl],
+                ['rel' => 'alternate', 'hreflang' => SeoLocaleHelper::getLanguageTag($locale, $countryCode), 'href' => $canonicalUrl],
+                ['rel' => 'alternate', 'hreflang' => SeoLocaleHelper::getLanguageTag($alternateLocale, $countryCode), 'href' => $alternateUrl],
                 ['rel' => 'alternate', 'hreflang' => 'x-default', 'href' => $locale === 'es' ? $canonicalUrl : $alternateUrl],
             ],
-            'og_locale' => $locale === 'es' ? 'es_ES' : 'en_US',
-            'og_alternate_locales' => [$locale === 'es' ? 'en_US' : 'es_ES'],
+            'html_lang' => SeoLocaleHelper::getLanguageTag($locale, $countryCode),
+            'og_locale' => SeoLocaleHelper::getOpenGraphLocale($locale, $countryCode),
+            'og_alternate_locales' => [SeoLocaleHelper::getOpenGraphLocale($alternateLocale, $countryCode)],
             'structured_data' => $this->structuredData($properties, $title),
         ];
 

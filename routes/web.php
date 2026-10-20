@@ -65,6 +65,9 @@ Route::get('/sitemap-listings-{locale}.xml', [SitemapController::class, 'listing
 Route::get('/sitemap-agents-{locale}.xml', [SitemapController::class, 'agents'])
     ->where('locale', 'es|en')
     ->name('sitemap.agents');
+Route::get('/sitemap-searches-{locale}.xml', [SitemapController::class, 'searches'])
+    ->where('locale', 'es|en')
+    ->name('sitemap.searches');
 Route::get('/sitemap-profiles.xml', [SitemapController::class, 'profiles'])->name('sitemap.profiles');
 
 // ============================================================================

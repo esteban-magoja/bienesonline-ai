@@ -6,6 +6,7 @@ use App\Helpers\PropertySlugHelper;
 use App\Helpers\SeoLocaleHelper;
 use App\Models\PropertyListing;
 use App\Models\PropertyType;
+use App\Models\SearchQuery;
 use App\Models\TransactionType;
 use App\Services\SeoService;
 use Illuminate\Http\Response;
@@ -40,6 +41,8 @@ class SitemapController extends Controller
             ->latest('pl.updated_at')
             ->value('pl.updated_at');
         $lastAgentMod = $lastAgentUpdate ? \Carbon\Carbon::parse($lastAgentUpdate)->toW3cString() : $lastPropMod;
+        $lastSearchUpdate = SearchQuery::query()->where('active', true)->latest('updated_at')->value('updated_at');
+        $lastSearchMod = $lastSearchUpdate ? $lastSearchUpdate->toW3cString() : $lastPropMod;
         $totalActive    = PropertyListing::active()->count();
         $totalPages     = max(1, (int) ceil($totalActive / self::PROPERTY_SITEMAP_URL_LIMIT));
 
@@ -56,6 +59,7 @@ class SitemapController extends Controller
             }
             $sitemaps[] = ['loc' => url("/sitemap-listings-{$locale}.xml"), 'lastmod' => $lastPropMod];
             $sitemaps[] = ['loc' => url("/sitemap-agents-{$locale}.xml"), 'lastmod' => $lastAgentMod];
+            $sitemaps[] = ['loc' => url("/sitemap-searches-{$locale}.xml"), 'lastmod' => $lastSearchMod];
         }
 
         $sitemaps[] = ['loc' => url('/sitemap-profiles.xml'), 'lastmod' => $lastPropMod];
@@ -211,6 +215,25 @@ class SitemapController extends Controller
 
         $urls = Cache::remember("sitemap_agents_{$locale}", 3600, function () use ($locale) {
             return $this->buildAgentDirectoryUrls($locale);
+        });
+
+        return response()
+            ->view('sitemap.listings', compact('urls'))
+            ->header('Content-Type', 'application/xml');
+    }
+
+    /**
+     * Indexable text search pages sitemap: /{locale}/{country}/busqueda|search/{slug}.
+     * Only active main searches (not redirected variants) with results.
+     */
+    public function searches(string $locale): Response
+    {
+        if (!in_array($locale, ['es', 'en'])) {
+            abort(404);
+        }
+
+        $urls = Cache::remember("sitemap_searches_{$locale}", 3600, function () use ($locale) {
+            return $this->buildSearchUrls($locale);
         });
 
         return response()
@@ -524,6 +547,46 @@ class SitemapController extends Controller
                 'weekly',
                 '0.4',
                 $countryCode
+            );
+        }
+
+        return $urls;
+    }
+
+    /**
+     * Build the URLs of the active saved text searches for a locale.
+     */
+    private function buildSearchUrls(string $locale): array
+    {
+        $altLocale = $locale === 'es' ? 'en' : 'es';
+        $segment = $locale === 'es' ? 'busqueda' : 'search';
+        $altSegment = $locale === 'es' ? 'search' : 'busqueda';
+        $urls = [];
+        $seen = [];
+
+        $searches = SearchQuery::query()
+            ->where('active', true)
+            ->whereNull('redirect_to_id')
+            ->where('results_count', '>', 0)
+            ->orderBy('country')
+            ->orderBy('slug')
+            ->get(['country', 'slug', 'updated_at']);
+
+        foreach ($searches as $search) {
+            $countrySlug = PropertySlugHelper::normalize($search->country);
+            if (!$countrySlug || !$search->slug) {
+                continue;
+            }
+
+            $this->addListingUrl(
+                $urls,
+                $seen,
+                "/{$locale}/{$countrySlug}/{$segment}/{$search->slug}",
+                "/{$altLocale}/{$countrySlug}/{$altSegment}/{$search->slug}",
+                ($search->updated_at ?? now())->toW3cString(),
+                'weekly',
+                '0.6',
+                PropertySlugHelper::getCountryCode($search->country)
             );
         }
 

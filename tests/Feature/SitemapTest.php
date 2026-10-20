@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SearchQuery;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -108,6 +109,45 @@ it('uses country-specific hreflang values for listing sitemap URLs', function ()
         ->assertSee('hreflang="es-AR"', false)
         ->assertSee('hreflang="en-AR"', false)
         ->assertSee('href="' . url('/es/argentina') . '"', false);
+});
+
+it('lists the search sitemaps in the sitemap index', function () {
+    $this->get('/sitemap.xml')
+        ->assertSuccessful()
+        ->assertSee(url('/sitemap-searches-es.xml'), false)
+        ->assertSee(url('/sitemap-searches-en.xml'), false);
+});
+
+it('includes only active main searches with results in the search sitemap', function () {
+    $main = SearchQuery::factory()->create(['slug' => 'casas-sitemap-cordoba', 'active' => true, 'results_count' => 5]);
+    SearchQuery::factory()->create(['slug' => 'casas-sitemap-inactiva', 'active' => false, 'results_count' => 5]);
+    SearchQuery::factory()->create(['slug' => 'casas-sitemap-sin-resultados', 'active' => true, 'results_count' => 0]);
+    SearchQuery::factory()->create(['slug' => 'casas-sitemap-variante', 'active' => true, 'results_count' => 5, 'redirect_to_id' => $main->id]);
+
+    Cache::forget('sitemap_searches_es');
+    $response = $this->get('/sitemap-searches-es.xml');
+    Cache::forget('sitemap_searches_es');
+
+    $response->assertSuccessful()
+        ->assertHeader('Content-Type', 'application/xml')
+        ->assertSee('<loc>' . url('/es/argentina/busqueda/casas-sitemap-cordoba') . '</loc>', false)
+        ->assertSee('hreflang="es-AR" href="' . url('/es/argentina/busqueda/casas-sitemap-cordoba') . '"', false)
+        ->assertSee('hreflang="en-AR" href="' . url('/en/argentina/search/casas-sitemap-cordoba') . '"', false)
+        ->assertDontSee('casas-sitemap-inactiva', false)
+        ->assertDontSee('casas-sitemap-sin-resultados', false)
+        ->assertDontSee('casas-sitemap-variante', false);
+});
+
+it('uses the english search path in the english search sitemap', function () {
+    SearchQuery::factory()->create(['slug' => 'houses-sitemap-cordoba', 'active' => true, 'results_count' => 3]);
+
+    Cache::forget('sitemap_searches_en');
+    $response = $this->get('/sitemap-searches-en.xml');
+    Cache::forget('sitemap_searches_en');
+
+    $response->assertSuccessful()
+        ->assertSee('<loc>' . url('/en/argentina/search/houses-sitemap-cordoba') . '</loc>', false)
+        ->assertSee('hreflang="x-default" href="' . url('/es/argentina/busqueda/houses-sitemap-cordoba') . '"', false);
 });
 
 it('includes user profile pages in profiles sitemap', function () {

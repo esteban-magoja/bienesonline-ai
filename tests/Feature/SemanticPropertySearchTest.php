@@ -74,6 +74,17 @@ it('renders an indexable semantic search landing page filtered by country', func
     expect($matchingListing->fresh()->country)->toBe('Chile');
 });
 
+it('adds the country to the language tags of a semantic search page', function () {
+    $response = $this->get('/es/chile/busqueda/apartamento-inexistente');
+
+    $response->assertSuccessful()
+        ->assertSee('<html lang="es-CL">', false)
+        ->assertSee('<meta property="og:locale" content="es_CL">', false)
+        ->assertSee('<meta property="og:locale:alternate" content="en_CL">', false)
+        ->assertSee('hreflang="es-CL" href="' . url('/es/chile/busqueda/apartamento-inexistente') . '"', false)
+        ->assertSee('hreflang="en-CL" href="' . url('/en/chile/search/apartamento-inexistente') . '"', false);
+});
+
 it('returns noindex for a semantic search with no results', function () {
     $response = $this->get('/es/chile/busqueda/apartamento-inexistente');
 
