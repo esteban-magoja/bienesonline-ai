@@ -335,6 +335,8 @@
                         </div>
                     </div>
 
+                    <x-adsense class="mb-6" />
+
                     <!-- Property Details -->
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ __('properties.characteristics') }}</h2>
@@ -647,6 +649,8 @@
                             </button>
                         </div>
                     </div>
+
+                    <x-adsense class="mt-6" />
                 </div>
             </div>
 
@@ -721,6 +725,8 @@
                     </div>
                 </div>
             @endif
+
+            <x-adsense class="mt-12" />
 
             @if($relatedSearches->isNotEmpty())
                 <div class="mt-12 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">

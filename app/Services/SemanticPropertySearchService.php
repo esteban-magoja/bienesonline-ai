@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\PropertySlugHelper;
 use App\Models\PropertyListing;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +19,8 @@ class SemanticPropertySearchService
     private const RESULT_CACHE_MINUTES = 10;
 
     private const RESULT_CACHE_LIMIT = 200;
+
+    private const LOCATION_CACHE_MINUTES = 60;
 
     public function __construct(
         private readonly EmbeddingService $embeddingService,
@@ -44,7 +47,12 @@ class SemanticPropertySearchService
             fn (): array => $this->findSemanticMatches($embedding, $country, $types),
         );
 
-        return $this->paginateMatches($matches, $country, $perPage);
+        // Un nombre de lugar suelto ("valparaiso") queda lejos de todo embedding
+        if ($matches === []) {
+            return $this->locationSearch($searchTerm, $country, $types, $perPage);
+        }
+
+        return $this->paginateMatches($matches, $country, $perPage, $this->mentionedLocations($searchTerm, $country));
     }
 
     private function getEmbedding(string $searchTerm): ?Vector
@@ -116,9 +124,46 @@ class SemanticPropertySearchService
     }
 
     /**
-     * @param array<int, array{id: int, similarity: float}> $matches
+     * Slugs de las ciudades y regiones del país (con anuncios activos) que aparecen
+     * como palabras completas en el texto de búsqueda.
+     *
+     * @return list<string>
      */
-    private function paginateMatches(array $matches, string $country, int $perPage): LengthAwarePaginator
+    private function mentionedLocations(string $searchTerm, string $country): array
+    {
+        $locations = Cache::remember(
+            'semantic-property-search:locations:v1:' . sha1($country),
+            now()->addMinutes(self::LOCATION_CACHE_MINUTES),
+            fn (): array => PropertyListing::query()
+                ->active()
+                ->where('country', $country)
+                ->select('city', 'state')
+                ->distinct()
+                ->get()
+                ->flatMap(fn (PropertyListing $listing): array => [$listing->city, $listing->state])
+                ->map(fn (?string $location): string => PropertySlugHelper::normalize((string) $location))
+                ->filter(fn (string $slug): bool => mb_strlen($slug) >= 3)
+                ->unique()
+                ->values()
+                ->all(),
+        );
+
+        $termSlug = '-' . PropertySlugHelper::normalize($searchTerm) . '-';
+
+        return array_values(array_filter(
+            $locations,
+            fn (string $slug): bool => str_contains($termSlug, '-' . $slug . '-'),
+        ));
+    }
+
+    /**
+     * Los anuncios de una ciudad o región mencionada en la búsqueda van primero;
+     * dentro de cada grupo se mantiene el orden por similitud.
+     *
+     * @param  array<int, array{id: int, similarity: float}>  $matches
+     * @param  list<string>  $locations
+     */
+    private function paginateMatches(array $matches, string $country, int $perPage, array $locations = []): LengthAwarePaginator
     {
         $page = LengthAwarePaginatorInstance::resolveCurrentPage();
         $listingIds = array_column($matches, 'id');
@@ -134,6 +179,17 @@ class SemanticPropertySearchService
         $validMatches = collect($matches)
             ->filter(fn (array $match): bool => $listings->has($match['id']))
             ->values();
+
+        if ($locations !== []) {
+            [$inLocation, $elsewhere] = $validMatches->partition(function (array $match) use ($listings, $locations): bool {
+                $listing = $listings->get($match['id']);
+
+                return in_array(PropertySlugHelper::normalize((string) $listing->city), $locations, true)
+                    || in_array(PropertySlugHelper::normalize((string) $listing->state), $locations, true);
+            });
+
+            $validMatches = $inLocation->concat($elsewhere)->values();
+        }
 
         $items = $validMatches
             ->slice(($page - 1) * $perPage, $perPage)
@@ -195,6 +251,31 @@ class SemanticPropertySearchService
             ->latest('created_at');
 
         return $query->paginate($perPage)->withQueryString();
+    }
+
+    /**
+     * Anuncios cuya ciudad o región contiene el texto completo de la búsqueda.
+     *
+     * @param  array{property_types: list<string>, transaction_types: list<string>}  $types
+     */
+    private function locationSearch(string $searchTerm, string $country, array $types, int $perPage): LengthAwarePaginator
+    {
+        $likeTerm = '%' . addcslashes($searchTerm, '%_\\') . '%';
+
+        return PropertyListing::query()
+            ->active()
+            ->where('country', $country)
+            ->tap(fn (Builder $query) => $this->applyTypeFilters($query, $types))
+            ->with(['primaryImage', 'firstImage'])
+            ->where(function (Builder $query) use ($likeTerm): void {
+                $query
+                    ->whereRaw('unaccent(city) ILIKE unaccent(?) ESCAPE \'\\\'', [$likeTerm])
+                    ->orWhereRaw('unaccent(state) ILIKE unaccent(?) ESCAPE \'\\\'', [$likeTerm]);
+            })
+            ->orderByDesc('is_featured')
+            ->latest('created_at')
+            ->paginate($perPage)
+            ->withQueryString();
     }
 
     private function normalizeSearchTerm(string $searchTerm): string

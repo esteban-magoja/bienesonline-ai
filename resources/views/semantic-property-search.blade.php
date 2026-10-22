@@ -52,6 +52,10 @@
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     @foreach($properties as $property)
                         <x-property-search-card :property="$property" :locale="$locale" />
+
+                        @if(in_array($loop->iteration, [4, 12]) && ! $loop->last)
+                            <x-adsense class="col-span-full" />
+                        @endif
                     @endforeach
                 </div>
 
@@ -60,6 +64,8 @@
                         {{ $properties->links() }}
                     </nav>
                 @endif
+
+                <x-adsense class="mt-12" />
             @endif
 
             @if($relatedSearches->isNotEmpty())

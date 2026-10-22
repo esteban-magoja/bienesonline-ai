@@ -194,4 +194,52 @@ describe('precisión de la búsqueda semántica', function () {
 
         expect(app(SemanticPropertySearchService::class)->search('propiedades en testlandia', 'Testlandia')->total())->toBe(2);
     });
+
+    it('busca por ciudad o región cuando ningún anuncio es semánticamente cercano', function () {
+        ($this->listing)('Casa en Viña', 0.3);
+        ($this->listing)('Casa en Los Andes', 0.3);
+        ($this->listing)('Casa en Temuco', 0.3);
+
+        PropertyListing::where('country', 'Testlandia')->get()->each(function (PropertyListing $listing): void {
+            [$city, $state] = match ($listing->title) {
+                'Casa en Viña' => ['Viña del Mar', 'Valparaíso'],
+                'Casa en Los Andes' => ['Los Andes', 'Valparaíso'],
+                default => ['Temuco', 'Araucanía'],
+            };
+
+            $listing->forceFill(['city' => $city, 'state' => $state])->saveQuietly();
+        });
+
+        $service = app(SemanticPropertySearchService::class);
+
+        expect($service->search('valparaiso', 'Testlandia')->pluck('title')->sort()->values()->all())
+            ->toBe(['Casa en Los Andes', 'Casa en Viña'])
+            ->and($service->search('vina del mar', 'Testlandia')->pluck('title')->all())->toBe(['Casa en Viña'])
+            ->and($service->search('apartamento inexistente', 'Testlandia')->total())->toBe(0);
+    });
+
+    it('prioriza los anuncios de la ciudad o región mencionada sin quitar resultados', function () {
+        ($this->listing)('Casa en Ovalle', 0.95);
+        ($this->listing)('Casa en Los Andes', 0.90);
+        ($this->listing)('Casa en Viña', 0.88);
+
+        PropertyListing::where('country', 'Testlandia')->get()->each(function (PropertyListing $listing): void {
+            [$city, $state] = match ($listing->title) {
+                'Casa en Ovalle' => ['Ovalle', 'Coquimbo'],
+                'Casa en Los Andes' => ['Los Andes', 'Valparaíso'],
+                default => ['Viña del Mar', 'Valparaíso'],
+            };
+
+            $listing->forceFill(['city' => $city, 'state' => $state])->saveQuietly();
+        });
+
+        $service = app(SemanticPropertySearchService::class);
+
+        expect($service->search('casas en venta valparaiso', 'Testlandia')->pluck('title')->all())
+            ->toBe(['Casa en Los Andes', 'Casa en Viña', 'Casa en Ovalle'])
+            ->and($service->search('casas en venta en viña del mar', 'Testlandia')->pluck('title')->all())
+            ->toBe(['Casa en Viña', 'Casa en Ovalle', 'Casa en Los Andes'])
+            ->and($service->search('casas en venta', 'Testlandia')->pluck('title')->all())
+            ->toBe(['Casa en Ovalle', 'Casa en Los Andes', 'Casa en Viña']);
+    });
 });
