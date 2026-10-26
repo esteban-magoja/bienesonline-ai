@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_guatemala"},
 {"type":"table","name":"c","database":"admin_bienes_guatemala","data":
 [
-{"fecha":"2026-10-15 14:16:47","nombre":"Stefany ","email":"marisoolacosta@gmail.com","telefono":"75992557","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Guatemala","localidad_inmueble":"Guatemala"}
+{"fecha":"2026-10-24 01:24:17","nombre":"Jackeline Pierri","email":"jackelinepierri@gmail.com","telefono":"42192995","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Guatemala","localidad_inmueble":"Fraijanes"}
 ]
 }
 ]

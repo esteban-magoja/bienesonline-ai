@@ -3,10 +3,10 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-10-13 17:54:52","nombre":"Leonela ","email":"sleonela488@gmail.com","telefono":"3455454619","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Entre Rios","localidad_inmueble":"Parana"},
-{"fecha":"2026-10-14 12:18:20","nombre":"Rocio Tosolini ","email":"rocioo.tosoo@gmail.com","telefono":"3562415786","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Córdoba","localidad_inmueble":"San Francisco"},
-{"fecha":"2026-10-16 13:52:22","nombre":"Lara Ritou","email":"paltenghimoni@gmail.com","telefono":"3444468946","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Entre Rios","localidad_inmueble":"Parana"}
-
+{"fecha":"2026-10-19 17:11:22","nombre":"Franco Fernandez","email":"francofrndz22@gmail.com","telefono":"3425688359","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Santa Fe","localidad_inmueble":"Santa Fe"},
+{"fecha":"2026-10-21 11:13:05","nombre":"mario","email":"marito.sanchez33@gmail.com","telefono":"1134157477","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Capital Federal"},
+{"fecha":"2026-10-21 12:53:51","nombre":"Nicole Magali ","email":"nicolemagali@hotmail.com","telefono":"1124583733","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Tucuman","localidad_inmueble":"San Miguel De Tucuman"},
+{"fecha":"2026-10-25 09:37:28","nombre":"Victorio Podesta","email":"vapodesta@gmail.com","telefono":"1154167078","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Ciudad de Buenos Aires","localidad_inmueble":"Palermo"}
 ]
 }
 ]

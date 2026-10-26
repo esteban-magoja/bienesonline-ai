@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_paraguay"},
 {"type":"table","name":"c","database":"admin_bienes_paraguay","data":
 [
-{"fecha":"2026-10-06 15:44:15","nombre":"Maria Victoria Piccardo","email":"marivipiccardo2@gmail.com","telefono":"0981452771","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Jara"},
-{"fecha":"2026-10-06 22:50:49","nombre":"Elena gonzalez","email":"eleenag07@gmail.com","telefono":"0986544439","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Asunción"}
+{"fecha":"2026-10-21 07:21:42","nombre":"Dardo Ortiz Ramos ","email":"dardortiz74@gmail.com","telefono":"0974553206","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Asunción"},
+{"fecha":"2026-10-21 08:38:10","nombre":"Marcela Ochipinti ","email":"marcelaochipinti81@gmail.com","telefono":"0982215466","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Jara"}
 ]
 }
 ]

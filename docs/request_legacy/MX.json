@@ -3,9 +3,7 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-10-15 00:41:51","nombre":"Beatriz Elizondo ","email":"beatriz@livitsi.mx","telefono":"8188684574","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Nuevo León","localidad_inmueble":"Garcia"},
-{"fecha":"2026-10-17 16:38:42","nombre":"Eunice Marquez","email":"S-aurora-2@hotmail.com","telefono":"8711893877","tipo_inmueble":"Local","tipo_operacion":"Renta","provincia_inmueble":"Coahuila de Zaragoza","localidad_inmueble":"Monclova"},
-{"fecha":"2026-10-18 08:22:44","nombre":"Ana María ","email":"anamapilo5359@gmail.com","telefono":"6623498314","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Sonora","localidad_inmueble":"Hermosillo"}
+{"fecha":"2026-10-23 15:13:09","nombre":"Cheryl","email":"ladycheryl67@yahoo.ca","telefono":"17802427535","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Quintana Roo","localidad_inmueble":"Playa Del Carmen"}
 ]
 }
 ]

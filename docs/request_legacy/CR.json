@@ -3,9 +3,10 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-10-12 19:01:19","nombre":"María Bonilla Soto","email":"m.bonilla@inhauscr.com","telefono":"7099-4425","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Uruca"},
-{"fecha":"2026-10-13 23:39:18","nombre":"Cristina Sáenz ","email":"crissu85@gmail.com","telefono":"88421924","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Heredia","localidad_inmueble":"Barva"},
-{"fecha":"2026-10-16 16:38:35","nombre":"Hillary","email":"haarrietamurillo@gmail.com","telefono":"83220041","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Curridabat"}
+{"fecha":"2026-10-20 17:52:42","nombre":"Victoria Rodriguez","email":"aurrodriguez@dospinos.com","telefono":"88093401","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Alajuela","localidad_inmueble":"Coyol"},
+{"fecha":"2026-10-22 15:40:38","nombre":"VARTAR REAL ESTATE","email":"ventas@vartarrealestate.com","telefono":"62632121","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"},
+{"fecha":"2026-10-23 18:05:04","nombre":"Evelyn Solís Arce","email":"evesolisarce@gmail.com","telefono":"88723799","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Tibás"},
+{"fecha":"2026-10-23 22:19:56","nombre":"Aaron ","email":"aarogomez3612@gmail.com","telefono":"71041191","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Escazú"}
 ]
 }
 ]

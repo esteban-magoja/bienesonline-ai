@@ -3,12 +3,9 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-10-12 17:18:57","nombre":"Dalia Victoria de Ronco","email":"daliaderonco0212@gmail.com","telefono":"66135636","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-13 23:31:20","nombre":"Marjorie ","email":"marjorierosario10@gmail.com","telefono":"66275919","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"Chame"},
-{"fecha":"2026-10-14 14:59:30","nombre":"Horley Elias Abrego","email":"horleyeliasabrego@gmail.com","telefono":"61945929","tipo_inmueble":"Oficina","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Bella Vista"},
-{"fecha":"2026-10-16 05:24:33","nombre":"Mateo","email":"mhincapieb@gmail.com","telefono":"66761364","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"Capira"},
-{"fecha":"2026-10-15 23:57:38","nombre":"Yemile Suárez","email":"yemile.suarez@engelvoelkers.com","telefono":"69803731","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"Chame"},
-{"fecha":"2026-10-18 15:42:49","nombre":"Yenluismar escalona ","email":"anayisa0208@gmail.com","telefono":"69776497","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"San Miguelito"}
+{"fecha":"2026-10-19 10:40:27","nombre":"Valezca ","email":"valezcamila2506@gmail.com","telefono":"64925347","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"La Chorrera"},
+{"fecha":"2026-10-22 10:07:17","nombre":"luz","email":"luz@gmail.com","telefono":"66778899","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-26 07:33:40","nombre":"Adeny lopategui ","email":"niviarican@yahoo.es","telefono":"69803207","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"La Chorrera"}
 ]
 }
 ]

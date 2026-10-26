@@ -3,9 +3,8 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-10-13 16:37:45","nombre":"Ylsa Martinez","email":"ylsa.reinorealestate@gmail.com","telefono":"0422-1410956","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Distrito Capital","localidad_inmueble":"El Paraíso"},
-{"fecha":"2026-10-14 20:29:53","nombre":"Jesús Alonzo","email":"jamauricio2530@gmail.com","telefono":"04148064092","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Monagas","localidad_inmueble":"Maturín"},
-{"fecha":"2026-10-18 22:30:03","nombre":"Kheydi ","email":"kheydiofficial@gmail.com","telefono":"04127576339","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Baruta"}
+{"fecha":"2026-10-22 07:36:22","nombre":"Nicolas ","email":"nicobenetto@gmail.com","telefono":"04244184326","tipo_inmueble":"Galpon","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Guarenas"},
+{"fecha":"2026-10-25 10:47:09","nombre":"Angelo Soriano","email":"angelosorianozd@gmail.com","telefono":"04122135723","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Capital","localidad_inmueble":"Caracas"}
 ]
 }
 ]
