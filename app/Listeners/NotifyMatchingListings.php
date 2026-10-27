@@ -29,6 +29,16 @@ class NotifyMatchingListings implements ShouldQueue
     /** Mínimo de minutos entre mensajes al mismo usuario durante importación legacy (1 día). */
     private const THROTTLE_MINUTES_LEGACY = 1440;
 
+    /**
+     * Fuera de horario el job se re-encola con release(), lo que consume un intento.
+     * Sin esto, el cron de producción (--tries=1) lo da por fallido a las 10:00
+     * con MaxAttemptsExceededException en lugar de enviarlo.
+     */
+    public int $tries = 3;
+
+    /** Ante una excepción real, falla al primer intento (como con --tries=1). */
+    public int $maxExceptions = 1;
+
     public function __construct(private PropertyMatchingService $matchingService) {}
 
     public function handle(PropertyRequestCreated $event): void
