@@ -8,56 +8,55 @@ use App\Notifications\PropertyMatchFoundNotification;
 use App\Services\PropertyMatchingService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Avisa a los dueños de solicitudes que coinciden con un anuncio nuevo o reactivado.
+ * Excluye las solicitudes legacy (asociadas al usuario de import:legacy-requests),
+ * envía un solo aviso por usuario aunque tenga varias solicitudes compatibles
+ * y como máximo 1 aviso por usuario y día.
+ */
 class NotifyMatchingRequests implements ShouldQueue
 {
     use InteractsWithQueue;
 
-    protected PropertyMatchingService $matchingService;
+    public function __construct(protected PropertyMatchingService $matchingService) {}
 
-    /**
-     * Create the event listener.
-     */
-    public function __construct(PropertyMatchingService $matchingService)
-    {
-        $this->matchingService = $matchingService;
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(PropertyListingCreated $event): void
     {
-        $listing = $event->listing;
+        $listing      = $event->listing;
+        $minScore     = config('matching.min_score_to_notify', 70);
+        $legacyUserId = (int) config('import.legacy_requests_user_id', 1);
 
         try {
-            // Buscar solicitudes que coincidan con este anuncio
-            $matches = $this->matchingService->findMatchesForListing($listing, 20);
+            // Sin límite: las solicitudes legacy son mayoría y un take() previo dejaría afuera a las reales.
+            $qualityMatches = $this->matchingService->getAllMatchesForListing($listing)
+                ->filter(fn ($request) => $request->match_score >= $minScore)
+                ->reject(fn ($request) => (int) $request->user_id === $legacyUserId);
 
-            // Obtener el score mínimo de configuración (default: 70)
-            $minScore = config('matching.min_score_to_notify', 70);
+            Log::info("PropertyListing #{$listing->id} created. Found {$qualityMatches->count()} quality matches (score >= {$minScore}, sin legacy)");
 
-            // Filtrar solo matches de calidad
-            $qualityMatches = $matches->filter(function ($request) use ($minScore) {
-                return $request->match_score >= $minScore;
-            });
+            // Un aviso por usuario: la solicitud de mayor score
+            $bestRequestByUser = $qualityMatches
+                ->sortByDesc('match_score')
+                ->unique('user_id');
 
-            Log::info("PropertyListing #{$listing->id} created. Found {$qualityMatches->count()} quality matches (score >= {$minScore})");
+            foreach ($bestRequestByUser as $request) {
+                $user = User::find($request->user_id);
 
-            // Notificar a cada solicitante (solo solicitudes reales, no legacy importadas)
-            foreach ($qualityMatches as $request) {
-                // Omitir solicitudes importadas del legacy
-                if ($request->source === 'legacy' || !empty($request->client_email)) {
+                if (!$user) {
                     continue;
                 }
 
-                // Obtener el usuario de la solicitud
-                $user = User::find($request->user_id);
-                
-                if ($user) {
-                    // Enviar notificación
-                    $user->notify(new PropertyMatchFoundNotification(
+                // Gate atómico (jobs concurrentes) + respaldo en DB (cache vaciado).
+                if (!$this->acquireDailyLock($user->id) || $this->wasNotifiedToday($user)) {
+                    Log::debug("NotifyMatchingRequests: user #{$user->id} ya recibió el aviso de hoy, saltando.");
+                    continue;
+                }
+
+                try {
+                    $user->notifyNow(new PropertyMatchFoundNotification(
                         $request,
                         $listing,
                         (int) $request->match_score,
@@ -65,6 +64,11 @@ class NotifyMatchingRequests implements ShouldQueue
                     ));
 
                     Log::info("Notified user #{$user->id} about match: PropertyRequest #{$request->id} ↔ PropertyListing #{$listing->id} (score: {$request->match_score})");
+                } catch (\Throwable $e) {
+                    // Liberar el lock para que un próximo anuncio del día pueda reintentar.
+                    Cache::forget($this->lockKey($user->id));
+
+                    Log::warning("NotifyMatchingRequests: falló el envío a user #{$user->id}: {$e->getMessage()}");
                 }
             }
         } catch (\Exception $e) {
@@ -74,8 +78,29 @@ class NotifyMatchingRequests implements ShouldQueue
     }
 
     /**
-     * Handle a job failure.
+     * Cache::add() es atómica: solo retorna true la primera vez en el día para ese usuario.
      */
+    private function acquireDailyLock(int $userId): bool
+    {
+        return Cache::add($this->lockKey($userId), 1, now()->secondsUntilEndOfDay() + 1);
+    }
+
+    private function lockKey(int $userId): string
+    {
+        return "match_found_notify_throttle_{$userId}_" . now()->format('Y-m-d');
+    }
+
+    /**
+     * El canal database de PropertyMatchFoundNotification deja registro en `notifications`.
+     */
+    private function wasNotifiedToday(User $user): bool
+    {
+        return $user->notifications()
+            ->where('type', PropertyMatchFoundNotification::class)
+            ->where('created_at', '>=', now()->startOfDay())
+            ->exists();
+    }
+
     public function failed(PropertyListingCreated $event, \Throwable $exception): void
     {
         Log::error("Failed to process matches for PropertyListing #{$event->listing->id}: " . $exception->getMessage());

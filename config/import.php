@@ -34,6 +34,12 @@ return [
     ]),
 
     /*
+     * Usuario al que import:legacy-requests asocia las solicitudes legacy (--user).
+     * Esas solicitudes no reciben avisos de anuncios nuevos (NotifyMatchingRequests).
+     */
+    'legacy_requests_user_id' => (int) env('IMPORT_LEGACY_REQUESTS_USER_ID', 1),
+
+    /*
      * Timeout en segundos para la llamada al API del proyecto legacy.
      */
     'api_timeout' => env('IMPORT_API_TIMEOUT', 30),

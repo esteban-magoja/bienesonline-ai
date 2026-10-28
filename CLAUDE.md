@@ -1344,7 +1344,7 @@ Extiende `/es/inmobiliaria/{username}` / `/en/realtor/{username}` a un mini-siti
 
 **Email** (`NotifyMatchingListingsByEmail`, listener separado, queued): mismo matching/umbral, envía `PropertyMatchAdEmailNotification` (link a `/dashboard/matches`) solo a dueños con `email_verified_at`, sin requerir premium ni ventana horaria. Máximo **1 email por usuario y día** (`Cache::add()` + respaldo en `email_message_logs`). Log en admin: **"Logs Email"** (`EmailMessageLogResource`). Test: `NotifyMatchingListingsByEmailTest`
 
-(La dirección inversa — anuncio nuevo → solicitantes — es `NotifyMatchingRequests`, ver "Sistema de Notificaciones Automáticas".)
+(La dirección inversa — anuncio nuevo → solicitantes — es `NotifyMatchingRequests`: solo email + `database`, sin WhatsApp; excluye las solicitudes legacy por `user_id` = `config('import.legacy_requests_user_id')` (1), un aviso por usuario (su solicitud de mayor score) y máximo 1 por día. Test: `NotifyMatchingRequestsTest`.)
 
 ## SEO de Fichas y Anuncios Relacionados (Septiembre 2026)
 
