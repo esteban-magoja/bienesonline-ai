@@ -410,6 +410,16 @@
                                     <p class="text-xs text-gray-500 mt-2 text-center">
                                         Coordenadas: {{ number_format($property->latitude, 6) }}, {{ number_format($property->longitude, 6) }}
                                     </p>
+                                    <div class="mt-3 text-center">
+                                        <a href="{{ url('/' . $locale . '/' . $countrySlug . ($transactionSlug ? '/' . $transactionSlug : '')) }}?{{ http_build_query(['view' => 'map', 'lat' => round((float) $property->latitude, 5), 'lng' => round((float) $property->longitude, 5), 'zoom' => 14]) }}"
+                                           rel="nofollow"
+                                           class="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                                            </svg>
+                                            {{ __('properties.map_view.nearby') }}
+                                        </a>
+                                    </div>
                                 </div>
                             @endif
 

@@ -114,6 +114,11 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
         ->middleware('throttle:property-search')
         ->name('property.search');
 
+    // Marcadores de la vista de mapa de los listados (JSON). Debe ir antes del catch-all de listados
+    Route::get('/map-data', [PropertyListingController::class, 'mapData'])
+        ->middleware('throttle:120,1')
+        ->name('property.listings.map-data');
+
     // Semantic property search landing pages (public and SEO-indexable)
     // Example: /es/colombia/busqueda/apartamento-sagrado-corazon-medellin
     Route::get('/{country}/{searchPath}/{query}', [\App\Http\Controllers\SemanticPropertySearchController::class, 'index'])

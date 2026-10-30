@@ -2,20 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PropertyImage;
 use App\Models\PropertyListing;
 use App\Models\PropertyType;
 use App\Models\TransactionType;
 use App\Helpers\PropertySlugHelper;
 use App\Helpers\SeoLocaleHelper;
+use App\Services\SeoService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Nnjeim\World\Models\State;
 use Nnjeim\World\Models\City;
 
 class PropertyListingController extends Controller
 {
+    /** Máximo de marcadores por respuesta del mapa (con más resultados se pide acercar el mapa). */
+    private const MAP_MARKER_LIMIT = 1000;
+
+    /** Query params de filtros del sidebar (ver applySidebarFilters()). */
+    private const SIDEBAR_FILTERS = [
+        'min_price', 'max_price', 'min_bedrooms', 'min_bathrooms', 'min_area', 'max_area', 'min_parking',
+    ];
+
     /**
      * Muestra listados de propiedades con URLs amigables SEO
      *
@@ -30,47 +43,20 @@ class PropertyListingController extends Controller
     {
         App::setLocale($locale);
 
-        // Validar que el país exista en la BD de anuncios
-        $countryName = PropertySlugHelper::validateCountry($country);
-        if (!$countryName) {
-            abort(404, "País no encontrado: {$country}");
+        [$countryName, $countryCode, $transactionType, $propertyType, $state, $city] =
+            $this->resolveListingContext($country, $params);
+
+        $query = $this->buildListingQuery($request, $countryName, $transactionType, $propertyType, $state, $city);
+
+        if ($request->query('view') === 'map') {
+            return $this->showMap(
+                $request, $locale, $country, $params, $query,
+                $countryName, $countryCode, $transactionType, $propertyType, $state, $city
+            );
         }
 
-        // Obtener ISO2 del país para consultar tipos configurados
-        $countryCode = PropertySlugHelper::getCountryCode($countryName) ?? 'INTL';
-
-        // Parsear parámetros opcionales en cascada
-        $paramsArray = $params ? explode('/', trim($params, '/')) : [];
-        [$transactionType, $propertyType, $state, $city] = $this->parseUrlParams(
-            $paramsArray, $countryName, $countryCode
-        );
-
-        // Construir query base
-        $query = PropertyListing::where('is_active', true)
-            ->where('country', $countryName);
-
-        // Filtrar por tipo de operación (match directo sobre el value del país)
-        if ($transactionType) {
-            $query->whereRaw('LOWER(transaction_type) = LOWER(?)', [$transactionType->value]);
-        }
-
-        // Filtrar por tipo de propiedad (match directo sobre el value del país)
-        if ($propertyType) {
-            $query->whereRaw('LOWER(property_type) = LOWER(?)', [$propertyType->value]);
-        }
-
-        // Filtrar por estado/provincia (acepta diferencias de acentos y mayúsculas)
-        if ($state) {
-            $query->whereRaw('lower(unaccent(state)) = lower(unaccent(?))', [$state->name]);
-        }
-
-        // Filtrar por ciudad (acepta diferencias de acentos y mayúsculas)
-        if ($city) {
-            $query->whereRaw('lower(unaccent(city)) = lower(unaccent(?))', [$city->name]);
-        }
-
-        // Aplicar filtros de sidebar (query params)
-        $query = $this->applySidebarFilters($query, $request);
+        // Anuncios con ubicación: si no hay ninguno no se ofrece la vista de mapa
+        $mappableCount = $this->onlyMappable(clone $query)->count();
 
         // Aplicar ordenamiento
         $query = $this->applySorting($query, $request);
@@ -127,6 +113,10 @@ class PropertyListingController extends Controller
             'city'             => $city?->name,
         ];
 
+        $mapUrl = $mappableCount > 0
+            ? url()->current() . '?' . http_build_query(array_merge($request->except(['page', 'view']), ['view' => 'map']))
+            : null;
+
         return view('property-listing', compact(
             'properties',
             'filters',
@@ -135,8 +125,309 @@ class PropertyListingController extends Controller
             'filterOptions',
             'countryHubSections',
             'countryHubContent',
+            'locale',
+            'mapUrl'
+        ));
+    }
+
+    /**
+     * Vista de mapa del listado: mismos filtros que la lista, sin indexar
+     * (el canonical apunta a la lista). Los marcadores se cargan por AJAX desde mapData().
+     */
+    private function showMap(
+        Request $request,
+        string $locale,
+        string $country,
+        ?string $params,
+        Builder $query,
+        string $countryName,
+        string $countryCode,
+        ?TransactionType $transactionType,
+        ?PropertyType $propertyType,
+        ?State $state,
+        ?City $city
+    ) {
+        $total = (clone $query)->count();
+        $mappableCount = $this->onlyMappable(clone $query)->count();
+
+        $countryHubContent = $this->getListingHubContent(
+            $countryName, $locale, $transactionType, $propertyType, $state, $city
+        );
+
+        $seo = $this->generateSeoMetadata(
+            $countryName, $countryCode, $transactionType, $propertyType, $state, $city,
+            $total, $locale, $countryHubContent['description']
+        );
+        $seo['title'] = __('properties.map_view.page_title', ['title' => $seo['title']]);
+        $seo['robots'] = 'noindex,follow';
+        unset($seo['hreflang_tags']);
+
+        // Los breadcrumbs siguen en la vista de mapa
+        $breadcrumbs = collect(PropertySlugHelper::generateBreadcrumbs(
+            $locale, $countryName, $countryCode, $transactionType, $propertyType, $state, $city
+        ))->map(function (array $breadcrumb, int $index): array {
+            if ($index > 0 && $breadcrumb['url']) {
+                $breadcrumb['url'] .= '?view=map';
+            }
+
+            return $breadcrumb;
+        })->all();
+
+        // Misma navegación del listado (tipo, operación, ubicación), apuntando a la vista de mapa
+        $navigationSections = collect($this->getListingNavigationSections(
+            $countryName, $countryCode, $locale, $transactionType, $propertyType, $state, $city
+        ))->map(function (array $section): array {
+            $section['items'] = array_map(
+                fn (array $item): array => [...$item, 'url' => $item['url'] . '?view=map'],
+                $section['items']
+            );
+
+            return $section;
+        })->all();
+
+        $listUrl = url()->current() . ($request->except(['view', 'lat', 'lng', 'zoom'])
+            ? '?' . http_build_query($request->except(['view', 'lat', 'lng', 'zoom']))
+            : '');
+
+        $mapConfig = [
+            'dataUrl' => route('property.listings.map-data', ['locale' => $locale]),
+            'path' => trim($country . '/' . trim((string) $params, '/'), '/'),
+            'filters' => array_filter(
+                $request->only([...self::SIDEBAR_FILTERS, 'sort']),
+                fn ($value) => $value !== null && $value !== ''
+            ),
+            'center' => $this->parseMapCenter($request),
+            'locale' => $locale,
+        ];
+
+        return view('property-listing-map', compact(
+            'seo',
+            'breadcrumbs',
+            'navigationSections',
+            'total',
+            'mappableCount',
+            'listUrl',
+            'mapConfig',
             'locale'
         ));
+    }
+
+    /**
+     * Endpoint JSON con los anuncios ubicables de un listado, opcionalmente
+     * acotados a la zona visible del mapa (bbox = sur,oeste,norte,este).
+     */
+    public function mapData(Request $request, string $locale): JsonResponse
+    {
+        App::setLocale($locale);
+
+        $request->validate([
+            'path' => ['required', 'string', 'max:255', 'regex:/^[a-z0-9\-\/]+$/'],
+            'bbox' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $bounds = $this->parseBoundingBox($request->query('bbox'));
+        if ($request->filled('bbox') && !$bounds) {
+            abort(422, 'bbox inválido');
+        }
+
+        $segments = explode('/', trim($request->query('path'), '/'));
+        $country = array_shift($segments);
+
+        [$countryName, , $transactionType, $propertyType, $state, $city] =
+            $this->resolveListingContext($country, implode('/', $segments) ?: null);
+
+        $build = function () use ($request, $locale, $bounds, $countryName, $transactionType, $propertyType, $state, $city): array {
+            $query = $this->onlyMappable(
+                $this->buildListingQuery($request, $countryName, $transactionType, $propertyType, $state, $city)
+            );
+
+            if ($bounds) {
+                $query->whereBetween('latitude', [$bounds['south'], $bounds['north']])
+                    ->whereBetween('longitude', [$bounds['west'], $bounds['east']]);
+            }
+
+            $total = (clone $query)->count();
+
+            $listings = $this->applySorting($query, $request)
+                ->select([
+                    'id', 'title', 'title_i18n', 'price', 'currency', 'property_type', 'transaction_type',
+                    'bedrooms', 'bathrooms', 'area', 'city', 'state', 'country',
+                    'latitude', 'longitude', 'is_featured',
+                ])
+                ->addSelect(['image_path' => PropertyImage::select('image_path')
+                    ->whereColumn('property_listing_id', 'property_listings.id')
+                    ->orderByDesc('is_primary')
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->limit(1)])
+                ->limit(self::MAP_MARKER_LIMIT)
+                ->get();
+
+            $seoService = app(SeoService::class);
+            $labels = [];
+            $label = function (string $class, ?string $value) use (&$labels, $locale): ?string {
+                if (!$value) {
+                    return null;
+                }
+
+                return $labels[$class][$value] ??= $class::getLabel($value, $locale);
+            };
+
+            return [
+                'total' => $total,
+                'limit' => self::MAP_MARKER_LIMIT,
+                'listings' => $listings->map(fn (PropertyListing $listing): array => [
+                    'id' => $listing->id,
+                    'lat' => (float) $listing->latitude,
+                    'lng' => (float) $listing->longitude,
+                    'title' => $locale === 'es'
+                        ? $listing->title
+                        : ($listing->getTranslation('title', $locale) ?: $listing->title),
+                    'price' => $listing->price !== null ? (float) $listing->price : null,
+                    'currency' => $listing->currency,
+                    'type' => $label(PropertyType::class, $listing->property_type),
+                    'operation' => $label(TransactionType::class, $listing->transaction_type),
+                    'bedrooms' => $listing->bedrooms,
+                    'bathrooms' => $listing->bathrooms,
+                    'area' => $listing->area ? (int) round((float) $listing->area) : null,
+                    'location' => collect([$listing->city, $listing->state])->filter()->implode(', '),
+                    'featured' => (bool) $listing->is_featured,
+                    'image' => $listing->image_path ? Storage::url($listing->image_path) : null,
+                    'url' => $seoService->generatePropertyUrl($listing, $locale),
+                ])->all(),
+            ];
+        };
+
+        // Solo se cachea la carga inicial (sin bbox): las zonas del mapa varían demasiado
+        $payload = $bounds
+            ? $build()
+            : Cache::remember(
+                'map_data_' . md5(json_encode([
+                    $locale,
+                    $request->query('path'),
+                    $request->only([...self::SIDEBAR_FILTERS, 'sort']),
+                ])),
+                600,
+                $build
+            );
+
+        return response()->json($payload);
+    }
+
+    /**
+     * Resuelve país y segmentos opcionales de la URL; 404 si alguno no es válido.
+     *
+     * @return array{0: string, 1: string, 2: ?TransactionType, 3: ?PropertyType, 4: ?State, 5: ?City}
+     */
+    private function resolveListingContext(string $country, ?string $params): array
+    {
+        // Validar que el país exista en la BD de anuncios
+        $countryName = PropertySlugHelper::validateCountry($country);
+        if (!$countryName) {
+            abort(404, "País no encontrado: {$country}");
+        }
+
+        // Obtener ISO2 del país para consultar tipos configurados
+        $countryCode = PropertySlugHelper::getCountryCode($countryName) ?? 'INTL';
+
+        // Parsear parámetros opcionales en cascada
+        $paramsArray = $params ? explode('/', trim($params, '/')) : [];
+        [$transactionType, $propertyType, $state, $city] = $this->parseUrlParams(
+            $paramsArray, $countryName, $countryCode
+        );
+
+        return [$countryName, $countryCode, $transactionType, $propertyType, $state, $city];
+    }
+
+    /**
+     * Query de anuncios activos del listado (segmentos de URL + filtros del sidebar), sin ordenar.
+     */
+    private function buildListingQuery(
+        Request $request,
+        string $countryName,
+        ?TransactionType $transactionType,
+        ?PropertyType $propertyType,
+        ?State $state,
+        ?City $city
+    ): Builder {
+        $query = PropertyListing::where('is_active', true)
+            ->where('country', $countryName);
+
+        // Filtrar por tipo de operación (match directo sobre el value del país)
+        if ($transactionType) {
+            $query->whereRaw('LOWER(transaction_type) = LOWER(?)', [$transactionType->value]);
+        }
+
+        // Filtrar por tipo de propiedad (match directo sobre el value del país)
+        if ($propertyType) {
+            $query->whereRaw('LOWER(property_type) = LOWER(?)', [$propertyType->value]);
+        }
+
+        // Filtrar por estado/provincia (acepta diferencias de acentos y mayúsculas)
+        if ($state) {
+            $query->whereRaw('lower(unaccent(state)) = lower(unaccent(?))', [$state->name]);
+        }
+
+        // Filtrar por ciudad (acepta diferencias de acentos y mayúsculas)
+        if ($city) {
+            $query->whereRaw('lower(unaccent(city)) = lower(unaccent(?))', [$city->name]);
+        }
+
+        // Aplicar filtros de sidebar (query params)
+        return $this->applySidebarFilters($query, $request);
+    }
+
+    /**
+     * Restringe la query a anuncios con coordenadas utilizables (descarta nulas y 0,0).
+     */
+    private function onlyMappable(Builder $query): Builder
+    {
+        return $query->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->where('latitude', '!=', 0)
+            ->where('longitude', '!=', 0);
+    }
+
+    /**
+     * @return array{south: float, west: float, north: float, east: float}|null
+     */
+    private function parseBoundingBox(?string $bbox): ?array
+    {
+        if (!$bbox) {
+            return null;
+        }
+
+        $parts = explode(',', $bbox);
+        if (count($parts) !== 4 || array_filter($parts, fn ($part) => !is_numeric($part))) {
+            return null;
+        }
+
+        [$south, $west, $north, $east] = array_map('floatval', $parts);
+
+        if ($south > $north || $west > $east || $south < -90 || $north > 90 || $west < -180 || $east > 180) {
+            return null;
+        }
+
+        return compact('south', 'west', 'north', 'east');
+    }
+
+    /**
+     * Centro inicial opcional del mapa (?lat=&lng=&zoom=), p. ej. desde la ficha de un anuncio.
+     *
+     * @return array{lat: float, lng: float, zoom: int}|null
+     */
+    private function parseMapCenter(Request $request): ?array
+    {
+        $lat = $request->query('lat');
+        $lng = $request->query('lng');
+
+        if (!is_numeric($lat) || !is_numeric($lng) || abs((float) $lat) > 90 || abs((float) $lng) > 180) {
+            return null;
+        }
+
+        $zoom = is_numeric($request->query('zoom')) ? (int) $request->query('zoom') : 14;
+
+        return ['lat' => (float) $lat, 'lng' => (float) $lng, 'zoom' => max(3, min(18, $zoom))];
     }
 
     /**

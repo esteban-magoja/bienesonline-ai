@@ -1314,6 +1314,16 @@ Esto **no es una duplicación** — son dos páginas reales con contenido en dis
 
 ---
 
+## Vista de Mapa de los Listados (Octubre 2026)
+
+- Cada listado SEO tiene botón **"Ver en mapa"** → misma URL con `?view=map` (mismos segmentos y filtros). Responde `noindex,follow` y su canonical es la lista; no va al sitemap
+- `PropertyListingController::index()` arma la query con `buildListingQuery()` (compartida con la lista) y, con `view=map`, devuelve `resources/views/property-listing-map.blade.php` (`showMap()`)
+- Marcadores por AJAX: `GET /{locale}/map-data?path={país/segmentos}&bbox=sur,oeste,norte,este` (`mapData()`, `throttle:120,1`, ruta **antes** del catch-all de listados). Máximo `MAP_MARKER_LIMIT` (1000) por respuesta; solo se cachea (10 min) la carga sin `bbox`
+- Solo anuncios con coordenadas (`onlyMappable()`: descarta nulas y 0,0); los demás se informan con un aviso y enlace a la lista. Sin migraciones
+- Front: Leaflet 1.9.4 + Leaflet.markercluster 1.5.3 (unpkg, con SRI) y Alpine. El mapa se crea con `ResizeObserver` porque el `<body>` arranca con `x-cloak` (con tamaño 0 Leaflet encuadra mal). `?lat=&lng=&zoom=` centra el mapa (la ficha enlaza "Ver propiedades cercanas en el mapa"); la home tiene enlace "Mapa" por país
+- Mapas base: `tile.openstreetmap.org` (política de uso limita tráfico comercial alto; si crece, cambiar la URL de tiles a otro proveedor)
+- Test: `PropertyListingMapTest`
+
 ## Directorio de Inmobiliarias (Julio 2026)
 
 - `AgentDirectoryController` — `/{locale}/inmobiliarias` y `/{locale}/{país}/inmobiliarias/{estado?}/{ciudad?}` (en: `/agents`)
