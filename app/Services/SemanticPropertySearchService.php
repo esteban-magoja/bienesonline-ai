@@ -55,6 +55,41 @@ class SemanticPropertySearchService
         return $this->paginateMatches($matches, $country, $perPage, $this->mentionedLocations($searchTerm, $country));
     }
 
+    /**
+     * Todos los resultados de la búsqueda (sin paginar) para la vista de mapa: la query sin
+     * ordenar y la función que aplica el orden (similitud, o destacados + recientes).
+     *
+     * @return array{0: Builder, 1: callable(Builder): Builder}
+     */
+    public function mapQuery(string $searchTerm, string $country): array
+    {
+        $searchTerm = $this->normalizeSearchTerm($searchTerm);
+        $types = $this->typeResolver->resolve($searchTerm);
+        $embedding = $this->getEmbedding($searchTerm);
+        $latestFirst = fn (Builder $query): Builder => $query->orderByDesc('is_featured')->latest('created_at');
+
+        if ($embedding === null) {
+            return [$this->textSearchQuery($searchTerm, $country, $types), $latestFirst];
+        }
+
+        $matches = Cache::remember(
+            $this->resultCacheKey($searchTerm, $country),
+            now()->addMinutes(self::RESULT_CACHE_MINUTES),
+            fn (): array => $this->findSemanticMatches($embedding, $country, $types),
+        );
+
+        if ($matches === []) {
+            return [$this->locationSearchQuery($searchTerm, $country, $types), $latestFirst];
+        }
+
+        $listingIds = array_column($matches, 'id');
+
+        return [
+            PropertyListing::query()->active()->where('country', $country)->whereIn('id', $listingIds),
+            fn (Builder $query): Builder => $query->orderByRaw('array_position(?::bigint[], id)', ['{' . implode(',', $listingIds) . '}']),
+        ];
+    }
+
     private function getEmbedding(string $searchTerm): ?Vector
     {
         $embedding = Cache::remember(
@@ -224,16 +259,28 @@ class SemanticPropertySearchService
      */
     private function textSearch(string $searchTerm, string $country, array $types, int $perPage): LengthAwarePaginator
     {
+        return $this->textSearchQuery($searchTerm, $country, $types)
+            ->with(['primaryImage', 'firstImage'])
+            ->orderByDesc('is_featured')
+            ->latest('created_at')
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
+    /**
+     * @param  array{property_types: list<string>, transaction_types: list<string>}  $types
+     */
+    private function textSearchQuery(string $searchTerm, string $country, array $types): Builder
+    {
         $terms = Str::of($searchTerm)
             ->explode(' ')
             ->filter(fn (string $term): bool => mb_strlen($term) >= 2)
             ->values();
 
-        $query = PropertyListing::query()
+        return PropertyListing::query()
             ->active()
             ->where('country', $country)
             ->tap(fn (Builder $query) => $this->applyTypeFilters($query, $types))
-            ->with(['primaryImage', 'firstImage'])
             ->when($terms->isNotEmpty(), function (Builder $query) use ($terms): void {
                 $query->where(function (Builder $query) use ($terms): void {
                     foreach ($terms as $term) {
@@ -246,11 +293,7 @@ class SemanticPropertySearchService
                             ->orWhereRaw('unaccent(state) ILIKE unaccent(?) ESCAPE \'\\\'', [$likeTerm]);
                     }
                 });
-            })
-            ->orderByDesc('is_featured')
-            ->latest('created_at');
-
-        return $query->paginate($perPage)->withQueryString();
+            });
     }
 
     /**
@@ -260,22 +303,30 @@ class SemanticPropertySearchService
      */
     private function locationSearch(string $searchTerm, string $country, array $types, int $perPage): LengthAwarePaginator
     {
+        return $this->locationSearchQuery($searchTerm, $country, $types)
+            ->with(['primaryImage', 'firstImage'])
+            ->orderByDesc('is_featured')
+            ->latest('created_at')
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
+    /**
+     * @param  array{property_types: list<string>, transaction_types: list<string>}  $types
+     */
+    private function locationSearchQuery(string $searchTerm, string $country, array $types): Builder
+    {
         $likeTerm = '%' . addcslashes($searchTerm, '%_\\') . '%';
 
         return PropertyListing::query()
             ->active()
             ->where('country', $country)
             ->tap(fn (Builder $query) => $this->applyTypeFilters($query, $types))
-            ->with(['primaryImage', 'firstImage'])
             ->where(function (Builder $query) use ($likeTerm): void {
                 $query
                     ->whereRaw('unaccent(city) ILIKE unaccent(?) ESCAPE \'\\\'', [$likeTerm])
                     ->orWhereRaw('unaccent(state) ILIKE unaccent(?) ESCAPE \'\\\'', [$likeTerm]);
-            })
-            ->orderByDesc('is_featured')
-            ->latest('created_at')
-            ->paginate($perPage)
-            ->withQueryString();
+            });
     }
 
     private function normalizeSearchTerm(string $searchTerm): string

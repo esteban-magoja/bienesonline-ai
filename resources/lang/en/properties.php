@@ -406,5 +406,6 @@ return [
         'error' => 'Listings could not be loaded. Please try again.',
         'nearby' => 'View nearby properties on the map',
         'country_map' => 'Map',
+        'this_listing' => 'This listing',
     ],
 ];

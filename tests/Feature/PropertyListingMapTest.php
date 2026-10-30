@@ -8,10 +8,11 @@ uses(DatabaseTransactions::class);
 beforeEach(function () {
     deactivateExistingListings();
 
+    $this->username = 'listing-map-' . uniqid();
     $this->userId = DB::table('users')->insertGetId([
         'name' => 'Usuario mapa',
-        'email' => 'listing-map-' . uniqid() . '@example.com',
-        'username' => 'listing-map-' . uniqid(),
+        'email' => $this->username . '@example.com',
+        'username' => $this->username,
         'avatar' => 'demo/default.png',
         'password' => bcrypt('password'),
         'locale' => 'es',
@@ -121,5 +122,71 @@ it('links the property detail to nearby listings on the map', function () {
 
     $this->get("/es/argentina/villa-carlos-paz/propiedad/{$id}-casa-para-el-mapa")
         ->assertSuccessful()
-        ->assertSee('/es/argentina/venta?view=map&amp;lat=-31.4241&amp;lng=-64.4978&amp;zoom=14', false);
+        ->assertSee("/es/argentina/venta/casa/cordoba?view=map&amp;lat=-31.4241&amp;lng=-64.4978&amp;zoom=14&amp;highlight={$id}", false);
+});
+
+it('links the realtor profile to its map view when listings have a location', function () {
+    ($this->createListing)();
+
+    $this->get("/es/inmobiliaria/{$this->username}?transaction_type=venta&page=2")
+        ->assertSuccessful()
+        ->assertSee("/es/inmobiliaria/{$this->username}?transaction_type=venta&amp;view=map", false);
+});
+
+it('hides the profile map link when no listing has a location', function () {
+    ($this->createListing)(['latitude' => null, 'longitude' => null]);
+
+    $this->get("/es/inmobiliaria/{$this->username}")
+        ->assertSuccessful()
+        ->assertDontSee('view=map', false);
+});
+
+it('renders the profile map view with its filters as selects', function () {
+    ($this->createListing)();
+    ($this->createListing)(['transaction_type' => 'alquiler']);
+
+    $this->get("/es/inmobiliaria/{$this->username}?view=map&transaction_type=venta")
+        ->assertSuccessful()
+        ->assertSee('<meta name="robots" content="noindex,follow">', false)
+        ->assertSee('<link rel="canonical" href="' . url("/es/inmobiliaria/{$this->username}") . '">', false)
+        ->assertSee("/es/inmobiliaria/{$this->username}?transaction_type=venta&amp;view=map\" selected>Venta (1)", false)
+        ->assertSee("/es/inmobiliaria/{$this->username}?transaction_type=alquiler&amp;view=map", false)
+        ->assertSee('listingMap(', false);
+});
+
+it('returns only the realtor active listings with a location in the profile map data', function () {
+    $mappable = ($this->createListing)();
+    ($this->createListing)(['transaction_type' => 'alquiler']);
+    ($this->createListing)(['latitude' => null, 'longitude' => null]);
+    ($this->createListing)(['is_active' => false]);
+
+    $otherUserId = DB::table('users')->insertGetId([
+        'name' => 'Otro usuario',
+        'email' => 'listing-map-other-' . uniqid() . '@example.com',
+        'username' => 'listing-map-other-' . uniqid(),
+        'avatar' => 'demo/default.png',
+        'password' => bcrypt('password'),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+    ($this->createListing)(['user_id' => $otherUserId]);
+
+    $this->getJson("/es/map-data/profile/{$this->username}?transaction_type=venta")
+        ->assertSuccessful()
+        ->assertJsonPath('total', 1)
+        ->assertJsonPath('listings.0.id', $mappable);
+
+    $this->getJson('/es/map-data/profile/usuario-inexistente')->assertNotFound();
+});
+
+it('passes only a numeric highlighted listing to the map', function () {
+    ($this->createListing)();
+
+    $this->get('/es/argentina?view=map&highlight=53')
+        ->assertSuccessful()
+        ->assertSee('highlight\\u0022:53', false);
+
+    $this->get('/es/argentina?view=map&highlight=abc')
+        ->assertSuccessful()
+        ->assertSee('highlight\\u0022:null', false);
 });

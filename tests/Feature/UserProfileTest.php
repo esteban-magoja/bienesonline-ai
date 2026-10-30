@@ -93,3 +93,12 @@ it('filters profile listings by country, state, and city', function () {
         ->assertDontSee('Anuncio Ecuador')
         ->assertSee('Argentina');
 });
+
+it('links "view all properties" to the profile without the active filters', function () {
+    $user = createProfileTestUser();
+    createProfileListing($user->id, 'Casa filtrada');
+
+    $this->get("/es/inmobiliaria/{$user->username}?transaction_type=venta&state=Azuay")
+        ->assertSuccessful()
+        ->assertSee('href="' . url("/es/inmobiliaria/{$user->username}") . '#propiedades"', false);
+});

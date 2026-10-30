@@ -243,3 +243,99 @@ describe('precisión de la búsqueda semántica', function () {
             ->toBe(['Casa en Ovalle', 'Casa en Los Andes', 'Casa en Viña']);
     });
 });
+
+it('offers a map view with every located result of an indexable search', function () {
+    Cache::flush();
+    deactivateExistingListings();
+
+    $user = User::query()->firstOrFail();
+    $located = PropertyListing::factory()->create([
+        'user_id' => $user->id,
+        'title' => 'Departamento con ubicación en Santiago',
+        'property_type' => 'departamento',
+        'transaction_type' => 'venta',
+        'country' => 'Chile',
+        'city' => 'Santiago',
+        'state' => 'Santiago Metropolitan',
+        'latitude' => -33.45,
+        'longitude' => -70.66,
+        'is_active' => true,
+        'embedding' => new Vector(array_fill(0, 1536, 0.001)),
+        'title_i18n' => ['es' => 'Departamento con ubicación en Santiago'],
+    ]);
+    PropertyListing::factory()->create([
+        'user_id' => $user->id,
+        'title' => 'Departamento sin ubicación en Santiago',
+        'property_type' => 'departamento',
+        'transaction_type' => 'venta',
+        'country' => 'Chile',
+        'city' => 'Santiago',
+        'latitude' => null,
+        'longitude' => null,
+        'is_active' => true,
+        'embedding' => new Vector(array_fill(0, 1536, 0.001)),
+    ]);
+
+    $this->get('/es/chile/busqueda/departamento-santiago')
+        ->assertSuccessful()
+        ->assertSee('/es/chile/busqueda/departamento-santiago?view=map', false);
+
+    $this->get('/es/chile/busqueda/departamento-santiago?view=map')
+        ->assertSuccessful()
+        ->assertSee('<title>Departamento Santiago en Chile en el mapa</title>', false)
+        ->assertSee('<meta name="robots" content="noindex,follow">', false)
+        ->assertSee('<link rel="canonical" href="' . url('/es/chile/busqueda/departamento-santiago') . '">', false)
+        ->assertSee('1 anuncio de este listado no tiene ubicación');
+
+    $this->getJson('/es/map-data/search/chile/departamento-santiago')
+        ->assertSuccessful()
+        ->assertJsonPath('total', 1)
+        ->assertJsonPath('listings.0.id', $located->id);
+
+    $this->getJson('/es/map-data/search/chile/departamento-santiago?bbox=-20,-70,-18,-68')
+        ->assertSuccessful()
+        ->assertJsonPath('total', 0);
+});
+
+it('hides the map link of a search whose results have no location', function () {
+    Cache::flush();
+    deactivateExistingListings();
+
+    $user = User::query()->firstOrFail();
+    PropertyListing::factory()->create([
+        'user_id' => $user->id,
+        'title' => 'Casa sin ubicación en Valparaíso',
+        'property_type' => 'casa',
+        'transaction_type' => 'venta',
+        'country' => 'Chile',
+        'latitude' => null,
+        'longitude' => null,
+        'is_active' => true,
+        'embedding' => new Vector(array_fill(0, 1536, 0.001)),
+    ]);
+
+    $this->get('/es/chile/busqueda/casa-valparaiso')
+        ->assertSuccessful()
+        ->assertDontSee('view=map', false);
+});
+
+it('keeps the map view when canonicalizing a search slug', function () {
+    $this->get('/es/chile/search/Casa-Valparaiso?view=map')
+        ->assertRedirect(url('/es/chile/busqueda/casa-valparaiso?view=map'));
+});
+
+it('links other active searches to their map view from the search map', function () {
+    Cache::flush();
+
+    \App\Models\SearchQuery::factory()->create([
+        'country' => 'Chile',
+        'query' => 'casa con piscina en santiago',
+        'slug' => 'casa-con-piscina-en-santiago',
+        'active' => true,
+    ]);
+
+    $this->get('/es/chile/busqueda/departamento-santiago?view=map')
+        ->assertSuccessful()
+        ->assertSee('Otras búsquedas')
+        ->assertSee('/es/chile/busqueda/casa-con-piscina-en-santiago?view=map', false);
+});

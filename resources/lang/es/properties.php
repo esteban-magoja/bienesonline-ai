@@ -385,5 +385,6 @@ return [
         'error' => 'No se pudieron cargar los anuncios. Intenta de nuevo.',
         'nearby' => 'Ver propiedades cercanas en el mapa',
         'country_map' => 'Mapa',
+        'this_listing' => 'Este anuncio',
     ],
 ];

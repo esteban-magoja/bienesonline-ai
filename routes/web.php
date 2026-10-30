@@ -119,6 +119,16 @@ Route::prefix('{locale}')->where(['locale' => 'es|en'])->group(function () {
         ->middleware('throttle:120,1')
         ->name('property.listings.map-data');
 
+    Route::get('/map-data/profile/{username}', [\App\Http\Controllers\UserProfileController::class, 'mapData'])
+        ->where(['username' => '[a-z0-9\-]+'])
+        ->middleware('throttle:120,1')
+        ->name('user.profile.map-data');
+
+    Route::get('/map-data/search/{country}/{query}', [\App\Http\Controllers\SemanticPropertySearchController::class, 'mapData'])
+        ->where(['country' => '[a-zA-Z\-]+', 'query' => '[a-zA-Z0-9\-]+'])
+        ->middleware('throttle:120,1')
+        ->name('property.semantic-search.map-data');
+
     // Semantic property search landing pages (public and SEO-indexable)
     // Example: /es/colombia/busqueda/apartamento-sagrado-corazon-medellin
     Route::get('/{country}/{searchPath}/{query}', [\App\Http\Controllers\SemanticPropertySearchController::class, 'index'])

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Helpers\PropertySlugHelper;
 use App\Helpers\SeoLocaleHelper;
 use App\Models\SearchQuery;
+use App\Services\ListingMapService;
 use App\Services\SemanticPropertySearchService;
 use App\Services\SeoService;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -18,6 +21,7 @@ class SemanticPropertySearchController extends Controller
     public function __construct(
         private readonly SemanticPropertySearchService $searchService,
         private readonly SeoService $seoService,
+        private readonly ListingMapService $listingMap,
     ) {
     }
 
@@ -44,13 +48,16 @@ class SemanticPropertySearchController extends Controller
             abort(404, 'La búsqueda es demasiado corta.');
         }
 
+        $isMapView = $request->query('view') === 'map';
+
         if ($searchPath !== $expectedSearchPath || $query !== $canonicalQuery) {
-            return redirect()->route('property.semantic-search', [
+            return redirect()->route('property.semantic-search', array_filter([
                 'locale' => $locale,
                 'country' => PropertySlugHelper::normalize($countryName),
                 'searchPath' => $expectedSearchPath,
                 'query' => $canonicalQuery,
-            ], 301);
+                'view' => $isMapView ? 'map' : null,
+            ]), 301);
         }
 
         $page = (int) $request->integer('page', 1);
@@ -63,7 +70,12 @@ class SemanticPropertySearchController extends Controller
                 'searchPath' => $expectedSearchPath,
                 'query' => $redirectSlug,
                 'page' => $page > 1 ? $page : null,
+                'view' => $isMapView ? 'map' : null,
             ]), 301);
+        }
+
+        if ($isMapView) {
+            return $this->showMap($request, $locale, $countryName, $searchTerm, $canonicalQuery, $expectedSearchPath);
         }
 
         $properties = $this->searchService->search($searchTerm, $countryName);
@@ -142,7 +154,107 @@ class SemanticPropertySearchController extends Controller
                 ['label' => Str::title($searchTerm), 'url' => null],
             ],
             'locale' => $locale,
+            // Botón del mapa si algún resultado de la página tiene ubicación (sin consultas extra)
+            'mapUrl' => $properties->contains(fn ($property): bool => (float) $property->latitude != 0 && (float) $property->longitude != 0)
+                ? $canonicalUrl . (str_contains($canonicalUrl, '?') ? '&' : '?') . 'view=map'
+                : null,
         ]);
+    }
+
+    /**
+     * Vista de mapa con todos los resultados de la búsqueda (misma vista que los listados), sin indexar.
+     */
+    private function showMap(
+        Request $request,
+        string $locale,
+        string $countryName,
+        string $searchTerm,
+        string $canonicalQuery,
+        string $searchPath,
+    ): View {
+        [$query] = $this->searchService->mapQuery($searchTerm, $countryName);
+        $total = (clone $query)->count();
+        $mappableCount = $this->listingMap->onlyMappable(clone $query)->count();
+        $countrySlug = PropertySlugHelper::normalize($countryName);
+
+        $searchUrl = route('property.semantic-search', [
+            'locale' => $locale,
+            'country' => $countrySlug,
+            'searchPath' => $searchPath,
+            'query' => $canonicalQuery,
+        ]);
+
+        $seo = [
+            'title' => __('properties.map_view.page_title', [
+                'title' => Str::title($searchTerm) . ' ' . __('properties.in') . ' ' . $countryName,
+            ]),
+            'description' => Str::limit(__('seo.semantic_search.description', [
+                'query' => $searchTerm,
+                'country' => $countryName,
+                'count' => number_format($total),
+            ]), 160),
+            'image' => url('/og_image.png'),
+            'type' => 'website',
+            'canonical' => $searchUrl,
+            'robots' => 'noindex,follow',
+        ];
+
+        // Otras búsquedas del país, también en el mapa
+        $relatedSearches = SearchQuery::relatedLinks($countryName, $canonicalQuery, $locale)
+            ->map(fn (array $link): array => [...$link, 'url' => $link['url'] . '?view=map', 'count' => null])
+            ->all();
+
+        return view('property-listing-map', [
+            'seo' => $seo,
+            'breadcrumbs' => [
+                ['label' => __('messages.home'), 'url' => route('home', ['locale' => $locale])],
+                ['label' => $countryName, 'url' => route('property.listings', ['locale' => $locale, 'country' => $countrySlug]) . '?view=map'],
+                ['label' => Str::title($searchTerm), 'url' => $searchUrl],
+                ['label' => __('properties.map_view.show_map'), 'url' => null],
+            ],
+            'navigationSections' => $relatedSearches
+                ? [['title' => __('properties.search_results.other_searches'), 'items' => $relatedSearches]]
+                : [],
+            'total' => $total,
+            'mappableCount' => $mappableCount,
+            'listUrl' => $searchUrl,
+            'mapConfig' => [
+                'dataUrl' => route('property.semantic-search.map-data', [
+                    'locale' => $locale,
+                    'country' => $countrySlug,
+                    'query' => $canonicalQuery,
+                ]),
+                'params' => [],
+                'center' => $this->listingMap->parseMapCenter($request),
+                'locale' => $locale,
+            ],
+            'locale' => $locale,
+        ]);
+    }
+
+    /**
+     * Endpoint JSON con los resultados ubicables de la búsqueda (mismo formato que los listados SEO).
+     */
+    public function mapData(Request $request, string $locale, string $country, string $query): JsonResponse
+    {
+        App::setLocale($locale);
+
+        $countryName = PropertySlugHelper::validateCountry($country);
+        $searchTerm = Str::of($query)->replace('-', ' ')->squish()->lower()->toString();
+
+        if (! $countryName || mb_strlen($searchTerm) < 3) {
+            abort(404);
+        }
+
+        [$listings, $applyOrder] = $this->searchService->mapQuery($searchTerm, $countryName);
+
+        return $this->listingMap->response(
+            $listings,
+            $request,
+            $locale,
+            $applyOrder,
+            'map_data_search_' . md5(json_encode([$locale, $countryName, $searchTerm]))
+        );
     }
 
     private function structuredData($properties, string $title): array

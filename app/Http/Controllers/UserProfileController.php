@@ -4,20 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\PropertyListing;
+use App\Models\PropertyType;
 use App\Models\TransactionType;
+use App\Services\ListingMapService;
 use App\Services\SeoService;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\View\View;
 
 class UserProfileController extends Controller
 {
+    /** Query params de filtros del listado del perfil (ver profileListingsQuery()). */
+    private const PROFILE_FILTERS = [
+        'country', 'state', 'city', 'transaction_type', 'property_type',
+        'min_price', 'max_price', 'bedrooms', 'bathrooms', 'min_area',
+    ];
+
     /**
      * Muestra el perfil público de un usuario con sus anuncios
      * 
      * URL: /{locale}/inmobiliaria/{username} o /{locale}/realtor/{username}
      */
-    public function show(Request $request, string $locale, string $username): View
+    public function show(Request $request, ListingMapService $listingMap, string $locale, string $username): View
     {
         // Establecer locale
         App::setLocale($locale);
@@ -35,108 +45,22 @@ class UserProfileController extends Controller
         $selectedState = trim($request->string('state')->toString());
         $selectedCity = trim($request->string('city')->toString());
 
-        // Construir query de propiedades activas del usuario
-        $query = PropertyListing::where('user_id', $user->id)
-            ->where('is_active', true)
-            ->with(['primaryImage', 'firstImage']);
+        // Query de propiedades activas del usuario con los filtros del query string
+        $query = $this->profileListingsQuery($user, $request);
 
-        if ($selectedCountry !== '') {
-            $query->whereRaw('LOWER(TRIM(country)) = LOWER(TRIM(?))', [$selectedCountry]);
+        if ($request->query('view') === 'map') {
+            return $this->showMap($request, $listingMap, $locale, $user, $query);
         }
 
-        if ($selectedState !== '') {
-            $query->whereRaw('LOWER(TRIM(state)) = LOWER(TRIM(?))', [$selectedState]);
-        }
+        // Anuncios con ubicación: si no hay ninguno no se ofrece la vista de mapa
+        $mapUrl = $listingMap->onlyMappable(clone $query)->exists()
+            ? $this->profileUrl($user, $locale, [...$request->except(['page', 'view']), 'view' => 'map'])
+            : null;
 
-        if ($selectedCity !== '') {
-            $query->whereRaw('LOWER(TRIM(city)) = LOWER(TRIM(?))', [$selectedCity]);
-        }
-
-        // Aplicar filtros de query string
-        if ($request->filled('transaction_type')) {
-            $query->where('transaction_type', $request->transaction_type);
-        }
-
-        if ($request->filled('property_type')) {
-            $query->where('property_type', $request->property_type);
-        }
-
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
-
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
-        if ($request->filled('bedrooms')) {
-            $query->where('bedrooms', '>=', $request->bedrooms);
-        }
-
-        if ($request->filled('bathrooms')) {
-            $query->where('bathrooms', '>=', $request->bathrooms);
-        }
-
-        if ($request->filled('min_area')) {
-            $query->where('area', '>=', $request->min_area);
-        }
-
-        // Ordenamiento
-        $sortBy = $request->input('sort', 'created_at');
-        $sortOrder = $request->input('order', 'desc');
-
-        $validSorts = ['created_at', 'price', 'area', 'bedrooms'];
-        $validOrders = ['asc', 'desc'];
-
-        if (in_array($sortBy, $validSorts) && in_array($sortOrder, $validOrders)) {
-            $query->orderBy($sortBy, $sortOrder);
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
+        $query = $this->applyProfileSorting($query->with(['primaryImage', 'firstImage']), $request);
 
         // Paginación
         $properties = $query->paginate(12)->withQueryString();
-
-        $applySelectedFilters = function ($featuredQuery) use ($selectedCountry, $selectedState, $selectedCity, $request): void {
-            if ($selectedCountry !== '') {
-                $featuredQuery->whereRaw('LOWER(TRIM(country)) = LOWER(TRIM(?))', [$selectedCountry]);
-            }
-
-            if ($selectedState !== '') {
-                $featuredQuery->whereRaw('LOWER(TRIM(state)) = LOWER(TRIM(?))', [$selectedState]);
-            }
-
-            if ($selectedCity !== '') {
-                $featuredQuery->whereRaw('LOWER(TRIM(city)) = LOWER(TRIM(?))', [$selectedCity]);
-            }
-
-            foreach (['transaction_type', 'property_type'] as $filter) {
-                if ($request->filled($filter)) {
-                    $featuredQuery->where($filter, $request->input($filter));
-                }
-            }
-        };
-
-        $featuredProperties = PropertyListing::query()
-            ->where('user_id', $user->id)
-            ->where('is_active', true)
-            ->where('is_featured', true)
-            ->tap($applySelectedFilters)
-            ->with(['primaryImage', 'firstImage'])
-            ->latest()
-            ->limit(6)
-            ->get();
-
-        if ($featuredProperties->isEmpty()) {
-            $featuredProperties = PropertyListing::query()
-                ->where('user_id', $user->id)
-                ->where('is_active', true)
-                ->tap($applySelectedFilters)
-                ->with(['primaryImage', 'firstImage'])
-                ->latest()
-                ->limit(6)
-                ->get();
-        }
 
         // Generar breadcrumbs
         $breadcrumbs = $this->generateBreadcrumbs($user, $locale);
@@ -175,7 +99,6 @@ class UserProfileController extends Controller
         return view('user-profile', compact(
             'user',
             'properties',
-            'featuredProperties',
             'breadcrumbs',
             'seo',
             'stats',
@@ -186,8 +109,195 @@ class UserProfileController extends Controller
             'locationOptions',
             'selectedCountry',
             'selectedState',
-            'selectedCity'
+            'selectedCity',
+            'mapUrl'
         ));
+    }
+
+    /**
+     * Vista de mapa de los anuncios del perfil (misma vista que los listados SEO), sin indexar.
+     */
+    private function showMap(Request $request, ListingMapService $listingMap, string $locale, User $user, Builder $query): View
+    {
+        $total = (clone $query)->count();
+        $mappableCount = $listingMap->onlyMappable(clone $query)->count();
+        $displayName = $user->agency ?: $user->name;
+        $profileUrl = $this->profileUrl($user, $locale);
+
+        $seo = $this->generateSeo($user, $total, $locale);
+        $seo['title'] = __('properties.map_view.page_title', [
+            'title' => __('properties.user_profile.title', ['name' => $displayName]),
+        ]);
+        $seo['robots'] = 'noindex,follow';
+        unset($seo['structured_data'], $seo['hreflang']);
+
+        $breadcrumbs = $this->generateBreadcrumbs($user, $locale);
+        $breadcrumbs[array_key_last($breadcrumbs)]['url'] = $profileUrl;
+        $breadcrumbs[] = ['label' => __('properties.map_view.show_map'), 'url' => null];
+
+        $navigationSections = array_values(array_filter([
+            $this->mapNavigationSection($request, $user, $locale, 'transaction_type', __('properties.country_hub.transaction_types'),
+                fn (string $value): string => TransactionType::getLabel($value, $locale)),
+            $this->mapNavigationSection($request, $user, $locale, 'property_type', __('properties.country_hub.property_types'),
+                fn (string $value): string => PropertyType::getLabel($value, $locale)),
+            $this->mapNavigationSection($request, $user, $locale, 'state', __('properties.country_hub.provinces'),
+                fn (string $value): string => $value),
+        ]));
+
+        $listQuery = $request->except(['view', 'lat', 'lng', 'zoom']);
+        $listUrl = $this->profileUrl($user, $locale, $listQuery) . '#propiedades';
+
+        $mapConfig = [
+            'dataUrl' => route('user.profile.map-data', ['locale' => $locale, 'username' => $user->username]),
+            'params' => array_filter(
+                $request->only([...self::PROFILE_FILTERS, 'sort', 'order']),
+                fn ($value) => $value !== null && $value !== ''
+            ),
+            'center' => $listingMap->parseMapCenter($request),
+            'locale' => $locale,
+        ];
+
+        return view('property-listing-map', compact(
+            'seo',
+            'breadcrumbs',
+            'navigationSections',
+            'total',
+            'mappableCount',
+            'listUrl',
+            'mapConfig',
+            'locale'
+        ));
+    }
+
+    /**
+     * Endpoint JSON con los anuncios ubicables del perfil (mismo formato que los listados SEO).
+     */
+    public function mapData(Request $request, ListingMapService $listingMap, string $locale, string $username): JsonResponse
+    {
+        App::setLocale($locale);
+
+        $user = User::query()->where('username', $username)->firstOrFail();
+
+        return $listingMap->response(
+            $this->profileListingsQuery($user, $request),
+            $request,
+            $locale,
+            fn (Builder $query): Builder => $this->applyProfileSorting($query, $request),
+            'map_data_profile_' . md5(json_encode([
+                $locale,
+                $user->id,
+                $request->only([...self::PROFILE_FILTERS, 'sort', 'order']),
+            ]))
+        );
+    }
+
+    /**
+     * Select de navegación del mapa para un filtro del perfil (operación, tipo, provincia),
+     * con cantidades calculadas sobre el resto de los filtros activos. Null si no aporta nada.
+     *
+     * @param  callable(string): string  $labelFor
+     * @return array{title: string, all_url: string, items: array<int, array{label: string, url: string, count: int, selected: bool}>}|null
+     */
+    private function mapNavigationSection(Request $request, User $user, string $locale, string $param, string $title, callable $labelFor): ?array
+    {
+        $otherFilters = $request->except([$param, 'view', 'lat', 'lng', 'zoom', 'page']);
+        $selected = trim((string) $request->query($param));
+
+        $rows = $this->profileListingsQuery($user, $request->duplicate($otherFilters))
+            ->whereNotNull($param)
+            ->whereRaw("TRIM({$param}) != ''")
+            ->selectRaw("{$param} as value, COUNT(*) as total")
+            ->groupBy($param)
+            ->orderByDesc('total')
+            ->get();
+
+        if ($rows->count() < 2 && $selected === '') {
+            return null;
+        }
+
+        return [
+            'title' => $title,
+            'all_url' => $this->profileUrl($user, $locale, [...$otherFilters, 'view' => 'map']),
+            'items' => $rows->map(fn ($row): array => [
+                'label' => $labelFor($row->value),
+                'url' => $this->profileUrl($user, $locale, [...$otherFilters, $param => $row->value, 'view' => 'map']),
+                'count' => (int) $row->total,
+                'selected' => strcasecmp($selected, trim($row->value)) === 0,
+            ])->all(),
+        ];
+    }
+
+    /**
+     * Anuncios activos del usuario con los filtros del query string del perfil, sin ordenar.
+     */
+    private function profileListingsQuery(User $user, Request $request): Builder
+    {
+        $query = PropertyListing::where('user_id', $user->id)
+            ->where('is_active', true);
+
+        foreach (['country', 'state', 'city'] as $location) {
+            $value = trim($request->string($location)->toString());
+            if ($value !== '') {
+                $query->whereRaw("LOWER(TRIM({$location})) = LOWER(TRIM(?))", [$value]);
+            }
+        }
+
+        // Aplicar filtros de query string
+        if ($request->filled('transaction_type')) {
+            $query->where('transaction_type', $request->transaction_type);
+        }
+
+        if ($request->filled('property_type')) {
+            $query->where('property_type', $request->property_type);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        if ($request->filled('bedrooms')) {
+            $query->where('bedrooms', '>=', $request->bedrooms);
+        }
+
+        if ($request->filled('bathrooms')) {
+            $query->where('bathrooms', '>=', $request->bathrooms);
+        }
+
+        if ($request->filled('min_area')) {
+            $query->where('area', '>=', $request->min_area);
+        }
+
+        return $query;
+    }
+
+    private function applyProfileSorting(Builder $query, Request $request): Builder
+    {
+        $sortBy = $request->input('sort', 'created_at');
+        $sortOrder = $request->input('order', 'desc');
+
+        $validSorts = ['created_at', 'price', 'area', 'bedrooms'];
+        $validOrders = ['asc', 'desc'];
+
+        if (in_array($sortBy, $validSorts) && in_array($sortOrder, $validOrders)) {
+            return $query->orderBy($sortBy, $sortOrder);
+        }
+
+        return $query->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @param  array<string, mixed>  $query
+     */
+    private function profileUrl(User $user, string $locale, array $query = []): string
+    {
+        $routeName = $locale === 'es' ? 'user.profile.es' : 'user.profile.en';
+        $url = route($routeName, ['locale' => $locale, 'username' => $user->username]);
+
+        return $query ? $url . '?' . http_build_query($query) : $url;
     }
 
     private function getLocationOptions(int $userId): array

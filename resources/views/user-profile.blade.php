@@ -205,16 +205,16 @@
                     <span>{{ __('properties.user_profile.team') }}</span>
                 </a>
             @endif
-            @if($featuredProperties->isNotEmpty())
-                <a href="#destacadas" class="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-base font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700 hover:shadow-sm">
-                    <x-phosphor-star-duotone class="h-7 w-7 flex-shrink-0 text-blue-600" />
-                    <span>{{ __('properties.user_profile.featured_properties') }}</span>
-                </a>
-            @endif
-            <a href="#propiedades" class="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-base font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700 hover:shadow-sm">
+            <a href="{{ url()->current() }}#propiedades" class="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-base font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700 hover:shadow-sm">
                 <x-phosphor-buildings-duotone class="h-7 w-7 flex-shrink-0 text-blue-600" />
                 <span>{{ __('properties.user_profile.view_all_properties') }}</span>
             </a>
+            @if($mapUrl)
+                <a href="{{ $mapUrl }}" rel="nofollow" class="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-base font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700 hover:shadow-sm">
+                    <x-phosphor-map-trifold-duotone class="h-7 w-7 flex-shrink-0 text-blue-600" />
+                    <span>{{ __('properties.map_view.show_map') }}</span>
+                </a>
+            @endif
         </div>
     </nav>
 
@@ -253,17 +253,6 @@
                             @if($member->show_phone && $member->phone)<a href="tel:{{ $member->phone }}" class="mt-3 block text-sm text-blue-600">{{ $member->phone }}</a>@endif
                             @if($member->show_email && $member->email)<a href="mailto:{{ $member->email }}" class="mt-1 block break-all text-sm text-blue-600">{{ $member->email }}</a>@endif
                         </article>
-                    @endforeach
-                </div>
-            </section>
-        @endif
-
-        @if($featuredProperties->isNotEmpty())
-            <section id="destacadas" class="mb-12 scroll-mt-28">
-                <div class="mb-6"><p class="text-sm font-semibold uppercase tracking-wide text-blue-600">{{ __('properties.user_profile.featured_properties') }}</p><h2 class="text-3xl font-bold text-gray-900">{{ __('properties.user_profile.featured_properties') }}</h2></div>
-                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    @foreach($featuredProperties as $featured)
-                        <x-property-profile-card :property="$featured" />
                     @endforeach
                 </div>
             </section>
@@ -397,7 +386,7 @@
             </div>
 
             {{-- Results Info --}}
-            <div class="mb-6">
+            <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
                 <p class="text-gray-600">
                     {{ __('properties.results.showing', [
                         'from' => $properties->firstItem(),
@@ -405,6 +394,15 @@
                         'total' => $properties->total()
                     ]) }}
                 </p>
+                @if($mapUrl)
+                    <a href="{{ $mapUrl }}" rel="nofollow"
+                       class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                        </svg>
+                        {{ __('properties.map_view.view_on_map') }}
+                    </a>
+                @endif
             </div>
 
             {{-- Properties Grid --}}

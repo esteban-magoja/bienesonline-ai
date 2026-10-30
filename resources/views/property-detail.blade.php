@@ -30,6 +30,10 @@
 
     $stateSlug = $bcState ? \App\Helpers\PropertySlugHelper::normalize($bcState->name) : null;
     $citySlug  = $bcCity  ? \App\Helpers\PropertySlugHelper::normalize($bcCity->name)  : null;
+
+    // "Ver propiedades cercanas": mapa de la misma operación y tipo en la provincia, centrado en el anuncio
+    // (no se filtra por ciudad para no dejar afuera lo cercano de localidades vecinas)
+    $nearbyMapPath = collect([$countrySlug, $transactionSlug, $propertySlug, $stateSlug])->filter()->implode('/');
 @endphp
 
 <x-layouts.marketing :seo="$seo">
@@ -411,7 +415,7 @@
                                         Coordenadas: {{ number_format($property->latitude, 6) }}, {{ number_format($property->longitude, 6) }}
                                     </p>
                                     <div class="mt-3 text-center">
-                                        <a href="{{ url('/' . $locale . '/' . $countrySlug . ($transactionSlug ? '/' . $transactionSlug : '')) }}?{{ http_build_query(['view' => 'map', 'lat' => round((float) $property->latitude, 5), 'lng' => round((float) $property->longitude, 5), 'zoom' => 14]) }}"
+                                        <a href="{{ url('/' . $locale . '/' . $nearbyMapPath) }}?{{ http_build_query(['view' => 'map', 'lat' => round((float) $property->latitude, 5), 'lng' => round((float) $property->longitude, 5), 'zoom' => 14, 'highlight' => $property->id]) }}"
                                            rel="nofollow"
                                            class="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

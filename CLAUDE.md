@@ -1318,9 +1318,12 @@ Esto **no es una duplicación** — son dos páginas reales con contenido en dis
 
 - Cada listado SEO tiene botón **"Ver en mapa"** → misma URL con `?view=map` (mismos segmentos y filtros). Responde `noindex,follow` y su canonical es la lista; no va al sitemap
 - `PropertyListingController::index()` arma la query con `buildListingQuery()` (compartida con la lista) y, con `view=map`, devuelve `resources/views/property-listing-map.blade.php` (`showMap()`)
-- Marcadores por AJAX: `GET /{locale}/map-data?path={país/segmentos}&bbox=sur,oeste,norte,este` (`mapData()`, `throttle:120,1`, ruta **antes** del catch-all de listados). Máximo `MAP_MARKER_LIMIT` (1000) por respuesta; solo se cachea (10 min) la carga sin `bbox`
-- Solo anuncios con coordenadas (`onlyMappable()`: descarta nulas y 0,0); los demás se informan con un aviso y enlace a la lista. Sin migraciones
-- Front: Leaflet 1.9.4 + Leaflet.markercluster 1.5.3 (unpkg, con SRI) y Alpine. El mapa se crea con `ResizeObserver` porque el `<body>` arranca con `x-cloak` (con tamaño 0 Leaflet encuadra mal). `?lat=&lng=&zoom=` centra el mapa (la ficha enlaza "Ver propiedades cercanas en el mapa"); la home tiene enlace "Mapa" por país
+- Marcadores por AJAX: `GET /{locale}/map-data?path={país/segmentos}&bbox=sur,oeste,norte,este` (`mapData()`, `throttle:120,1`, ruta **antes** del catch-all de listados)
+- Lógica común en `App\Services\ListingMapService`: `onlyMappable()` (descarta coordenadas nulas y 0,0), `parseMapCenter()` y `response()` (bbox, máximo `MARKER_LIMIT` = 1000 marcadores, cache de 10 min solo sin `bbox`). Los anuncios sin coordenadas se informan con un aviso y enlace a la lista. Sin migraciones
+- Arriba del mapa, la navegación del listado (`getListingNavigationSections()`) como selects; cada ítem puede traer `selected` y la sección `all_url` (opción que quita el filtro)
+- **Búsquedas indexables**: `/{locale}/{país}/busqueda/{query}?view=map` (`SemanticPropertySearchController::showMap()`) con **todos** los resultados (no solo la página), vía `SemanticPropertySearchService::mapQuery()` (query sin paginar + orden por similitud con `array_position`). JSON en `GET /{locale}/map-data/search/{país}/{query}`. El botón "Ver en mapa" aparece si algún resultado de la página tiene ubicación. Select "Otras búsquedas" apuntando a su mapa. Las redirecciones 301 (slug canónico, variantes) conservan `view=map`
+- **Perfil de inmobiliaria**: `/es/inmobiliaria/{username}?view=map` (misma vista, `UserProfileController::showMap()`), JSON en `GET /{locale}/map-data/profile/{username}` con los mismos filtros del perfil (`profileListingsQuery()`); selects de operación, tipo y provincia. Enlaces "Mapa" en el menú del mini-sitio y "Ver en mapa" junto al contador de propiedades
+- Front: Leaflet 1.9.4 + Leaflet.markercluster 1.5.3 (unpkg, con SRI) y Alpine. El mapa se crea con `ResizeObserver` porque el `<body>` arranca con `x-cloak` (con tamaño 0 Leaflet encuadra mal). `?lat=&lng=&zoom=` centra el mapa y `?highlight={id}` resalta un anuncio (rojo, fuera del agrupado, primero en la lista). La ficha enlaza "Ver propiedades cercanas en el mapa" a operación + tipo + provincia del anuncio, centrado y resaltado; la home tiene enlace "Mapa" por país
 - Mapas base: `tile.openstreetmap.org` (política de uso limita tráfico comercial alto; si crece, cambiar la URL de tiles a otro proveedor)
 - Test: `PropertyListingMapTest`
 
@@ -1336,7 +1339,7 @@ Esto **no es una duplicación** — son dos páginas reales con contenido en dis
 
 Extiende `/es/inmobiliaria/{username}` / `/en/realtor/{username}` a un mini-sitio. Diseño completo: **`docs/public-profile-mini-site.md`**.
 - Tablas/modelos: `user_profile_settings` (`UserProfileSetting`: headline, portada, web, redes, horarios, visibilidad de email/teléfono/dirección), `user_profile_services` (`UserProfileService`), `user_profile_members` (`UserProfileMember`, miembros del equipo que **no** son `users`), `user_profile_leads` (formulario de contacto pospuesto, fuera del MVP)
-- Contenido editable en es/en; anuncios destacados (`is_featured`), zonas de servicio derivadas de anuncios activos, JSON-LD
+- Contenido editable en es/en; zonas de servicio derivadas de anuncios activos, JSON-LD. La sección "Propiedades destacadas" se quitó del perfil (Octubre 2026); el campo `is_featured` sigue existiendo
 - Edición en `/settings/profile` (separada de Facturación). País/provincia/localidad con selects encadenados
 - Tests: `PublicProfileMiniSiteTest`, `UserProfileTest`
 

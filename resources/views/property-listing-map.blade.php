@@ -9,6 +9,7 @@
         'bedsShort' => __('properties.map_view.beds_short'),
         'bathsShort' => __('properties.map_view.baths_short'),
         'featured' => __('properties.search_results.featured'),
+        'thisListing' => __('properties.map_view.this_listing'),
     ];
 @endphp
 
@@ -57,6 +58,10 @@
         .price-marker.is-active .price-pill, .price-pill:hover { background: #2563eb; color: #fff; border-color: #2563eb; }
         .price-marker.is-active .price-pill::after, .price-pill:hover::after { border-top-color: #2563eb; }
         .marker-cluster.is-active div { background-color: #2563eb; color: #fff; }
+
+        /* Anuncio desde el que se llegó al mapa (?highlight=ID): rojo, más grande y con halo */
+        .price-pill.is-origin { background: #dc2626; color: #fff; border-color: #dc2626; font-size: 13px; padding: 4px 10px; box-shadow: 0 0 0 4px rgba(220, 38, 38, .25), 0 2px 6px rgba(0, 0, 0, .3); }
+        .price-pill.is-origin::after { border-top-color: #dc2626; }
 
         .map-popup .leaflet-popup-content-wrapper { padding: 0; border-radius: 10px; overflow: hidden; }
         .map-popup .leaflet-popup-content { margin: 0; width: 240px !important; }
@@ -109,7 +114,8 @@
                     </div>
                 </div>
 
-                {{-- Navegación del listado (tipo, operación, ubicación) en selects compactos --}}
+                {{-- Navegación en selects compactos. Cada sección: title, items [label, url, count?, selected?]
+                     y all_url opcional (la primera opción quita el filtro en lugar de ser solo el título) --}}
                 @if(!empty($navigationSections))
                     <div class="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                         @foreach($navigationSections as $section)
@@ -117,9 +123,9 @@
                             <select id="map-nav-{{ $loop->index }}" data-map-nav
                                     onchange="if (this.value) window.location.href = this.value"
                                     class="w-full sm:w-auto sm:min-w-52 rounded-lg border-gray-300 bg-white py-2 pl-2.5 pr-8 text-xs sm:pl-3 sm:text-sm text-gray-700 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                <option value="" selected>{{ $section['title'] }}</option>
+                                <option value="{{ $section['all_url'] ?? '' }}" @selected(!collect($section['items'])->contains('selected', true))>{{ $section['title'] }}</option>
                                 @foreach($section['items'] as $item)
-                                    <option value="{{ $item['url'] }}">{{ $item['label'] }} ({{ $item['count'] }})</option>
+                                    <option value="{{ $item['url'] }}" @selected($item['selected'] ?? false)>{{ $item['label'] }}@isset($item['count']) ({{ $item['count'] }})@endisset</option>
                                 @endforeach
                             </select>
                         @endforeach
@@ -150,7 +156,8 @@
                     <template x-for="listing in listings.slice(0, visibleCount)" :key="listing.id">
                         <a :href="listing.url"
                            @mouseenter="highlight(listing.id, true)" @mouseleave="highlight(listing.id, false)"
-                           class="flex overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-200 transition hover:shadow-md hover:ring-blue-300">
+                           class="flex overflow-hidden rounded-lg bg-white shadow-sm transition hover:shadow-md"
+                           :class="isOrigin(listing) ? 'ring-2 ring-red-500' : 'ring-1 ring-gray-200 hover:ring-blue-300'">
                             <div class="relative w-32 flex-shrink-0 bg-gray-200">
                                 <template x-if="listing.image">
                                     <img :src="listing.image" :alt="listing.title" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
@@ -158,6 +165,7 @@
                                 <span x-show="listing.featured" class="absolute left-1 top-1 rounded-full bg-yellow-500 px-2 py-0.5 text-[10px] font-bold text-white" x-text="texts.featured"></span>
                             </div>
                             <div class="min-w-0 flex-1 p-3">
+                                <span x-show="isOrigin(listing)" class="mb-1 inline-block rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" x-text="texts.thisListing"></span>
                                 <p class="text-base font-bold text-blue-600" x-text="fullPrice(listing)"></p>
                                 <p class="line-clamp-2 text-sm font-semibold text-gray-900" x-text="listing.title"></p>
                                 <p class="mt-1 text-xs text-gray-600" x-text="[listing.type, listing.operation].filter(Boolean).join(' · ')"></p>
@@ -210,9 +218,12 @@
         crossorigin=""></script>
 
     <script>
-        // Al volver con "atrás" el navegador restaura la opción elegida: se vuelve al título del select
+        // Al volver con "atrás" el navegador restaura la opción elegida: se vuelve a la opción original
         window.addEventListener('pageshow', () => {
-            document.querySelectorAll('[data-map-nav]').forEach((select) => { select.value = ''; });
+            document.querySelectorAll('[data-map-nav]').forEach((select) => {
+                const original = [...select.options].find((option) => option.defaultSelected);
+                select.value = original ? original.value : '';
+            });
         });
 
         function listingMap(config, texts) {
@@ -220,6 +231,7 @@
             let map = null;
             let cluster = null;
             let markersById = {};
+            let originMarker = null;
             let suppressMoveEvents = false;
             let request = null;
 
@@ -291,7 +303,7 @@
                     request?.abort();
                     request = new AbortController();
 
-                    const params = new URLSearchParams({ path: config.path, ...config.filters });
+                    const params = new URLSearchParams(config.params);
                     if (useBounds) {
                         const bounds = map.getBounds();
                         const clamp = (value, limit) => Math.max(-limit, Math.min(limit, value)).toFixed(5);
@@ -315,15 +327,22 @@
                         }
                         const data = await response.json();
 
+                        // El anuncio destacado va primero en la lista
+                        const listings = [...data.listings].sort((a, b) => this.isOrigin(b) - this.isOrigin(a));
+
                         this.total = data.total;
-                        this.listings = data.listings;
+                        this.listings = listings;
                         this.visibleCount = 20;
-                        this.renderMarkers(data.listings);
+                        this.renderMarkers(listings);
 
                         if (useBounds) {
                             this.rememberArea();
-                        } else if (data.listings.length) {
-                            silently(() => map.fitBounds(cluster.getBounds(), { padding: [40, 40], maxZoom: 15, animate: false }));
+                        } else if (listings.length) {
+                            const bounds = cluster.getBounds();
+                            if (originMarker) {
+                                bounds.extend(originMarker.getLatLng());
+                            }
+                            silently(() => map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15, animate: false }));
                         }
                     } catch (exception) {
                         if (exception.name !== 'AbortError') {
@@ -336,13 +355,16 @@
 
                 renderMarkers(listings) {
                     cluster.clearLayers();
+                    originMarker?.remove();
+                    originMarker = null;
                     markersById = {};
 
                     const markers = listings.map((listing) => {
+                        const pillClass = this.isOrigin(listing) ? ' is-origin' : (listing.featured ? ' is-featured' : '');
                         const marker = L.marker([listing.lat, listing.lng], {
                             icon: L.divIcon({
                                 className: 'price-marker',
-                                html: `<span class="price-pill${listing.featured ? ' is-featured' : ''}">${escapeHtml(this.shortPrice(listing))}</span>`,
+                                html: `<span class="price-pill${pillClass}">${escapeHtml(this.shortPrice(listing))}</span>`,
                                 iconSize: [0, 0],
                                 iconAnchor: [0, 0],
                                 popupAnchor: [0, -30],
@@ -355,12 +377,23 @@
                         return marker;
                     });
 
-                    cluster.addLayers(markers);
+                    // El destacado queda fuera del agrupado para que siempre se vea
+                    originMarker = markers.find((marker, index) => this.isOrigin(listings[index])) ?? null;
+                    originMarker?.setZIndexOffset(2000).addTo(map);
+                    cluster.addLayers(markers.filter((marker) => marker !== originMarker));
+                },
+
+                isOrigin(listing) {
+                    return config.highlight != null && listing.id === config.highlight;
                 },
 
                 highlight(id, active) {
                     const marker = markersById[id];
                     if (!marker) {
+                        return;
+                    }
+                    if (marker === originMarker) {
+                        marker.getElement()?.classList.toggle('is-active', active);
                         return;
                     }
                     const visible = cluster.getVisibleParent(marker);
