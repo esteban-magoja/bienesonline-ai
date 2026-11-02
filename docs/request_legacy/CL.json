@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_chile"},
 {"type":"table","name":"c","database":"admin_bienes_chile","data":
 [
-{"fecha":"2026-10-13 14:10:11","nombre":"Maily Chiang","email":"mailychiangmendez@gmail.com","telefono":"998883907","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaiso","localidad_inmueble":"Villa Alemana"}
+{"fecha":"2026-10-26 21:24:16","nombre":"Nadia ","email":"nadiacopihue.25@gmail.com","telefono":"991971799","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valparaíso","localidad_inmueble":"Quillota"},
+{"fecha":"2026-10-28 08:02:46","nombre":"Dixie villarroel ","email":"dixieandrea77@gmail.com","telefono":"932796969","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Valparaíso","localidad_inmueble":"Valparaíso"}
 ]
 }
 ]

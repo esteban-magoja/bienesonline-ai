@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_paraguay"},
 {"type":"table","name":"c","database":"admin_bienes_paraguay","data":
 [
-{"fecha":"2026-10-21 07:21:42","nombre":"Dardo Ortiz Ramos ","email":"dardortiz74@gmail.com","telefono":"0974553206","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Asunción"},
-{"fecha":"2026-10-21 08:38:10","nombre":"Marcela Ochipinti ","email":"marcelaochipinti81@gmail.com","telefono":"0982215466","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Jara"}
+{"fecha":"2026-10-28 14:05:04","nombre":"Thamires ","email":"tatagiovanna29@gmail.com","telefono":"+5511988292200","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Asunción"},
+{"fecha":"2026-10-29 19:37:50","nombre":"Maria Ines Belo ","email":"mariainesbelosilva41@gmail.com","telefono":"11963280382","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Itapúa","localidad_inmueble":"Encarnación"}
 ]
 }
 ]

@@ -3,8 +3,7 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-10-22 07:36:22","nombre":"Nicolas ","email":"nicobenetto@gmail.com","telefono":"04244184326","tipo_inmueble":"Galpon","tipo_operacion":"Venta","provincia_inmueble":"Miranda","localidad_inmueble":"Guarenas"},
-{"fecha":"2026-10-25 10:47:09","nombre":"Angelo Soriano","email":"angelosorianozd@gmail.com","telefono":"04122135723","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Capital","localidad_inmueble":"Caracas"}
+{"fecha":"2026-10-31 23:57:38","nombre":"Bea Mora","email":"bmoratin2023@hotmail.com","telefono":"","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Distrito Capital","localidad_inmueble":"Caracas"}
 ]
 }
 ]

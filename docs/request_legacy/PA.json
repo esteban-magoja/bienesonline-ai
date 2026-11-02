@@ -3,9 +3,13 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-10-19 10:40:27","nombre":"Valezca ","email":"valezcamila2506@gmail.com","telefono":"64925347","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"La Chorrera"},
-{"fecha":"2026-10-22 10:07:17","nombre":"luz","email":"luz@gmail.com","telefono":"66778899","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-26 07:33:40","nombre":"Adeny lopategui ","email":"niviarican@yahoo.es","telefono":"69803207","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"La Chorrera"}
+{"fecha":"2026-10-27 09:43:13","nombre":"Cheirin Mayorga","email":"villanuevaucr@gmail.com","telefono":"62878889","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-28 09:54:16","nombre":"Liz Palacio","email":"lizett.palacio@gmail.com","telefono":"68517551","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"San Miguelito"},
+{"fecha":"2026-10-28 10:25:14","nombre":"Mariama","email":"sharolmariana090315@gmail.com","telefono":"63913129","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Betania"},
+{"fecha":"2026-10-28 10:58:28","nombre":"Carlos Miller","email":"carloshmiller@gmail.com","telefono":"67813645","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"San Miguelito"},
+{"fecha":"2026-10-28 11:31:27","nombre":"Gabriela Eche","email":"gabysophyy@gmail.com","telefono":"69888862","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-29 00:17:30","nombre":"Lissy Yariela","email":"gerencia@realtygroup.com","telefono":"68310596","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-10-29 18:21:27","nombre":"Sandra ","email":"lacasadelrepuesto.pa@yahoo.com","telefono":"67662011","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"La Chorrera"}
 ]
 }
 ]

@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_ecuador"},
 {"type":"table","name":"c","database":"admin_bienes_ecuador","data":
 [
-{"fecha":"2026-10-23 11:24:08","nombre":"LENIN Villacrés ","email":"jv601@hotmail.com","telefono":"0939214660","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Morona Santiago","localidad_inmueble":"Macas"},
-{"fecha":"2026-10-19 15:56:13","nombre":"Diego","email":"pinta_d@yahoo.com","telefono":"0995749510","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Azuay","localidad_inmueble":"Cuenca"}
+{"fecha":"2026-10-26 15:21:03","nombre":"Luis Zurita","email":"luisszurita97@gmail.com","telefono":"0992686220","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Pichincha","localidad_inmueble":"Quito"},
+{"fecha":"2026-10-27 20:22:05","nombre":"Nayala","email":"nayalayubileth@gmail.com","telefono":"0982706345","tipo_inmueble":"Departamento","tipo_operacion":"Arriendo","provincia_inmueble":"Azuay","localidad_inmueble":"Cuenca"},
+{"fecha":"2026-10-31 10:54:37","nombre":"yury","email":"yuryespinovele@gmail.com","telefono":"600","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Pichincha","localidad_inmueble":"Cayambe"}
 ]
 }
 ]

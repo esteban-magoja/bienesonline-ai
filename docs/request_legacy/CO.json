@@ -3,13 +3,19 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-10-19 22:15:53","nombre":"Buenas noches ","email":"william71763047@hotmail.com","telefono":"3052210196","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-10-19 22:17:53","nombre":"William","email":"william71763047@gmail.com","telefono":"30522160196","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-10-20 15:24:03","nombre":"Yinela Maria Oviedo Loez ","email":"yinelaaa06oviedo@gmail.com","telefono":"3116152147","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-10-22 07:58:46","nombre":"Lauren Vergara ","email":"laurentsvergarap2308@gmail.com","telefono":"3046236969","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Atlántico","localidad_inmueble":"Barranquilla"},
-{"fecha":"2026-10-22 00:08:51","nombre":"Kisdeily ","email":"kisdeilyt24@gmail.com","telefono":"3127619900","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Cocorná"},
-{"fecha":"2026-10-24 20:50:23","nombre":"Yannet Salgado Naranjo ","email":"yannetsal72@gmail.com","telefono":"3137372348","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"El Carmen De Viboral"},
-{"fecha":"2026-10-25 08:40:53","nombre":"CRISANTO Vargas Garcia","email":"crisantovar@hotmail.com","telefono":"3148221216","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Magdalena","localidad_inmueble":"Santa Marta"}
+{"fecha":"2026-10-26 23:36:45","nombre":"Hilda","email":"hildaosmo@gmail.com","telefono":"3015806669","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"San Pedro De Los Milagros"},
+{"fecha":"2026-10-27 11:14:15","nombre":"Carolina villa munera ","email":"carolinavillamunera93@gmail.com","telefono":"3046576701","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"San Pedro De Los Milagros"},
+{"fecha":"2026-10-27 18:26:41","nombre":"LEIDY SOTELO","email":"asistentecontable@donsson.com","telefono":"3011682688","tipo_inmueble":"Bodega","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Cota"},
+{"fecha":"2026-10-28 12:48:37","nombre":"Valentina","email":"valentina.quintana@vilancizar.com","telefono":"3151968449","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Apartadó"},
+{"fecha":"2026-10-28 17:28:26","nombre":"Angie","email":"angiepaolasanchezv1@gmail.com","telefono":"3059193909","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Marinilla"},
+{"fecha":"2026-10-29 14:03:54","nombre":"Manuela Garzon","email":"manuelagarzonm09@gmail.com","telefono":"3006598819","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Bogotá D.C","localidad_inmueble":"Bogotá"},
+{"fecha":"2026-10-29 21:20:09","nombre":"Lisseth","email":"lisethconcha606@gmail.com","telefono":"3123487178","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Risaralda","localidad_inmueble":"Santa Rosa De Cabal"},
+{"fecha":"2026-10-31 11:15:25","nombre":"Jose","email":"josealexmaringomez@gmail.com","telefono":"3005932118","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Guarne"},
+{"fecha":"2026-11-01 14:37:51","nombre":"Javier moreno ","email":"jgualdron@hotmail.com","telefono":"3002706488","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Floridablanca"},
+{"fecha":"2026-11-01 18:09:53","nombre":"Johana Rodríguez ","email":"joisjohana@hotmail.com","telefono":"3144361189","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
+{"fecha":"2026-11-01 22:36:40","nombre":"Leidy ","email":"075realtycol@gmail.com","telefono":"3158064921","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
+{"fecha":"2026-11-01 05:26:04","nombre":"Yenni","email":"yennivivianav@gmail.com","telefono":"3157162869","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Santander","localidad_inmueble":"Lebrija"},
+{"fecha":"2026-11-02 02:15:53","nombre":"Linda villa","email":"lindeyi28@jotmail.com","telefono":"3169571531","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Candelaria"}
 ]
 }
 ]

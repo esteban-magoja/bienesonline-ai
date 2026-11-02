@@ -3,10 +3,10 @@
 {"type":"database","name":"admin_bienes_costarica"},
 {"type":"table","name":"c","database":"admin_bienes_costarica","data":
 [
-{"fecha":"2026-10-20 17:52:42","nombre":"Victoria Rodriguez","email":"aurrodriguez@dospinos.com","telefono":"88093401","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"Alajuela","localidad_inmueble":"Coyol"},
-{"fecha":"2026-10-22 15:40:38","nombre":"VARTAR REAL ESTATE","email":"ventas@vartarrealestate.com","telefono":"62632121","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"San José","localidad_inmueble":"Santa Ana"},
-{"fecha":"2026-10-23 18:05:04","nombre":"Evelyn Solís Arce","email":"evesolisarce@gmail.com","telefono":"88723799","tipo_inmueble":"Bodega","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Tibás"},
-{"fecha":"2026-10-23 22:19:56","nombre":"Aaron ","email":"aarogomez3612@gmail.com","telefono":"71041191","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Escazú"}
+{"fecha":"2026-10-26 15:06:21","nombre":"Ariela","email":"ariela.borbon.20.obando@gmail.com","telefono":"63857735","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Pavas"},
+{"fecha":"2026-10-28 14:21:54","nombre":"Daritza Blandón","email":"daritzablandon39@gmail.com","telefono":"63850846","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Pavas"},
+{"fecha":"2026-10-29 15:38:55","nombre":"Lusiana","email":"lusi28ana2008@gmail.com","telefono":"70814951","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"La Sabana"},
+{"fecha":"2026-10-30 14:21:57","nombre":"Fiorella Paola Valverde Sanchún","email":"fio@nexgencapital.cr","telefono":"87864627","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"San José","localidad_inmueble":"Escazú"}
 ]
 }
 ]

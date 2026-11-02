@@ -3,7 +3,8 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-10-23 15:13:09","nombre":"Cheryl","email":"ladycheryl67@yahoo.ca","telefono":"17802427535","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Quintana Roo","localidad_inmueble":"Playa Del Carmen"}
+{"fecha":"2026-10-30 13:30:24","nombre":"Sofía Solano","email":"administracion@solaringcr.com","telefono":"+50686239666","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"Baja California Sur","localidad_inmueble":"Cabo San Lucas"},
+{"fecha":"2026-11-01 01:04:49","nombre":"Noah Gilbert","email":"noah.gilbert@outlook.com","telefono":"+447833708936","tipo_inmueble":"Condominio","tipo_operacion":"Renta","provincia_inmueble":"Baja California Sur","localidad_inmueble":"San José Del Cabo"}
 ]
 }
 ]
