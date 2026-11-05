@@ -22,6 +22,7 @@
         <env name="DB_DATABASE" value="bienesonline_ai"/>
         <env name="DB_USERNAME" value="postgres"/>
         <env name="MAIL_MAILER" value="array"/>
+        <env name="ADMIN_EMAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>

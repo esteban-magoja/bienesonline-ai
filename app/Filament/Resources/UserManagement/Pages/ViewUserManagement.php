@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\UserManagement\Pages;
 
+use App\Filament\Resources\EmailContacts\RelationManagers\EmailRecipientsRelationManager;
 use App\Filament\Resources\UserManagement\RelationManagers\UserNotesRelationManager;
 use App\Filament\Resources\UserManagement\UserManagementResource;
 use App\Models\PropertyListing;
@@ -17,6 +18,7 @@ class ViewUserManagement extends ViewRecord
     {
         return [
             UserNotesRelationManager::class,
+            EmailRecipientsRelationManager::class,
         ];
     }
 

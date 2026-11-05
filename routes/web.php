@@ -76,6 +76,17 @@ Route::get('/sitemap-profiles.xml', [SitemapController::class, 'profiles'])->nam
 Route::get('/verify-phone/{token}', [\App\Http\Controllers\PhoneVerificationController::class, 'verify'])
     ->name('phone.verify');
 
+// ============================================================================
+// BAJA DE LOS CORREOS ENVIADOS DESDE EL ADMIN (link firmado, sin login)
+// POST también acepta el "one-click" de Gmail/Outlook (List-Unsubscribe-Post): sin CSRF
+// ============================================================================
+Route::get('/email/unsubscribe/{recipient}', [\App\Http\Controllers\EmailUnsubscribeController::class, 'show'])
+    ->middleware(['signed', 'throttle:30,1'])
+    ->name('email.unsubscribe');
+Route::post('/email/unsubscribe/{recipient}', [\App\Http\Controllers\EmailUnsubscribeController::class, 'store'])
+    ->middleware(['signed', 'throttle:30,1'])
+    ->name('email.unsubscribe.store');
+
 
 // ============================================================================
 // 1. REDIRECT RAÍZ AL LOCALE POR DEFECTO

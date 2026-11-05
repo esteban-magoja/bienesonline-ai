@@ -30,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
             '/webhook/paddle',
             '/webhook/stripe',
             '/webhook/paypal',
+            '/email/unsubscribe/*',
         ]);
 
         $middleware->append(\Filament\Http\Middleware\DisableBladeIconComponents::class);

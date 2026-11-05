@@ -129,6 +129,14 @@ class User extends WaveUser implements HasLocalePreference
     }
 
     /**
+     * Correos enviados a este usuario desde el admin (Comunicaciones → Mensajes).
+     */
+    public function emailRecipients(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\EmailSendRecipient::class);
+    }
+
+    /**
      * Get the property requests for the user.
      */
     public function propertyRequests()

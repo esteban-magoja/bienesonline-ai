@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\UserManagement;
 
+use App\Filament\Resources\EmailContacts\RelationManagers\EmailRecipientsRelationManager;
+use App\Filament\Resources\EmailTemplates\Actions\SendEmailActions;
 use App\Filament\Resources\UserManagement\Pages\ListUserManagement;
+use App\Filament\Resources\UserManagement\Tables\UserAudienceFilters;
 use App\Filament\Resources\UserManagement\Pages\ViewUserManagement;
 use App\Models\User;
 use BackedEnum;
@@ -463,9 +466,13 @@ class UserManagementResource extends Resource
                         fn (Builder $q) => $q->where('status', 'active')
                     )),
                 SelectFilter::make('roles')
-                    ->label('Rol')
+                    ->label('Incluir rol')
+                    ->multiple()
                     ->relationship('roles', 'name'),
+                // Para elegir destinatarios de un mensaje: filtrar → seleccionar todos → "Enviar mensaje"
+                ...UserAudienceFilters::all(),
             ])
+            ->filtersFormColumns(2)
             ->recordAction('view')
             ->recordActions([
                 ViewAction::make(),
@@ -475,6 +482,9 @@ class UserManagementResource extends Resource
                     ->url(fn (User $record) => route('impersonate', $record))
                     ->visible(fn (User $record) => auth()->user()->id !== $record->id)
                     ->color('warning'),
+            ])
+            ->toolbarActions([
+                SendEmailActions::bulk(SendEmailActions::RECIPIENTS_USERS),
             ]);
     }
 
@@ -487,6 +497,7 @@ class UserManagementResource extends Resource
     {
         return [
             RelationManagers\UserNotesRelationManager::class,
+            EmailRecipientsRelationManager::class,
         ];
     }
 

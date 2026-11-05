@@ -59,4 +59,8 @@ it('responde 200 en el dashboard, la configuración y el panel admin', function 
     '/admin/transaction-types',
     '/admin/email-message-logs',
     '/admin/whats-app-message-logs',
+    '/admin/email-templates',
+    '/admin/email-contacts',
+    '/admin/email-sends',
+    '/admin/user-management',
 ]);
