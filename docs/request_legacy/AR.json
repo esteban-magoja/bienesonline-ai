@@ -3,8 +3,9 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-10-28 08:11:52","nombre":"Pablo dominguez","email":"Matiasdompgmail.com@gmail.com","telefono":"01166625887","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Tucuman","localidad_inmueble":"San Miguel De Tucuman"},
-{"fecha":"2026-11-01 12:48:17","nombre":"Yesica","email":"yesicaetcheverry.pinamar@gmail.com","telefono":"1127653348","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Mar Del Tuyú"}
+{"fecha":"2026-11-03 20:20:57","nombre":"Vanesa Yanina","email":"vane_027@hotmail.com","telefono":"03413238090","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Santa Fe","localidad_inmueble":"Rosario"},
+{"fecha":"2026-11-04 20:41:11","nombre":"Betiana","email":"migenioamor31@gmail.com","telefono":"3406647798","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Córdoba","localidad_inmueble":"San Francisco"},
+{"fecha":"2026-11-08 20:57:44","nombre":"Leticia ","email":"letpg@hotmail.com","telefono":"1133703423","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Escobar"}
 ]
 }
 ]

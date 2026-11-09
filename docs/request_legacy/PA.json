@@ -3,13 +3,11 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-10-27 09:43:13","nombre":"Cheirin Mayorga","email":"villanuevaucr@gmail.com","telefono":"62878889","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-28 09:54:16","nombre":"Liz Palacio","email":"lizett.palacio@gmail.com","telefono":"68517551","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"San Miguelito"},
-{"fecha":"2026-10-28 10:25:14","nombre":"Mariama","email":"sharolmariana090315@gmail.com","telefono":"63913129","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Betania"},
-{"fecha":"2026-10-28 10:58:28","nombre":"Carlos Miller","email":"carloshmiller@gmail.com","telefono":"67813645","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"San Miguelito"},
-{"fecha":"2026-10-28 11:31:27","nombre":"Gabriela Eche","email":"gabysophyy@gmail.com","telefono":"69888862","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-29 00:17:30","nombre":"Lissy Yariela","email":"gerencia@realtygroup.com","telefono":"68310596","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-10-29 18:21:27","nombre":"Sandra ","email":"lacasadelrepuesto.pa@yahoo.com","telefono":"67662011","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá Oeste","localidad_inmueble":"La Chorrera"}
+{"fecha":"2026-11-04 11:47:05","nombre":"Kristen ","email":"kristensanchez0622@gmail.com","telefono":"69359159","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-11-04 21:00:37","nombre":"Carlos carrero","email":"carrerosaezservices@gmail.com","telefono":"67938995","tipo_inmueble":"Galera","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Río Abajo"},
+{"fecha":"2026-11-07 12:12:02","nombre":"Damian","email":"damianliv@gmail.com","telefono":"5491155286999","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ancón"},
+{"fecha":"2026-11-08 14:31:40","nombre":"Mary Elaine Adams","email":"madams8139@gmail.com","telefono":"61690163","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Chiriquí","localidad_inmueble":"Volcán"},
+{"fecha":"2026-11-08 23:35:37","nombre":"Zoe Bares","email":"zoebares@hotmail.com","telefono":"66756955","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Coclé","localidad_inmueble":"Río Hato"}
 ]
 }
 ]

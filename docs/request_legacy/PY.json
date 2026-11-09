@@ -3,8 +3,8 @@
 {"type":"database","name":"admin_bienes_paraguay"},
 {"type":"table","name":"c","database":"admin_bienes_paraguay","data":
 [
-{"fecha":"2026-10-28 14:05:04","nombre":"Thamires ","email":"tatagiovanna29@gmail.com","telefono":"+5511988292200","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Asunción"},
-{"fecha":"2026-10-29 19:37:50","nombre":"Maria Ines Belo ","email":"mariainesbelosilva41@gmail.com","telefono":"11963280382","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"Itapúa","localidad_inmueble":"Encarnación"}
+{"fecha":"2026-11-08 17:45:39","nombre":"Ada Benítez ","email":"adabenitez789@gmail.com","telefono":"+595984302014","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Asunción","localidad_inmueble":"Asunción"},
+{"fecha":"2026-11-03 09:39:41","nombre":"Nayeli Lizet Ibarrola","email":"nayelilizetibarrola@gmail.com","telefono":"0983268559","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Central","localidad_inmueble":"Fernando De La Mora"}
 ]
 }
 ]

@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-10-08 17:45:59","nombre":"Pablo César Castillo Ladines","email":"pablocesarcastilloladines@gmail.com","telefono":"970141510","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Piura","localidad_inmueble":"Piura"}
+{"fecha":"2026-11-06 12:25:22","nombre":"Marcela miranda","email":"veterinariavilla@yahoo.com","telefono":"956379114","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Punta Hermosa"}
 ]
 }
 ]

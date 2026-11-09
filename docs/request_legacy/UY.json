@@ -3,7 +3,9 @@
 {"type":"database","name":"admin_bienes_elsalvador"},
 {"type":"table","name":"c","database":"admin_bienes_elsalvador","data":
 [
-{"fecha":"2026-10-14 08:18:09","nombre":"Antonio","email":"tonigomezlopez7@gmail.com","telefono":"644400222","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Maldonado","localidad_inmueble":"Maldonado"}
+{"fecha":"2026-11-03 03:20:20","nombre":"Guadalupe Alonso ","email":"laguacaceres@gmail.com","telefono":"092097382","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Maldonado","localidad_inmueble":"Maldonado"},
+{"fecha":"2026-11-07 10:22:40","nombre":"Mauro ","email":"maurofetingis17@gmail.com","telefono":"098256414","tipo_inmueble":"Terreno","tipo_operacion":"Venta","provincia_inmueble":"Maldonado","localidad_inmueble":"Maldonado"},
+{"fecha":"2026-11-04 11:28:36","nombre":"sofia echeverria","email":"sofii.echee@gmail.com","telefono":"095020011","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Maldonado","localidad_inmueble":"Maldonado"}
 ]
 }
 ]
