@@ -7,6 +7,7 @@ use App\Filament\Resources\EmailContacts\Pages\EditEmailContact;
 use App\Filament\Resources\EmailContacts\Pages\ListEmailContacts;
 use App\Filament\Resources\EmailContacts\RelationManagers\EmailRecipientsRelationManager;
 use App\Filament\Resources\EmailSends\Pages\ViewEmailSend;
+use App\Filament\Resources\EmailSuppressions\Pages\ListEmailSuppressions;
 use App\Filament\Resources\EmailTemplates\Pages\CreateEmailTemplate;
 use App\Filament\Resources\EmailTemplates\Pages\EditEmailTemplate;
 use App\Filament\Resources\EmailTemplates\Pages\ListEmailTemplates;
@@ -21,6 +22,7 @@ use App\Models\EmailSuppression;
 use App\Models\EmailTemplate;
 use App\Models\User;
 use App\Services\AdminEmail\AdminEmailService;
+use App\Services\AdminEmail\SuppressionListParser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
@@ -256,7 +258,7 @@ describe('panel admin', function (): void {
 
     it('carga las páginas de mensajes, contactos y envíos', function (string $url): void {
         $this->get($url)->assertOk();
-    })->with(['/admin/email-templates', '/admin/email-templates/create', '/admin/email-contacts', '/admin/email-contacts/create', '/admin/email-sends']);
+    })->with(['/admin/email-templates', '/admin/email-templates/create', '/admin/email-contacts', '/admin/email-contacts/create', '/admin/email-sends', '/admin/email-suppressions']);
 
     it('muestra Mensajes, Contactos y Envíos en el menú del admin', function (): void {
         $this->get('/admin')
@@ -362,5 +364,79 @@ describe('panel admin', function (): void {
 
         expect($emailSend->recipients()->sole()->status)->toBe(EmailSendRecipient::STATUS_PENDING);
         $this->get('/admin/email-sends/' . $emailSend->id)->assertOk();
+    });
+});
+
+describe('bajas cargadas a mano', function (): void {
+    beforeEach(fn () => config(['mail.mailers.admin.from.address' => 'contacto@bienesonline.ai', 'app.url' => 'https://bienesonline.ai']));
+
+    it('toma emails sueltos separados por líneas, comas o espacios', function (): void {
+        $parsed = app(SuppressionListParser::class)->parse("Uno.Test@Gmail.com, dos.test@hotmail.com\n tres.test@yahoo.com; uno.test@gmail.com juan@gmail");
+
+        expect($parsed['emails'])->toBe(['uno.test@gmail.com', 'dos.test@hotmail.com', 'tres.test@yahoo.com'])
+            ->and($parsed['invalid'])->toBe(['juan@gmail']);
+    });
+
+    it('toma del rebote solo las direcciones que fallaron, no las propias ni los avisos temporales', function (): void {
+        $bounce = <<<'TXT'
+            From: Mail Delivery System <Mailer-Daemon@host.bienesonline.net>
+            To: contacto@bienesonline.ai
+            Message-ID: <a1b2c3@bienesonline.ai>
+
+              axiacampestrematutino3@gmail.com
+                SMTP error from remote mail server after RCPT TO:<axiacampestrematutino3@gmail.com>:
+                550-5.1.1 The email account that you tried to reach does not exist.
+            Reporting-MTA: dns; host.bienesonline.net
+
+            Action: failed
+            Final-Recipient: rfc822;axiacampestrematutino3@gmail.com
+            Status: 5.0.0
+            Diagnostic-Code: smtp; 550-5.1.1 The email account that you tried to reach does not exist.
+
+            Action: failed
+            Final-Recipient: rfc822;inmobahiavallarta@gmail.com
+            Status: 5.0.0
+
+            Action: delayed
+            Final-Recipient: rfc822;casilla.llena@gmail.com
+            Status: 4.2.2
+            TXT;
+
+        $parsed = app(SuppressionListParser::class)->parse($bounce);
+
+        expect($parsed['emails'])->toBe(['axiacampestrematutino3@gmail.com', 'inmobahiavallarta@gmail.com'])
+            ->and($parsed['temporary'])->toBe(['casilla.llena@gmail.com']);
+    });
+
+    it('no devuelve direcciones del dominio propio ni del servidor de correo en una lista suelta', function (): void {
+        $parsed = app(SuppressionListParser::class)->parse('contacto@bienesonline.ai mailer-daemon@host.example.net abc@mail.bienesonline.ai otro.test@gmail.com');
+
+        expect($parsed['emails'])->toBe(['otro.test@gmail.com']);
+    });
+
+    it('da de baja desde el admin y el envío las saltea', function (): void {
+        Queue::fake();
+        $admin = adminEmailUser();
+        $admin->assignRole(Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']));
+        $this->actingAs($admin);
+
+        $contact = EmailContact::factory()->create(['email' => 'rebote.test@gmail.com']);
+        EmailSuppression::suppress('ya.estaba.test@gmail.com');
+
+        Livewire::test(ListEmailSuppressions::class)
+            ->callAction('addSuppressions', ['text' => "Rebote.Test@gmail.com\nya.estaba.test@gmail.com", 'reason' => EmailSuppression::REASON_BOUNCED])
+            ->assertHasNoActionErrors()
+            ->assertNotified('Bajas agregadas');
+
+        expect(EmailSuppression::where('email', 'rebote.test@gmail.com')->value('reason'))->toBe(EmailSuppression::REASON_BOUNCED)
+            ->and(EmailSuppression::where('email', 'ya.estaba.test@gmail.com')->value('reason'))->toBe(EmailSuppression::REASON_UNSUBSCRIBED)
+            ->and(app(AdminEmailService::class)->summarize(EmailTemplate::factory()->create(), [], [$contact->id]))->toMatchArray(['to_send' => 0, 'suppressed' => 1]);
+
+        $suppression = EmailSuppression::where('email', 'rebote.test@gmail.com')->sole();
+        Livewire::test(ListEmailSuppressions::class)
+            ->assertCanSeeTableRecords([$suppression])
+            ->callTableAction('delete', $suppression);
+
+        expect(EmailSuppression::isSuppressed('rebote.test@gmail.com'))->toBeFalse();
     });
 });

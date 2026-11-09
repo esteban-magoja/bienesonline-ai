@@ -10,6 +10,21 @@ use Illuminate\Support\Str;
  */
 class EmailSuppression extends Model
 {
+    public const REASON_UNSUBSCRIBED = 'unsubscribed';
+
+    public const REASON_BOUNCED = 'bounced';
+
+    public const REASON_MANUAL = 'manual';
+
+    /**
+     * @var array<string, string>
+     */
+    public const REASON_LABELS = [
+        self::REASON_BOUNCED => 'Rebotó (no existe)',
+        self::REASON_UNSUBSCRIBED => 'Se dio de baja',
+        self::REASON_MANUAL => 'Agregada a mano',
+    ];
+
     protected $fillable = [
         'email',
         'reason',
@@ -20,8 +35,13 @@ class EmailSuppression extends Model
         return static::where('email', Str::lower(trim($email)))->exists();
     }
 
-    public static function suppress(string $email, string $reason = 'unsubscribed'): self
+    public static function suppress(string $email, string $reason = self::REASON_UNSUBSCRIBED): self
     {
         return static::firstOrCreate(['email' => Str::lower(trim($email))], ['reason' => $reason]);
+    }
+
+    public static function reasonLabel(?string $reason): string
+    {
+        return self::REASON_LABELS[$reason] ?? (string) $reason;
     }
 }
