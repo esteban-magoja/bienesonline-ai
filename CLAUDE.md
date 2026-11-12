@@ -939,7 +939,7 @@ Permite a los usuarios importar sus anuncios del proyecto viejo con un botón en
 3. Se crea un `ImportJob` y cada anuncio se guarda como fila en `import_listing_items` (modelo `ImportListingItem`, evita payloads gigantes en la cola)
 4. Se despacha `ProcessImportChunkJob` (lotes de `IMPORT_CHUNK_SIZE`, default 20); **cada chunk despacha el siguiente** hasta vaciar los items pendientes
 5. Cada item crea un `PropertyListing` → Observer genera embedding automáticamente; imágenes con `Http::get()` → `Storage::disk('public')`
-6. Dashboard muestra barra de progreso con polling cada 2 segundos
+6. (Noviembre 2026) El recuadro de importación se quitó del dashboard; las rutas `dashboard/import/*` y los jobs siguen existiendo
 
 **Nota**: `ImportListingsJob` es el job anterior (monolítico) y ya no se despacha desde ningún lado; la lógica vigente está en `ProcessImportChunkJob`.
 
@@ -1039,7 +1039,6 @@ exit
 
 1. **Cache de stats del dashboard** (`resources/themes/anchor/pages/dashboard/index.blade.php`):
    - Stats de conteo: TTL 300s — `dashboard_listings_{userId}`, `dashboard_requests_{userId}`, `dashboard_contacts_total_{userId}`, `dashboard_contacts_unseen_{userId}`
-   - Import job: TTL 60s — `dashboard_import_{userId}`
    - Match counts: TTL 21600s (6h) — `dashboard_matches_inbound_{userId}`, `dashboard_matches_outbound_{userId}`
 
 2. **Match counts con queries agregadas únicas** (no loop):
