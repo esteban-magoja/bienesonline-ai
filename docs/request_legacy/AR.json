@@ -3,9 +3,7 @@
 {"type":"database","name":"admin_bienes_argentina"},
 {"type":"table","name":"c","database":"admin_bienes_argentina","data":
 [
-{"fecha":"2026-11-03 20:20:57","nombre":"Vanesa Yanina","email":"vane_027@hotmail.com","telefono":"03413238090","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Santa Fe","localidad_inmueble":"Rosario"},
-{"fecha":"2026-11-04 20:41:11","nombre":"Betiana","email":"migenioamor31@gmail.com","telefono":"3406647798","tipo_inmueble":"Departamento","tipo_operacion":"Alquiler","provincia_inmueble":"Córdoba","localidad_inmueble":"San Francisco"},
-{"fecha":"2026-11-08 20:57:44","nombre":"Leticia ","email":"letpg@hotmail.com","telefono":"1133703423","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Escobar"}
+{"fecha":"2026-11-09 12:25:31","nombre":"Axel","email":"axe@gmail.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Buenos Aires","localidad_inmueble":"Villa Luzuriaga"}
 ]
 }
 ]

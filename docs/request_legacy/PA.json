@@ -3,11 +3,10 @@
 {"type":"database","name":"admin_bienes_panama"},
 {"type":"table","name":"c","database":"admin_bienes_panama","data":
 [
-{"fecha":"2026-11-04 11:47:05","nombre":"Kristen ","email":"kristensanchez0622@gmail.com","telefono":"69359159","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
-{"fecha":"2026-11-04 21:00:37","nombre":"Carlos carrero","email":"carrerosaezservices@gmail.com","telefono":"67938995","tipo_inmueble":"Galera","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Río Abajo"},
-{"fecha":"2026-11-07 12:12:02","nombre":"Damian","email":"damianliv@gmail.com","telefono":"5491155286999","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ancón"},
-{"fecha":"2026-11-08 14:31:40","nombre":"Mary Elaine Adams","email":"madams8139@gmail.com","telefono":"61690163","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Chiriquí","localidad_inmueble":"Volcán"},
-{"fecha":"2026-11-08 23:35:37","nombre":"Zoe Bares","email":"zoebares@hotmail.com","telefono":"66756955","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Coclé","localidad_inmueble":"Río Hato"}
+{"fecha":"2026-11-12 11:23:59","nombre":"Solmarie Jaramillo","email":"nowpty.delivery@gmail.com","telefono":" 6903-8810","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-11-10 11:59:51","nombre":"Damaris de Castillero","email":"d.castillero1704@gmail.com","telefono":"62706706","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Juan Díaz"},
+{"fecha":"2026-11-11 13:45:53","nombre":"Luz","email":"infohidalgo27@gmail.com","telefono":"69486100","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"},
+{"fecha":"2026-11-09 13:16:32","nombre":"Clemencia","email":"clemenciasabogal@gmail.com","telefono":"68331771","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"Panamá","localidad_inmueble":"Ciudad De Panamá"}
 ]
 }
 ]

@@ -3,10 +3,14 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-11-04 15:58:11","nombre":"Astrid ","email":"Astridrios2106@gmail.com","telefono":"3216451134","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Envigado"},
-{"fecha":"2026-11-05 01:11:05","nombre":"Luz Janeth","email":"lujarabe@hotmail.com","telefono":"3332555355","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Sopetran"},
-{"fecha":"2026-11-05 09:50:40","nombre":"stefanny","email":"rodasospinastefanny@gmail.com","telefono":"3147983246","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Risaralda","localidad_inmueble":"Dosquebradas"},
-{"fecha":"2026-11-06 11:30:10","nombre":"Julio Torres","email":"archivosjcte@gmail.com","telefono":"3015725131","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"}
+{"fecha":"2026-11-10 08:47:46","nombre":"Hermes sierra ","email":"hermes24sierra@hotmail.com","telefono":"3112654590","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
+{"fecha":"2026-11-10 08:57:17","nombre":"Johana Rodríguez ","email":"joisjohana@hotmail.com","telefono":"3144361189","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
+{"fecha":"2026-11-12 16:12:41","nombre":"SERGIO CALAD","email":"calad_sergio@hotmail.com","telefono":"3137587340","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
+{"fecha":"2026-11-12 16:44:04","nombre":"Marina luzDuran goyeneche","email":"mluzdg@yahoo.es","telefono":"3150648503","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
+{"fecha":"2026-11-13 15:20:53","nombre":"Julie Gallego","email":"Julieceleny397@gmail.com","telefono":"","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
+{"fecha":"2026-11-14 14:40:56","nombre":"Karen Jaramillo","email":"TATI12183@GMAIL.COM","telefono":"3147188425","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Risaralda","localidad_inmueble":"Dosquebradas"},
+{"fecha":"2026-11-11 01:23:07","nombre":"Elizabeth","email":"elizajuan3016@gmail.com","telefono":"3103861543","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Bello"},
+{"fecha":"2026-11-15 17:05:34","nombre":"Diana Montealegre ","email":"dianita.montealegre@gmail.com","telefono":"3219675330","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"La Calera"}
 ]
 }
 ]
