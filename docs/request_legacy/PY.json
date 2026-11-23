@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_paraguay"},
 {"type":"table","name":"c","database":"admin_bienes_paraguay","data":
 [
-{"fecha":"2026-11-09 14:22:43","nombre":"CARLOS","email":"coelho.br@icloud.com","telefono":"11-981324378","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Amambay","localidad_inmueble":"Pedro Juan Caballero"}
+{"fecha":"2026-11-19 20:49:30","nombre":"Carlos Augusto","email":"coelho.br@icloud.com","telefono":"11981324370","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Amambay","localidad_inmueble":"Pedro Juan Caballero"}
 ]
 }
 ]

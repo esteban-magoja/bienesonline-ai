@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_dominicana"},
 {"type":"table","name":"c","database":"admin_bienes_dominicana","data":
 [
-{"fecha":"2026-11-12 14:46:06","nombre":"Yuli","email":"yulitorres20@icloud.com","telefono":"9292353837","tipo_inmueble":"Casa","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"}
+{"fecha":"2026-11-20 14:50:14","nombre":"Roberto Nova ","email":"robertonovanova07@gmail.com","telefono":"8493413486","tipo_inmueble":"Apartamento","tipo_operacion":"Alquiler","provincia_inmueble":"La Vega","localidad_inmueble":"Concepción de La Vega"}
 ]
 }
 ]

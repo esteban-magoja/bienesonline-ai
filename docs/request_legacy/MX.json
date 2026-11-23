@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_mexico"},
 {"type":"table","name":"c","database":"admin_bienes_mexico","data":
 [
-{"fecha":"2026-11-09 09:36:17","nombre":"Jennifer","email":"jenny_gonzalez13@hotmail.com","telefono":"6141615374","tipo_inmueble":"Casa","tipo_operacion":"Renta","provincia_inmueble":"Baja California Sur","localidad_inmueble":"Cabo San Lucas"}
+{"fecha":"2026-11-21 20:21:49","nombre":"Dana ","email":"dd6680325@gmail.com","telefono":"2206472424","tipo_inmueble":"Departamento","tipo_operacion":"Renta","provincia_inmueble":"México","localidad_inmueble":"Naucalpan De Juárez"}
 ]
 }
 ]

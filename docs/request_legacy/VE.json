@@ -3,7 +3,10 @@
 {"type":"database","name":"admin_bienes_venezuela"},
 {"type":"table","name":"c","database":"admin_bienes_venezuela","data":
 [
-{"fecha":"2026-11-11 16:45:36","nombre":"Valeria","email":"vamillan14@gmail.com","telefono":"","tipo_inmueble":"Apartamento","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"El Tigrito"}
+{"fecha":"2026-11-16 12:12:43","nombre":"Cinthia","email":"cinthiamaldonadoa@gmail.com","telefono":"1123955954","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"El Tigre"},
+{"fecha":"2026-11-16 12:16:08","nombre":"Cinthia","email":"cinthiamaldonadoa@gmail.com","telefono":"1123955954","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"Anaco"},
+{"fecha":"2026-11-16 19:31:23","nombre":"Dorielitza ","email":"dorielitzavicuna@gamil.com","telefono":"","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Anzoátegui","localidad_inmueble":"El Tigre"},
+{"fecha":"2026-11-20 10:04:44","nombre":"CARIDAD SANCHEZ","email":"caridad.sanchez73@gmail.com","telefono":"+58 4143474410","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Aragua","localidad_inmueble":"Maracay"}
 ]
 }
 ]

@@ -3,14 +3,12 @@
 {"type":"database","name":"admin_bienes_colombia"},
 {"type":"table","name":"c","database":"admin_bienes_colombia","data":
 [
-{"fecha":"2026-11-10 08:47:46","nombre":"Hermes sierra ","email":"hermes24sierra@hotmail.com","telefono":"3112654590","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
-{"fecha":"2026-11-10 08:57:17","nombre":"Johana Rodríguez ","email":"joisjohana@hotmail.com","telefono":"3144361189","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
-{"fecha":"2026-11-12 16:12:41","nombre":"SERGIO CALAD","email":"calad_sergio@hotmail.com","telefono":"3137587340","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cali"},
-{"fecha":"2026-11-12 16:44:04","nombre":"Marina luzDuran goyeneche","email":"mluzdg@yahoo.es","telefono":"3150648503","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Mosquera"},
-{"fecha":"2026-11-13 15:20:53","nombre":"Julie Gallego","email":"Julieceleny397@gmail.com","telefono":"","tipo_inmueble":"Local","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Medellín"},
-{"fecha":"2026-11-14 14:40:56","nombre":"Karen Jaramillo","email":"TATI12183@GMAIL.COM","telefono":"3147188425","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Risaralda","localidad_inmueble":"Dosquebradas"},
-{"fecha":"2026-11-11 01:23:07","nombre":"Elizabeth","email":"elizajuan3016@gmail.com","telefono":"3103861543","tipo_inmueble":"Finca","tipo_operacion":"Venta","provincia_inmueble":"Antioquia","localidad_inmueble":"Bello"},
-{"fecha":"2026-11-15 17:05:34","nombre":"Diana Montealegre ","email":"dianita.montealegre@gmail.com","telefono":"3219675330","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"La Calera"}
+{"fecha":"2026-11-16 21:07:49","nombre":"Edinson ","email":"edinsoncandiaexito183@gmail.com","telefono":"3118145363","tipo_inmueble":"Casa","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Soacha"},
+{"fecha":"2026-11-17 23:22:31","nombre":"blanca I. Gomez","email":"blancbern98@gmail.com","telefono":"","tipo_inmueble":"Lote","tipo_operacion":"Venta","provincia_inmueble":"Cundinamarca","localidad_inmueble":"Silvania"},
+{"fecha":"2026-11-18 17:06:14","nombre":"Gloria reyes","email":"glopa-ducu@hotmail.com","telefono":"3146546575","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cartago"},
+{"fecha":"2026-11-18 23:41:56","nombre":"Mónica","email":"grupoeliteempresarial@hotmail.com","telefono":"3135793131","tipo_inmueble":"Casa","tipo_operacion":"Arriendo","provincia_inmueble":"Antioquia","localidad_inmueble":"Rionegro"},
+{"fecha":"2026-11-19 09:32:01","nombre":"Lina orozco","email":"affinitygroup2023@gmail.com","telefono":"3043383024","tipo_inmueble":"Local","tipo_operacion":"Arriendo","provincia_inmueble":"Bolívar","localidad_inmueble":"Cartagena De Indias"},
+{"fecha":"2026-11-19 09:40:51","nombre":"Gloria reyes","email":"glopa-ducu@hotmail.com","telefono":"3146546575","tipo_inmueble":"Apartamento","tipo_operacion":"Arriendo","provincia_inmueble":"Valle Del Cauca","localidad_inmueble":"Cartago"}
 ]
 }
 ]

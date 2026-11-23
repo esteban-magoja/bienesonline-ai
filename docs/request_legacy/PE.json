@@ -3,7 +3,7 @@
 {"type":"database","name":"admin_bienes_peru"},
 {"type":"table","name":"c","database":"admin_bienes_peru","data":
 [
-{"fecha":"2026-11-06 12:25:22","nombre":"Marcela miranda","email":"veterinariavilla@yahoo.com","telefono":"956379114","tipo_inmueble":"Departamento","tipo_operacion":"Venta","provincia_inmueble":"Lima","localidad_inmueble":"Punta Hermosa"}
+{"fecha":"2026-11-16 14:26:51","nombre":"EVELYN","email":"evelyn.baca@adecco.com","telefono":"941439197","tipo_inmueble":"Local","tipo_operacion":"Alquiler","provincia_inmueble":"San Martín","localidad_inmueble":"Tarapoto"}
 ]
 }
 ]
