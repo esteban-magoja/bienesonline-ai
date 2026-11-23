@@ -20,9 +20,12 @@ uses(DatabaseTransactions::class);
 
 afterEach(fn () => Cache::flush());
 
-function makeRequesterUser(): User
+function makeRequesterUser(array $attributes = []): User
 {
-    return User::factory()->create(['terms_accepted' => true]);
+    return User::factory()->create(array_merge([
+        'terms_accepted'    => true,
+        'email_verified_at' => now(),
+    ], $attributes));
 }
 
 /** Ejecuta el listener con solicitudes (owner => score) devueltas por el matching mockeado. */
@@ -78,6 +81,29 @@ it('notifies requests that have a client email', function () {
     Notification::fake();
 
     $requester = makeRequesterUser();
+
+    runRequestsListener([[$requester, 85]]);
+
+    Notification::assertSentTo($requester, PropertyMatchFoundNotification::class);
+});
+
+it('does not notify requesters without a verified email', function () {
+    Notification::fake();
+
+    $unverified = makeRequesterUser(['email_verified_at' => null]);
+    $verified   = makeRequesterUser();
+
+    runRequestsListener([[$unverified, 95], [$verified, 85]]);
+
+    Notification::assertNotSentTo($unverified, PropertyMatchFoundNotification::class);
+    Notification::assertSentTo($verified, PropertyMatchFoundNotification::class);
+});
+
+it('notifies verified requesters without premium access', function () {
+    Notification::fake();
+
+    $requester = makeRequesterUser();
+    expect($requester->hasPremiumAccess())->toBeFalse();
 
     runRequestsListener([[$requester, 85]]);
 

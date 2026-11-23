@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
  * Avisa a los dueños de solicitudes que coinciden con un anuncio nuevo o reactivado.
  * Excluye las solicitudes legacy (asociadas al usuario de import:legacy-requests),
  * envía un solo aviso por usuario aunque tenga varias solicitudes compatibles
- * y como máximo 1 aviso por usuario y día.
+ * y como máximo 1 aviso por usuario y día. Sin requisito de premium, solo a emails verificados.
  */
 class NotifyMatchingRequests implements ShouldQueue
 {
@@ -45,7 +45,8 @@ class NotifyMatchingRequests implements ShouldQueue
             foreach ($bestRequestByUser as $request) {
                 $user = User::find($request->user_id);
 
-                if (!$user) {
+                if (!$user || empty($user->email) || $user->email_verified_at === null) {
+                    Log::debug("NotifyMatchingRequests: user #{$request->user_id} sin email verificado, saltando.");
                     continue;
                 }
 
