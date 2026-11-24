@@ -387,4 +387,14 @@ return [
         'country_map' => 'Mapa',
         'this_listing' => 'Este anuncio',
     ],
+    'gallery' => [
+        'photo_alt' => ':title – foto :number de :total',
+        'view_all' => '{1}Ver la foto|[2,*]Ver las :count fotos',
+        'more_photos' => '+:count fotos',
+        'previous' => 'Foto anterior',
+        'next' => 'Foto siguiente',
+        'enlarge' => 'Ampliar foto',
+        'close' => 'Cerrar',
+        'dialog_label' => 'Fotos del anuncio',
+    ],
 ];

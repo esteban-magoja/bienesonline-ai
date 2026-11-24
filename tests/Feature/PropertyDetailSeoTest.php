@@ -187,3 +187,57 @@ it('does not redirect an inactive property because it is not publicly available'
 
     $this->get($canonicalPath)->assertNotFound();
 });
+
+/**
+ * @return list<string>
+ */
+function createGalleryImages(PropertyListing $property, int $count, int $primaryIndex): array
+{
+    $urls = [];
+
+    foreach (range(0, $count - 1) as $index) {
+        $url = "/storage/property_images/gallery-test-{$property->id}-{$index}.jpg";
+        $urls[] = $url;
+
+        $property->images()->create([
+            'image_path' => "property_images/gallery-test-{$property->id}-{$index}.jpg",
+            'image_url' => $url,
+            'is_primary' => $index === $primaryIndex,
+            'sort_order' => $index,
+        ]);
+    }
+
+    return $urls;
+}
+
+it('shows the primary photo first and a single row of thumbnails with a more photos tile', function (): void {
+    $urls = createGalleryImages($this->property, 9, primaryIndex: 5);
+    $path = parse_url(app(SeoService::class)->generatePropertyUrl($this->property, 'es'), PHP_URL_PATH);
+
+    $response = $this->get($path)->assertSuccessful();
+    $html = $response->getContent();
+
+    expect(substr_count($html, '<picture>'))->toBe(7)
+        ->and(substr_count($html, 'loading="lazy"'))->toBeGreaterThanOrEqual(7);
+
+    $response->assertSee('src="' . $urls[5] . '"', false)
+        ->assertSee('fetchpriority="high"', false)
+        ->assertSee('Casa moderna en Villa Carlos Paz – foto 1 de 9')
+        ->assertSee('Ver las 9 fotos')
+        ->assertSee('+3 fotos')
+        ->assertSee('role="dialog"', false);
+
+    // La foto principal debe ser la primera de la galería
+    expect(strpos($html, 'src="' . $urls[5] . '"'))->toBeLessThan(strpos($html, 'src="' . $urls[0] . '"'));
+});
+
+it('shows every thumbnail without a more photos tile when there are few photos', function (): void {
+    createGalleryImages($this->property, 3, primaryIndex: 0);
+    $path = parse_url(app(SeoService::class)->generatePropertyUrl($this->property, 'en'), PHP_URL_PATH);
+
+    $response = $this->get($path)->assertSuccessful();
+
+    expect(substr_count($response->getContent(), '<picture>'))->toBe(3);
+    $response->assertSee('View all 3 photos')
+        ->assertDontSee('+0 photos');
+});

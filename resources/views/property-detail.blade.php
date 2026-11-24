@@ -264,63 +264,179 @@
                     </div>
 
                     <!-- Image Gallery -->
-                    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
-                        @if($property->images->count() > 0)
+                    @php
+                        $galleryImages = $property->images->values();
+                        $galleryTotal = $galleryImages->count();
+                        $galleryThumbLimit = 7;
+                        $galleryHasMoreTile = $galleryTotal > $galleryThumbLimit;
+                        $galleryPhotos = $galleryImages->map(fn ($image, $index) => [
+                            'url' => $image->image_url,
+                            'alt' => $galleryTotal > 1
+                                ? __('properties.gallery.photo_alt', ['title' => $property->title, 'number' => $index + 1, 'total' => $galleryTotal])
+                                : $property->title,
+                        ])->all();
+                        // En celular no se muestran miniaturas: este pixel evita que el navegador descargue las fotos ocultas
+                        $galleryBlankPixel = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+                    @endphp
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6"
+                        @if($galleryTotal > 0)
+                            x-data="propertyGallery(@js($galleryPhotos))"
+                            @keydown.window="onKeydown($event)"
+                        @endif
+                    >
+                        @if($galleryTotal > 0)
                             <!-- Main Image -->
-                            <div class="relative aspect-[16/9] bg-gray-200" id="mainImageContainer">
-                                <img 
-                                    id="mainImage"
-                                    src="{{ $property->images->where('is_primary', true)->first()?->image_url ?? $property->images->first()->image_url }}" 
-                                    alt="{{ $property->title }}" 
-                                    class="w-full h-full object-cover"
-                                >
-                                
-                                <!-- Navigation Arrows -->
-                                @if($property->images->count() > 1)
-                                    <button 
-                                        onclick="previousImage()" 
-                                        class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                            <div class="relative aspect-[16/9] bg-gray-200"
+                                @touchstart.passive="onTouchStart($event)"
+                                @touchend="onTouchEnd($event)"
+                            >
+                                <button type="button" @click="openViewer()" class="group block h-full w-full cursor-zoom-in" aria-label="{{ __('properties.gallery.enlarge') }}">
+                                    <img
+                                        src="{{ $galleryPhotos[0]['url'] }}"
+                                        :src="photos[current].url"
+                                        alt="{{ $galleryPhotos[0]['alt'] }}"
+                                        :alt="photos[current].alt"
+                                        fetchpriority="high"
+                                        class="h-full w-full object-cover"
                                     >
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <span class="pointer-events-none absolute right-4 top-4 hidden rounded-full bg-black/50 p-2 text-white transition-colors group-hover:bg-black/70 md:block">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"></path>
+                                        </svg>
+                                    </span>
+                                </button>
+
+                                @if($galleryTotal > 1)
+                                    <!-- Navigation Arrows -->
+                                    <button
+                                        type="button"
+                                        @click="previous()"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                                        aria-label="{{ __('properties.gallery.previous') }}"
+                                    >
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                                         </svg>
                                     </button>
-                                    <button 
-                                        onclick="nextImage()" 
+                                    <button
+                                        type="button"
+                                        @click="next()"
                                         class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                                        aria-label="{{ __('properties.gallery.next') }}"
                                     >
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                         </svg>
+                                    </button>
+
+                                    {{-- Celular: botón para ver todas las fotos (no hay miniaturas) --}}
+                                    <button
+                                        type="button"
+                                        @click="openViewer()"
+                                        class="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-sm font-semibold text-gray-900 shadow-md md:hidden"
+                                    >
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v4H4zM14 15h6v4h-6z"></path>
+                                        </svg>
+                                        {{ trans_choice('properties.gallery.view_all', $galleryTotal, ['count' => $galleryTotal]) }}
                                     </button>
                                 @endif
 
                                 <!-- Image Counter -->
-                                <div class="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-                                    <span id="currentImageIndex">1</span> / {{ $property->images->count() }}
+                                <div class="pointer-events-none absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.66-.9l.82-1.2A2 2 0 0110.07 4h3.86a2 2 0 011.66.9l.82 1.2a2 2 0 001.66.9H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    <span x-text="current + 1">1</span> / {{ $galleryTotal }}
                                 </div>
                             </div>
 
-                            <!-- Thumbnail Gallery -->
-                            @if($property->images->count() > 1)
-                                <div class="p-4 bg-gray-50">
-                                    <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2" id="thumbnailContainer">
-                                        @foreach($property->images as $index => $image)
-                                            <button 
-                                                onclick="showImage({{ $index }})"
-                                                class="thumbnail aspect-square rounded-lg overflow-hidden border-2 transition-all {{ $index === 0 ? 'border-blue-600' : 'border-transparent hover:border-gray-300' }}"
-                                                data-index="{{ $index }}"
+                            {{-- Miniaturas: solo PC/tablet, una fila --}}
+                            @if($galleryTotal > 1)
+                                <div class="hidden bg-gray-50 p-4 md:block">
+                                    <div class="grid grid-cols-7 gap-2">
+                                        @foreach($galleryImages->take($galleryThumbLimit) as $index => $image)
+                                            @php $isMoreTile = $galleryHasMoreTile && $index === $galleryThumbLimit - 1; @endphp
+                                            <button
+                                                type="button"
+                                                @if($isMoreTile)
+                                                    @click="openViewer({{ $index }})"
+                                                    :class="current >= {{ $index }} ? 'border-blue-600' : 'border-transparent hover:border-gray-300'"
+                                                @else
+                                                    @click="show({{ $index }})"
+                                                    :class="current === {{ $index }} ? 'border-blue-600' : 'border-transparent hover:border-gray-300'"
+                                                @endif
+                                                class="relative aspect-square overflow-hidden rounded-lg border-2 transition-all"
                                             >
-                                                <img 
-                                                    src="{{ $image->image_url }}" 
-                                                    alt="Imagen {{ $index + 1 }}" 
-                                                    class="w-full h-full object-cover"
-                                                >
+                                                <picture>
+                                                    <source media="(max-width: 767px)" srcset="{{ $galleryBlankPixel }}">
+                                                    <img
+                                                        src="{{ $image->image_url }}"
+                                                        alt="{{ $galleryPhotos[$index]['alt'] }}"
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        width="120"
+                                                        height="120"
+                                                        class="h-full w-full object-cover"
+                                                    >
+                                                </picture>
+                                                @if($isMoreTile)
+                                                    <span class="absolute inset-0 flex items-center justify-center bg-black/60 px-1 text-center text-sm font-semibold text-white">
+                                                        {{ __('properties.gallery.more_photos', ['count' => $galleryTotal - $index]) }}
+                                                    </span>
+                                                @endif
                                             </button>
                                         @endforeach
                                     </div>
                                 </div>
                             @endif
+
+                            {{-- Visor a pantalla completa: la foto se descarga recién al abrirlo --}}
+                            <div
+                                x-show="viewerOpen"
+                                x-cloak
+                                x-transition.opacity
+                                class="fixed inset-0 z-[1000] flex flex-col bg-black"
+                                role="dialog"
+                                aria-modal="true"
+                                aria-label="{{ __('properties.gallery.dialog_label') }}"
+                            >
+                                <div class="flex items-center justify-between gap-4 px-4 py-3 text-white">
+                                    <p class="min-w-0 truncate text-sm">
+                                        <span class="font-semibold"><span x-text="current + 1">1</span> / {{ $galleryTotal }}</span>
+                                        <span class="ml-2 text-white/70">{{ $property->title }}</span>
+                                    </p>
+                                    <button type="button" x-ref="closeButton" @click="closeViewer()" class="shrink-0 rounded-full p-2 transition-colors hover:bg-white/10" aria-label="{{ __('properties.gallery.close') }}">
+                                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div
+                                    class="relative flex min-h-0 flex-1 items-center justify-center px-2 pb-4 md:px-20"
+                                    @click.self="closeViewer()"
+                                    @touchstart.passive="onTouchStart($event)"
+                                    @touchend="onTouchEnd($event)"
+                                >
+                                    <template x-if="viewerOpen">
+                                        <img :src="photos[current].url" :alt="photos[current].alt" class="max-h-full max-w-full select-none object-contain">
+                                    </template>
+
+                                    @if($galleryTotal > 1)
+                                        <button type="button" @click="previous()" class="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20 md:left-4" aria-label="{{ __('properties.gallery.previous') }}">
+                                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <button type="button" @click="next()" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20 md:right-4" aria-label="{{ __('properties.gallery.next') }}">
+                                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                            </svg>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
                         @else
                             <!-- Placeholder when no images -->
                             <div class="aspect-[16/9] bg-gray-200 flex items-center justify-center">
@@ -686,6 +802,8 @@
                                         <img 
                                             src="{{ $displayImage->image_url }}" 
                                             alt="{{ $related->title }}" 
+                                            loading="lazy"
+                                            decoding="async"
                                             class="w-full h-48 object-cover"
                                         >
                                     @else
@@ -768,44 +886,108 @@
 
     <!-- Image Gallery Script -->
     <script>
-        const images = @json($property->images->pluck('image_url'));
-        let currentImageIndex = 0;
+        function propertyGallery(photos) {
+            return {
+                photos,
+                current: 0,
+                viewerOpen: false,
+                touchStartX: null,
+                touchStartY: null,
+                justSwiped: false,
+                lastFocused: null,
 
-        function showImage(index) {
-            currentImageIndex = index;
-            document.getElementById('mainImage').src = images[index];
-            document.getElementById('currentImageIndex').textContent = index + 1;
-            
-            // Update thumbnail borders
-            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-                if (i === index) {
-                    thumb.classList.remove('border-transparent');
-                    thumb.classList.add('border-blue-600');
-                } else {
-                    thumb.classList.remove('border-blue-600');
-                    thumb.classList.add('border-transparent');
-                }
-            });
+                get total() {
+                    return this.photos.length;
+                },
+
+                show(index) {
+                    this.current = (index + this.total) % this.total;
+                },
+
+                next() {
+                    this.show(this.current + 1);
+                    this.preload(this.current + 1);
+                },
+
+                previous() {
+                    this.show(this.current - 1);
+                    this.preload(this.current - 1);
+                },
+
+                // Adelanta solo la foto siguiente, a pedido del usuario
+                preload(index) {
+                    if (this.total > 1) {
+                        new Image().src = this.photos[(index + this.total) % this.total].url;
+                    }
+                },
+
+                openViewer(index = null) {
+                    if (this.justSwiped) {
+                        return;
+                    }
+                    if (index !== null) {
+                        this.show(index);
+                    }
+                    this.lastFocused = document.activeElement;
+                    this.viewerOpen = true;
+                    document.documentElement.classList.add('overflow-hidden');
+                    this.preload(this.current + 1);
+                    this.$nextTick(() => this.$refs.closeButton.focus());
+                },
+
+                closeViewer() {
+                    this.viewerOpen = false;
+                    document.documentElement.classList.remove('overflow-hidden');
+                    this.lastFocused?.focus();
+                },
+
+                onKeydown(event) {
+                    if (this.viewerOpen) {
+                        if (event.key === 'Escape') {
+                            this.closeViewer();
+                        } else if (event.key === 'ArrowRight') {
+                            this.next();
+                        } else if (event.key === 'ArrowLeft') {
+                            this.previous();
+                        }
+                        return;
+                    }
+
+                    // No interferir mientras se escribe en el formulario de contacto
+                    if (event.target.closest('input, textarea, select, [contenteditable]')) {
+                        return;
+                    }
+                    if (event.key === 'ArrowRight') {
+                        this.next();
+                    } else if (event.key === 'ArrowLeft') {
+                        this.previous();
+                    }
+                },
+
+                onTouchStart(event) {
+                    this.touchStartX = event.changedTouches[0].clientX;
+                    this.touchStartY = event.changedTouches[0].clientY;
+                },
+
+                onTouchEnd(event) {
+                    if (this.touchStartX === null || this.total < 2) {
+                        return;
+                    }
+                    const deltaX = event.changedTouches[0].clientX - this.touchStartX;
+                    const deltaY = event.changedTouches[0].clientY - this.touchStartY;
+                    this.touchStartX = null;
+
+                    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) {
+                        return;
+                    }
+                    deltaX < 0 ? this.next() : this.previous();
+
+                    // Evita que el deslizamiento abra el visor como si fuera un toque
+                    this.justSwiped = true;
+                    setTimeout(() => this.justSwiped = false, 350);
+                },
+            };
         }
-
-        function nextImage() {
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            showImage(currentImageIndex);
-        }
-
-        function previousImage() {
-            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-            showImage(currentImageIndex);
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowLeft') {
-                previousImage();
-            } else if (e.key === 'ArrowRight') {
-                nextImage();
-            }
-        });
 
         // Share functions
         function shareOnFacebook() {

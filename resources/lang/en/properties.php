@@ -408,4 +408,14 @@ return [
         'country_map' => 'Map',
         'this_listing' => 'This listing',
     ],
+    'gallery' => [
+        'photo_alt' => ':title – photo :number of :total',
+        'view_all' => '{1}View photo|[2,*]View all :count photos',
+        'more_photos' => '+:count photos',
+        'previous' => 'Previous photo',
+        'next' => 'Next photo',
+        'enlarge' => 'Enlarge photo',
+        'close' => 'Close',
+        'dialog_label' => 'Listing photos',
+    ],
 ];

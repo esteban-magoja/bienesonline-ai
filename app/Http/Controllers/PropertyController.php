@@ -40,7 +40,10 @@ class PropertyController extends Controller
     {
         App::setLocale($locale);
 
-        $property = PropertyListing::with(['user', 'images'])
+        $property = PropertyListing::with([
+            'user',
+            'images' => fn ($query) => $query->orderByDesc('is_primary')->orderBy('sort_order')->orderBy('id'),
+        ])
             ->where('is_active', true)
             ->findOrFail($id);
 
