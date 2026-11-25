@@ -39,6 +39,25 @@ class WhatsAppMessageLogsTable
                         default    => $state,
                     })
                     ->sortable(),
+                TextColumn::make('delivery_status')
+                    ->label('Entrega')
+                    ->badge()
+                    ->placeholder('—')
+                    ->color(fn (?string $state): string => match ($state) {
+                        'read'      => 'success',
+                        'delivered' => 'info',
+                        'failed'    => 'danger',
+                        default     => 'gray',
+                    })
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'sent'      => 'Enviado',
+                        'delivered' => 'Entregado',
+                        'read'      => 'Leído',
+                        'failed'    => 'No entregado',
+                        default     => $state ?? '—',
+                    })
+                    ->tooltip(fn ($record): ?string => $record->delivery_error)
+                    ->sortable(),
                 TextColumn::make('notifiable.name')
                     ->label('Destinatario')
                     ->searchable()
@@ -95,6 +114,13 @@ class WhatsAppMessageLogsTable
                         'failed'   => 'Fallido',
                         'disabled' => 'Deshabilitado',
                         'no_phone' => 'Sin teléfono',
+                    ]),
+                SelectFilter::make('delivery_status')
+                    ->label('Entrega')
+                    ->options([
+                        'delivered' => 'Entregado',
+                        'read'      => 'Leído',
+                        'failed'    => 'No entregado',
                     ]),
                 SelectFilter::make('event_type')
                     ->label('Evento')

@@ -30,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
             '/webhook/paddle',
             '/webhook/stripe',
             '/webhook/paypal',
+            '/webhook/whatsapp',
             '/email/unsubscribe/*',
         ]);
 

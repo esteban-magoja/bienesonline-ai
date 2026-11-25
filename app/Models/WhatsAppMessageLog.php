@@ -23,7 +23,17 @@ class WhatsAppMessageLog extends Model
         'status',
         'whatsapp_message_id',
         'error_message',
+        'delivery_status',
+        'delivery_status_at',
+        'delivery_error',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'delivery_status_at' => 'datetime',
+        ];
+    }
 
     public function notifiable(): MorphTo
     {

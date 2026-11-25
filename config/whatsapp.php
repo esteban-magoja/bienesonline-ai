@@ -27,6 +27,38 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Webhook (mensajes entrantes y estados de entrega)
+    |--------------------------------------------------------------------------
+    |
+    | URL a configurar en developers.facebook.com → WhatsApp → Configuración:
+    | https://{dominio}/webhook/whatsapp, suscripta al campo "messages".
+    | - app_secret: App Secret de la app de Meta (Configuración de la app → Básica),
+    |   valida la firma X-Hub-Signature-256 de cada POST.
+    | - webhook_verify_token: texto elegido por nosotros, se carga igual en Meta.
+    |
+    */
+    'app_secret' => env('WHATSAPP_APP_SECRET', ''),
+
+    'webhook_verify_token' => env('WHATSAPP_WEBHOOK_VERIFY_TOKEN', ''),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bandeja de entrada (admin)
+    |--------------------------------------------------------------------------
+    */
+    'inbox' => [
+        // Mensajes que, enviados solos, dan de baja los avisos por WhatsApp (sin acentos ni mayúsculas)
+        'opt_out_keywords' => ['baja', 'stop', 'unsubscribe', 'darme de baja'],
+
+        // Adjuntos más grandes que esto no se descargan (Meta permite hasta 100 MB en video)
+        'max_media_bytes' => (int) env('WHATSAPP_INBOX_MAX_MEDIA_BYTES', 16 * 1024 * 1024),
+
+        // Disco privado donde se guardan los adjuntos recibidos
+        'media_disk' => 'local',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Templates de mensajes
     |--------------------------------------------------------------------------
     |

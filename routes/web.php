@@ -87,6 +87,17 @@ Route::post('/email/unsubscribe/{recipient}', [\App\Http\Controllers\EmailUnsubs
     ->middleware(['signed', 'throttle:30,1'])
     ->name('email.unsubscribe.store');
 
+// ============================================================================
+// WHATSAPP: webhook de Meta (mensajes entrantes y estados, POST sin CSRF) y adjuntos de la bandeja del admin
+// ============================================================================
+Route::get('/webhook/whatsapp', [\App\Http\Controllers\WhatsAppWebhookController::class, 'verify'])
+    ->name('whatsapp.webhook.verify');
+Route::post('/webhook/whatsapp', [\App\Http\Controllers\WhatsAppWebhookController::class, 'store'])
+    ->name('whatsapp.webhook');
+Route::get('/whatsapp-media/{message}', [\App\Http\Controllers\WhatsAppMediaController::class, 'show'])
+    ->middleware('auth')
+    ->name('whatsapp.media');
+
 
 // ============================================================================
 // 1. REDIRECT RAÍZ AL LOCALE POR DEFECTO
