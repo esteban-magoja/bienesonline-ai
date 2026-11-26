@@ -176,6 +176,36 @@ describe('mensajes entrantes', function (): void {
             ->and($conversation->messages()->first()->direction)->toBe(WhatsAppMessage::DIRECTION_IN);
     });
 
+    it('abre la ventana de 24 horas aunque el mensaje sea más largo que la vista previa', function (): void {
+        $body = str_repeat('Mensaje largo de un asistente virtual con acentos y emojis 🏡. ', 10);
+
+        waProcess(waWebhookPayload([waTextMessage('50496723177', $body)]));
+
+        $conversation = WhatsAppConversation::where('wa_id', '50496723177')->firstOrFail();
+
+        expect($conversation->isServiceWindowOpen())->toBeTrue()
+            ->and($conversation->unread_count)->toBe(1)
+            ->and(mb_strlen($conversation->last_message_preview))->toBeLessThanOrEqual(191)
+            ->and($conversation->messages()->first()->body)->toBe($body);
+    });
+
+    it('guarda los documentos con nombres de archivo largos', function (): void {
+        Http::fake(['*' => Http::response('', 500)]);
+
+        waProcess(waWebhookPayload([[
+            'from' => '50496723178',
+            'id' => 'wamid.DOC-LONG',
+            'timestamp' => (string) now()->timestamp,
+            'type' => 'document',
+            'document' => ['id' => 'media-1', 'mime_type' => 'application/pdf', 'filename' => str_repeat('contrato-de-alquiler-', 15).'.pdf'],
+        ]]));
+
+        $message = WhatsAppMessage::where('wamid', 'wamid.DOC-LONG')->firstOrFail();
+
+        expect(mb_strlen($message->media_filename))->toBeLessThanOrEqual(191)
+            ->and($message->conversation->isServiceWindowOpen())->toBeTrue();
+    });
+
     it('vincula la respuesta con el aviso automático al que contesta', function (): void {
         $user = waInboxUser(['movil' => '+5491100000004']);
         $log = WhatsAppMessageLog::create([
@@ -301,6 +331,17 @@ describe('respuestas desde el admin', function (): void {
         Http::assertSent(fn (HttpRequest $request): bool => str_ends_with($request->url(), WA_TEST_PHONE_NUMBER_ID.'/messages')
             && $request['to'] === $conversation->wa_id
             && $request['text']['body'] === 'Hola, sí, sigue disponible');
+    });
+
+    it('responde con un texto largo sin fallar al actualizar la conversación', function (): void {
+        Http::fake(['https://graph.facebook.com/*/messages' => Http::response(['messages' => [['id' => 'wamid.REPLY-LONG']]])]);
+        $conversation = WhatsAppConversation::factory()->create();
+        $body = trim(str_repeat('Gracias por escribirnos, te contamos los detalles de la propiedad. ', 8));
+
+        $message = app(WhatsAppInboxService::class)->sendText($conversation, $body, null);
+
+        expect($message->body)->toBe($body)
+            ->and(mb_strlen($conversation->fresh()->last_message_preview))->toBeLessThanOrEqual(191);
     });
 
     it('no permite texto libre fuera de la ventana de 24 horas', function (): void {

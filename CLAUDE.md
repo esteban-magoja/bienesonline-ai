@@ -1354,6 +1354,7 @@ Leer y responder desde el admin los mensajes que los usuarios envían al número
 - `WhatsAppInbox\WhatsAppInboxService`: `sendText()`, `sendTemplate()`, `markAsRead()`, `availableTemplates()`. Un envío rechazado por Meta queda guardado como fallido con el motivo (`WhatsAppService::lastError()`)
 - **Costo** (Meta, desde 1/10/2026): las respuestas dentro de las 24 h se cobran después de 1.000 por mes por número; los templates se cobran siempre
 - **Deploy** (primera vez): `php artisan migrate` (3 tablas `whatsapp_*` + columnas de entrega en `whatsapp_message_logs`), `WHATSAPP_APP_SECRET` y `WHATSAPP_WEBHOOK_VERIFY_TOKEN` en el `.env`, `php -d memory_limit=-1 artisan optimize`, y en developers.facebook.com → WhatsApp → Configuración: URL `https://bienesonline.ai/webhook/whatsapp`, el mismo verify token y suscribir el campo **messages**. Usa el cron de cola existente. La API no da historial: solo se ve lo que llega desde que se activa el webhook
+- **Vista previa** (`last_message_preview`, varchar 191): se corta en `WhatsAppWebhookProcessor::PREVIEW_LENGTH` (150). Hasta el 26/11/2026 se cortaba en 250 y los mensajes largos dejaban la conversación sin `last_inbound_at` (la bandeja daba la ventana de 24 h por vencida); la migración `2026_11_26_131240_repair_whatsapp_conversations_with_long_messages` reparó esos datos. Mensaje y conversación se guardan en una sola transacción
 - Test: `WhatsAppInboxTest`
 
 ## Directorio de Inmobiliarias (Julio 2026)

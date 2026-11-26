@@ -24,6 +24,16 @@ use Symfony\Component\Mime\MimeTypes;
  */
 class WhatsAppWebhookProcessor
 {
+    /**
+     * Largo máximo de la vista previa de la conversación. La columna es varchar(191) y
+     * Str::limit() agrega "...": con 250 los mensajes largos hacían fallar la actualización
+     * de la conversación (quedaba sin last_inbound_at y la bandeja daba la ventana de 24 h por vencida).
+     */
+    public const PREVIEW_LENGTH = 150;
+
+    /** Largo máximo del nombre de archivo adjunto (columna varchar(191)). */
+    private const FILENAME_LENGTH = 180;
+
     public function __construct(private readonly WhatsAppService $whatsApp)
     {
     }
@@ -95,31 +105,37 @@ class WhatsAppWebhookProcessor
             : null;
         $media = in_array($type, WhatsAppMessage::MEDIA_TYPES, true) && is_array($data[$type] ?? null) ? $data[$type] : null;
 
+        // Mensaje y conversación en una sola transacción: si algo falla no queda el mensaje
+        // guardado sin actualizar la conversación (el reintento lo saltearía por wamid repetido).
         try {
-            $message = WhatsAppMessage::create([
-                'whatsapp_conversation_id' => $conversation->id,
-                'wamid' => $wamid,
-                'direction' => WhatsAppMessage::DIRECTION_IN,
-                'type' => $type,
-                'body' => $this->extractBody($type, $data),
-                'media_id' => $media['id'] ?? null,
-                'media_mime' => $media['mime_type'] ?? null,
-                'media_filename' => $media['filename'] ?? null,
-                'context_wamid' => $contextWamid,
-                'whatsapp_message_log_id' => $notificationLog?->id,
-                'status' => 'received',
-                'payload' => $data,
-                'sent_at' => $sentAt,
-            ]);
+            $message = DB::transaction(function () use ($conversation, $wamid, $type, $data, $media, $contextWamid, $notificationLog, $sentAt): WhatsAppMessage {
+                $message = WhatsAppMessage::create([
+                    'whatsapp_conversation_id' => $conversation->id,
+                    'wamid' => $wamid,
+                    'direction' => WhatsAppMessage::DIRECTION_IN,
+                    'type' => $type,
+                    'body' => $this->extractBody($type, $data),
+                    'media_id' => $media['id'] ?? null,
+                    'media_mime' => $media['mime_type'] ?? null,
+                    'media_filename' => filled($media['filename'] ?? null) ? Str::limit((string) $media['filename'], self::FILENAME_LENGTH) : null,
+                    'context_wamid' => $contextWamid,
+                    'whatsapp_message_log_id' => $notificationLog?->id,
+                    'status' => 'received',
+                    'payload' => $data,
+                    'sent_at' => $sentAt,
+                ]);
+
+                $this->linkUser($conversation, $notificationLog);
+                $this->touchConversation($conversation, $message);
+
+                if ($this->isOptOut($type, $data)) {
+                    $this->optOut($conversation);
+                }
+
+                return $message;
+            });
         } catch (UniqueConstraintViolationException) {
             return;
-        }
-
-        $this->linkUser($conversation, $notificationLog);
-        $this->touchConversation($conversation, $message);
-
-        if ($this->isOptOut($type, $data)) {
-            $this->optOut($conversation);
         }
 
         if ($media !== null && filled($media['id'] ?? null)) {
@@ -215,14 +231,14 @@ class WhatsAppWebhookProcessor
         $text = trim((string) $body);
 
         if ($label !== null && $text !== '' && $type !== 'reaction') {
-            return Str::limit($label.': '.$text, 250);
+            return Str::limit($label.': '.$text, self::PREVIEW_LENGTH);
         }
 
         if ($label !== null && $type === 'reaction') {
-            return Str::limit($label.' '.$text, 250);
+            return Str::limit($label.' '.$text, self::PREVIEW_LENGTH);
         }
 
-        return Str::limit($text !== '' ? $text : ($label ?? 'Mensaje no soportado'), 250);
+        return Str::limit($text !== '' ? $text : ($label ?? 'Mensaje no soportado'), self::PREVIEW_LENGTH);
     }
 
     /**
