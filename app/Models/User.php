@@ -88,6 +88,22 @@ class User extends WaveUser implements HasLocalePreference
             }
         });
 
+        // Un número nuevo debe verificarse de nuevo: se borra la verificación del anterior
+        // (y su token, para que el link enviado al número viejo no verifique el nuevo).
+        // Solo cambia de formato (espacios, guiones) no cuenta como número nuevo.
+        static::updating(function (self $user) {
+            if (! $user->isDirty('movil') || $user->isDirty('movil_verified_at')) {
+                return;
+            }
+
+            if (self::phoneDigits($user->getOriginal('movil')) === self::phoneDigits($user->movil)) {
+                return;
+            }
+
+            $user->movil_verified_at = null;
+            $user->movil_verification_token = null;
+        });
+
         // Listen for the created event of the model
         static::created(function ($user) {
             // Remove all roles
@@ -95,6 +111,32 @@ class User extends WaveUser implements HasLocalePreference
             // Assign the default role
             $user->assignRole(config('wave.default_user_role', 'registered'));
         });
+    }
+
+    /**
+     * Si el móvil fue verificado con el link enviado por WhatsApp.
+     */
+    public function hasVerifiedPhone(): bool
+    {
+        return ! empty($this->movil) && $this->movil_verified_at !== null;
+    }
+
+    /**
+     * Envía por WhatsApp el link de verificación del móvil (genera el token si no existe).
+     */
+    public function sendPhoneVerification(): void
+    {
+        if (empty($this->movil_verification_token)) {
+            $this->movil_verification_token = Str::random(64);
+            $this->saveQuietly();
+        }
+
+        $this->notify(new \App\Notifications\PhoneVerificationNotification);
+    }
+
+    private static function phoneDigits(?string $phone): string
+    {
+        return preg_replace('/\D+/', '', (string) $phone);
     }
 
     /**

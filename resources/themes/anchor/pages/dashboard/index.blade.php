@@ -280,6 +280,13 @@
 			</div>
 		</div>
 
+		{{-- Verificación del móvil de WhatsApp (solo se ve si falta verificar) --}}
+		@if (! auth()->user()->hasVerifiedPhone())
+			<div class="mt-6 max-w-3xl mx-auto">
+				<livewire:settings.phone-verification />
+			</div>
+		@endif
+
 		{{-- Aviso de suscripción obligatoria --}}
 		<div class="mt-6 max-w-3xl mx-auto rounded-xl border-l-4 p-5 shadow-sm
 			{{ auth()->user()->hasPremiumAccess() ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500' }}">

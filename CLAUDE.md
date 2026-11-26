@@ -1154,6 +1154,7 @@ Registro → event(Registered) → UserRegistered listener (queued) → PhoneVer
 - **app/Notifications/WelcomeWhatsAppNotification.php** — Notificación de bienvenida (ShouldQueue)
 - **app/Listeners/UserRegistered.php** — Escucha `Registered` (auto-discovery); si `whatsapp_opt_in && movil` genera `movil_verification_token` y envía `PhoneVerificationNotification`
 - **app/Http/Controllers/PhoneVerificationController.php** — `/verify-phone/{token}` marca `movil_verified_at` (vista `phone-verified`)
+- **Reenvío y cambio de número**: el componente Volt `settings.phone-verification` (`resources/views/livewire/settings/phone-verification.blade.php`) muestra el botón "Verificar mi WhatsApp" (`User::sendPhoneVerification()`, máx. 3 por hora) en `/dashboard` (solo si falta verificar) y en `/settings/profile` (también el estado "verificado"). Cambiar el número (no solo el formato) borra `movil_verified_at` y el token (`updating` en `App\Models\User`). `User::hasVerifiedPhone()`. **Verificar con el link activa `whatsapp_opt_in`** (el texto junto al botón lo informa); se desactiva con el toggle del perfil o respondiendo BAJA. Test: `PhoneVerificationTest`
 - **app/Notifications/WelcomeWhatsAppNotification.php** — bienvenida original, hoy sin uso
 - **app/Models/WhatsAppMessageLog.php** — log de cada mensaje enviado/fallido (relación a listing/request)
 
@@ -1379,7 +1380,7 @@ Extiende `/es/inmobiliaria/{username}` / `/en/realtor/{username}` a un mini-siti
 ## Notificaciones de Matches hacia Anunciantes
 
 `PropertyRequestCreated` (disparado por `PropertyRequestObserver` y por `import:legacy-requests`) → `NotifyMatchingListings` (queued):
-- Busca anuncios con score ≥ `matching.min_score_to_notify` (70) y envía **un** WhatsApp por dueño (agrupa por `user_id`), solo si tiene `movil` y `whatsapp_opt_in`
+- Busca anuncios con score ≥ `matching.min_score_to_notify` (70) y envía **un** WhatsApp por dueño (agrupa por `user_id`), solo si tiene `movil`, `whatsapp_opt_in` y el móvil verificado (`movil_verified_at`)
 - Solo envía entre 10:00 y 24:00; throttle por usuario de 60 min (1 día si la solicitud viene de importación legacy) con `Cache::add()` atómico
 - Test: `NotifyMatchingListingsTest`
 

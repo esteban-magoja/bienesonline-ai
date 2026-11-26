@@ -67,8 +67,8 @@ class NotifyMatchingListings implements ShouldQueue
             foreach ($listingsByOwner as $ownerId => $ownerListings) {
                 $user = User::find($ownerId);
 
-                if (!$user || empty($user->movil) || !$user->whatsapp_opt_in) {
-                    Log::debug("NotifyMatchingListings: user #{$ownerId} sin móvil o sin opt-in, saltando.");
+                if (!$user || !$user->whatsapp_opt_in || !$user->hasVerifiedPhone()) {
+                    Log::debug("NotifyMatchingListings: user #{$ownerId} sin móvil, sin opt-in o sin móvil verificado, saltando.");
                     continue;
                 }
 

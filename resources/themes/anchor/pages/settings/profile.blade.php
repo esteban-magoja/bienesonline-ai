@@ -111,6 +111,10 @@
                         ->required()
 						->rules('required|string|max:20')
 						->default(auth()->user()->movil),
+					\Filament\Forms\Components\Toggle::make('whatsapp_opt_in')
+                        ->label(__('settings.profile.whatsapp_opt_in'))
+                        ->helperText(__('settings.profile.whatsapp_opt_in_description'))
+                        ->default(auth()->user()->whatsapp_opt_in ?? false),
 					\Filament\Forms\Components\Select::make('country')
                         ->label(__('settings.profile.country'))
                         ->options(CountrySetting::getEnabledCountries()->pluck('name', 'id')->all())
@@ -169,12 +173,23 @@
 				$this->saveNewUserAvatar();
 			}
 
+			$wasPhoneVerified = auth()->user()->hasVerifiedPhone();
+
 			$this->saveFormFields($state);
 
 			Notification::make()
                 ->title(__('settings.profile.saved_success'))
                 ->success()
                 ->send();
+
+			$this->dispatch('phone-updated');
+
+			if ($wasPhoneVerified && ! auth()->user()->hasVerifiedPhone()) {
+				Notification::make()
+					->title(__('settings.profile.phone_changed_unverified'))
+					->warning()
+					->send();
+			}
 		}
 
 		private function saveNewUserAvatar(){
@@ -212,6 +227,13 @@
 			auth()->user()->email = $state['email'];
 			auth()->user()->agency = $state['agency'] ?? null;
 			auth()->user()->movil = $state['movil'] ?? null;
+			$whatsappOptIn = (bool) ($state['whatsapp_opt_in'] ?? false);
+			if ($whatsappOptIn && ! auth()->user()->whatsapp_opt_in) {
+				auth()->user()->whatsapp_opt_in_at = now();
+			} elseif (! $whatsappOptIn) {
+				auth()->user()->whatsapp_opt_in_at = null;
+			}
+			auth()->user()->whatsapp_opt_in = $whatsappOptIn;
 			auth()->user()->address = $state['address'] ?? null;
 			auth()->user()->country = $countryId ? Country::find($countryId)?->name : null;
 			auth()->user()->state = $stateId ? State::find($stateId)?->name : null;
@@ -322,6 +344,9 @@
 					@error('avatar')
 						<p class="mt-3 text-sm text-red-600">The avatar must be a valid image type.</p>
 					@enderror
+					<div class="w-full mt-8">
+						<livewire:settings.phone-verification :show-verified="true" />
+					</div>
 					<div class="w-full mt-8">
 						{{ $this->form }}
 					</div>

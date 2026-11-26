@@ -28,6 +28,14 @@ class PhoneVerificationController extends Controller
 
         $user->movil_verified_at = now();
         $user->movil_verification_token = null;
+
+        // Verificar el número desde el link es aceptar los avisos por WhatsApp
+        // (el texto junto al botón de verificar lo informa). Se desactivan desde el perfil o respondiendo BAJA.
+        if (! $user->whatsapp_opt_in) {
+            $user->whatsapp_opt_in = true;
+            $user->whatsapp_opt_in_at = now();
+        }
+
         $user->saveQuietly();
 
         return view('phone-verified', [

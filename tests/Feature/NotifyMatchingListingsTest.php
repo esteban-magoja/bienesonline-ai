@@ -70,7 +70,7 @@ describe('NotifyMatchingListings listener', function () {
         Notification::fake();
         Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
 
-        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true, 'movil_verified_at' => now()]);
         $requester    = makeTestUser();
 
         $request = PropertyRequest::create([
@@ -102,7 +102,7 @@ describe('NotifyMatchingListings listener', function () {
         Notification::fake();
         Carbon::setTestNow(Carbon::parse('2025-01-01 14:00:00'));
 
-        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true, 'movil_verified_at' => now()]);
         $requester    = makeTestUser();
 
         $request = PropertyRequest::create([
@@ -196,6 +196,38 @@ describe('NotifyMatchingListings listener', function () {
         Notification::assertNothingSent();
     });
 
+    it('does not send notifications to listing owners whose phone is not verified', function () {
+        Notification::fake();
+        Carbon::setTestNow(Carbon::parse('2025-01-01 13:00:00'));
+
+        $ownerUnverified = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true, 'movil_verified_at' => null]);
+        $requester       = makeTestUser();
+
+        $request = PropertyRequest::create([
+            'user_id'          => $requester->id,
+            'title'            => 'Busco oficina',
+            'description'      => 'Oficina en microcentro porteño',
+            'property_type'    => 'oficina',
+            'transaction_type' => 'alquiler',
+            'country'          => 'Argentina',
+            'currency'         => 'USD',
+            'is_active'        => true,
+        ]);
+
+        $listing              = PropertyListing::factory()->make(['user_id' => $ownerUnverified->id]);
+        $listing->match_score = 80;
+
+        $matchingService = Mockery::mock(PropertyMatchingService::class);
+        $matchingService->shouldReceive('findMatchesForRequest')
+            ->once()
+            ->andReturn(collect([$listing]));
+
+        $listener = new NotifyMatchingListings($matchingService);
+        $listener->handle(new PropertyRequestCreated($request));
+
+        Notification::assertNothingSent();
+    });
+
     it('re-queues the job when executed outside the 11-18 time window', function () {
         Carbon::setTestNow(Carbon::parse('2025-01-01 09:00:00'));
 
@@ -230,7 +262,7 @@ describe('NotifyMatchingListings listener', function () {
         Notification::fake();
         Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
 
-        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true, 'movil_verified_at' => now()]);
         $requester    = makeTestUser();
 
         // Registrar un envío reciente en el log (hace 30 minutos)
@@ -274,7 +306,7 @@ describe('NotifyMatchingListings listener', function () {
         Notification::fake();
         Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
 
-        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true, 'movil_verified_at' => now()]);
         $requester    = makeTestUser();
 
         // Registrar un envío antiguo en el log (hace 90 minutos)
@@ -318,7 +350,7 @@ describe('NotifyMatchingListings listener', function () {
         Notification::fake();
         Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
 
-        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true, 'movil_verified_at' => now()]);
         $requester    = makeTestUser();
 
         // Registrar un envío reciente en el log (hace 2 horas — pasaría el throttle de 60min pero no el de 24h)
@@ -362,7 +394,7 @@ describe('NotifyMatchingListings listener', function () {
         Notification::fake();
         Carbon::setTestNow(Carbon::parse('2025-01-01 12:00:00'));
 
-        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true]);
+        $listingOwner = makeTestUser(['movil' => '+5491112345678', 'whatsapp_opt_in' => true, 'movil_verified_at' => now()]);
         $requester    = makeTestUser();
 
         // Registrar un envío hace 25 horas (fuera del throttle de 24h)
